@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Filho de Mil Homens — Análise Completa</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --parchment: #1a1208;
+  --parchment-dark: #2a1f0e;
+  --gold: #c1440e;
+  --gold-light: #c1440e;
+  --bg: #f5f0e8;
+  --bg2: #ede8dc;
+  --surface: rgba(26,18,8,0.06);
+  --border: rgba(193,68,14,0.25);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--parchment);
+  font-family: 'DM Sans', sans-serif; font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:9999; opacity:0.7;
+}
+
+/* ── HEADER ── */
+header {
+  text-align:center;
+  padding: 3rem 2rem 0;
+  position:relative;
+}
+.sup-tag {
+  font-family:'Cinzel',serif;
+  font-size:0.62rem; letter-spacing:0.28em;
+  color:var(--gold); text-transform:uppercase; margin-bottom:0.6rem;
+}
+h1 {
+  font-family:'Cinzel',serif;
+  font-size: clamp(1.5rem,3.5vw,2.6rem);
+  font-weight:400; color:#1a1208;
+  line-height:1.2; letter-spacing:0.05em;
+}
+h1 em {
+  font-style:italic; color:var(--gold-light);
+  font-family:'Cormorant Garamond',serif; font-size:1.12em;
+}
+.header-sub { font-style:italic; color:#1a1208; font-size:0.95rem; margin-top:0.35rem; }
+
+/* ── TABS ── */
+.tabs-nav {
+  display:flex; justify-content:center;
+  gap:0; margin: 2rem auto 0;
+  max-width:900px;
+  border-bottom:1px solid var(--border);
+}
+.tab-btn {
+  font-family:'Cinzel',serif;
+  font-size:0.7rem; letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:rgba(26,18,8,0.60);
+  background:none; border:none;
+  padding:0.9rem 1.8rem;
+  cursor:pointer;
+  position:relative;
+  transition: color 0.3s;
+}
+.tab-btn::after {
+  content:'';
+  position:absolute; bottom:-1px; left:0; right:0; height:2px;
+  background:var(--gold-light);
+  transform:scaleX(0); transition:transform 0.3s;
+}
+.tab-btn:hover { color:#1a1208; }
+.tab-btn.active { color:var(--gold-light); }
+.tab-btn.active::after { transform:scaleX(1); }
+
+/* ── TAB PANELS ── */
+.tab-panel { display:none; animation: fadeUp 0.4s ease; }
+.tab-panel.active { display:block; }
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(10px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ═══════════════════════════════
+   TAB 1 — TEIA
+═══════════════════════════════ */
+#tab-teia {
+  max-width:1300px; margin:0 auto;
+  display:grid; grid-template-columns: 1fr 340px;
+  padding:2rem 2rem 3rem; gap:0; min-height:620px;
+}
+#network-wrap { position:relative; height:600px; }
+#network-svg { width:100%; height:100%; cursor:default; }
+
+.node-group { cursor:pointer; }
+.node-circle { transition:r 0.35s ease; }
+.node-group:hover .node-circle { filter:brightness(1.35); }
+.node-label {
+  font-family:'Cinzel',serif; font-size:11px;
+  fill:var(--parchment); text-anchor:middle;
+  pointer-events:none; letter-spacing:0.04em;
+}
+.node-role {
+  font-family:'Cormorant Garamond',serif; font-style:italic;
+  font-size:10px; fill:#1a1208;
+  text-anchor:middle; pointer-events:none;
+}
+.edge-line { transition:stroke 0.3s, stroke-width 0.3s; }
+.edge-label {
+  font-family:'Cormorant Garamond',serif; font-style:italic;
+  font-size:9.5px; fill:rgba(193,68,14,0.7);
+  text-anchor:middle; pointer-events:none;
+}
+
+#info-panel {
+  padding:2rem 0.5rem 2rem 2.5rem;
+  border-left:1px solid var(--border);
+  overflow-y:auto; max-height:600px;
+}
+.panel-hint {
+  font-style:italic; color:#1a1208;
+  font-size:1rem; line-height:1.75; margin-top:2rem;
+}
+.char-card { display:none; }
+.char-card.active { display:block; animation:fadeUp 0.35s ease; }
+
+.char-badge {
+  display:inline-block; padding:0.2rem 0.75rem;
+  border-radius:2px; font-family:'Cinzel',serif;
+  font-size:0.6rem; letter-spacing:0.15em;
+  text-transform:uppercase; margin-bottom:0.7rem; color:#1a1208;
+}
+.char-name {
+  font-family:'Cinzel',serif; font-size:1.55rem;
+  font-weight:400; letter-spacing:0.06em; line-height:1.2;
+  margin-bottom:0.2rem;
+}
+.char-epithet { font-style:italic; font-size:0.95rem; opacity:0.6; margin-bottom:1rem; }
+.char-div { width:55px; height:1px; background:linear-gradient(90deg,var(--gold),transparent); margin-bottom:1rem; }
+.char-desc { font-size:1rem; line-height:1.8; color:#1a1208; margin-bottom:1rem; }
+.sec-title {
+  font-family:'Cinzel',serif; font-size:0.6rem;
+  letter-spacing:0.2em; color:var(--gold);
+  text-transform:uppercase; margin-bottom:0.45rem;
+}
+.tags { display:flex; flex-wrap:wrap; gap:0.35rem; }
+.tag {
+  padding:0.18rem 0.55rem; border:1px solid; border-radius:2px;
+  font-size:0.78rem; font-style:italic; opacity:0.72;
+}
+.conn-item {
+  display:flex; align-items:baseline; gap:0.4rem;
+  margin-bottom:0.45rem; font-size:0.92rem;
+}
+.conn-name { font-family:'Cinzel',serif; font-size:0.72rem; letter-spacing:0.04em; }
+.conn-rel { font-style:italic; color:rgba(26,18,8,0.72); font-size:0.88rem; }
+
+.teia-legend {
+  padding:1rem 2rem;
+  border-top:1px solid rgba(193,68,14,0.12);
+  display:flex; flex-wrap:wrap; gap:1.2rem;
+  justify-content:center;
+  max-width:1300px; margin:0 auto;
+}
+.leg-item { display:flex; align-items:center; gap:0.45rem; font-size:0.82rem; font-style:italic; color:#1a1208; }
+.leg-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+
+/* ═══════════════════════════════
+   SHARED CONTENT STYLES
+═══════════════════════════════ */
+.content-page {
+  max-width:900px; margin:0 auto;
+  padding:3rem 2rem 4rem;
+}
+.content-page h2 {
+  font-family:'Cinzel',serif; font-size:1.5rem;
+  font-weight:400; letter-spacing:0.06em;
+  color:var(--gold-light); margin-bottom:0.3rem;
+}
+.content-page .section-lead {
+  font-style:italic; color:rgba(26,18,8,0.72);
+  font-size:1rem; margin-bottom:2.5rem;
+  padding-bottom:1.5rem;
+  border-bottom:1px solid var(--border);
+}
+.content-page p {
+  font-size:1.05rem; line-height:1.85;
+  color:#1a1208;
+  margin-bottom:1.2rem;
+}
+.content-page strong {
+  color:var(--parchment); font-weight:600;
+}
+.content-page em { color:var(--gold-light); }
+
+/* Section blocks */
+.section-block { margin-bottom:3.5rem; }
+.section-block h3 {
+  font-family:'Cinzel',serif; font-size:0.95rem;
+  font-weight:600; letter-spacing:0.14em;
+  color:var(--parchment); text-transform:uppercase;
+  margin-bottom:1.2rem;
+  padding-bottom:0.5rem;
+  border-bottom:1px solid rgba(193,68,14,0.2);
+}
+
+/* Horizontal rule */
+.rule {
+  width:120px; height:1px; margin:2.5rem 0;
+  background:linear-gradient(90deg,var(--gold),transparent);
+}
+
+/* Pull quote */
+.pull-quote {
+  margin:2rem 0; padding:1.5rem 2rem;
+  border-left:2px solid var(--gold);
+  background:rgba(193,68,14,0.06);
+}
+.pull-quote p {
+  font-style:italic; font-size:1.2rem;
+  line-height:1.75; color:#1a1208;
+  margin:0;
+}
+.pull-quote cite {
+  display:block; margin-top:0.6rem;
+  font-family:'Cinzel',serif; font-size:0.6rem;
+  letter-spacing:0.2em; color:var(--gold);
+  text-transform:uppercase; font-style:normal;
+}
+
+/* Timeline (author) */
+.timeline { position:relative; padding-left:1.8rem; }
+.timeline::before {
+  content:''; position:absolute; left:5px; top:6px; bottom:6px;
+  width:1px; background:linear-gradient(180deg,var(--gold),transparent);
+}
+.timeline-item { position:relative; margin-bottom:1.8rem; }
+.timeline-item::before {
+  content:''; position:absolute; left:-1.55rem; top:7px;
+  width:8px; height:8px; border-radius:50%;
+  background:var(--gold); border:2px solid var(--bg);
+  box-shadow:0 0 6px rgba(193,68,14,0.6);
+}
+.timeline-year {
+  font-family:'Cinzel',serif; font-size:0.7rem;
+  letter-spacing:0.15em; color:var(--gold);
+  margin-bottom:0.2rem;
+}
+.timeline-item p { margin:0; font-size:1rem; }
+
+/* Cards grid */
+.cards-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:1.2rem; margin-bottom:2rem;
+}
+.card-block {
+  background:rgba(26,18,8,0.04); border:1px solid rgba(26,18,8,0.1);
+  border:1px solid var(--border);
+  border-radius:4px; padding:1.4rem 1.5rem;
+}
+.card-block .card-icon {
+  font-size:1.6rem; margin-bottom:0.8rem; opacity:0.8;
+}
+.card-block h4 {
+  font-family:'Cinzel',serif; font-size:0.75rem;
+  letter-spacing:0.15em; color:var(--gold);
+  text-transform:uppercase; margin-bottom:0.6rem;
+}
+.card-block p { font-size:0.95rem; margin:0; }
+
+/* Lições list */
+.licoes-list { list-style:none; }
+.licoes-list li {
+  padding:1.2rem 1.5rem 1.2rem 1rem;
+  border-left:2px solid rgba(193,68,14,0.3);
+  margin-bottom:1rem;
+  background:rgba(26,18,8,0.04); border:1px solid rgba(26,18,8,0.1);
+  transition:border-color 0.3s;
+}
+.licoes-list li:hover { border-left-color:var(--gold); }
+.licoes-list .lic-num {
+  font-family:'Cinzel',serif; font-size:0.6rem;
+  letter-spacing:0.2em; color:var(--gold);
+  text-transform:uppercase; margin-bottom:0.3rem;
+}
+.licoes-list .lic-title {
+  font-family:'Cinzel',serif; font-size:0.9rem;
+  color:var(--parchment); margin-bottom:0.5rem;
+}
+.licoes-list .lic-text { font-size:0.95rem; line-height:1.7; color:#1a1208; }
+
+/* Local físico — map illustration */
+.map-illo {
+  width:100%; background:rgba(193,68,14,0.04);
+  border:1px solid var(--border); border-radius:4px;
+  overflow:hidden; margin-bottom:2rem;
+}
+
+/* Curiosity pills */
+.curiosity-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:0.8rem; margin-top:1.5rem;
+}
+.curiosity-pill {
+  padding:0.9rem 1.1rem;
+  border:1px solid rgba(193,68,14,0.18);
+  border-radius:3px;
+  font-size:0.9rem; line-height:1.6;
+  color:#1a1208;
+}
+.curiosity-pill strong {
+  display:block; font-family:'Cinzel',serif;
+  font-size:0.62rem; letter-spacing:0.15em;
+  color:var(--gold); text-transform:uppercase;
+  margin-bottom:0.3rem; font-weight:400;
+}
+
+/* Footer quote */
+.footer-quote {
+  text-align:center; padding:3rem 2rem;
+  border-top:1px solid var(--border);
+  max-width:700px; margin:0 auto;
+}
+.footer-quote p {
+  font-style:italic; font-size:1.15rem;
+  line-height:1.85; color:rgba(26,18,8,0.80);
+  margin:0;
+}
+.footer-quote cite {
+  display:block; margin-top:0.9rem;
+  font-family:'Cinzel',serif; font-size:0.6rem;
+  letter-spacing:0.22em; color:var(--gold);
+  text-transform:uppercase; font-style:normal;
+}
+
+@media(max-width:860px){
+  #tab-teia { grid-template-columns:1fr; }
+  #network-wrap { height:420px; }
+  #info-panel { border-left:none; border-top:1px solid var(--border); max-height:none; padding:1.5rem 0; }
+  .tab-btn { padding:0.7rem 1rem; font-size:0.6rem; }
+}
+
+/* ══════════════════════════════
+   SOCORRO NAV BAR
+══════════════════════════════ */
+.socorro-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 10000;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 4rem;
+  background: rgba(245,240,232,0.97);
+  border-bottom: 1px solid rgba(193,68,14,0.15);
+  backdrop-filter: blur(8px);
+}
+.socorro-nav-logo {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem; color: #c1440e;
+  letter-spacing: 0.05em; text-decoration: none;
+}
+.socorro-back {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem; letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(26,18,8,0.80);
+  text-decoration: none;
+  transition: color 0.2s;
+  border: 1px solid rgba(193,68,14,0.3);
+  padding: 0.5rem 1.2rem;
+}
+.socorro-back:hover { color: #c1440e; border-color: #c1440e; }
+.socorro-nav-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem; letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(26,18,8,0.3);
+}
+
+/* Push content below fixed nav */
+body { padding-top: 70px; }
+
+</style>
+</head>
+<body>
+
+<nav class="socorro-nav">
+  <a href="index.html" class="socorro-nav-logo">Socorro.</a>
+  <span class="socorro-nav-tag">Clube do Livro · Análise</span>
+  <a href="index.html#lidos" class="socorro-back">← Voltar à estante</a>
+</nav>
+
+
+<header>
+  <p class="sup-tag">Valter Hugo Mãe &nbsp;·&nbsp; 2011 &nbsp;·&nbsp; Análise Literária</p>
+  <h1><em>O Filho de Mil Homens</em></h1>
+  <p class="header-sub">Personagens · Autor · Contexto · Espaço Narrativo</p>
+</header>
+
+<nav class="tabs-nav">
+  <button class="tab-btn active"    onclick="showTab('teia',this)">Teia de Relações</button>
+  <button class="tab-btn"           onclick="showTab('autor',this)">O Autor</button>
+  <button class="tab-btn"           onclick="showTab('contexto',this)">Contexto &amp; Mensagens</button>
+  <button class="tab-btn"           onclick="showTab('espaco',this)">O Espaço Narrativo</button>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     TAB 1 — TEIA DE RELAÇÕES
+══════════════════════════════════════════ -->
+<div id="tab-teia" class="tab-panel active">
+  <div style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 340px;padding:2rem 2rem 1rem;gap:0;min-height:620px;">
+    <div id="network-wrap">
+      <svg id="network-svg" viewBox="0 0 700 580" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <radialGradient id="bg-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#2a1a05" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="350" cy="290" rx="230" ry="190" fill="url(#bg-glow)"/>
+        <g id="edges-layer"></g>
+        <g id="edge-labels-layer"></g>
+        <g id="nodes-layer"></g>
+      </svg>
+    </div>
+    <div id="info-panel">
+      <div id="default-msg">
+        <p class="panel-hint">Clique em qualquer personagem para explorar a sua história, temas e conexões com os outros habitantes da aldeia.</p>
+        <p class="panel-hint" style="margin-top:1.2rem;font-size:0.88rem;">A família não nasce do sangue — nasce do afeto que escolhe onde pousar.</p>
+      </div>
+      <!-- Character cards injected here via JS -->
+    </div>
+  </div>
+  <div class="teia-legend">
+    <div class="leg-item"><div class="leg-dot" style="background:#c1440e"></div>Crisóstomo — protagonista</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#2a9d8f"></div>Camilo — filho</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#c77daa"></div>Isaura — amante</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#e76f51"></div>Antonino — amigo/marido</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#7eb8d4"></div>Matilde — marginalizada</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#a8dadc"></div>Mininha — sábia</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#b5b08a"></div>A Aldeia — espaço</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 2 — O AUTOR
+══════════════════════════════════════════ -->
+<div id="tab-autor" class="tab-panel">
+  <div class="content-page">
+    <h2>Valter Hugo Mãe</h2>
+    <p class="section-lead">Escritor, editor, artista plástico e músico português — uma das vozes mais singulares da literatura lusófona contemporânea.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-bottom:3.5rem;">
+      <div>
+        <div class="section-block">
+          <h3>Biografia</h3>
+          <p>Valter Hugo Mãe é o nome artístico de <strong>Valter Hugo Lemos</strong>, nascido a 25 de setembro de 1971 em <strong>Saurimo (Henrique de Carvalho)</strong>, então Angola colonial. A família regressa a Portugal durante a descolonização, e o menino cresce em <strong>Paços de Ferreira</strong>, mudando-se em 1980 para <strong>Vila do Conde</strong>, cidade costeira que nunca mais abandonou.</p>
+          <p>Formou-se em <strong>Direito</strong> pela Universidade do Porto e fez pós-graduação em <strong>Literatura Portuguesa Moderna e Contemporânea</strong> — percurso que une a precisão da linguagem jurídica à sensibilidade literária que define a sua escrita.</p>
+          <p>Em 1999, cofundou a <strong>Quasi Edições</strong>, onde publicou autores como Caetano Veloso, Manoel de Barros, Ferreira Gullar e Adriana Calcanhotto — construindo uma ponte cultural entre Portugal e o Brasil que marca toda a sua obra. Em 2006, fundou a editora <em>Objecto Cardíaco</em>.</p>
+        </div>
+      </div>
+      <div>
+        <div class="section-block">
+          <h3>Cronologia</h3>
+          <div class="timeline">
+            <div class="timeline-item">
+              <p class="timeline-year">1971</p>
+              <p>Nasce em Saurimo, Angola colonial.</p>
+            </div>
+            <div class="timeline-item">
+              <p class="timeline-year">1980</p>
+              <p>Instala-se em Vila do Conde, norte de Portugal.</p>
+            </div>
+            <div class="timeline-item">
+              <p class="timeline-year">1999</p>
+              <p>Cofunda a Quasi Edições com Jorge Reis-Sá.</p>
+            </div>
+            <div class="timeline-item">
+              <p class="timeline-year">2004</p>
+              <p>Publica <em>o nosso reino</em>, primeiro romance da tetralogia das minúsculas.</p>
+            </div>
+            <div class="timeline-item">
+              <p class="timeline-year">2007</p>
+              <p>Vence o <strong>Prémio José Saramago</strong> por <em>o remorso de baltazar serapião</em>. Saramago chama-lhe "tsunami literário" e "novo parto da língua portuguesa".</p>
+            </div>
+            <div class="timeline-item">
+              <p class="timeline-year">2008</p>
+              <p>Estreia como vocalista do grupo <em>O Governo</em> no Teatro do Campo Alegre, Porto.</p>
+            </div>
+            <div class="timeline-item">
+              <p class="timeline-year">2011</p>
+              <p>Publica <em>O Filho de Mil Homens</em> — romance que abandona o estilo das minúsculas e conquista audiências internacionais.</p>
+            </div>
+            <div class="timeline-item">
+              <p class="timeline-year">2012</p>
+              <p><em>a máquina de fazer espanhóis</em> vence o <strong>Prémio Portugal Telecom</strong>.</p>
+            </div>
+            <div class="timeline-item">
+              <p class="timeline-year">2015</p>
+              <p><em>A Desumanização</em>, ambientado na Islândia, é finalista do prémio Oceanos.</p>
+            </div>
+            <div class="timeline-item">
+              <p class="timeline-year">2024–25</p>
+              <p><em>Contra mim</em> vence o Grande Prémio de Romance e Novela da APE. Adaptação cinematográfica de <em>O Filho de Mil Homens</em> estreia na Netflix.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule"></div>
+
+    <div class="section-block">
+      <h3>O nome como manifesto</h3>
+      <p>O pseudónimo "Mãe" não é decorativo. É um <strong>manifesto literário e político</strong>. Ao assumir o feminino no nome artístico, Valter Hugo Mãe sinaliza desde o início uma escrita centrada nas vozes das mulheres, nos corpos marginalizados, na ternura como forma de resistência. É talvez o escritor português contemporâneo que mais e melhor escreve sobre o feminino — não como território de conquista, mas como lugar de onde se fala verdade.</p>
+
+      <div class="pull-quote">
+        <p>O gênero é um dos motes da sua escrita — procurando entender como a violência percorre as estruturas de uma sociedade falocêntrica, e como o amor pode ser um ato de desobediência.</p>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h3>O estilo das minúsculas — e a sua ruptura</h3>
+      <p>Uma das marcas mais reconhecíveis de Valter Hugo Mãe é o uso exclusivo de <strong>letras minúsculas em toda a escrita</strong> — nomes próprios, início de frases, tudo. Nos primeiros romances — <em>o nosso reino</em>, <em>o remorso de baltazar serapião</em>, <em>o apocalipse dos trabalhadores</em>, <em>a máquina de fazer espanhóis</em> — essa escolha é absoluta, criando uma cadência única, uma prosa que respira de modo diferente.</p>
+      <p><em>O Filho de Mil Homens</em> representa uma <strong>ruptura consciente</strong>: o autor retorna às maiúsculas, mas o português permanece transformado — ainda poético, ainda sensorial, ainda capaz de reinventar o que chamamos de linguagem literária.</p>
+    </div>
+
+    <div class="section-block">
+      <h3>Curiosidades</h3>
+      <div class="curiosity-grid">
+        <div class="curiosity-pill"><strong>Músico</strong>Vocalista do grupo O Governo, estreando em palco no Porto em 2008.</div>
+        <div class="curiosity-pill"><strong>Artes Plásticas</strong>Realizou exposições de desenho, sendo a primeira em 2007 no Porto.</div>
+        <div class="curiosity-pill"><strong>Editor</strong>Publicou Caetano Veloso, Manoel de Barros e Ferreira Gullar na Quasi Edições.</div>
+        <div class="curiosity-pill"><strong>Colunista</strong>Escreve regularmente no Jornal de Letras e na Notícias Magazine.</div>
+        <div class="curiosity-pill"><strong>Saramago</strong>O único autor contemporâneo sobre quem Saramago disse assistir "a um novo parto da língua portuguesa".</div>
+        <div class="curiosity-pill"><strong>Angola</strong>Nasceu numa Angola colonial em plena Guerra Fria — experiência que marca a sua sensibilidade perante a exclusão e o exílio.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 3 — CONTEXTO & MENSAGENS
+══════════════════════════════════════════ -->
+<div id="tab-contexto" class="tab-panel">
+  <div class="content-page">
+    <h2>Contexto &amp; Principais Mensagens</h2>
+    <p class="section-lead">Uma fábula contemporânea sobre o direito de amar, publicada em 2011, quando Portugal vivia a crise mais severa desde o 25 de Abril.</p>
+
+    <div class="section-block">
+      <h3>Contexto histórico e social</h3>
+      <p><em>O Filho de Mil Homens</em> foi publicado em 2011, ano em que Portugal assinou o memorando de resgate financeiro com a Troika e iniciou um período de austeridade brutal. O país vivia o desemprego mais alto em décadas, emigração em massa, e uma profunda <strong>crise de identidade nacional</strong>.</p>
+      <p>A escolha de ambientar o livro numa aldeia piscatória indefinida — que remete ao Portugal rural e costeiro, possivelmente do início do século XX ou de meados dele — é simultaneamente um <strong>escapismo e uma crítica</strong>. O romance foge ao presente imediato para encontrar verdades atemporais sobre o que nos faz humanos: o afeto, a solidariedade, o direito de ser quem se é.</p>
+      <p>O livro surge também num momento de debate português sobre <strong>casamento igualitário</strong> (aprovado em Portugal em 2010) e sobre novas formas de família, tornando a narrativa de Antonino e da família inventada de Crisóstomo um eco literário de transformações sociais reais.</p>
+    </div>
+
+    <div class="rule"></div>
+
+    <div class="section-block">
+      <h3>Temas centrais</h3>
+      <div class="cards-grid">
+        <div class="card-block">
+          <div class="card-icon">🌊</div>
+          <h4>Família de Escolha</h4>
+          <p>O livro propõe que família não é biologia — é afeto deliberado. Crisóstomo não "encontra" um filho: <em>escolhe</em> ser pai. Cada personagem constrói vínculos que a sociedade não reconhece, mas que são os únicos que os sustentam.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-icon">🕯</div>
+          <h4>Solidão Masculina</h4>
+          <p>Raramente a literatura portuguesa havia retratado com tal ternura a solidão de um homem que simplesmente quer dar amor. Crisóstomo não é violento, nem autoritário: é <em>carente</em> de um modo que a cultura de masculinidade tradicional não autoriza.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-icon">🌿</div>
+          <h4>Os Excluídos como Protagonistas</h4>
+          <p>Anãs, homossexuais reprimidos, viúvas, órfãos — Mãe povoa a sua aldeia de figuras que o realismo social trataria como casos clínicos. Aqui são heróis do quotidiano, cada um carregando a sua dignidade intacta.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-icon">💧</div>
+          <h4>Amor como Pacificação</h4>
+          <p>O amor, em Mãe, não é conquista nem posse. É <em>pacificação com a própria natureza</em>. Amar é aceitar-se, e ao aceitar-se, transformar-se. A narrativa sugere que não há amor que não mude quem o sente.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-icon">⚓</div>
+          <h4>Identidade e Repressão</h4>
+          <p>Antonino encarna o custo humano do preconceito: um homem que não pode ser quem é, num casamento que sufoca dois. A sua tragédia não é individual — é sistémica, refletindo como a norma social devora identidades inteiras.</p>
+        </div>
+        <div class="card-block">
+          <div class="card-icon">📜</div>
+          <h4>A Linguagem como Afeto</h4>
+          <p>A prosa de Mãe é ela própria uma mensagem: a beleza da língua portuguesa, usada com uma delicadeza radical, diz que <em>como</em> se diz algo importa tanto quanto o que se diz. Cada frase é um gesto de cuidado.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule"></div>
+
+    <div class="section-block">
+      <h3>O diálogo com a tradição literária</h3>
+      <p>Alberto Manguel, no prefácio da obra, traça uma linha que vai da <em>Odisseia</em> (Telémaco procurando o pai) ao <em>Ulisses</em> de Joyce (Leopold Bloom buscando um filho espiritual em Stephen Dedalus) e ao <em>Pinóquio</em> de Collodi (Geppetto que cria um filho de madeira). <em>O Filho de Mil Homens</em> inscreve-se nessa longa tradição do <strong>desejo de paternidade como motor narrativo</strong> — mas inverte o sinal: aqui não é a busca do filho pelo pai, mas do pai pelo filho, e o filho que se encontra não é de sangue, é de afeto.</p>
+      <p>O título remete ainda à planta medicinal <em>Aristolochia triangularis</em>, popularmente chamada "Mil-homens" no Brasil — uma erva que cura, que serve a todos, que não pertence a ninguém. O filho, como a planta, é de todos os homens que o amaram.</p>
+    </div>
+
+    <div class="section-block">
+      <h3>Principais lições e aprendizagens</h3>
+      <ul class="licoes-list">
+        <li>
+          <p class="lic-num">Lição 01</p>
+          <p class="lic-title">A família é um ato de vontade</p>
+          <p class="lic-text">O livro desafia a ideia de que família é destino biológico. Ser pai, ser filho, ser irmão — são papéis que se escolhem todos os dias, com afeto e presença. Nenhuma certidão os garante; só o amor os sustenta.</p>
+        </li>
+        <li>
+          <p class="lic-num">Lição 02</p>
+          <p class="lic-title">Ser feliz é aceitar ser o que se pode ser</p>
+          <p class="lic-text">A felicidade não exige perfeição — exige honestidade consigo mesmo. As personagens que encontram paz são as que param de lutar contra a própria natureza e começam a habitá-la com cuidado.</p>
+        </li>
+        <li>
+          <p class="lic-num">Lição 03</p>
+          <p class="lic-title">O preconceito sufoca vidas inteiras</p>
+          <p class="lic-text">A história de Antonino é um alerta: as normas sociais rígidas não apenas impedem o amor — destroem pessoas. A homofobia, o capacitismo, a misoginia não são abstrações: têm rosto, têm custo, têm nome.</p>
+        </li>
+        <li>
+          <p class="lic-num">Lição 04</p>
+          <p class="lic-title">A ternura é uma forma de coragem</p>
+          <p class="lic-text">Num mundo que equipara masculinidade a dureza, Crisóstomo é um herói da ternura. Querer amar, pedir amor, estar disponível para o outro — no livro, isso é o maior dos actos de bravura.</p>
+        </li>
+        <li>
+          <p class="lic-num">Lição 05</p>
+          <p class="lic-title">Os marginalizados têm uma sabedoria que o centro não tem</p>
+          <p class="lic-text">Matilde, Mininha, os excluídos da aldeia — são eles que veem com mais clareza. A margem tem uma perspetiva que o centro não consegue ter, porque o centro nunca precisou de olhar com tanto cuidado para sobreviver.</p>
+        </li>
+        <li>
+          <p class="lic-num">Lição 06</p>
+          <p class="lic-title">O outro é o que nos completa</p>
+          <p class="lic-text">Seguindo Bakhtin, o livro sugere que existimos verdadeiramente apenas no encontro com o outro. Isoladas, as personagens definham. No cruzamento das suas histórias, florescem. Nenhuma se salva sozinha.</p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="pull-quote">
+      <p>"O tamanho da vida está todo dentro do amor. Se amarmos, somos extensos, infinitos. Se não amarmos, recolhemos como bocadinhos de poeira sem sentido, sem valor."</p>
+      <cite>Valter Hugo Mãe</cite>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 4 — O ESPAÇO NARRATIVO
+══════════════════════════════════════════ -->
+<div id="tab-espaco" class="tab-panel">
+  <div class="content-page">
+    <h2>O Espaço Narrativo</h2>
+    <p class="section-lead">Uma aldeia sem nome à beira do Atlântico — espaço físico que é também espaço moral, emocional e simbólico.</p>
+
+    <!-- Illustrated map -->
+    <div class="map-illo">
+      <svg width="100%" viewBox="0 0 860 320" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="sea-grad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#0a1a2e"/>
+            <stop offset="100%" stop-color="#0d2540"/>
+          </linearGradient>
+          <linearGradient id="land-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1a1608"/>
+            <stop offset="100%" stop-color="#12100a"/>
+          </linearGradient>
+          <linearGradient id="shore-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2a2015"/>
+            <stop offset="100%" stop-color="#1a150a"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Sea -->
+        <rect x="0" y="0" width="860" height="320" fill="url(#sea-grad)"/>
+
+        <!-- Waves subtle -->
+        <path d="M0 140 Q60 128 120 140 Q180 152 240 140 Q300 128 360 140 Q420 152 480 140 Q540 128 600 140 Q660 152 720 140 Q780 128 840 140 L840 320 L0 320Z" fill="#0d2540" opacity="0.5"/>
+        <path d="M0 160 Q70 148 140 160 Q210 172 280 160 Q350 148 420 160 Q490 172 560 160 Q630 148 700 160 Q770 172 840 160 L840 320 L0 320Z" fill="#0a1830" opacity="0.6"/>
+
+        <!-- Wave lines -->
+        <path d="M30 80 Q70 72 110 80 Q150 88 190 80" fill="none" stroke="rgba(100,160,220,0.12)" stroke-width="1.2"/>
+        <path d="M60 100 Q100 92 140 100 Q180 108 220 100 Q260 92 300 100" fill="none" stroke="rgba(100,160,220,0.08)" stroke-width="1"/>
+        <path d="M10 55 Q50 47 90 55 Q130 63 170 55" fill="none" stroke="rgba(100,160,220,0.07)" stroke-width="1"/>
+
+        <!-- Coastline -->
+        <path d="M340 0 L340 80 Q355 100 360 130 Q362 150 358 175 Q354 200 350 220 Q346 250 348 280 L348 320 L860 320 L860 0 Z" fill="url(#land-grad)"/>
+        <path d="M340 0 L340 80 Q355 100 360 130 Q362 150 358 175 Q354 200 350 220 Q346 250 348 280 L348 320" fill="none" stroke="rgba(193,68,14,0.2)" stroke-width="1.5"/>
+
+        <!-- Shore strip -->
+        <path d="M355 0 L355 75 Q368 95 372 125 Q374 148 370 172 Q366 198 362 218 Q358 248 360 278 L360 320 L348 320 L348 280 Q346 250 350 220 Q354 200 358 175 Q362 150 360 130 Q355 100 340 80 L340 0Z" fill="url(#shore-grad)" opacity="0.7"/>
+
+        <!-- Fishing boats (simple) -->
+        <g opacity="0.5">
+          <ellipse cx="200" cy="118" rx="22" ry="7" fill="#1a2a3a"/>
+          <line x1="200" y1="111" x2="200" y2="92" stroke="rgba(193,68,14,0.4)" stroke-width="1"/>
+          <path d="M200 92 L215 105 L185 105Z" fill="none" stroke="rgba(193,68,14,0.25)" stroke-width="0.8"/>
+        </g>
+        <g opacity="0.35">
+          <ellipse cx="140" cy="88" rx="16" ry="5" fill="#1a2a3a"/>
+          <line x1="140" y1="83" x2="140" y2="68" stroke="rgba(193,68,14,0.3)" stroke-width="0.8"/>
+        </g>
+        <g opacity="0.3">
+          <ellipse cx="260" cy="108" rx="12" ry="4" fill="#1a2a3a"/>
+        </g>
+
+        <!-- Village buildings (schematic) -->
+        <!-- Houses row 1 -->
+        <g fill="rgba(245,237,200,0.07)" stroke="rgba(193,68,14,0.15)" stroke-width="0.5">
+          <rect x="390" y="160" width="28" height="22" rx="1"/>
+          <polygon points="390,160 404,148 418,160"/>
+          <rect x="425" y="158" width="24" height="24" rx="1"/>
+          <polygon points="425,158 437,147 449,158"/>
+          <rect x="456" y="162" width="26" height="20" rx="1"/>
+          <polygon points="456,162 469,151 482,162"/>
+          <rect x="390" y="200" width="22" height="20" rx="1"/>
+          <polygon points="390,200 401,190 412,200"/>
+          <rect x="420" y="198" width="26" height="22" rx="1"/>
+          <polygon points="420,198 433,187 446,198"/>
+          <rect x="454" y="202" width="20" height="18" rx="1"/>
+          <polygon points="454,202 464,193 474,202"/>
+          <rect x="500" y="155" width="30" height="25" rx="1"/>
+          <polygon points="500,155 515,142 530,155"/>
+          <rect x="538" y="160" width="24" height="22" rx="1"/>
+          <polygon points="538,160 550,149 562,160"/>
+          <rect x="500" y="196" width="26" height="20" rx="1"/>
+          <polygon points="500,196 513,185 526,196"/>
+        </g>
+
+        <!-- Church / prominent building -->
+        <g fill="rgba(245,237,200,0.1)" stroke="rgba(193,68,14,0.3)" stroke-width="0.8">
+          <rect x="470" y="130" width="22" height="40" rx="1"/>
+          <polygon points="470,130 481,118 492,130"/>
+          <!-- Cross -->
+          <line x1="481" y1="114" x2="481" y2="106" stroke="rgba(193,68,14,0.5)" stroke-width="1.2"/>
+          <line x1="477" y1="110" x2="485" y2="110" stroke="rgba(193,68,14,0.5)" stroke-width="1.2"/>
+        </g>
+
+        <!-- Fishing harbor / dock -->
+        <path d="M360 230 L410 228 L410 245 L360 245Z" fill="rgba(100,80,40,0.3)" stroke="rgba(193,68,14,0.2)" stroke-width="0.8"/>
+        <line x1="362" y1="228" x2="362" y2="215" stroke="rgba(193,68,14,0.25)" stroke-width="1"/>
+        <line x1="408" y1="228" x2="408" y2="215" stroke="rgba(193,68,14,0.25)" stroke-width="1"/>
+        <path d="M355 238 Q370 232 385 236 Q400 240 412 236" fill="none" stroke="rgba(193,68,14,0.15)" stroke-width="0.8"/>
+
+        <!-- Tree dots (sparse) -->
+        <g fill="rgba(40,80,30,0.5)">
+          <circle cx="590" cy="170" r="8"/>
+          <circle cx="605" cy="165" r="6"/>
+          <circle cx="620" cy="172" r="7"/>
+          <circle cx="650" cy="160" r="9"/>
+          <circle cx="665" cy="168" r="7"/>
+          <circle cx="710" cy="155" r="8"/>
+          <circle cx="725" cy="163" r="6"/>
+          <circle cx="570" cy="210" r="7"/>
+          <circle cx="600" cy="205" r="8"/>
+          <circle cx="630" cy="208" r="6"/>
+        </g>
+
+        <!-- Fields/terrain -->
+        <path d="M580 185 Q640 178 700 182 Q760 186 820 180 L820 220 Q760 216 700 220 Q640 224 580 218Z" fill="rgba(30,50,20,0.25)"/>
+
+        <!-- Labels -->
+        <text font-family="'Cinzel', serif" font-size="9" fill="rgba(100,160,220,0.5)" text-anchor="middle" x="175" y="50">Oceano Atlântico</text>
+        <text font-family="'Cormorant Garamond', serif" font-style="italic" font-size="8" fill="rgba(100,160,220,0.3)" text-anchor="middle" x="175" y="63">— o mar que liberta e aprisiona —</text>
+
+        <text font-family="'Cinzel', serif" font-size="10" fill="rgba(26,18,8,0.72)" text-anchor="middle" x="490" y="112">A Aldeia</text>
+        <text font-family="'Cormorant Garamond', serif" font-style="italic" font-size="8" fill="rgba(26,18,8,0.25)" text-anchor="middle" x="490" y="124">sem nome · sem coordenadas</text>
+
+        <text font-family="'Cormorant Garamond', serif" font-style="italic" font-size="8" fill="rgba(193,68,14,0.5)" x="365" y="240">porto</text>
+        <text font-family="'Cormorant Garamond', serif" font-style="italic" font-size="7.5" fill="rgba(26,18,8,0.3)" x="635" y="196">campos e matos</text>
+
+        <!-- Compass rose simple -->
+        <g transform="translate(800,50)" fill="none" stroke="rgba(193,68,14,0.3)" stroke-width="0.8">
+          <line x1="0" y1="-16" x2="0" y2="16"/>
+          <line x1="-16" y1="0" x2="16" y2="0"/>
+          <circle cx="0" cy="0" r="6"/>
+          <polygon points="0,-16 3,-8 -3,-8" fill="rgba(193,68,14,0.4)" stroke="none"/>
+        </g>
+        <text font-family="'Cinzel',serif" font-size="7" fill="rgba(193,68,14,0.5)" text-anchor="middle" x="800" y="24">N</text>
+
+        <!-- Border frame -->
+        <rect x="4" y="4" width="852" height="312" fill="none" stroke="rgba(193,68,14,0.12)" stroke-width="1"/>
+      </svg>
+    </div>
+
+    <div class="section-block">
+      <h3>A aldeia sem nome — espaço como personagem</h3>
+      <p>Um dos traços mais deliberados de Valter Hugo Mãe é a <strong>recusa em nomear ou localizar a aldeia</strong> onde decorre a narrativa. Sem nome, sem coordenadas, sem data precisa — o espaço ganha uma qualidade de <em>parábola</em>: é em todo o lado e em nenhum lugar específico. Poderíamos estar em qualquer aldeia piscatória do litoral norte português, algures entre o Minho e a Estremadura, mas também poderíamos estar numa aldeia atemporal, fora da história.</p>
+      <p>Esta escolha <strong>universaliza a narrativa</strong>: ao recusar o nome próprio, Mãe impede que o leitor reduza a história ao folclore de uma região. A aldeia é <em>Portugal</em>, mas também é a condição humana em miniatura.</p>
+    </div>
+
+    <div class="rule"></div>
+
+    <div class="section-block">
+      <h3>O mar — fronteira física e simbólica</h3>
+      <p>O oceano não é cenário — é <strong>personagem ativa</strong>. O mar define a profissão de Crisóstomo (pescador), determina o ritmo da aldeia (a traineira que sai ao amanhecer, que regressa ao fim do dia), e funciona como metáfora central: <em>o mar é simultaneamente isolamento e abertura para o infinito</em>.</p>
+      <p>Na tradição da literatura portuguesa, o mar é sempre carregado de significado saudosista e épico — os Descobrimentos, a espera pela barca que parte e não volta. Mãe reapropria esse simbolismo: o seu mar não é de conquistas, é de <strong>esperas e de regressos</strong>. É o lugar onde Camilo é encontrado. É o horizonte que lembra a cada habitante que existe mundo para lá da aldeia — e que, ainda assim, eles ficam.</p>
+
+      <div class="pull-quote">
+        <p>O mar é a única coisa na aldeia que não tem preconceito. Não julga o que traz na rede — traz peixes e traz órfãos com igual indiferença majestosa.</p>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h3>A aldeia como microcosmo moral</h3>
+      <p>A aldeia pequena — onde todos se conhecem, onde os segredos circulam pelas janelas e os juízos se formam antes das palavras — é o <strong>laboratório onde Mãe testa as suas teses sobre a condição humana</strong>. Num espaço assim, não há anonimato: cada desvio da norma é visível, cada diferença é punida ou acolhida à vista de todos.</p>
+      <p>É precisamente esta visibilidade total que torna trágica a história de Antonino (cuja identidade sexual não pode ser vivida em público) e que torna heróica a de Crisóstomo (que desafia o modelo de masculinidade dominante ao tornar-se pai solteiro de um órfão).</p>
+      <p>A aldeia costeira portuguesa tem ainda uma dimensão histórica precisa: é o <strong>Portugal que ficou</strong> — enquanto a elite emigrava para Lisboa ou para o estrangeiro, as aldeias retinham os que não tinham para onde ir, aqueles cujos sonhos eram tão grandes como o oceano e tão limitados como a linha do horizonte.</p>
+    </div>
+
+    <div class="section-block">
+      <h3>As casas — arquitetura do afeto</h3>
+      <p>As casas na narrativa são extensões dos seus habitantes. A casa de Crisóstomo é um espaço de <strong>expectativa</strong>: arrumada para um filho que não chegou, com um quarto que espera, uma mesa que tem cadeiras a mais. O espaço físico é o mapa emocional da solidão. Quando Camilo entra, a casa não muda de mobília — muda de temperatura.</p>
+      <p>Mãe usa a arquitetura doméstica como linguagem simbólica: casas abertas e fechadas, janelas que se abrem para o juízo dos vizinhos, portas que resistem ou cedem. O interior doméstico é o espaço onde a verdade se diz em sussurro — ou onde se cala para sempre.</p>
+    </div>
+
+    <div class="section-block">
+      <h3>Referências geográficas — onde se situa o imaginário</h3>
+      <div class="cards-grid">
+        <div class="card-block">
+          <h4>Vila do Conde</h4>
+          <p>Cidade onde Valter Hugo Mãe vive desde 1980, costeira, piscatória, com forte tradição de rendeiras e pescadores. É o modelo autobiográfico mais provável para a aldeia — não como localização direta, mas como paleta de sensações.</p>
+        </div>
+        <div class="card-block">
+          <h4>Costa do Minho e Douro Litoral</h4>
+          <p>O litoral norte português — de Viana do Castelo a Espinho — com as suas traineiras, as suas praias de areia fina, o cheiro a marisco e a pinho, é o tecido sensorial do livro. Uma paisagem de brumas matinais e sois de inverno raso.</p>
+        </div>
+        <div class="card-block">
+          <h4>Portugal Rural do século XX</h4>
+          <p>O ritmo da aldeia — sem automóveis urgentes, com mercado ao sábado, com missa ao domingo — situa a narrativa num tempo que ressoa com o Portugal das décadas de 1940 a 1960, sem que o autor o afirme diretamente.</p>
+        </div>
+        <div class="card-block">
+          <h4>A Aldeia Universal</h4>
+          <p>Por ser sem nome, a aldeia existe também fora de Portugal — no interior de Minas Gerais, numa ilha grega, numa aldeia galega. A universalidade do espaço é uma das razões pelas quais o livro foi traduzido em mais de vinte línguas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer-quote">
+  <p>"O amor, sendo uma pacificação com a nossa natureza, tem o poder de a transformar."</p>
+  <cite>Valter Hugo Mãe &nbsp;·&nbsp; O Filho de Mil Homens, 2011</cite>
+</div>
+
+<script>
+/* ── TAB SWITCHING ── */
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ── NETWORK DATA ── */
+const nodes = [
+  { id:'crisostomo', label:'Crisóstomo', role:'pescador · pai',    x:350, y:205, r:42, color:'#c1440e', glow:'#c1440e' },
+  { id:'camilo',     label:'Camilo',     role:'órfão · filho',     x:350, y:375, r:30, color:'#2a9d8f', glow:'#1a6e66' },
+  { id:'isaura',     label:'Isaura',     role:'mulher · fuga',     x:172, y:308, r:28, color:'#c77daa', glow:'#8b3a6a' },
+  { id:'antonino',   label:'Antonino',   role:'amigo · marido',    x:528, y:308, r:28, color:'#e76f51', glow:'#a33d28' },
+  { id:'matilde',    label:'Matilde',    role:'anã · amor',        x:168, y:162, r:24, color:'#7eb8d4', glow:'#2a6080' },
+  { id:'mininha',    label:'Mininha',    role:'velha · sábia',     x:532, y:162, r:24, color:'#a8dadc', glow:'#2a7080' },
+  { id:'aldeia',     label:'A Aldeia',   role:'espaço · mundo',    x:350, y: 88, r:22, color:'#b5b08a', glow:'#6e6840' },
+];
+
+const edges = [
+  { from:'crisostomo', to:'camilo',   label:'adota e ama',      s:3   },
+  { from:'crisostomo', to:'isaura',   label:'amor escolhido',   s:2.5 },
+  { from:'crisostomo', to:'antonino', label:'amizade',          s:2   },
+  { from:'crisostomo', to:'mininha',  label:'guia espiritual',  s:1.5 },
+  { from:'crisostomo', to:'aldeia',   label:'pertence a',       s:1.5 },
+  { from:'isaura',     to:'antonino', label:'casamento vazio',  s:2   },
+  { from:'isaura',     to:'camilo',   label:'mãe de coração',   s:1.5 },
+  { from:'matilde',    to:'aldeia',   label:'marginalizada',    s:1.2 },
+  { from:'antonino',   to:'aldeia',   label:'reprimido por',    s:1.2 },
+  { from:'mininha',    to:'aldeia',   label:'memória viva',     s:1.2 },
+];
+
+const charData = {
+  crisostomo: {
+    badge:'Protagonista', badgeColor:'#c1440e', badgeBg:'rgba(180,134,11,0.12)',
+    epithet:'O pescador que queria ser pai',
+    desc:'Homem de quarenta anos, pescador solitário, carrega a tristeza de não ter um filho. Constrói um boneco de madeira antes de encontrar o pequeno Camilo à deriva na traineira. É o centro afetivo de toda a narrativa — aquele cujo desejo de amar mobiliza o universo inteiro da aldeia.',
+    themes:['Paternidade','Solidão','Amor como escolha','Ternura masculina'],
+    conns:[{name:'Camilo',color:'#2a9d8f',rel:'filho adotivo, razão de ser'},{name:'Isaura',color:'#c77daa',rel:'amor tardio e escolhido'},{name:'Antonino',color:'#e76f51',rel:'melhor amigo, espelho'},{name:'Mininha',color:'#a8dadc',rel:'sabedoria que o guia'}]
+  },
+  camilo: {
+    badge:'Filho', badgeColor:'#2a9d8f', badgeBg:'rgba(42,157,143,0.12)',
+    epithet:'O órfão que precisava de colo',
+    desc:'Um "miúdo" encontrado na traineira de Crisóstomo, sem passado reconhecível. Carregado de silêncio e necessidade, é quem desperta o instinto paterno do pescador. Ao longo do romance, encoraja também Crisóstomo a abrir o coração para Isaura.',
+    themes:['Orfandade','Pertencimento','Família inventada','Inocência'],
+    conns:[{name:'Crisóstomo',color:'#c1440e',rel:'pai de escolha'},{name:'Isaura',color:'#c77daa',rel:'figura materna emergente'}]
+  },
+  isaura: {
+    badge:'Amante', badgeColor:'#c77daa', badgeBg:'rgba(155,80,120,0.12)',
+    epithet:'A mulher que buscava um lugar seu',
+    desc:'Em constante tensão entre liberdade e afeto. Casada com Antonino, descobre que o seu matrimônio é uma prisão. O encontro com Crisóstomo abre a possibilidade de um amor genuíno — uma família real, não de obrigação.',
+    themes:['Fuga e pertencimento','Amor tardio','Casamento sem amor','O feminino'],
+    conns:[{name:'Crisóstomo',color:'#c1440e',rel:'amor verdadeiro'},{name:'Antonino',color:'#e76f51',rel:'marido por convenção'},{name:'Camilo',color:'#2a9d8f',rel:'filho de coração'}]
+  },
+  antonino: {
+    badge:'Conflito', badgeColor:'#e76f51', badgeBg:'rgba(231,111,81,0.12)',
+    epithet:'O homem que não podia ser quem era',
+    desc:'Marido de Isaura e melhor amigo de Crisóstomo, carrega o peso de uma identidade homossexual reprimida. A sua tragédia é símbolo do preconceito estrutural: o amor sufocado pelo juízo coletivo, a incapacidade de ser si mesmo num espaço que não tolera a diferença.',
+    themes:['Homofobia','Identidade reprimida','Preconceito','Amizade masculina'],
+    conns:[{name:'Crisóstomo',color:'#c1440e',rel:'melhor amigo'},{name:'Isaura',color:'#c77daa',rel:'esposa por convenção'}]
+  },
+  matilde: {
+    badge:'Marginalizada', badgeColor:'#7eb8d4', badgeBg:'rgba(100,150,200,0.12)',
+    epithet:'A anã que ansiava ser amada',
+    desc:'Encarna o capacitismo e a marginalização do corpo fora da norma. Matilde deseja amor com a mesma intensidade de qualquer outra pessoa, mas o mundo insiste em negá-lo. A sua história questiona quem tem direito ao afeto e à dignidade humana.',
+    themes:['Capacitismo','Corpo e dignidade','Desejo de amor','Exclusão social'],
+    conns:[]
+  },
+  mininha: {
+    badge:'Sabedoria', badgeColor:'#a8dadc', badgeBg:'rgba(168,218,220,0.12)',
+    epithet:'A velha sábia da aldeia',
+    desc:'Figura anciã que representa a memória viva da aldeia e a sabedoria feminina transmitida entre gerações. Mininha vê o que os outros não veem — reconhece o amor antes que ele próprio saiba que é amor. É a voz moral e emotiva da narrativa.',
+    themes:['Sabedoria popular','Memória','Velhice','O feminino sábio'],
+    conns:[{name:'Crisóstomo',color:'#c1440e',rel:'guia espiritual'}]
+  },
+  aldeia: {
+    badge:'Espaço', badgeColor:'#b5b08a', badgeBg:'rgba(130,130,100,0.12)',
+    epithet:'O mundo em miniatura à beira-mar',
+    desc:'Sem nome, sem coordenadas. Funciona como microcosmo da condição humana: onde todos se conhecem, os segredos respiram pelas frestas, e a comunidade tanto acolhe como sufoca. O mar que a cerca é ao mesmo tempo isolamento e abertura para o infinito.',
+    themes:['Comunidade','Isolamento','Portugal rural','Preconceito coletivo'],
+    conns:[]
+  }
+};
+
+/* ── BUILD NETWORK ── */
+const edgesLayer = document.getElementById('edges-layer');
+const edgeLabelsLayer = document.getElementById('edge-labels-layer');
+const nodesLayer = document.getElementById('nodes-layer');
+const infoPanelEl = document.getElementById('info-panel');
+
+function getNode(id){ return nodes.find(n=>n.id===id); }
+
+edges.forEach(e=>{
+  const a=getNode(e.from), b=getNode(e.to);
+  const mx=(a.x+b.x)/2, my=(a.y+b.y)/2;
+  const dx=b.x-a.x, dy=b.y-a.y;
+  const cx=mx-dy*0.15, cy=my+dx*0.15;
+  const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+  path.setAttribute('d',`M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`);
+  path.setAttribute('fill','none');
+  path.setAttribute('stroke','rgba(193,68,14,0.22)');
+  path.setAttribute('stroke-width',e.s);
+  path.setAttribute('class',`edge-line edge-${e.from} edge-${e.to}`);
+  edgesLayer.appendChild(path);
+  const lx=0.25*a.x+0.5*cx+0.25*b.x, ly=0.25*a.y+0.5*cy+0.25*b.y;
+  const t=document.createElementNS('http://www.w3.org/2000/svg','text');
+  t.setAttribute('x',lx); t.setAttribute('y',ly);
+  t.setAttribute('class',`edge-label elabel-${e.from} elabel-${e.to}`);
+  t.textContent=e.label;
+  edgeLabelsLayer.appendChild(t);
+});
+
+nodes.forEach(n=>{
+  const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+  g.setAttribute('class','node-group');
+  g.setAttribute('data-id',n.id);
+  g.setAttribute('transform',`translate(${n.x},${n.y})`);
+  const halo=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  halo.setAttribute('r',n.r+8); halo.setAttribute('fill',n.glow); halo.setAttribute('opacity','0.14');
+  g.appendChild(halo);
+  const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  c.setAttribute('r',n.r); c.setAttribute('stroke',n.color); c.setAttribute('stroke-width','1.5');
+  c.setAttribute('class','node-circle');
+  c.setAttribute('fill',n.color); c.setAttribute('fill-opacity',n.id==='crisostomo'?'0.22':'0.1');
+  g.appendChild(c);
+  if(n.id==='crisostomo'){
+    const ring=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    ring.setAttribute('r',n.r-5); ring.setAttribute('fill','none');
+    ring.setAttribute('stroke',n.color); ring.setAttribute('stroke-width','0.8');
+    ring.setAttribute('opacity','0.35');
+    g.appendChild(ring);
+  }
+  const lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
+  lbl.setAttribute('y','4'); lbl.setAttribute('class','node-label');
+  lbl.setAttribute('fill',n.color); lbl.textContent=n.label;
+  g.appendChild(lbl);
+  const role=document.createElementNS('http://www.w3.org/2000/svg','text');
+  role.setAttribute('y','18'); role.setAttribute('class','node-role');
+  role.textContent=n.role; g.appendChild(role);
+  g.addEventListener('click',()=>selectNode(n.id));
+  nodesLayer.appendChild(g);
+});
+
+/* ── BUILD CHARACTER CARDS ── */
+Object.entries(charData).forEach(([id,d])=>{
+  const div=document.createElement('div');
+  div.id='card-'+id; div.className='char-card';
+  const themeHtml=d.themes.map(t=>`<span class="tag" style="border-color:${d.badgeColor}44;color:${d.badgeColor}">${t}</span>`).join('');
+  const connHtml=d.conns.length?`<div style="margin-top:1rem"><p class="sec-title">Conexões</p>${d.conns.map(c=>`<div class="conn-item"><span class="conn-name" style="color:${c.color}">${c.name}</span><span class="conn-rel">— ${c.rel}</span></div>`).join('')}</div>`:'';
+  div.innerHTML=`
+    <span class="char-badge" style="background:${d.badgeBg};color:${d.badgeColor};border:1px solid ${d.badgeColor}44">${d.badge}</span>
+    <h2 class="char-name" style="color:${d.badgeColor}">${id.charAt(0).toUpperCase()+id.slice(1).replace('ostomo','óstomo').replace('isostomo','isóstomo')}</h2>
+    <p class="char-epithet">${d.epithet}</p>
+    <div class="char-div" style="background:linear-gradient(90deg,${d.badgeColor},transparent)"></div>
+    <p class="char-desc">${d.desc}</p>
+    <p class="sec-title">Temas</p>
+    <div class="tags">${themeHtml}</div>
+    ${connHtml}
+  `;
+  // Fix name display
+  div.querySelector('.char-name').textContent = nodes.find(n=>n.id===id)?.label || id;
+  infoPanelEl.appendChild(div);
+});
+
+let selected=null;
+function selectNode(id){
+  if(selected===id){
+    selected=null;
+    document.querySelectorAll('.char-card').forEach(c=>c.classList.remove('active'));
+    document.getElementById('default-msg').style.display='block';
+    document.querySelectorAll('.edge-line').forEach(e=>{e.setAttribute('stroke','rgba(193,68,14,0.22)');e.setAttribute('stroke-width','');});
+    document.querySelectorAll('.edge-label').forEach(e=>e.setAttribute('opacity','0.7'));
+    document.querySelectorAll('.node-group').forEach(g=>g.setAttribute('opacity','1'));
+    return;
+  }
+  selected=id;
+  document.querySelectorAll('.char-card').forEach(c=>c.classList.remove('active'));
+  document.getElementById('default-msg').style.display='none';
+  const card=document.getElementById('card-'+id);
+  if(card) card.classList.add('active');
+  const connected=new Set([id]);
+  edges.forEach(e=>{ if(e.from===id||e.to===id){connected.add(e.from);connected.add(e.to);} });
+  document.querySelectorAll('.edge-line').forEach(el=>{
+    const cls=el.getAttribute('class');
+    const hit=cls.includes(`edge-${id}`);
+    el.setAttribute('stroke',hit?'rgba(212,168,67,0.75)':'rgba(193,68,14,0.06)');
+    el.setAttribute('stroke-width',hit?'2.5':'1');
+  });
+  document.querySelectorAll('.edge-label').forEach(el=>{
+    const cls=el.getAttribute('class');
+    const hit=cls.includes(`elabel-${id}`);
+    el.setAttribute('opacity',hit?'1':'0');
+    el.setAttribute('fill',hit?'rgba(212,168,67,0.9)':'rgba(193,68,14,0.2)');
+  });
+  document.querySelectorAll('.node-group').forEach(g=>{
+    g.setAttribute('opacity',connected.has(g.getAttribute('data-id'))?'1':'0.28');
+  });
+}
+
+/* ── PULSE ANIMATION ── */
+const cn=document.querySelector('[data-id="crisostomo"] circle');
+if(cn){ let p=true; setInterval(()=>{ cn.setAttribute('r',p?46:42); p=!p; },2000); }
+</script>
+</body>
+</html>
