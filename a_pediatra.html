@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Pediatra — Análise · Clube do Livro Socorro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a1208;
+      --rust: #c1440e;
+      --gold: #d4a017;
+      --sage: #6b8c6e;
+      --cream: #f5f0e8;
+      --paper: #ede8dc;
+      --ink-soft: rgba(26,18,8,0.08);
+      --ink-mid: rgba(26,18,8,0.18);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--ink);
+      display: flex; align-items: center; gap: 1.5rem;
+      padding: 0 2rem; height: 52px;
+    }
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem; font-weight: 700;
+      color: var(--cream); text-decoration: none;
+      letter-spacing: .08em;
+    }
+    .nav-tag {
+      font-family: 'Cinzel', serif;
+      font-size: .65rem; letter-spacing: .12em;
+      color: var(--gold); text-transform: uppercase;
+      border: 1px solid rgba(212,160,23,.35);
+      padding: .2rem .6rem; border-radius: 2px;
+    }
+    .nav-back {
+      margin-left: auto;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .8rem; color: rgba(245,240,232,.65);
+      text-decoration: none; transition: color .2s;
+    }
+    .nav-back:hover { color: var(--cream); }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      background: var(--ink);
+      text-align: center;
+      padding: 4rem 2rem 3.5rem;
+      position: relative; overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(193,68,14,.18) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .page-header .sup {
+      font-family: 'Cinzel', serif;
+      font-size: .7rem; letter-spacing: .2em;
+      color: var(--gold); text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+    .page-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 400; line-height: 1.05;
+      color: var(--cream);
+    }
+    .page-header h1 em {
+      font-style: italic; color: var(--rust);
+    }
+    .page-header p:last-child {
+      font-family: 'Cinzel', serif;
+      font-size: .68rem; letter-spacing: .18em;
+      color: rgba(245,240,232,.45); text-transform: uppercase;
+      margin-top: 1.2rem;
+    }
+
+    /* ── TABS BAR ── */
+    .tabs-bar {
+      background: var(--paper);
+      border-bottom: 1px solid var(--ink-mid);
+      display: flex; justify-content: center;
+      gap: 0; padding: 0;
+      position: sticky; top: 52px; z-index: 90;
+      overflow-x: auto;
+    }
+    .tab {
+      font-family: 'Cinzel', serif;
+      font-size: .68rem; letter-spacing: .12em;
+      text-transform: uppercase;
+      background: none; border: none; cursor: pointer;
+      color: rgba(26,18,8,.5);
+      padding: 1rem 1.6rem;
+      border-bottom: 3px solid transparent;
+      transition: color .2s, border-color .2s;
+      white-space: nowrap;
+    }
+    .tab:hover { color: var(--ink); }
+    .tab.on { color: var(--rust); border-bottom-color: var(--rust); }
+
+    /* ── PANELS ── */
+    .panel { display: none; }
+    .panel.on { display: block; }
+
+    /* ── SECTION WRAPPERS ── */
+    .section {
+      max-width: 1080px; margin: 0 auto;
+      padding: 3.5rem 2rem;
+    }
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: .7rem; letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 2.5rem;
+      padding-bottom: .6rem;
+      border-bottom: 1px solid rgba(193,68,14,.2);
+    }
+
+    /* ── TEIA ── */
+    .teia-wrap {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 2rem; align-items: start;
+    }
+    .teia-svg-box {
+      background: var(--paper);
+      border-radius: 4px;
+      border: 1px solid var(--ink-mid);
+      overflow: hidden;
+    }
+    #teia-svg { width: 100%; height: auto; display: block; cursor: pointer; }
+
+    .node-group circle { transition: opacity .2s; }
+    .node-group:hover circle.outer { opacity: .6; }
+
+    .teia-panel {
+      background: var(--paper);
+      border: 1px solid var(--ink-mid);
+      border-radius: 4px;
+      padding: 1.8rem;
+      min-height: 340px;
+    }
+    .teia-panel h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem; font-weight: 500;
+      color: var(--rust); margin-bottom: .2rem;
+    }
+    .teia-papel {
+      font-family: 'Cinzel', serif;
+      font-size: .62rem; letter-spacing: .15em;
+      color: var(--gold); text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .teia-desc {
+      font-size: .9rem; line-height: 1.75;
+      color: rgba(26,18,8,.85);
+    }
+    .teia-tags { margin-top: 1.2rem; display: flex; flex-wrap: wrap; gap: .4rem; }
+    .teia-tag {
+      font-family: 'Cinzel', serif;
+      font-size: .58rem; letter-spacing: .1em;
+      border: 1px solid var(--ink-mid);
+      padding: .2rem .6rem; border-radius: 2px;
+      color: rgba(26,18,8,.55);
+    }
+    .teia-hint {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 1rem;
+      color: rgba(26,18,8,.45); text-align: center;
+      margin-top: 3rem;
+    }
+    .teia-legend {
+      display: flex; flex-wrap: wrap; gap: 1.2rem;
+      margin-top: 1.5rem; padding-top: 1rem;
+      border-top: 1px solid var(--ink-soft);
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: .45rem;
+      font-family: 'Cinzel', serif;
+      font-size: .6rem; letter-spacing: .1em;
+      color: rgba(26,18,8,.55);
+    }
+    .legend-dot {
+      width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
+    }
+    .legend-line {
+      width: 24px; height: 2px; flex-shrink: 0;
+    }
+
+    /* ── AUTORA ── */
+    .autora-grid {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 3rem; align-items: start;
+    }
+    .autora-photo {
+      background: var(--paper);
+      border: 1px solid var(--ink-mid);
+      border-radius: 4px; overflow: hidden;
+    }
+    .autora-photo svg { width: 100%; height: auto; display: block; }
+    .autora-bio h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 400;
+      color: var(--ink); margin-bottom: .3rem;
+    }
+    .autora-nascimento {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: .95rem;
+      color: var(--gold); margin-bottom: 1.4rem;
+    }
+    .autora-bio p { font-size: .92rem; margin-bottom: 1rem; line-height: 1.8; }
+
+    /* Timeline */
+    .timeline { margin-top: 3.5rem; }
+    .timeline-title {
+      font-family: 'Cinzel', serif;
+      font-size: .7rem; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--rust);
+      margin-bottom: 2rem;
+      padding-bottom: .6rem;
+      border-bottom: 1px solid rgba(193,68,14,.2);
+    }
+    .timeline-list { list-style: none; position: relative; padding-left: 2.5rem; }
+    .timeline-list::before {
+      content: ''; position: absolute;
+      left: 7px; top: 0; bottom: 0;
+      width: 1px; background: var(--ink-mid);
+    }
+    .timeline-list li {
+      position: relative; margin-bottom: 1.6rem;
+      font-size: .88rem; line-height: 1.7;
+    }
+    .timeline-list li::before {
+      content: ''; position: absolute;
+      left: -2.05rem; top: .45rem;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--rust);
+      border: 2px solid var(--cream);
+      box-shadow: 0 0 0 1px var(--rust);
+    }
+    .tl-year {
+      font-family: 'Cinzel', serif;
+      font-size: .68rem; letter-spacing: .15em;
+      color: var(--gold); display: block;
+      margin-bottom: .2rem;
+    }
+
+    /* Curiosidades */
+    .curio-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.2rem; margin-top: 1rem;
+    }
+    .curio-card {
+      background: var(--paper);
+      border: 1px solid var(--ink-mid);
+      border-radius: 4px; padding: 1.4rem;
+    }
+    .curio-card h4 {
+      font-family: 'Cinzel', serif;
+      font-size: .7rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--rust);
+      margin-bottom: .7rem;
+    }
+    .curio-card p { font-size: .87rem; line-height: 1.75; }
+
+    /* ── TEMAS ── */
+    .temas-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.2rem;
+    }
+    .tema-card {
+      background: var(--paper);
+      border: 1px solid var(--ink-mid);
+      border-radius: 4px; padding: 1.6rem;
+    }
+    .tema-emoji { font-size: 1.6rem; margin-bottom: .6rem; display: block; }
+    .tema-card h3 {
+      font-family: 'Cinzel', serif;
+      font-size: .7rem; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--rust);
+      margin-bottom: .8rem;
+    }
+    .tema-card p { font-size: .88rem; line-height: 1.75; }
+
+    /* Pull quote */
+    .pull-quote {
+      background: var(--ink);
+      border-left: 4px solid var(--rust);
+      padding: 2.5rem 3rem;
+      margin: 3rem 0; border-radius: 2px;
+      position: relative;
+    }
+    .pull-quote::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 6rem; line-height: 1;
+      color: rgba(193,68,14,.25);
+      position: absolute; top: .5rem; left: 1.5rem;
+      pointer-events: none;
+    }
+    .pull-quote blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem; font-style: italic;
+      color: var(--cream); line-height: 1.55;
+      position: relative; z-index: 1;
+    }
+    .pull-quote cite {
+      display: block; margin-top: 1rem;
+      font-family: 'Cinzel', serif;
+      font-size: .65rem; letter-spacing: .15em;
+      color: var(--gold); font-style: normal;
+    }
+
+    /* Lições */
+    .licoes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.2rem;
+    }
+    .licao-card {
+      border-left: 3px solid var(--gold);
+      padding: 1.2rem 1.4rem;
+      background: var(--paper);
+      border-radius: 0 4px 4px 0;
+    }
+    .licao-card h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; font-weight: 500;
+      color: var(--rust); margin-bottom: .5rem;
+    }
+    .licao-card p { font-size: .87rem; line-height: 1.75; }
+
+    /* Síntese */
+    .sintese {
+      background: var(--paper);
+      border: 1px solid var(--ink-mid);
+      padding: 2rem 2.5rem; border-radius: 4px;
+      margin-top: 2.5rem;
+    }
+    .sintese p { font-size: .92rem; line-height: 1.85; margin-bottom: 1rem; }
+    .sintese p:last-child { margin-bottom: 0; }
+
+    /* ── ESPAÇO ── */
+    .svg-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem; margin-bottom: 3rem;
+    }
+    .svg-ilus {
+      position: relative; border-radius: 4px;
+      overflow: hidden; border: 1px solid var(--ink-mid);
+    }
+    .svg-ilus svg { width: 100%; height: auto; display: block; }
+    .svg-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: rgba(26,18,8,.72);
+      font-family: 'Cinzel', serif;
+      font-size: .6rem; letter-spacing: .15em;
+      color: var(--cream); text-transform: uppercase;
+      padding: .5rem .8rem;
+    }
+
+    .lugares-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.2rem;
+    }
+    .lugar-card {
+      background: var(--paper);
+      border: 1px solid var(--ink-mid);
+      border-radius: 4px; padding: 1.5rem;
+    }
+    .lugar-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem; font-weight: 500;
+      color: var(--rust); margin-bottom: .2rem;
+    }
+    .lugar-tag {
+      font-family: 'Cinzel', serif;
+      font-size: .6rem; letter-spacing: .12em;
+      color: var(--gold); text-transform: uppercase;
+      margin-bottom: .8rem; display: block;
+    }
+    .lugar-card p { font-size: .87rem; line-height: 1.75; }
+
+    .metafora {
+      background: var(--ink);
+      padding: 2rem 2.5rem;
+      border-radius: 4px; margin-top: 2.5rem;
+      display: flex; gap: 1.2rem; align-items: flex-start;
+    }
+    .metafora-emoji { font-size: 2rem; flex-shrink: 0; margin-top: .1rem; }
+    .metafora h3 {
+      font-family: 'Cinzel', serif;
+      font-size: .75rem; letter-spacing: .15em;
+      color: var(--gold); text-transform: uppercase;
+      margin-bottom: .6rem;
+    }
+    .metafora p { font-size: .9rem; line-height: 1.8; color: rgba(245,240,232,.85); }
+
+    /* ── AVALIAÇÕES ── */
+    .avaliacoes-section {
+      background: var(--paper);
+      border-top: 1px solid var(--ink-mid);
+      padding: 4rem 2rem;
+    }
+    .avaliacoes-inner { max-width: 720px; margin: 0 auto; }
+    .avaliacoes-inner .section-title { margin-bottom: 2rem; }
+
+    .form-box {
+      background: var(--cream);
+      border: 1px solid var(--ink-mid);
+      border-radius: 4px; padding: 1.8rem;
+      margin-bottom: 2.5rem;
+    }
+    .form-row { margin-bottom: 1rem; }
+    .form-row label {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: .62rem; letter-spacing: .12em;
+      color: rgba(26,18,8,.6); text-transform: uppercase;
+      margin-bottom: .4rem;
+    }
+    .form-row input,
+    .form-row textarea,
+    .form-row select {
+      width: 100%;
+      background: var(--paper);
+      border: 1px solid var(--ink-mid);
+      border-radius: 3px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .88rem; color: var(--ink);
+      padding: .6rem .8rem; outline: none;
+      transition: border-color .2s;
+    }
+    .form-row input:focus,
+    .form-row textarea:focus { border-color: var(--rust); }
+    .form-row textarea { resize: vertical; min-height: 90px; }
+    .btn-submit {
+      font-family: 'Cinzel', serif;
+      font-size: .68rem; letter-spacing: .12em;
+      text-transform: uppercase;
+      background: var(--rust); color: var(--cream);
+      border: none; border-radius: 3px;
+      padding: .75rem 1.8rem; cursor: pointer;
+      transition: opacity .2s;
+    }
+    .btn-submit:hover { opacity: .85; }
+
+    .reviews-list { display: flex; flex-direction: column; gap: 1rem; }
+    .review-card {
+      background: var(--cream);
+      border: 1px solid var(--ink-mid);
+      border-radius: 4px; padding: 1.2rem 1.4rem;
+    }
+    .review-header {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: .5rem;
+    }
+    .review-name {
+      font-family: 'Cinzel', serif;
+      font-size: .72rem; letter-spacing: .1em;
+      color: var(--rust);
+    }
+    .review-stars { color: var(--gold); font-size: .9rem; }
+    .review-text { font-size: .87rem; line-height: 1.75; }
+    .review-date {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: .8rem;
+      color: rgba(26,18,8,.4); margin-top: .4rem;
+    }
+    .reviews-empty {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; color: rgba(26,18,8,.45);
+      text-align: center; padding: 2rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 760px) {
+      .teia-wrap { grid-template-columns: 1fr; }
+      .autora-grid { grid-template-columns: 1fr; }
+      .curio-grid, .temas-grid, .licoes-grid, .lugares-grid, .svg-grid {
+        grid-template-columns: 1fr;
+      }
+      .pull-quote { padding: 2rem 1.5rem; }
+      .tabs-bar { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Socorro.</a>
+  <span class="nav-tag">Clube do Livro · Análise</span>
+  <a href="index.html#lidos" class="nav-back">← Voltar à Estante</a>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <p class="sup">Andréa del Fuego · 2021 · Análise Literária</p>
+  <h1><em>A Pediatra</em></h1>
+  <p>Personagens · Autora · Temas · Espaço Narrativo</p>
+</div>
+
+<!-- TABS -->
+<div class="tabs-bar">
+  <button class="tab on"  onclick="goTab('teia',this)">Teia de Relações</button>
+  <button class="tab"     onclick="goTab('autora',this)">A Autora</button>
+  <button class="tab"     onclick="goTab('temas',this)">Temas &amp; Lições</button>
+  <button class="tab"     onclick="goTab('espaco',this)">O Espaço Narrativo</button>
+</div>
+
+<!-- ══════════════════════════════
+     PAINEL 1 — TEIA DE RELAÇÕES
+═══════════════════════════════════ -->
+<div id="panel-teia" class="panel on">
+  <div class="section">
+    <p class="section-title">Teia de Relações</p>
+    <div class="teia-wrap">
+
+      <!-- SVG DA TEIA -->
+      <div>
+        <div class="teia-svg-box">
+          <svg id="teia-svg" viewBox="0 0 860 750" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <!-- Gradiente de fundo -->
+              <radialGradient id="bg-grad" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stop-color="#ede8dc"/>
+                <stop offset="100%" stop-color="#e4ddd0"/>
+              </radialGradient>
+            </defs>
+            <rect width="860" height="750" fill="url(#bg-grad)"/>
+
+            <!-- ── LINHAS ── -->
+            <!-- Cecília ↔ Pai (afetivo) -->
+            <line x1="430" y1="390" x2="430" y2="158" stroke="#c1440e" stroke-width="3" stroke-opacity=".6"/>
+            <!-- Cecília ↔ Celso (afetivo) -->
+            <line x1="430" y1="390" x2="670" y2="520" stroke="#c1440e" stroke-width="3.5" stroke-opacity=".7"/>
+            <!-- Cecília ↔ Maria Amélia (social) -->
+            <line x1="430" y1="390" x2="660" y2="240" stroke="#6b8c6e" stroke-width="2.5" stroke-opacity=".7"/>
+            <!-- Cecília ↔ Dr. Jaime (social) -->
+            <line x1="430" y1="390" x2="770" y2="390" stroke="#6b8c6e" stroke-width="2.5" stroke-opacity=".6"/>
+            <!-- Cecília ↔ Deise (social) -->
+            <line x1="430" y1="390" x2="180" y2="490" stroke="#6b8c6e" stroke-width="2.5" stroke-opacity=".55"/>
+            <!-- Cecília ↔ Marido (ausente) -->
+            <line x1="430" y1="390" x2="170" y2="200" stroke="#1a1208" stroke-width="2" stroke-opacity=".4" stroke-dasharray="6,4"/>
+            <!-- Cecília ↔ Bebê do Celso (simbólico) -->
+            <line x1="430" y1="390" x2="110" y2="650" stroke="#d4a017" stroke-width="2.5" stroke-opacity=".7" stroke-dasharray="8,5"/>
+            <!-- Celso ↔ Maria Amélia (social) -->
+            <line x1="670" y1="520" x2="660" y2="240" stroke="#6b8c6e" stroke-width="2" stroke-opacity=".4"/>
+            <!-- Pai ↔ Cecília já conectado; Pai — simbólico para Marido -->
+            <line x1="430" y1="158" x2="170" y2="200" stroke="#1a1208" stroke-width="1.5" stroke-opacity=".2" stroke-dasharray="5,4"/>
+
+            <!-- ── NÓS ── -->
+
+            <!-- Pai (simbólico, topo) -->
+            <g class="node-group" data-id="pai" style="cursor:pointer" onclick="showPersonagem('pai')">
+              <circle cx="430" cy="110" r="64" fill="#d4a017" fill-opacity=".12" class="outer"/>
+              <circle cx="430" cy="110" r="48" fill="#d4a017"/>
+              <text x="430" y="103" text-anchor="middle" font-family="Cinzel,serif" font-size="11" fill="#1a1208" font-weight="600">Dr. Leopoldo</text>
+              <text x="430" y="118" text-anchor="middle" font-family="Cinzel,serif" font-size="10" fill="#1a1208">O Pai</text>
+            </g>
+
+            <!-- Marido (ausente, esquerda cima) -->
+            <g class="node-group" data-id="marido" style="cursor:pointer" onclick="showPersonagem('marido')">
+              <circle cx="170" cy="200" r="64" fill="rgba(26,18,8,0.06)" stroke="#1a1208" stroke-width="1.5" stroke-dasharray="6,4" class="outer"/>
+              <circle cx="170" cy="200" r="48" fill="rgba(26,18,8,0.2)" stroke="#1a1208" stroke-width="1.5" stroke-dasharray="5,4"/>
+              <text x="170" y="193" text-anchor="middle" font-family="Cinzel,serif" font-size="11" fill="#1a1208" font-weight="600">Rodrigo</text>
+              <text x="170" y="209" text-anchor="middle" font-family="Cinzel,serif" font-size="10" fill="#1a1208">O Marido</text>
+            </g>
+
+            <!-- Maria Amélia (social, direita cima) -->
+            <g class="node-group" data-id="mariaamelia" style="cursor:pointer" onclick="showPersonagem('mariaamelia')">
+              <circle cx="660" cy="240" r="56" fill="#6b8c6e" fill-opacity=".18" class="outer"/>
+              <circle cx="660" cy="240" r="42" fill="#6b8c6e"/>
+              <text x="660" y="233" text-anchor="middle" font-family="Cinzel,serif" font-size="10.5" fill="#fff" font-weight="600">Maria Amélia</text>
+              <text x="660" y="248" text-anchor="middle" font-family="Cinzel,serif" font-size="10" fill="#fff">A Obstetra</text>
+            </g>
+
+            <!-- CECÍLIA (protagonista, centro) -->
+            <g class="node-group" data-id="cecilia" style="cursor:pointer" onclick="showPersonagem('cecilia')">
+              <circle cx="430" cy="390" r="88" fill="#c1440e" fill-opacity=".12" class="outer"/>
+              <circle cx="430" cy="390" r="62" fill="#c1440e"/>
+              <text x="430" y="383" text-anchor="middle" font-family="Cinzel,serif" font-size="12.5" fill="#fff" font-weight="700">Cecília</text>
+              <text x="430" y="401" text-anchor="middle" font-family="Cinzel,serif" font-size="10.5" fill="rgba(255,255,255,.8)">A Pediatra</text>
+            </g>
+
+            <!-- Deise (social, esquerda baixo) -->
+            <g class="node-group" data-id="deise" style="cursor:pointer" onclick="showPersonagem('deise')">
+              <circle cx="180" cy="490" r="54" fill="#6b8c6e" fill-opacity=".18" class="outer"/>
+              <circle cx="180" cy="490" r="40" fill="#6b8c6e"/>
+              <text x="180" y="483" text-anchor="middle" font-family="Cinzel,serif" font-size="11" fill="#fff" font-weight="600">Deise</text>
+              <text x="180" y="499" text-anchor="middle" font-family="Cinzel,serif" font-size="10" fill="rgba(255,255,255,.85)">A Empregada</text>
+            </g>
+
+            <!-- Dr. Jaime (social, direita meio) -->
+            <g class="node-group" data-id="drjaime" style="cursor:pointer" onclick="showPersonagem('drjaime')">
+              <circle cx="770" cy="390" r="54" fill="#6b8c6e" fill-opacity=".18" class="outer"/>
+              <circle cx="770" cy="390" r="40" fill="#6b8c6e"/>
+              <text x="770" y="383" text-anchor="middle" font-family="Cinzel,serif" font-size="10.5" fill="#fff" font-weight="600">Dr. Jaime</text>
+              <text x="770" y="399" text-anchor="middle" font-family="Cinzel,serif" font-size="9.5" fill="rgba(255,255,255,.85)">O Humanista</text>
+            </g>
+
+            <!-- Celso (afetivo, direita baixo) -->
+            <g class="node-group" data-id="celso" style="cursor:pointer" onclick="showPersonagem('celso')">
+              <circle cx="670" cy="520" r="58" fill="#c1440e" fill-opacity=".14" class="outer"/>
+              <circle cx="670" cy="520" r="44" fill="#c1440e" fill-opacity=".85"/>
+              <text x="670" y="513" text-anchor="middle" font-family="Cinzel,serif" font-size="11" fill="#fff" font-weight="600">Celso</text>
+              <text x="670" y="529" text-anchor="middle" font-family="Cinzel,serif" font-size="10" fill="rgba(255,255,255,.85)">O Amante</text>
+            </g>
+
+            <!-- Bebê (simbólico, canto inferior esq) -->
+            <g class="node-group" data-id="bebe" style="cursor:pointer" onclick="showPersonagem('bebe')">
+              <circle cx="110" cy="650" r="58" fill="#d4a017" fill-opacity=".14" class="outer"/>
+              <circle cx="110" cy="650" r="44" fill="#d4a017"/>
+              <text x="110" y="643" text-anchor="middle" font-family="Cinzel,serif" font-size="11" fill="#1a1208" font-weight="600">O Bebê</text>
+              <text x="110" y="659" text-anchor="middle" font-family="Cinzel,serif" font-size="10" fill="rgba(26,18,8,.7)">de Celso</text>
+            </g>
+
+          </svg>
+        </div>
+
+        <!-- Legenda -->
+        <div class="teia-legend">
+          <div class="legend-item"><span class="legend-dot" style="background:#c1440e"></span>Afetivo</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#6b8c6e"></span>Social</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#d4a017"></span>Simbólico</div>
+          <div class="legend-item">
+            <span class="legend-line" style="border-top:2px dashed rgba(26,18,8,.5)"></span>Ausente
+          </div>
+        </div>
+      </div>
+
+      <!-- Painel lateral -->
+      <div>
+        <div class="teia-panel" id="teia-info">
+          <p class="teia-hint">Clique em um personagem<br>para ler sua descrição.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAINEL 2 — A AUTORA
+═══════════════════════════════════ -->
+<div id="panel-autora" class="panel">
+  <div class="section">
+    <p class="section-title">A Autora</p>
+    <div class="autora-grid">
+
+      <!-- Foto placeholder SVG -->
+      <div class="autora-photo">
+        <svg viewBox="0 0 260 340" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="340" fill="#1a1208"/>
+          <circle cx="130" cy="120" r="48" fill="rgba(245,240,232,.12)"/>
+          <ellipse cx="130" cy="280" rx="72" ry="55" fill="rgba(245,240,232,.1)"/>
+          <text x="130" y="310" text-anchor="middle" font-family="Cinzel,serif" font-size="11" fill="rgba(245,240,232,.5)" letter-spacing="2">Andréa del Fuego</text>
+          <text x="130" y="327" text-anchor="middle" font-family="Cinzel,serif" font-size="9" fill="rgba(245,240,232,.3)" letter-spacing="1">São Paulo, 1975</text>
+        </svg>
+      </div>
+
+      <!-- Bio -->
+      <div class="autora-bio">
+        <h2>Andréa del Fuego</h2>
+        <p class="autora-nascimento">São Paulo, Brasil · 1975</p>
+        <p>Nascida Andréa Fátima dos Santos, em São Paulo, a autora começou seu percurso literário de forma inusitada: escrevendo contos eróticos e respondendo dúvidas sexuais em coluna de revista. Foi a sogra quem sugeriu o pseudônimo Del Fuego, inspirado no nome artístico da bailarina Luz del Fuego — e a brincadeira ficou para sempre.</p>
+        <p>Graduada em Filosofia pela USP e mestre pela mesma instituição, Andréa construiu uma carreira que vai além da ficção adulta: é também autora de livros infantis e juvenis, cronista e colaboradora do programa <em>Entrelinhas</em>, da TV Cultura, onde apresenta reportagens sobre grandes nomes da literatura desde 2010.</p>
+        <p>Reconhecida internacionalmente, já foi traduzida para Alemanha, Itália, França, Israel, Romênia, Suécia, Portugal e Argentina. Recebeu o prestigioso Prêmio José Saramago logo em seu primeiro romance, <em>Os Malaquias</em> (2010), e consolidou uma voz singular na prosa brasileira contemporânea — marcada pelo realismo fantástico, pelo humor mordaz e pela exploração implacável dos subterrâneos da psique feminina.</p>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline">
+      <p class="timeline-title">Linha do Tempo</p>
+      <ul class="timeline-list">
+        <li>
+          <span class="tl-year">1975</span>
+          Nasce Andréa Fátima dos Santos em São Paulo. A cidade grande, densa e contraditória, se tornará o pano de fundo silencioso de toda a sua obra.
+        </li>
+        <li>
+          <span class="tl-year">2004–2007</span>
+          Lança a trilogia de contos <em>Minto Enquanto Posso</em> (2004), <em>Nego Tudo</em> (2005) e <em>Engano Seu</em> (2007), afirmando o conto como forma predileta — e revelando uma voz já madura no humor e na ironia.
+        </li>
+        <li>
+          <span class="tl-year">2005–2008</span>
+          Escreve para a plataforma <em>Escritoras Suicidas</em>, espaço que reúne mulheres transgredindo gêneros literários e expectativas editoriais.
+        </li>
+        <li>
+          <span class="tl-year">2010</span>
+          Publica seu primeiro romance, <em>Os Malaquias</em>, pela Língua Geral. <strong>Vence o Prêmio José Saramago</strong>, um dos mais importantes para a literatura em língua portuguesa — para uma estreante, uma conquista extraordinária. O prêmio chega no mesmo período que a gravidez da autora, tornando 2010 um ano de dupla vida nova.
+        </li>
+        <li>
+          <span class="tl-year">2010 →</span>
+          Passa a colaborar com o programa <em>Entrelinhas</em>, da TV Cultura, apresentando reportagens sobre grandes escritores. Desenvolve olhar curatorial que alimenta sua própria escrita.
+        </li>
+        <li>
+          <span class="tl-year">2013–2018</span>
+          Publica obras de ficção infantojuvenil e participa de antologias relevantes, entre elas <em>Os cem menores contos brasileiros do século</em> e <em>30 mulheres que estão fazendo a nova literatura brasileira</em>. Consolida presença internacional com traduções em 8 países.
+        </li>
+        <li>
+          <span class="tl-year">2018</span>
+          Lança <em>A Fogueira</em>, seu segundo romance adulto, reafirmando o domínio do realismo fantástico e aprofundando temas de feminilidade, ruptura e identidade.
+        </li>
+        <li>
+          <span class="tl-year">2021</span>
+          Publica <em>A Pediatra</em> pela Companhia das Letras, escrevendo o livro inteiro em apenas um mês. O romance recebe elogios de Fernanda Torres, Tati Bernardi e críticos europeus, sendo considerado <strong>uma das prosas mais estimulantes da literatura lusófona contemporânea</strong> pelo jornal português <em>Expresso</em>.
+        </li>
+        <li>
+          <span class="tl-year">2022–hoje</span>
+          <em>A Pediatra</em> é lançada em Portugal pela Penguin Livros, alcançando novo público europeu e reforçando a posição de Andréa del Fuego como uma das vozes mais originais da prosa brasileira atual.
+        </li>
+      </ul>
+    </div>
+
+    <!-- Curiosidades -->
+    <div style="margin-top:3.5rem">
+      <p class="section-title">Seis curiosidades sobre a autora e o livro</p>
+      <div class="curio-grid">
+        <div class="curio-card">
+          <h4>🔥 O Pseudônimo que Pegou Fogo</h4>
+          <p>O nome "Del Fuego" não foi uma escolha da autora: foi sugestão da própria sogra. A inspiração veio de Luz del Fuego, a bailarina brasileira dos anos 1940 famosa por dançar com serpentes — e que também deu nome a um batom argentino. Andréa adotou o pseudônimo com ironia e ele acabou se tornando sua identidade literária definitiva.</p>
+        </div>
+        <div class="curio-card">
+          <h4>⚡ Escrito em Um Mês</h4>
+          <p>Andréa del Fuego escreveu <em>A Pediatra</em> integralmente em apenas um mês. A velocidade não é acidente: ela reflete a própria urgência da narradora Cecília, que vive a vida em modo de contenção emocional máxima, sem tempo para sentir o que devia. A prosa rápida é também uma escolha ética da autora.</p>
+        </div>
+        <div class="curio-card">
+          <h4>🏆 Saramago na Estreia</h4>
+          <p>Vencer o Prêmio José Saramago logo no primeiro romance — com <em>Os Malaquias</em>, em 2010 — foi uma estreia rara na história da literatura brasileira. O prêmio, concedido pela Fundação Círculo de Leitores a obras em língua portuguesa, colocou Andréa no mapa internacional antes mesmo de ela ter consolidado uma obra extensa. E coincidiu com sua própria gravidez, criando uma tensão biográfica curiosa com os temas que viria a explorar anos depois em <em>A Pediatra</em>.</p>
+        </div>
+        <div class="curio-card">
+          <h4>👩‍⚕️ A Pediatra que Não É Mãe</h4>
+          <p>A autora construiu Cecília como um espelho provocador das expectativas que recaem sobre mulheres: a pediatra que não gosta de crianças e não quer ser mãe é, paradoxalmente, uma mulher que tomou as rédeas da própria vida. Del Fuego traz essa contradição não como falha moral, mas como retrato fiel de mulheres reais cujas escolhas raramente cabem nas expectativas sociais.</p>
+        </div>
+        <div class="curio-card">
+          <h4>🎭 Comparada a Clarice — e a Ferrante</h4>
+          <p>Leitores e críticos notaram a semelhança entre uma foto de Andréa del Fuego e retratos de Clarice Lispector, gerando uma onda de comentários divertidos nas redes. A comparação vai além do visual: o fluxo de consciência de <em>A Pediatra</em>, a crueza psicológica e a narradora indigesta evocam tanto Clarice quanto Elena Ferrante, sem que del Fuego perca sua dicção absolutamente original.</p>
+        </div>
+        <div class="curio-card">
+          <h4>🌍 Traduzida em 8 Países</h4>
+          <p>A obra de del Fuego circula em Alemanha, Itália, França, Israel, Romênia, Suécia, Portugal e Argentina — um alcance raro para a prosa brasileira que não é Machado de Assis nem Paulo Coelho. <em>A Pediatra</em> chegou à Portugal via Penguin Livros com elogios da crítica lusitana, consolidando que o desconforto que Cecília provoca transcende fronteiras culturais.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAINEL 3 — TEMAS & LIÇÕES
+═══════════════════════════════════ -->
+<div id="panel-temas" class="panel">
+  <div class="section">
+    <p class="section-title">Temas Centrais</p>
+    <div class="temas-grid">
+      <div class="tema-card">
+        <span class="tema-emoji">🧊</span>
+        <h3>Frieza como Autopreservação</h3>
+        <p>A indiferença de Cecília em relação a seus pacientes não é crueldade gratuita — é uma armadura construída tijolo por tijolo ao longo da vida. O livro examina como a distância afetiva pode ser, ao mesmo tempo, uma estratégia de sobrevivência e uma prisão. Del Fuego não condena Cecília: mostra como a frieza que ela usa para controlar o mundo acaba também por isolá-la dentro de si mesma.</p>
+      </div>
+      <div class="tema-card">
+        <span class="tema-emoji">🤱</span>
+        <h3>Maternidade como Campo de Batalha</h3>
+        <p>O livro desmonta a romantização da maternidade com precisão cirúrgica. Cecília não quer ser mãe e não se envergonha disso — e é exatamente essa postura que incomoda os outros personagens e, especialmente, os leitores. Del Fuego mostra que a decisão de não ter filhos ainda é tratada como um desvio moral, e que a medicina obstétrica está atravessada por disputas ideológicas que pouco têm a ver com o bem-estar das mulheres.</p>
+      </div>
+      <div class="tema-card">
+        <span class="tema-emoji">⚕️</span>
+        <h3>Medicina, Poder e Mercado</h3>
+        <p>A chegada do Dr. Jaime, pediatra humanista com doulas e partos naturais, expõe a crueza das relações de poder no ambiente médico. Cecília não perde pacientes por ser incompetente — perde porque o mercado mudou e ela não mudou com ele. O livro é uma crítica aguda à mercantilização da saúde e às modas ideológicas que se infiltram na medicina, muitas vezes com tanta arrogância quanto os métodos que pretendem superar.</p>
+      </div>
+      <div class="tema-card">
+        <span class="tema-emoji">🪞</span>
+        <h3>Identidade Feminina Fora dos Moldes</h3>
+        <p>Cecília é divorciada, não tem filhos, mantém um caso com homem casado e não finge sentir o que não sente. Nenhuma dessas escolhas é apresentada como heroína feminista — e é aí que mora a complexidade. Del Fuego cria uma personagem que encarna a liberdade feminina de forma incômoda, sem glamour nem redenção, mostrando que ser dona do próprio destino não necessariamente torna alguém mais feliz ou mais boa.</p>
+      </div>
+      <div class="tema-card">
+        <span class="tema-emoji">💔</span>
+        <h3>Amor Torto e Vínculos Impossíveis</h3>
+        <p>O relacionamento com Celso é a relação mais honesta e mais destrutiva do livro ao mesmo tempo. Cecília sabe o que ele é — um homem que usa a todos ao redor sem culpa — e escolhe ficar. O bebê de Celso surge como anomalia: a única criança que desperta algo em Cecília, justamente porque é filho de quem ela não deveria amar. Del Fuego explora como o afeto pode aparecer nos lugares mais inadequados e nos momentos mais inconvenientes.</p>
+      </div>
+      <div class="tema-card">
+        <span class="tema-emoji">🏛️</span>
+        <h3>Classe Social e os Limites do Outro</h3>
+        <p>A relação de Cecília com Deise, sua empregada, é um dos territórios mais reveladores do livro. A pediatra demarca os espaços de cada um com a mesma frieza técnica com que realiza procedimentos médicos. Del Fuego não precisa fazer um manifesto político para mostrar como o classismo opera no cotidiano brasileiro: basta deixar Cecília ser ela mesma, escancaradamente, e o retrato aparece sozinho.</p>
+      </div>
+    </div>
+
+    <!-- Pull quote -->
+    <div class="pull-quote">
+      <blockquote>
+        Ninguém notava que eu tinha pouca vocação e paciência para ser médica, a boa formação garantia que eu não fosse processada.
+      </blockquote>
+      <cite>Andréa del Fuego — A Pediatra</cite>
+    </div>
+
+    <!-- Lições -->
+    <p class="section-title" style="margin-top:3rem">Seis lições da narrativa</p>
+    <div class="licoes-grid">
+      <div class="licao-card">
+        <h4>Competência técnica não é sinônimo de vocação</h4>
+        <p>Cecília nunca é processada e seu consultório é bem-sucedido — e ainda assim ela mesma sabe que não deveria ser pediatra. Del Fuego nos lembra que é possível ser bom em algo que não se ama, e que essa dissociação tem um custo emocional silencioso mas alto.</p>
+      </div>
+      <div class="licao-card">
+        <h4>Controle total é uma forma de ausência</h4>
+        <p>A estratégia de Cecília de nunca criar vínculos — abandonando pacientes complicados antes que se tornem casos longos — mantém sua vida organizada e vazia ao mesmo tempo. A narrativa mostra que o controle absoluto que ela busca é, no fundo, medo disfarçado de método.</p>
+      </div>
+      <div class="licao-card">
+        <h4>O afeto aparece onde menos se espera — e quando menos se quer</h4>
+        <p>O bebê de Celso desperta em Cecília sentimentos que ela jamais havia experimentado. A ironia narrativa é precisa: a criança que finalmente toca a pediatra é justamente a do homem errado. Del Fuego mostra que o coração não obedece aos critérios de conveniência que usamos para organizar a vida.</p>
+      </div>
+      <div class="licao-card">
+        <h4>Ideologia pode ser outro disfarce de poder</h4>
+        <p>O Dr. Jaime não é vilão, mas sua medicina "humanista" também carrega arrogância e disputa por território. O livro recusa o maniqueísmo: a medicina técnica de Cecília e a medicina natural de Jaime são dois lados da mesma moeda de poder — e os pacientes ficam entre eles.</p>
+      </div>
+      <div class="licao-card">
+        <h4>Ser dona de si não protege da solidão</h4>
+        <p>Cecília tem liberdade quase absoluta — nenhum filho, um marido que quase não nota, um amante que escolheu por conveniência. E ainda assim é uma das personagens mais solitárias da ficção brasileira recente. A narrativa nos diz que autonomia e conexão são necessidades distintas, e que uma não substitui a outra.</p>
+      </div>
+      <div class="licao-card">
+        <h4>Julgamos os outros pela casca que vemos, não pela vida que não conhecemos</h4>
+        <p>O escândalo em torno de Cecília — uma pediatra que não gosta de crianças — é um espelho para o leitor. Del Fuego nos convida a interrogar nossas expectativas sobre quem deveria amar o quê. A pediatra "canalha" é mais honesta consigo mesma do que a maioria das pessoas que a julgam.</p>
+      </div>
+    </div>
+
+    <!-- Síntese -->
+    <p class="section-title" style="margin-top:3rem">Síntese</p>
+    <div class="sintese">
+      <p><em>A Pediatra</em> propõe ao mundo uma pergunta incômoda: o que acontece quando alguém recusa todas as ficções que usamos para tornar a vida suportável — o amor pelo trabalho, o instinto materno, a compaixão profissional — e ainda assim continua funcionando? Del Fuego não dá consolo fácil nem punição moral. Cecília atravessa o livro sendo exatamente quem é, e a narrativa resiste à tentação de transformá-la. O livro é um gesto de recusa: à sentimentalidade, ao feminismo de cartaz, à personagem feminina que precisa ser amada para existir.</p>
+      <p>O que torna <em>A Pediatra</em> singular é a precisão da linguagem a serviço do retrato psicológico. Del Fuego escreve em primeira pessoa com uma voz que parece clínica mas carrega ironia em cada vírgula. A narrativa tem o ritmo de uma consulta rápida — enxuta, sem ornamentos, sem espaço para sentimentalismos. E é exatamente nessa contenção que mora o impacto: quando o afeto finalmente aparece, ele surge como anomalia num sistema projetado para excluí-lo. É a estrutura formal do romance que transforma Cecília de personagem desagradável em personagem inesquecível.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAINEL 4 — ESPAÇO NARRATIVO
+═══════════════════════════════════ -->
+<div id="panel-espaco" class="panel">
+  <div class="section">
+    <p class="section-title">O Espaço Narrativo</p>
+
+    <!-- Grid SVG 2x2 -->
+    <div class="svg-grid">
+
+      <!-- Ilustração 1: Consultório -->
+      <div class="svg-ilus">
+        <svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e8e2d6"/>
+              <stop offset="100%" stop-color="#d4ccbe"/>
+            </linearGradient>
+            <linearGradient id="wall1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#c8c0b0"/>
+              <stop offset="100%" stop-color="#b0a898"/>
+            </linearGradient>
+          </defs>
+          <!-- Fundo -->
+          <rect width="480" height="280" fill="url(#sky1)"/>
+          <!-- Parede fundo -->
+          <rect x="0" y="40" width="480" height="200" fill="url(#wall1)"/>
+          <!-- Chão -->
+          <rect x="0" y="200" width="480" height="80" fill="#8a7e6e"/>
+          <!-- Linhas piso -->
+          <line x1="0" y1="220" x2="480" y2="220" stroke="#7a6e5e" stroke-width="1" stroke-opacity=".5"/>
+          <line x1="0" y1="240" x2="480" y2="240" stroke="#7a6e5e" stroke-width="1" stroke-opacity=".3"/>
+          <line x1="120" y1="200" x2="100" y2="280" stroke="#7a6e5e" stroke-width="1" stroke-opacity=".4"/>
+          <line x1="240" y1="200" x2="220" y2="280" stroke="#7a6e5e" stroke-width="1" stroke-opacity=".4"/>
+          <line x1="360" y1="200" x2="340" y2="280" stroke="#7a6e5e" stroke-width="1" stroke-opacity=".4"/>
+          <!-- Mesa médica -->
+          <rect x="150" y="130" width="180" height="12" rx="2" fill="#4a3e2e"/>
+          <rect x="160" y="142" width="8" height="58" fill="#3a2e1e"/>
+          <rect x="312" y="142" width="8" height="58" fill="#3a2e1e"/>
+          <!-- Objeto sobre a mesa (estetoscópio simplificado) -->
+          <circle cx="240" cy="125" r="6" fill="none" stroke="#c1440e" stroke-width="2.5"/>
+          <path d="M 234 125 Q 220 110 218 105" fill="none" stroke="#c1440e" stroke-width="2"/>
+          <circle cx="217" cy="103" r="3" fill="#c1440e"/>
+          <!-- Janela -->
+          <rect x="320" y="60" width="100" height="80" rx="2" fill="#b8ccd8"/>
+          <rect x="320" y="60" width="100" height="80" rx="2" fill="none" stroke="#8a8070" stroke-width="3"/>
+          <line x1="370" y1="60" x2="370" y2="140" stroke="#8a8070" stroke-width="2"/>
+          <line x1="320" y1="100" x2="420" y2="100" stroke="#8a8070" stroke-width="2"/>
+          <!-- Luz janela no chão -->
+          <polygon points="325,200 420,200 440,260 300,260" fill="rgba(200,210,220,0.15)"/>
+          <!-- Diploma na parede -->
+          <rect x="60" y="65" width="70" height="55" rx="2" fill="#e8e0d0" stroke="#8a8070" stroke-width="2"/>
+          <line x1="75" y1="82" x2="115" y2="82" stroke="#8a8070" stroke-width="1.5"/>
+          <line x1="75" y1="92" x2="115" y2="92" stroke="#8a8070" stroke-width="1"/>
+          <line x1="75" y1="100" x2="100" y2="100" stroke="#8a8070" stroke-width="1"/>
+          <rect x="82" y="105" width="36" height="6" rx="1" fill="#c1440e" fill-opacity=".5"/>
+          <!-- Sombras -->
+          <rect x="0" y="0" width="480" height="40" fill="rgba(26,18,8,0.2)"/>
+        </svg>
+        <span class="svg-caption">O Consultório · Território da Contenção</span>
+      </div>
+
+      <!-- Ilustração 2: Hospital / maternidade -->
+      <div class="svg-ilus">
+        <svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1a2030"/>
+              <stop offset="50%" stop-color="#2a3545"/>
+              <stop offset="100%" stop-color="#1e2838"/>
+            </linearGradient>
+            <linearGradient id="ground2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3a3028"/>
+              <stop offset="100%" stop-color="#2a2018"/>
+            </linearGradient>
+          </defs>
+          <!-- Céu noturno -->
+          <rect width="480" height="280" fill="url(#sky2)"/>
+          <!-- Estrelas -->
+          <circle cx="50" cy="30" r="1.5" fill="#fff" fill-opacity=".7"/>
+          <circle cx="120" cy="20" r="1" fill="#fff" fill-opacity=".5"/>
+          <circle cx="200" cy="35" r="1.5" fill="#fff" fill-opacity=".6"/>
+          <circle cx="300" cy="15" r="1" fill="#fff" fill-opacity=".8"/>
+          <circle cx="420" cy="28" r="1.5" fill="#fff" fill-opacity=".5"/>
+          <circle cx="380" cy="45" r="1" fill="#fff" fill-opacity=".4"/>
+          <!-- Hospital -->
+          <rect x="100" y="80" width="280" height="150" fill="#2e3848"/>
+          <rect x="180" y="50" width="120" height="40" fill="#252f3e"/>
+          <!-- Cruz hospital -->
+          <rect x="228" y="58" width="24" height="8" fill="#c1440e" fill-opacity=".9"/>
+          <rect x="236" y="50" width="8" height="24" fill="#c1440e" fill-opacity=".9"/>
+          <!-- Janelas acesas -->
+          <rect x="120" y="100" width="36" height="28" rx="1" fill="#d4a017" fill-opacity=".7"/>
+          <rect x="170" y="100" width="36" height="28" rx="1" fill="#d4a017" fill-opacity=".5"/>
+          <rect x="220" y="100" width="36" height="28" rx="1" fill="#b8ccd8" fill-opacity=".6"/>
+          <rect x="270" y="100" width="36" height="28" rx="1" fill="#d4a017" fill-opacity=".4"/>
+          <rect x="320" y="100" width="36" height="28" rx="1" fill="#d4a017" fill-opacity=".8"/>
+          <!-- Janelas 2a linha -->
+          <rect x="120" y="148" width="36" height="28" rx="1" fill="#b8ccd8" fill-opacity=".4"/>
+          <rect x="170" y="148" width="36" height="28" rx="1" fill="#d4a017" fill-opacity=".6"/>
+          <rect x="220" y="148" width="36" height="28" rx="1" fill="none" stroke="#4a5060" stroke-width="1"/>
+          <rect x="270" y="148" width="36" height="28" rx="1" fill="#d4a017" fill-opacity=".3"/>
+          <rect x="320" y="148" width="36" height="28" rx="1" fill="#d4a017" fill-opacity=".7"/>
+          <!-- Porta entrada -->
+          <rect x="214" y="195" width="52" height="35" rx="2" fill="#d4a017" fill-opacity=".5"/>
+          <!-- Chão -->
+          <rect x="0" y="230" width="480" height="50" fill="url(#ground2)"/>
+          <!-- Reflexo luz no chão -->
+          <ellipse cx="240" cy="232" rx="60" ry="8" fill="rgba(212,160,23,0.15)"/>
+        </svg>
+        <span class="svg-caption">A Maternidade · Onde a Vida Começa Sem Convite</span>
+      </div>
+
+      <!-- Ilustração 3: Apartamento de Cecília -->
+      <div class="svg-ilus">
+        <svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sky3" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f0e8d8"/>
+              <stop offset="100%" stop-color="#e0d4c0"/>
+            </linearGradient>
+          </defs>
+          <rect width="480" height="280" fill="url(#sky3)"/>
+          <!-- Parede esquerda -->
+          <polygon points="0,0 220,0 220,280 0,280" fill="#d8d0c0"/>
+          <!-- Parede direita (perspectiva) -->
+          <polygon points="220,0 480,0 480,280 220,280" fill="#c8c0b0"/>
+          <!-- Linha divisória perspectiva -->
+          <line x1="220" y1="0" x2="220" y2="280" stroke="#a89880" stroke-width="2"/>
+          <!-- Piso -->
+          <rect x="0" y="190" width="480" height="90" fill="#8a7860"/>
+          <!-- Tábuas assoalho -->
+          <line x1="0" y1="210" x2="480" y2="210" stroke="#7a6850" stroke-width="1" stroke-opacity=".5"/>
+          <line x1="0" y1="240" x2="480" y2="240" stroke="#7a6850" stroke-width="1" stroke-opacity=".4"/>
+          <!-- Sofá -->
+          <rect x="40" y="155" width="160" height="45" rx="4" fill="#5a5048"/>
+          <rect x="36" y="145" width="168" height="18" rx="3" fill="#4a4038"/>
+          <rect x="36" y="152" width="14" height="48" rx="2" fill="#4a4038"/>
+          <rect x="190" y="152" width="14" height="48" rx="2" fill="#4a4038"/>
+          <!-- Almofadas -->
+          <rect x="55" y="150" width="40" height="30" rx="3" fill="#c1440e" fill-opacity=".7"/>
+          <rect x="110" y="150" width="40" height="30" rx="3" fill="#8a7868" fill-opacity=".9"/>
+          <!-- Mesa de centro -->
+          <rect x="90" y="185" width="100" height="8" rx="1" fill="#3a3028"/>
+          <!-- Quadro na parede -->
+          <rect x="60" y="40" width="90" height="70" rx="2" fill="#4a4038" stroke="#6a6050" stroke-width="2"/>
+          <rect x="65" y="45" width="80" height="60" fill="#6a5845"/>
+          <!-- Abstrato no quadro -->
+          <circle cx="105" cy="75" r="18" fill="#c1440e" fill-opacity=".35"/>
+          <circle cx="118" cy="65" r="12" fill="#d4a017" fill-opacity=".3"/>
+          <!-- Janela direita -->
+          <rect x="300" y="30" width="130" height="140" rx="2" fill="#b0c4d0"/>
+          <rect x="300" y="30" width="130" height="140" rx="2" fill="none" stroke="#8a8070" stroke-width="3"/>
+          <line x1="365" y1="30" x2="365" y2="170" stroke="#8a8070" stroke-width="2"/>
+          <line x1="300" y1="100" x2="430" y2="100" stroke="#8a8070" stroke-width="2"/>
+          <!-- Vista pela janela: prédios -->
+          <rect x="308" y="40" width="25" height="55" fill="#7a8898" fill-opacity=".7"/>
+          <rect x="340" y="50" width="20" height="45" fill="#6a7888" fill-opacity=".6"/>
+          <!-- Luz no assoalho pela janela -->
+          <polygon points="300,170 430,170 450,230 280,230" fill="rgba(176,196,208,0.15)"/>
+        </svg>
+        <span class="svg-caption">O Apartamento · Solidão Organizada</span>
+      </div>
+
+      <!-- Ilustração 4: São Paulo exterior -->
+      <div class="svg-ilus">
+        <svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sky4" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#c0c8d8"/>
+              <stop offset="50%" stop-color="#a8b4c8"/>
+              <stop offset="100%" stop-color="#9098a8"/>
+            </linearGradient>
+            <linearGradient id="ground4" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#5a5850"/>
+              <stop offset="100%" stop-color="#3a3830"/>
+            </linearGradient>
+          </defs>
+          <!-- Céu paulistano -->
+          <rect width="480" height="280" fill="url(#sky4)"/>
+          <!-- Prédios fundo -->
+          <rect x="0" y="60" width="50" height="180" fill="#78808e" fill-opacity=".6"/>
+          <rect x="45" y="40" width="40" height="200" fill="#6e7680" fill-opacity=".7"/>
+          <rect x="80" y="70" width="35" height="170" fill="#788088" fill-opacity=".6"/>
+          <rect x="110" y="30" width="55" height="210" fill="#686e78" fill-opacity=".8"/>
+          <rect x="160" y="55" width="45" height="185" fill="#788088" fill-opacity=".65"/>
+          <rect x="200" y="20" width="70" height="220" fill="#5e6470" fill-opacity=".9"/>
+          <rect x="265" y="45" width="50" height="195" fill="#707880" fill-opacity=".7"/>
+          <rect x="310" y="60" width="40" height="180" fill="#7a8088" fill-opacity=".65"/>
+          <rect x="345" y="35" width="60" height="205" fill="#686e78" fill-opacity=".8"/>
+          <rect x="400" y="55" width="45" height="185" fill="#788088" fill-opacity=".7"/>
+          <rect x="440" y="70" width="40" height="170" fill="#6e7480" fill-opacity=".6"/>
+          <!-- Janelas nos prédios -->
+          <rect x="55" y="55" width="6" height="8" fill="#d4a017" fill-opacity=".6"/>
+          <rect x="65" y="68" width="6" height="8" fill="#d4a017" fill-opacity=".4"/>
+          <rect x="118" y="42" width="8" height="10" fill="#d4a017" fill-opacity=".5"/>
+          <rect x="135" y="60" width="8" height="10" fill="#b8ccd8" fill-opacity=".5"/>
+          <rect x="210" y="32" width="10" height="12" fill="#d4a017" fill-opacity=".7"/>
+          <rect x="230" y="45" width="10" height="12" fill="#d4a017" fill-opacity=".4"/>
+          <rect x="250" y="32" width="10" height="12" fill="#b8ccd8" fill-opacity=".5"/>
+          <rect x="275" y="55" width="8" height="10" fill="#d4a017" fill-opacity=".6"/>
+          <rect x="355" y="45" width="9" height="11" fill="#d4a017" fill-opacity=".5"/>
+          <rect x="375" y="58" width="9" height="11" fill="#b8ccd8" fill-opacity=".4"/>
+          <!-- Avenida -->
+          <rect x="0" y="210" width="480" height="70" fill="url(#ground4)"/>
+          <!-- Faixas da rua -->
+          <line x1="0" y1="220" x2="480" y2="220" stroke="#a8a098" stroke-width="2" stroke-opacity=".4"/>
+          <rect x="100" y="228" width="30" height="4" fill="#e8e0d0" fill-opacity=".3"/>
+          <rect x="160" y="228" width="30" height="4" fill="#e8e0d0" fill-opacity=".3"/>
+          <rect x="220" y="228" width="30" height="4" fill="#e8e0d0" fill-opacity=".3"/>
+          <rect x="280" y="228" width="30" height="4" fill="#e8e0d0" fill-opacity=".3"/>
+          <rect x="340" y="228" width="30" height="4" fill="#e8e0d0" fill-opacity=".3"/>
+          <!-- Smog/névoa -->
+          <rect x="0" y="160" width="480" height="55" fill="rgba(150,160,180,0.18)"/>
+        </svg>
+        <span class="svg-caption">São Paulo · Cidade sem Testemunhas</span>
+      </div>
+
+    </div>
+
+    <!-- Cards de lugar -->
+    <p class="section-title">Os Espaços da Narrativa</p>
+    <div class="lugares-grid">
+      <div class="lugar-card">
+        <h3>O Consultório</h3>
+        <span class="lugar-tag">São Paulo · Território de Poder</span>
+        <p>O consultório de Cecília é o espaço de onde ela governa o mundo à sua maneira: aceita apenas casos simples, descarta pacientes que exigem continuidade e mantém distância estratégica de qualquer vínculo afetivo. É o único lugar onde ela se sente competente e segura — até que o Dr. Jaime começa a corroer sua posição. O consultório deixa de ser fortaleza e revela-se trincheira.</p>
+      </div>
+      <div class="lugar-card">
+        <h3>A Maternidade</h3>
+        <span class="lugar-tag">Hospital · Arena dos Partos</span>
+        <p>A sala de parto é onde o livro se torna mais carnal e mais político. É ali que Cecília acompanha a obstetra Maria Amélia, que ali que o Dr. Jaime instala sua visão de medicina alternativa e é ali que Cecília presencia o nascimento do filho de Celso. O espaço do parto condensa todas as disputas do livro: sobre corpo, sobre saber, sobre quem tem o direito de decidir como a vida começa.</p>
+      </div>
+      <div class="lugar-card">
+        <h3>O Apartamento de Cecília</h3>
+        <span class="lugar-tag">São Paulo · Solidão Organizada</span>
+        <p>O apartamento é a extensão do interior de Cecília: funcional, sem excessos sentimentais, organizado para o controle. Deise circula por ele como fantasma doméstico, mantendo uma ordem que Cecília define mas não aprecia. O espaço privado é onde a máscara médica cai — e o que resta não é conforto, mas um vazio bem mobiliado. É no apartamento que Cecília, sozinha, começa a perceber que seu sistema está quebrando.</p>
+      </div>
+      <div class="lugar-card">
+        <h3>São Paulo</h3>
+        <span class="lugar-tag">Metrópole · Cidade sem Testemunhas</span>
+        <p>São Paulo aparece como pano de fundo perfeito para Cecília: uma cidade que permite o anonimato, que não cobra afeto de seus habitantes e que funciona como ela — com eficiência e sem alma aparente. A metrópole é o lugar onde uma pediatra que não gosta de crianças pode existir sem que ninguém faça perguntas. Del Fuego usa a cidade não como cenário pitoresco, mas como condição de possibilidade para a personagem.</p>
+      </div>
+    </div>
+
+    <!-- Metáfora -->
+    <div class="metafora">
+      <span class="metafora-emoji">🩺</span>
+      <div>
+        <h3>O Consultório como Metáfora</h3>
+        <p>O consultório de Cecília funciona como metáfora precisa de sua psique: um espaço projetado para a distância segura, onde os outros entram, recebem o que precisam e saem — sem resíduos, sem vínculos, sem história. Assim como ela aceita apenas casos de fácil resolução, sua vida emocional foi arquitetada para excluir qualquer complicação que demandasse continuidade. Mas a chegada do Dr. Jaime no mesmo corredor do hospital é o espelho que ela não pediu: alguém que usa o mesmo espaço, com os mesmos pacientes, e escolhe o oposto em tudo.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     AVALIAÇÕES
+═══════════════════════════════════ -->
+<section class="avaliacoes-section">
+  <div class="avaliacoes-inner">
+    <p class="section-title">Avaliações do Clube</p>
+
+    <div class="form-box">
+      <div class="form-row">
+        <label>Seu nome</label>
+        <input type="text" id="rev-nome" placeholder="Como quer ser chamada">
+      </div>
+      <div class="form-row">
+        <label>Nota</label>
+        <select id="rev-nota">
+          <option value="5">★★★★★ — Obra inesquecível</option>
+          <option value="4">★★★★☆ — Muito bom</option>
+          <option value="3">★★★☆☆ — Bom</option>
+          <option value="2">★★☆☆☆ — Regular</option>
+          <option value="1">★☆☆☆☆ — Não me agradou</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Sua avaliação</label>
+        <textarea id="rev-texto" placeholder="O que você achou do livro?"></textarea>
+      </div>
+      <button class="btn-submit" onclick="submitReview()">Enviar Avaliação</button>
+    </div>
+
+    <div id="reviews-container">
+      <div class="reviews-empty">Carregando avaliações…</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════ -->
+<script>
+/* ── Personagens ── */
+const P = {
+  cecilia: {
+    nome: 'Cecília Tomé Vilela',
+    papel: 'Protagonista · A Pediatra Canalha',
+    desc: 'Cecília é pediatra e neonatologista em São Paulo, filha de um médico, formada por excelência técnica e zero vocação. Ela sabe que não deveria amar a profissão e não finge — segue protocolos com frieza cirúrgica, descarta pacientes que exigem vínculo e administra sua vida com o mesmo pragmatismo que aplica nas consultas. Separada de um marido que quase não nota, mantém um caso controlado com um homem casado. Sua motivação central é o controle total — sobre o trabalho, as emoções, os outros. O peso simbólico que carrega é imenso: ela é o espelho de tudo o que a sociedade não espera de uma mulher médica que cuida de crianças.',
+    tags: ['Dr. Leopoldo', 'Celso', 'Maria Amélia', 'Rodrigo', 'Deise', 'Dr. Jaime', 'O Bebê']
+  },
+  pai: {
+    nome: 'Dr. Leopoldo',
+    papel: 'Pai · A Sombra que Moldou Tudo',
+    desc: 'Dr. Leopoldo é o pai de Cecília e também médico pediatra — a origem do caminho que a filha seguiu não por vocação, mas por inércia familiar. Ele não aparece diretamente na trama principal, mas sua presença é estrutural: foi dele que Cecília herdou a identidade profissional e, talvez, a crença de que a medicina é mais técnica do que afeto. É a figura paterna que torna a escolha de Cecília compreensível sem que precise ser justificada. Sua ausência presente é o que torna o personagem simbólico.',
+    tags: ['Cecília']
+  },
+  celso: {
+    nome: 'Celso',
+    papel: 'Amante · O Tóxico Irresistível',
+    desc: 'Celso é o homem casado com quem Cecília mantém um relacionamento que ela acredita controlar completamente — e que, no fundo, a desestabiliza mais do que admite. Ele age como se suas ações fossem imunes a consequências, ignorando a família enquanto persegue seus próprios desejos. É hipócrita, egocêntrico e, curiosamente, o vetor pelo qual o afeto mais inesperado do livro chega a Cecília: seu bebê. Celso não muda, não se redime e não pede perdão — e o livro não o pune com a grandiosidade que o gênero romance normalmente reserva para os homens que agem assim.',
+    tags: ['Cecília', 'Maria Amélia', 'O Bebê']
+  },
+  mariaamelia: {
+    nome: 'Maria Amélia',
+    papel: 'Obstetra · A Parceira que Escorrega',
+    desc: 'Maria Amélia é a obstetra cesarista com quem Cecília colabora na maternidade — uma aliança profissional construída sobre afinidade técnica e distância sentimental. O problema surge quando Maria Amélia começa a abrir espaço para o Dr. Jaime, o pediatra humanista que ameaça o território de Cecília. A obstetra funciona como termômetro: quando ela vacila, é sinal de que o mundo ao redor de Cecília está mudando mais rápido do que ela consegue processar. É uma personagem de lealdade frágil e pragmatismo genuíno.',
+    tags: ['Cecília', 'Dr. Jaime', 'Celso']
+  },
+  drjaime: {
+    nome: 'Dr. Jaime',
+    papel: 'Pediatra Humanista · O Espelho Indesejado',
+    desc: 'Dr. Jaime chega na mesma maternidade de Cecília com doulas, partos domiciliares e medicina alternativa — e começa a roubar seus pacientes. Ele não é vilão: é genuinamente comprometido com sua visão de medicina. Mas del Fuego o constrói com ambiguidade suficiente para que sua "humanidade" também pareça uma forma de poder e arrogância. Jaime é o personagem que força Cecília a se olhar — não como professora de moral, mas como concorrente. Sua presença é o gatilho de toda a crise do livro.',
+    tags: ['Cecília', 'Maria Amélia']
+  },
+  deise: {
+    nome: 'Deise',
+    papel: 'Empregada · A Testemunha Invisível',
+    desc: 'Deise trabalha para Cecília e vive uma gravidez inesperada que corre paralela à trama principal. Ela representa a classe que Cecília literalmente não vê — nem como pessoa nem como problema, até que a gravidez de Deise e o amante envolvido criam uma colisão impossível de ignorar. Del Fuego usa Deise para mostrar o classismo operando no cotidiano: não com discurso, mas com o modo como Cecília fala com ela, onde a coloca, o que espera dela. Deise é a personagem mais silenciada — e uma das mais sintomáticas.',
+    tags: ['Cecília']
+  },
+  marido: {
+    nome: 'Rodrigo',
+    papel: 'Marido · Ausente em Presença',
+    desc: 'Rodrigo é o marido de Cecília — ou era, já que a separação é parte do pano de fundo da narrativa. Ele mal aparece diretamente, mas sua presença fantasma sublinha o vazio da vida conjugal de Cecília: um casamento aborrecidamente estável que ela mantinha não por amor, mas por inércia. Rodrigo é o personagem mais ausente do livro, e essa ausência diz tudo sobre como Cecília se relaciona com vínculos — ela prefere o que está desfeito ao que exige trabalho.',
+    tags: ['Cecília']
+  },
+  bebe: {
+    nome: 'O Bebê de Celso',
+    papel: 'Filho do Amante · A Anomalia Afetiva',
+    desc: 'Sem nome próprio no livro, o filho de Celso é o personagem mais simbólico da trama. Cecília acompanhou seu nascimento como neonatologista — e é ele quem, contra toda a lógica de sua psique, desperta sentimentos que ela nunca antes havia experimentado. A ironia é perfeita: a única criança que toca a pediatra que não gosta de crianças é justamente aquela que não deveria. O bebê funciona como catalisador da catarse final — é por ele que o sistema de contenção emocional de Cecília começa a rachar de verdade.',
+    tags: ['Cecília', 'Celso']
+  }
+};
+
+function showPersonagem(id) {
+  const p = P[id];
+  if (!p) return;
+  document.getElementById('teia-info').innerHTML = `
+    <h3>${p.nome}</h3>
+    <p class="teia-papel">${p.papel}</p>
+    <p class="teia-desc">${p.desc}</p>
+    <div class="teia-tags">${p.tags.map(t => `<span class="teia-tag">${t}</span>`).join('')}</div>
+  `;
+}
+
+/* ── Tabs ── */
+function goTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  document.getElementById('panel-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+/* ── Reviews ── */
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbznd1pZiLhfcDeXD_iOBjvXAIYCicVhuy7oW091TESguLvLtB1o5E3ipT3sVoYshFDp/exec';
+const BOOK_ID = 'a_pediatra';
+
+async function submitReview() {
+  const nome  = document.getElementById('rev-nome').value.trim();
+  const nota  = document.getElementById('rev-nota').value;
+  const texto = document.getElementById('rev-texto').value.trim();
+  if (!nome || !texto) { alert('Preencha seu nome e a avaliação.'); return; }
+
+  const btn = document.querySelector('.btn-submit');
+  btn.textContent = 'Enviando…'; btn.disabled = true;
+
+  try {
+    await fetch(SHEETS_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ book: BOOK_ID, nome, nota, texto, data: new Date().toISOString() })
+    });
+    document.getElementById('rev-nome').value = '';
+    document.getElementById('rev-texto').value = '';
+    document.getElementById('rev-nota').value = '5';
+    btn.textContent = 'Avaliação enviada!';
+    setTimeout(() => { btn.textContent = 'Enviar Avaliação'; btn.disabled = false; }, 3000);
+    loadReviews();
+  } catch(e) {
+    btn.textContent = 'Enviar Avaliação'; btn.disabled = false;
+    alert('Erro ao enviar. Tente novamente.');
+  }
+}
+
+async function loadReviews() {
+  try {
+    const res  = await fetch(`${SHEETS_URL}?book=${BOOK_ID}`);
+    const data = await res.json();
+    renderReviews(data);
+  } catch(e) {
+    document.getElementById('reviews-container').innerHTML =
+      '<p class="reviews-empty">Seja a primeira a avaliar este livro.</p>';
+  }
+}
+
+function renderReviews(data) {
+  const el = document.getElementById('reviews-container');
+  if (!data || !data.length) {
+    el.innerHTML = '<p class="reviews-empty">Seja a primeira a avaliar este livro.</p>';
+    return;
+  }
+  el.innerHTML = '<div class="reviews-list">' +
+    data.map(r => {
+      const stars = '★'.repeat(+r.nota) + '☆'.repeat(5 - +r.nota);
+      const date  = r.data ? new Date(r.data).toLocaleDateString('pt-BR') : '';
+      return `
+        <div class="review-card">
+          <div class="review-header">
+            <span class="review-name">${r.nome || 'Leitora'}</span>
+            <span class="review-stars">${stars}</span>
+          </div>
+          <p class="review-text">${r.texto || ''}</p>
+          ${date ? `<p class="review-date">${date}</p>` : ''}
+        </div>`;
+    }).join('') + '</div>';
+}
+
+loadReviews();
+</script>
+</body>
+</html>
