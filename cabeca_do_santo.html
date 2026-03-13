@@ -3,277 +3,162 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A Cabeça do Santo — Análise</title>
+<title>A Cabeca do Santo - Analise</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --ink:    #1a1208;
-  --rust:   #c1440e;
-  --gold:   #d4a017;
-  --sage:   #6b8c6e;
-  --cream:  #f5f0e8;
-  --paper:  #ede8dc;
-  --border: rgba(193,68,14,0.22);
-  --surf:   rgba(26,18,8,0.05);
+  --ink:#1a1208; --rust:#c1440e; --gold:#d4a017; --sage:#6b8c6e;
+  --cream:#f5f0e8; --paper:#ede8dc; --border:rgba(193,68,14,0.22); --surf:rgba(26,18,8,0.05);
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  background:var(--cream);
-  color:var(--ink);
-  font-family:'DM Sans',sans-serif;
-  padding-top:68px;
-  overflow-x:hidden;
-}
-
-/* NAV */
-.nav {
-  position:fixed; top:0; left:0; right:0; z-index:9999;
-  display:flex; justify-content:space-between; align-items:center;
-  padding:0 3rem; height:68px;
-  background:rgba(245,240,232,0.97);
-  border-bottom:1px solid var(--border);
-  backdrop-filter:blur(8px);
-}
-.nav-logo { font-family:'Cinzel',serif; font-size:1.3rem; font-weight:700; color:var(--rust); text-decoration:none; }
-.nav-tag  { font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.22em; text-transform:uppercase; color:rgba(26,18,8,0.45); }
-.nav-back {
-  font-family:'Cinzel',serif; font-size:0.7rem; font-weight:700;
-  letter-spacing:0.14em; text-transform:uppercase;
-  color:var(--ink); text-decoration:none;
-  border:2px solid rgba(193,68,14,0.4);
-  padding:0.45rem 1.1rem; transition:all 0.2s;
-}
-.nav-back:hover { color:var(--rust); border-color:var(--rust); }
-
-/* HEADER */
-.page-header { text-align:center; padding:2.5rem 2rem 0; }
-.sup { font-family:'Cinzel',serif; font-size:0.62rem; letter-spacing:0.28em; text-transform:uppercase; color:var(--rust); font-weight:700; margin-bottom:0.5rem; }
-.page-header h1 { font-family:'Cinzel',serif; font-size:clamp(1.6rem,3.5vw,2.8rem); font-weight:700; color:var(--ink); letter-spacing:0.04em; }
-.page-header h1 em { font-style:italic; color:var(--rust); font-family:'Cormorant Garamond',serif; font-size:1.1em; }
-.page-header p  { font-style:italic; color:rgba(26,18,8,0.7); font-size:0.95rem; margin-top:0.3rem; }
-
-/* TABS */
-.tabs-bar {
-  display:flex; justify-content:center;
-  max-width:960px; margin:2rem auto 0;
-  border-bottom:2px solid var(--border);
-}
-.tab {
-  font-family:'Cinzel',serif; font-size:0.72rem; font-weight:700;
-  letter-spacing:0.14em; text-transform:uppercase;
-  color:rgba(26,18,8,0.50); background:none; border:none;
-  padding:0.9rem 1.8rem; cursor:pointer; position:relative; transition:color 0.25s;
-}
-.tab::after {
-  content:''; position:absolute; bottom:-2px; left:0; right:0; height:3px;
-  background:var(--rust); transform:scaleX(0); transition:transform 0.25s;
-}
-.tab:hover { color:var(--ink); }
-.tab.on { color:var(--ink); }
-.tab.on::after { transform:scaleX(1); }
-.panel { display:none; }
-.panel.on { display:block; animation:fadeUp 0.35s ease; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-
-/* ===== TAB 1 — TEIA ===== */
-.teia-wrap {
-  max-width:1400px; margin:0 auto;
-  display:grid; grid-template-columns:1fr 380px;
-  padding:1.5rem 2rem 3rem; min-height:780px;
-}
-#net-wrap { height:750px; }
-#net-svg  { width:100%; height:100%; }
-.nlab {
-  font-family:'Cinzel',serif; font-size:16px; font-weight:700;
-  fill:#1a1208; text-anchor:middle; pointer-events:none;
-}
-.nlab-white {
-  font-family:'Cinzel',serif; font-size:16px; font-weight:700;
-  fill:white; text-anchor:middle; pointer-events:none;
-}
-.nrole {
-  font-family:'Cinzel',serif; font-size:12px; font-weight:600;
-  fill:rgba(26,18,8,0.75); text-anchor:middle; pointer-events:none;
-}
-.node { cursor:pointer; }
-.node circle { transition:filter 0.25s; }
-.node:hover circle { filter:brightness(1.2); }
-.info-panel {
-  border-left:1px solid var(--border);
-  padding:2rem 1.8rem;
-  display:flex; flex-direction:column;
-  overflow-y:auto; max-height:750px;
-}
-.info-panel h3 { font-family:'Cinzel',serif; font-size:1.05rem; font-weight:700; color:var(--ink); margin-bottom:0.3rem; }
-.info-role { font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--rust); font-size:1rem; margin-bottom:1rem; }
-.info-desc { font-size:0.93rem; line-height:1.78; color:var(--ink); flex:1; }
-.info-tags { margin-top:1.2rem; }
-.info-tags span {
-  display:inline-block; margin:0.2rem 0.2rem 0 0;
-  background:var(--surf); border:1px solid var(--border);
-  padding:0.22rem 0.65rem;
-  font-family:'Cinzel',serif; font-size:0.6rem; font-weight:700;
-  letter-spacing:0.1em; text-transform:uppercase; color:var(--ink);
-}
-.legend { display:flex; gap:0.8rem; margin-top:auto; padding-top:1.5rem; border-top:1px solid var(--border); flex-wrap:wrap; }
-.leg { display:flex; align-items:center; gap:0.4rem; font-size:0.75rem; font-weight:600; color:var(--ink); }
-.leg-dot { width:11px; height:11px; border-radius:50%; flex-shrink:0; }
-
-/* ===== SHARED ===== */
-.wrap { max-width:900px; margin:0 auto; padding:3rem 2rem 4rem; }
-.sec-title {
-  font-family:'Cinzel',serif; font-size:1rem; font-weight:700;
-  color:var(--ink); letter-spacing:0.12em; text-transform:uppercase;
-  margin:2.5rem 0 0.5rem;
-}
-.sec-sub { font-family:'Cormorant Garamond',serif; font-style:italic; color:rgba(26,18,8,0.6); font-size:1rem; margin-bottom:1.5rem; }
-.g2 { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; margin-top:1rem; }
-.card { background:var(--surf); border:1px solid var(--border); padding:1.4rem; }
-.card h4 { font-family:'Cinzel',serif; font-size:0.68rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--rust); margin-bottom:0.6rem; }
-.card p  { font-size:0.88rem; line-height:1.72; color:var(--ink); }
-.pull {
-  border:1px solid var(--border); border-left:4px solid var(--rust);
-  padding:1.8rem 2rem; margin:2.5rem 0; background:var(--surf);
-}
-.pull p    { font-family:'Cormorant Garamond',serif; font-size:1.25rem; font-style:italic; line-height:1.7; color:var(--ink); }
-.pull cite { display:block; margin-top:0.8rem; font-family:'Cinzel',serif; font-size:0.72rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:rgba(26,18,8,0.6); }
-.body-text p { font-size:1.03rem; line-height:1.88; color:var(--ink); margin-bottom:1.2rem; }
-
-/* ===== TAB 2 — AUTORA ===== */
-.autor-grid { display:grid; grid-template-columns:240px 1fr; gap:3rem; align-items:start; margin-bottom:3rem; }
-.foto-box { width:240px; overflow:hidden; position:relative; border:2px solid var(--border); }
-.foto-box svg { display:block; width:100%; height:auto; }
-.foto-cap {
-  position:absolute; bottom:0; left:0; right:0;
-  background:rgba(26,18,8,0.65); padding:0.5rem;
-  font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.15em;
-  text-transform:uppercase; color:rgba(245,240,232,0.9); text-align:center; font-weight:700;
-}
-.bio h2 { font-family:'Cinzel',serif; font-size:1.5rem; font-weight:700; color:var(--ink); margin-bottom:0.3rem; }
-.bio .dates { font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--rust); font-size:1rem; margin-bottom:1.2rem; }
-.bio p { font-size:0.97rem; line-height:1.85; color:var(--ink); margin-bottom:1rem; }
-.timeline { position:relative; margin:1.5rem 0; }
-.timeline::before { content:''; position:absolute; left:7px; top:4px; bottom:4px; width:1px; background:linear-gradient(to bottom,var(--rust),transparent); }
-.tl { display:flex; gap:1.4rem; margin-bottom:1.5rem; }
-.tl-dot { width:15px; height:15px; border-radius:50%; border:2px solid var(--rust); background:var(--paper); flex-shrink:0; margin-top:2px; position:relative; z-index:1; }
-.tl-yr { font-family:'Cinzel',serif; font-size:0.65rem; font-weight:700; letter-spacing:0.14em; color:var(--rust); min-width:40px; padding-top:1px; }
-.tl-txt { font-size:0.92rem; line-height:1.68; color:var(--ink); }
-
-/* ===== TAB 3 — TEMAS ===== */
-.tema { background:var(--surf); border-left:4px solid var(--rust); padding:1.4rem 1.6rem; }
-.tema .ico { font-size:1.6rem; display:block; margin-bottom:0.6rem; }
-.tema h3 { font-family:'Cinzel',serif; font-size:0.72rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--rust); margin-bottom:0.7rem; }
-.tema p  { font-size:0.92rem; line-height:1.78; color:var(--ink); }
-
-.licao { background:var(--paper); border-left:4px solid var(--gold); padding:1.3rem 1.5rem; }
-.licao h4 { font-family:'Cinzel',serif; font-size:0.68rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink); margin-bottom:0.5rem; }
-.licao p  { font-size:0.88rem; line-height:1.72; color:var(--ink); }
-
-/* ===== TAB 4 — ESPAÇO ===== */
-/* Fotos grid */
-.fotos-grid {
-  display:grid; grid-template-columns:1fr 1fr;
-  gap:0.8rem; margin-bottom:2.5rem;
-}
-.foto-espaco {
-  position:relative; overflow:hidden;
-  border:1px solid var(--border);
-}
-.foto-espaco svg { display:block; width:100%; height:auto; }
-.foto-leg {
-  position:absolute; bottom:0; left:0; right:0;
-  background:linear-gradient(transparent, rgba(26,18,8,0.75));
-  padding:1.5rem 0.9rem 0.6rem;
-  font-family:'Cinzel',serif; font-size:0.6rem; font-weight:700;
-  letter-spacing:0.14em; text-transform:uppercase; color:rgba(245,240,232,0.92);
-}
-
-.lugar { background:var(--surf); border:1px solid var(--border); padding:1.6rem; position:relative; overflow:hidden; }
-.lugar::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--rust),transparent); }
-.lugar h3 { font-family:'Cinzel',serif; font-size:0.75rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--rust); margin-bottom:0.4rem; }
-.lugar-tag { font-family:'Cinzel',serif; font-size:0.72rem; font-weight:700; color:var(--ink); display:block; margin-bottom:0.5rem; }
-.lugar p  { font-size:0.90rem; line-height:1.72; color:var(--ink); }
-.meta-box { background:var(--paper); border:1px solid var(--border); padding:2rem; margin:2.5rem 0; display:grid; grid-template-columns:60px 1fr; gap:1.5rem; align-items:start; }
-.meta-box .ico { font-size:2.6rem; }
-.meta-box h3 { font-family:'Cinzel',serif; font-size:0.72rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--rust); margin-bottom:0.5rem; }
-.meta-box p  { font-size:0.92rem; line-height:1.75; color:var(--ink); }
-
-/* ===== AVALIAÇÕES ===== */
-.av-wrap { max-width:900px; margin:0 auto; padding:4rem 2rem 5rem; border-top:1px solid var(--border); }
-.av-wrap h2 { font-family:'Cinzel',serif; font-size:1.3rem; font-weight:700; color:var(--ink); letter-spacing:0.08em; text-align:center; margin-bottom:0.4rem; }
-.av-sub { font-family:'Cormorant Garamond',serif; font-style:italic; color:rgba(26,18,8,0.6); font-size:1rem; text-align:center; margin-bottom:2.5rem; }
-.av-summary { background:var(--surf); border:1px solid var(--border); padding:2rem; display:flex; gap:3rem; align-items:center; margin-bottom:2.5rem; flex-wrap:wrap; }
-.av-big-num { font-family:'Cinzel',serif; font-size:4rem; font-weight:700; color:var(--rust); line-height:1; text-align:center; }
-.av-big-stars { font-size:1.5rem; text-align:center; margin:0.3rem 0; }
-.av-big-count { font-family:'Cinzel',serif; font-size:0.6rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:rgba(26,18,8,0.6); text-align:center; }
-.bars { flex:1; min-width:180px; }
-.brow { display:flex; align-items:center; gap:0.6rem; margin-bottom:0.4rem; }
-.brow-lbl { font-family:'Cinzel',serif; font-size:0.65rem; font-weight:700; color:var(--ink); min-width:28px; }
-.brow-track { flex:1; height:8px; background:rgba(26,18,8,0.1); border-radius:4px; overflow:hidden; }
-.brow-fill  { height:100%; background:var(--rust); border-radius:4px; transition:width 0.5s; width:0%; }
-.brow-n { font-family:'Cinzel',serif; font-size:0.62rem; font-weight:700; color:rgba(26,18,8,0.6); min-width:16px; text-align:right; }
-.av-form { background:var(--paper); border:1px solid var(--border); padding:2rem; margin-bottom:2.5rem; }
-.av-form h3 { font-family:'Cinzel',serif; font-size:0.78rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink); margin-bottom:1.5rem; }
-.av-label { font-family:'Cinzel',serif; font-size:0.63rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink); display:block; margin-bottom:0.4rem; }
-.av-input { width:100%; padding:0.7rem 1rem; margin-bottom:1.2rem; border:1px solid var(--border); background:var(--cream); font-family:'DM Sans',sans-serif; font-size:0.95rem; color:var(--ink); outline:none; }
-.av-input:focus { border-color:var(--rust); }
-.av-textarea { width:100%; padding:0.7rem 1rem; margin-bottom:1.5rem; border:1px solid var(--border); background:var(--cream); font-family:'DM Sans',sans-serif; font-size:0.95rem; color:var(--ink); outline:none; resize:vertical; line-height:1.65; min-height:100px; }
-.av-textarea:focus { border-color:var(--rust); }
-.stars-pick { display:flex; gap:0.3rem; margin-bottom:1.3rem; }
-.stars-pick span { font-size:2.2rem; cursor:pointer; line-height:1; color:rgba(26,18,8,0.2); transition:color 0.15s; user-select:none; }
-.av-btn { font-family:'Cinzel',serif; font-size:0.72rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; background:var(--rust); color:white; border:none; padding:0.85rem 2.5rem; cursor:pointer; transition:background 0.2s; }
-.av-btn:hover { background:#a33508; }
-.av-msg { font-family:'Cinzel',serif; font-size:0.65rem; font-weight:700; letter-spacing:0.1em; margin-left:1rem; }
-.comment { border:1px solid var(--border); padding:1.4rem 1.6rem; margin-bottom:1rem; background:var(--cream); }
-.chead { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem; flex-wrap:wrap; gap:0.4rem; }
-.cname { font-family:'Cinzel',serif; font-size:0.78rem; font-weight:700; color:var(--ink); }
-.cstars { color:var(--rust); font-size:1.05rem; }
-.cdate { font-family:'Cinzel',serif; font-size:0.6rem; font-weight:600; color:rgba(26,18,8,0.5); }
-.ctext { font-size:0.95rem; line-height:1.75; color:var(--ink); }
-.no-reviews { font-family:'Cormorant Garamond',serif; font-style:italic; color:rgba(26,18,8,0.5); font-size:1rem; text-align:center; padding:2rem 0; }
-
-/* RESPONSIVE */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;padding-top:68px;overflow-x:hidden;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:68px;background:rgba(245,240,232,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
+.nav-logo{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--rust);text-decoration:none;}
+.nav-tag{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(26,18,8,0.45);}
+.nav-back{font-family:'Cinzel',serif;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:2px solid rgba(193,68,14,0.4);padding:0.45rem 1.1rem;transition:all 0.2s;}
+.nav-back:hover{color:var(--rust);border-color:var(--rust);}
+.page-header{text-align:center;padding:2.5rem 2rem 0;}
+.sup{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-bottom:0.5rem;}
+.page-header h1{font-family:'Cinzel',serif;font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;color:var(--ink);letter-spacing:0.04em;}
+.page-header h1 em{font-style:italic;color:var(--rust);font-family:'Cormorant Garamond',serif;font-size:1.1em;}
+.page-header p{font-style:italic;color:rgba(26,18,8,0.7);font-size:0.95rem;margin-top:0.3rem;}
+.tabs-bar{display:flex;justify-content:center;max-width:960px;margin:2rem auto 0;border-bottom:2px solid var(--border);}
+.tab{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.50);background:none;border:none;padding:0.9rem 1.8rem;cursor:pointer;position:relative;transition:color 0.25s;}
+.tab::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;background:var(--rust);transform:scaleX(0);transition:transform 0.25s;}
+.tab:hover{color:var(--ink);}
+.tab.on{color:var(--ink);}
+.tab.on::after{transform:scaleX(1);}
+.panel{display:none;}
+.panel.on{display:block;animation:fadeUp 0.35s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.teia-wrap{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;padding:1.5rem 2rem 3rem;min-height:780px;}
+#net-wrap{height:750px;}
+#net-svg{width:100%;height:100%;}
+.nlab{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:#1a1208;text-anchor:middle;pointer-events:none;}
+.nlab-white{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:white;text-anchor:middle;pointer-events:none;}
+.nrole{font-family:'Cinzel',serif;font-size:12px;font-weight:600;fill:rgba(26,18,8,0.75);text-anchor:middle;pointer-events:none;}
+.node{cursor:pointer;}
+.node circle{transition:filter 0.25s;}
+.node:hover circle{filter:brightness(1.2);}
+.info-panel{border-left:1px solid var(--border);padding:2rem 1.8rem;display:flex;flex-direction:column;overflow-y:auto;max-height:750px;}
+.info-panel h3{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.info-role{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1rem;}
+.info-desc{font-size:0.93rem;line-height:1.78;color:var(--ink);flex:1;}
+.info-tags{margin-top:1.2rem;}
+.info-tags span{display:inline-block;margin:0.2rem 0.2rem 0 0;background:var(--surf);border:1px solid var(--border);padding:0.22rem 0.65rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);}
+.legend{display:flex;gap:0.8rem;margin-top:auto;padding-top:1.5rem;border-top:1px solid var(--border);flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;font-weight:600;color:var(--ink);}
+.leg-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.wrap{max-width:900px;margin:0 auto;padding:3rem 2rem 4rem;}
+.sec-title{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--ink);letter-spacing:0.12em;text-transform:uppercase;margin:2.5rem 0 0.5rem;}
+.sec-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;margin-bottom:1.5rem;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.card{background:var(--surf);border:1px solid var(--border);padding:1.4rem;}
+.card h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--rust);margin-bottom:0.6rem;}
+.card p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.pull{border:1px solid var(--border);border-left:4px solid var(--rust);padding:1.8rem 2rem;margin:2.5rem 0;background:var(--surf);}
+.pull p{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;line-height:1.7;color:var(--ink);}
+.pull cite{display:block;margin-top:0.8rem;font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);}
+.body-text p{font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.2rem;}
+.autor-grid{display:grid;grid-template-columns:240px 1fr;gap:3rem;align-items:start;margin-bottom:3rem;}
+.foto-box{width:240px;overflow:hidden;position:relative;border:2px solid var(--border);}
+.foto-box svg{display:block;width:100%;height:auto;}
+.foto-cap{position:absolute;bottom:0;left:0;right:0;background:rgba(26,18,8,0.65);padding:0.5rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(245,240,232,0.9);text-align:center;font-weight:700;}
+.bio h2{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.bio .dates{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1.2rem;}
+.bio p{font-size:0.97rem;line-height:1.85;color:var(--ink);margin-bottom:1rem;}
+.timeline{position:relative;margin:1.5rem 0;}
+.timeline::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:1px;background:linear-gradient(to bottom,var(--rust),transparent);}
+.tl{display:flex;gap:1.4rem;margin-bottom:1.5rem;}
+.tl-dot{width:15px;height:15px;border-radius:50%;border:2px solid var(--rust);background:var(--paper);flex-shrink:0;margin-top:2px;position:relative;z-index:1;}
+.tl-yr{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.14em;color:var(--rust);min-width:40px;padding-top:1px;}
+.tl-txt{font-size:0.92rem;line-height:1.68;color:var(--ink);}
+.tema{background:var(--surf);border-left:4px solid var(--rust);padding:1.4rem 1.6rem;}
+.tema .ico{font-size:1.6rem;display:block;margin-bottom:0.6rem;}
+.tema h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.7rem;}
+.tema p{font-size:0.92rem;line-height:1.78;color:var(--ink);}
+.licao{background:var(--paper);border-left:4px solid var(--gold);padding:1.3rem 1.5rem;}
+.licao h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);margin-bottom:0.5rem;}
+.licao p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.fotos-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:2.5rem;}
+.foto-espaco{position:relative;overflow:hidden;border:1px solid var(--border);}
+.foto-espaco svg{display:block;width:100%;height:auto;}
+.foto-leg{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(26,18,8,0.75));padding:1.5rem 0.9rem 0.6rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,240,232,0.92);}
+.lugar{background:var(--surf);border:1px solid var(--border);padding:1.6rem;position:relative;overflow:hidden;}
+.lugar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rust),transparent);}
+.lugar h3{font-family:'Cinzel',serif;font-size:0.75rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.4rem;}
+.lugar-tag{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;color:var(--ink);display:block;margin-bottom:0.5rem;}
+.lugar p{font-size:0.90rem;line-height:1.72;color:var(--ink);}
+.meta-box{background:var(--paper);border:1px solid var(--border);padding:2rem;margin:2.5rem 0;display:grid;grid-template-columns:60px 1fr;gap:1.5rem;align-items:start;}
+.meta-box .ico{font-size:2.6rem;}
+.meta-box h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.5rem;}
+.meta-box p{font-size:0.92rem;line-height:1.75;color:var(--ink);}
+.av-wrap{max-width:900px;margin:0 auto;padding:4rem 2rem 5rem;border-top:1px solid var(--border);}
+.av-wrap h2{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:0.08em;text-align:center;margin-bottom:0.4rem;}
+.av-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;text-align:center;margin-bottom:2.5rem;}
+.av-summary{background:var(--surf);border:1px solid var(--border);padding:2rem;display:flex;gap:3rem;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;}
+.av-big-num{font-family:'Cinzel',serif;font-size:4rem;font-weight:700;color:var(--rust);line-height:1;text-align:center;}
+.av-big-stars{font-size:1.5rem;text-align:center;margin:0.3rem 0;}
+.av-big-count{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.6);text-align:center;}
+.bars{flex:1;min-width:180px;}
+.brow{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;}
+.brow-lbl{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;color:var(--ink);min-width:28px;}
+.brow-track{flex:1;height:8px;background:rgba(26,18,8,0.1);border-radius:4px;overflow:hidden;}
+.brow-fill{height:100%;background:var(--rust);border-radius:4px;transition:width 0.5s;width:0%;}
+.brow-n{font-family:'Cinzel',serif;font-size:0.62rem;font-weight:700;color:rgba(26,18,8,0.6);min-width:16px;text-align:right;}
+.av-form{background:var(--paper);border:1px solid var(--border);padding:2rem;margin-bottom:2.5rem;}
+.av-form h3{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink);margin-bottom:1.5rem;}
+.av-label{font-family:'Cinzel',serif;font-size:0.63rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);display:block;margin-bottom:0.4rem;}
+.av-input{width:100%;padding:0.7rem 1rem;margin-bottom:1.2rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;}
+.av-input:focus{border-color:var(--rust);}
+.av-textarea{width:100%;padding:0.7rem 1rem;margin-bottom:1.5rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;resize:vertical;line-height:1.65;min-height:100px;}
+.av-textarea:focus{border-color:var(--rust);}
+.stars-pick{display:flex;gap:0.3rem;margin-bottom:1.3rem;}
+.stars-pick span{font-size:2.2rem;cursor:pointer;line-height:1;color:rgba(26,18,8,0.2);transition:color 0.15s;user-select:none;}
+.av-btn{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;background:var(--rust);color:white;border:none;padding:0.85rem 2.5rem;cursor:pointer;transition:background 0.2s;}
+.av-btn:hover{background:#a33508;}
+.av-btn:disabled{background:#aaa;cursor:default;}
+.av-msg{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;margin-left:1rem;}
+.comment{border:1px solid var(--border);padding:1.4rem 1.6rem;margin-bottom:1rem;background:var(--cream);}
+.chead{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;flex-wrap:wrap;gap:0.4rem;}
+.cname{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;color:var(--ink);}
+.cstars{color:var(--rust);font-size:1.05rem;}
+.cdate{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:600;color:rgba(26,18,8,0.5);}
+.ctext{font-size:0.95rem;line-height:1.75;color:var(--ink);}
+.no-reviews{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.5);font-size:1rem;text-align:center;padding:2rem 0;}
+.loading{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.12em;color:rgba(26,18,8,0.5);text-align:center;padding:1.5rem 0;}
 @media(max-width:900px){
-  .nav { padding:0 1.5rem; }
-  .nav-tag { display:none; }
-  .teia-wrap { grid-template-columns:1fr; }
-  #net-wrap { height:420px; }
-  .info-panel { border-left:none; border-top:1px solid var(--border); max-height:none; }
-  .autor-grid { grid-template-columns:1fr; }
-  .foto-box { width:100%; }
-  .g2 { grid-template-columns:1fr; }
-  .fotos-grid { grid-template-columns:1fr; }
-  .tab { padding:0.7rem 1rem; font-size:0.62rem; }
-  .av-summary { gap:1.5rem; }
+  .nav{padding:0 1.5rem;} .nav-tag{display:none;}
+  .teia-wrap{grid-template-columns:1fr;} #net-wrap{height:420px;}
+  .info-panel{border-left:none;border-top:1px solid var(--border);max-height:none;}
+  .autor-grid{grid-template-columns:1fr;} .foto-box{width:100%;}
+  .g2{grid-template-columns:1fr;} .fotos-grid{grid-template-columns:1fr;}
+  .tab{padding:0.7rem 1rem;font-size:0.62rem;} .av-summary{gap:1.5rem;}
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="nav">
   <a href="index.html" class="nav-logo">Socorro.</a>
-  <span class="nav-tag">Clube do Livro · Análise</span>
-  <a href="index.html#lidos" class="nav-back">← Voltar à Estante</a>
+  <span class="nav-tag">Clube do Livro &middot; Analise</span>
+  <a href="index.html#lidos" class="nav-back">&larr; Voltar a Estante</a>
 </nav>
 
-<!-- HEADER -->
 <div class="page-header">
-  <p class="sup">Socorro Acioli &nbsp;·&nbsp; 2014 &nbsp;·&nbsp; Análise Literária</p>
-  <h1><em>A Cabeça do Santo</em></h1>
-  <p>Personagens · Autora · Temas · Espaço Narrativo</p>
+  <p class="sup">Socorro Acioli &nbsp;&middot;&nbsp; 2014 &nbsp;&middot;&nbsp; Analise Literaria</p>
+  <h1><em>A Cabeca do Santo</em></h1>
+  <p>Personagens &middot; Autora &middot; Temas &middot; Espaco Narrativo</p>
 </div>
 
-<!-- TABS -->
 <div class="tabs-bar">
-  <button class="tab on"  onclick="goTab('teia',this)">Teia de Relações</button>
+  <button class="tab on"  onclick="goTab('teia',this)">Teia de Relacoes</button>
   <button class="tab"     onclick="goTab('autora',this)">A Autora</button>
-  <button class="tab"     onclick="goTab('temas',this)">Temas &amp; Lições</button>
-  <button class="tab"     onclick="goTab('espaco',this)">O Espaço Narrativo</button>
+  <button class="tab"     onclick="goTab('temas',this)">Temas &amp; Licoes</button>
+  <button class="tab"     onclick="goTab('espaco',this)">O Espaco Narrativo</button>
 </div>
 
-
-<!-- ═══ TEIA ═══ -->
+<!-- TEIA -->
 <div id="panel-teia" class="panel on">
 <div class="teia-wrap">
   <div id="net-wrap">
@@ -288,74 +173,32 @@ body {
     <line x1="670" y1="520" x2="770" y2="390" stroke="#c1440e" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="6,4"/>
     <line x1="180" y1="490" x2="110" y2="650" stroke="#6b8c6e" stroke-width="2" stroke-opacity="0.5" stroke-dasharray="6,4"/>
     <line x1="170" y1="200" x2="110" y2="650" stroke="#6b8c6e" stroke-width="2" stroke-opacity="0.38" stroke-dasharray="6,4"/>
-
-    <g class="node" onclick="info('santo')">
-      <circle cx="430" cy="110" r="64" fill="#d4a017" fill-opacity="0.14" stroke="#d4a017" stroke-width="3"/>
-      <circle cx="430" cy="110" r="48" fill="#d4a017" fill-opacity="0.92"/>
-      <text x="430" y="106" class="nlab-white">Santo</text>
-      <text x="430" y="126" class="nlab-white">Antônio</text>
-      <text x="430" y="182" class="nrole">símbolo · mediador</text>
-    </g>
-    <g class="node" onclick="info('samuel')">
-      <circle cx="430" cy="390" r="82" fill="#c1440e" fill-opacity="0.12" stroke="#c1440e" stroke-width="3.5"/>
-      <circle cx="430" cy="390" r="62" fill="#c1440e" fill-opacity="0.93"/>
-      <text x="430" y="397" class="nlab-white" style="font-size:20px;">Samuel</text>
-      <text x="430" y="482" class="nrole">protagonista</text>
-    </g>
-    <g class="node" onclick="info('mariinha')">
-      <circle cx="170" cy="200" r="50" fill="#c1440e" fill-opacity="0.80"/>
-      <text x="170" y="197" class="nlab-white">Mariinha</text>
-      <text x="170" y="260" class="nrole">mãe · ausente</text>
-    </g>
-    <g class="node" onclick="info('francisco')">
-      <circle cx="660" cy="240" r="52" fill="#6b8c6e" fill-opacity="0.88"/>
-      <text x="660" y="237" class="nlab-white">Francisco</text>
-      <text x="660" y="302" class="nrole">amigo · cúmplice</text>
-    </g>
-    <g class="node" onclick="info('niceia')">
-      <circle cx="180" cy="490" r="46" fill="#6b8c6e" fill-opacity="0.82"/>
-      <text x="180" y="487" class="nlab-white">Niceia</text>
-      <text x="180" y="546" class="nrole">avó · segredos</text>
-    </g>
-    <g class="node" onclick="info('voz')">
-      <circle cx="670" cy="520" r="48" fill="#c1440e" fill-opacity="0.48" stroke="#c1440e" stroke-width="2.5" stroke-dasharray="7,4"/>
-      <text x="670" y="517" class="nlab" style="font-size:16px;">A Voz</text>
-      <text x="670" y="578" class="nrole">misteriosa · amor</text>
-    </g>
-    <g class="node" onclick="info('mulheres')">
-      <circle cx="770" cy="390" r="50" fill="#6b8c6e" fill-opacity="0.72"/>
-      <text x="770" y="383" class="nlab-white" style="font-size:14px;">Mulheres</text>
-      <text x="770" y="401" class="nlab-white" style="font-size:14px;">de Candeia</text>
-      <text x="770" y="452" class="nrole">coletivo · fé</text>
-    </g>
-    <g class="node" onclick="info('pai')">
-      <circle cx="110" cy="650" r="42" fill="#1a1208" fill-opacity="0.25" stroke="#1a1208" stroke-width="2.5" stroke-dasharray="6,4"/>
-      <text x="110" y="647" class="nlab" style="font-size:16px;">O Pai</text>
-      <text x="110" y="704" class="nrole">ausente · busca</text>
-    </g>
+    <g class="node" onclick="info('santo')"><circle cx="430" cy="110" r="64" fill="#d4a017" fill-opacity="0.14" stroke="#d4a017" stroke-width="3"/><circle cx="430" cy="110" r="48" fill="#d4a017" fill-opacity="0.92"/><text x="430" y="106" class="nlab-white">Santo</text><text x="430" y="126" class="nlab-white">Antonio</text><text x="430" y="182" class="nrole">simbolo . mediador</text></g>
+    <g class="node" onclick="info('samuel')"><circle cx="430" cy="390" r="82" fill="#c1440e" fill-opacity="0.12" stroke="#c1440e" stroke-width="3.5"/><circle cx="430" cy="390" r="62" fill="#c1440e" fill-opacity="0.93"/><text x="430" y="397" class="nlab-white" style="font-size:20px;">Samuel</text><text x="430" y="482" class="nrole">protagonista</text></g>
+    <g class="node" onclick="info('mariinha')"><circle cx="170" cy="200" r="50" fill="#c1440e" fill-opacity="0.80"/><text x="170" y="197" class="nlab-white">Mariinha</text><text x="170" y="260" class="nrole">mae . ausente</text></g>
+    <g class="node" onclick="info('francisco')"><circle cx="660" cy="240" r="52" fill="#6b8c6e" fill-opacity="0.88"/><text x="660" y="237" class="nlab-white">Francisco</text><text x="660" y="302" class="nrole">amigo . cumplice</text></g>
+    <g class="node" onclick="info('niceia')"><circle cx="180" cy="490" r="46" fill="#6b8c6e" fill-opacity="0.82"/><text x="180" y="487" class="nlab-white">Niceia</text><text x="180" y="546" class="nrole">avo . segredos</text></g>
+    <g class="node" onclick="info('voz')"><circle cx="670" cy="520" r="48" fill="#c1440e" fill-opacity="0.48" stroke="#c1440e" stroke-width="2.5" stroke-dasharray="7,4"/><text x="670" y="517" class="nlab" style="font-size:16px;">A Voz</text><text x="670" y="578" class="nrole">misteriosa . amor</text></g>
+    <g class="node" onclick="info('mulheres')"><circle cx="770" cy="390" r="50" fill="#6b8c6e" fill-opacity="0.72"/><text x="770" y="383" class="nlab-white" style="font-size:14px;">Mulheres</text><text x="770" y="401" class="nlab-white" style="font-size:14px;">de Candeia</text><text x="770" y="452" class="nrole">coletivo . fe</text></g>
+    <g class="node" onclick="info('pai')"><circle cx="110" cy="650" r="42" fill="#1a1208" fill-opacity="0.25" stroke="#1a1208" stroke-width="2.5" stroke-dasharray="6,4"/><text x="110" y="647" class="nlab" style="font-size:16px;">O Pai</text><text x="110" y="704" class="nrole">ausente . busca</text></g>
   </svg>
   </div>
-
   <div class="info-panel">
     <h3 id="i-name">Clique em um personagem</h3>
     <p class="info-role" id="i-role">para ver o perfil</p>
-    <p class="info-desc" id="i-desc">Samuel mora dentro da cabeça gigante de Santo Antônio em Candeia e começa a ouvir as preces das mulheres da cidade — um dom que vai mudar tudo.</p>
+    <p class="info-desc" id="i-desc">Samuel mora dentro da cabeca gigante de Santo Antonio em Candeia e comeca a ouvir as preces das mulheres da cidade.</p>
     <div class="info-tags" id="i-tags"></div>
     <div class="legend">
       <div class="leg"><div class="leg-dot" style="background:#c1440e"></div>Afetivo</div>
       <div class="leg"><div class="leg-dot" style="background:#6b8c6e"></div>Social</div>
-      <div class="leg"><div class="leg-dot" style="background:#d4a017"></div>Simbólico</div>
-      <div class="leg">
-        <svg width="24" height="8"><line x1="0" y1="4" x2="24" y2="4" stroke="#1a1208" stroke-width="2" stroke-dasharray="5,3"/></svg>
-        Ausente
-      </div>
+      <div class="leg"><div class="leg-dot" style="background:#d4a017"></div>Simbolico</div>
+      <div class="leg"><svg width="24" height="8"><line x1="0" y1="4" x2="24" y2="4" stroke="#1a1208" stroke-width="2" stroke-dasharray="5,3"/></svg>Ausente</div>
     </div>
   </div>
 </div>
 </div>
 
-
-<!-- ═══ AUTORA ═══ -->
+<!-- AUTORA -->
 <div id="panel-autora" class="panel">
 <div class="wrap">
   <div class="autor-grid">
@@ -366,163 +209,121 @@ body {
         <ellipse cx="120" cy="268" rx="84" ry="60" fill="#c1b89a"/>
         <text x="120" y="218" font-family="Cinzel,serif" font-size="11" font-weight="700" fill="rgba(26,18,8,0.42)" text-anchor="middle" letter-spacing="2">SOCORRO ACIOLI</text>
       </svg>
-      <div class="foto-cap">Fortaleza, Ceará · 1975</div>
+      <div class="foto-cap">Fortaleza, Ceara 1975</div>
     </div>
     <div class="bio">
       <h2>Socorro Acioli</h2>
-      <p class="dates">Fortaleza, Ceará · 1975</p>
-      <p>Escritora, jornalista e professora, Socorro Acioli é uma das vozes mais expressivas da literatura brasileira contemporânea. Nascida em Fortaleza, publicou seu primeiro livro aos oito anos — <em>O Pipoqueiro João</em> (1984) — revelando uma vocação literária precoce e persistente.</p>
-      <p>Formada em Comunicação Social pela UFC, com Mestrado em Literatura Brasileira (2004) e Doutorado em Estudos de Literatura pela UFF (2014). Professora da Universidade de Fortaleza, coordena a especialização em Escrita e Criação.</p>
-      <p>Autora de mais de 20 livros, suas obras foram publicadas na Inglaterra, EUA, França, México e Itália.</p>
+      <p class="dates">Fortaleza, Ceara 1975</p>
+      <p>Escritora, jornalista e professora, Socorro Acioli e uma das vozes mais expressivas da literatura brasileira contemporanea. Nascida em Fortaleza, publicou seu primeiro livro aos oito anos.</p>
+      <p>Formada em Comunicacao Social pela UFC, com Mestrado em Literatura Brasileira (2004) e Doutorado pela UFF (2014). Professora da Universidade de Fortaleza.</p>
+      <p>Autora de mais de 20 livros publicados na Inglaterra, EUA, Franca, Mexico e Italia.</p>
     </div>
   </div>
-
   <p class="sec-title">Linha do Tempo</p>
   <div class="timeline">
-    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1975</div><div class="tl-txt">Nasce em Fortaleza, Ceará.</div></div>
-    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1984</div><div class="tl-txt">Publica <em>O Pipoqueiro João</em> aos oito anos — estreia absolutamente precoce.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1975</div><div class="tl-txt">Nasce em Fortaleza, Ceara.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1984</div><div class="tl-txt">Publica <em>O Pipoqueiro Joao</em> aos oito anos.</div></div>
     <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2001</div><div class="tl-txt">Forma-se em Jornalismo pela UFC. Publica a biografia <em>Frei Tito</em>.</div></div>
-    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2003</div><div class="tl-txt">Publica a biografia de Rachel de Queiroz, escrita a partir de entrevistas diretas.</div></div>
-    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2006</div><div class="tl-txt">Selecionada pessoalmente por García Márquez para a oficina <em>Como Contar um Conto</em> em Cuba — única brasileira na turma.</div></div>
-    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2007</div><div class="tl-txt">Pesquisadora visitante na Biblioteca Internacional da Juventude de Munique, Alemanha.</div></div>
-    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2013</div><div class="tl-txt">Vence o <strong>Prêmio Jabuti</strong> na categoria infantil com <em>Ela tem olhos de céu</em>.</div></div>
-    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2014</div><div class="tl-txt">Publica <em>A Cabeça do Santo</em>. Eleito pela Biblioteca Pública de Nova York um dos 50 melhores livros para jovens adultos.</div></div>
-    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2023</div><div class="tl-txt">Publica <em>Oração para Desaparecer</em> e torna-se a autora mais vendida da FLIP. O <em>Fantástico</em> relança <em>A Cabeça do Santo</em> ao grande público.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2006</div><div class="tl-txt">Selecionada pessoalmente por Garcia Marquez para oficina em Cuba - unica brasileira na turma.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2013</div><div class="tl-txt">Vence o <strong>Premio Jabuti</strong> na categoria infantil.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2014</div><div class="tl-txt">Publica <em>A Cabeca do Santo</em>. Eleito pela Biblioteca Publica de Nova York um dos 50 melhores livros para jovens adultos.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2023</div><div class="tl-txt">Autora mais vendida da FLIP. O <em>Fantastico</em> relanca <em>A Cabeca do Santo</em> ao grande publico.</div></div>
   </div>
-
   <p class="sec-title">Curiosidades</p>
-  <p class="sec-sub">Detalhes que revelam a escritora por trás do livro</p>
+  <p class="sec-sub">Detalhes que revelam a escritora por tras do livro</p>
   <div class="g2">
-    <div class="card"><h4>🏛️ A Cabeça Real</h4><p>Inspirada numa reportagem: a cabeça de uma estátua de Santo Antônio ficou 36 anos no chão em Caridade (CE), servindo de banheiro e abrigo. A matéria mencionava que um homem havia morado lá — essa frase acendeu o romance.</p></div>
-    <div class="card"><h4>✍️ Um parágrafo para García Márquez</h4><p>Sem inscrição na oficina, Socorro enviou um único parágrafo. O Nobel colombiano a selecionou pessoalmente. Dez anos depois, esse parágrafo se tornou o romance.</p></div>
-    <div class="card"><h4>🗽 50 Melhores — Nova York</h4><p>A Biblioteca Pública de Nova York elegeu o livro um dos 50 melhores para jovens adultos — honraria rara para a literatura brasileira.</p></div>
-    <div class="card"><h4>🎬 Adaptação para o Cinema</h4><p>O livro está em processo de adaptação cinematográfica, com a primeira sala de roteiro confirmada em 2024.</p></div>
-    <div class="card"><h4>📺 O Fantástico e a Explosão</h4><p>Em setembro de 2023, quase dez anos após o lançamento, um episódio do <em>Fantástico</em> catapultou o livro de volta às listas de mais vendidos.</p></div>
-    <div class="card"><h4>🖊️ Escritora desde os 8 anos</h4><p>Depois de publicar na infância, foi desencorajada. Retornou em 2006 ao buscar cursos de escrita em Fortaleza — e não encontrou nenhum.</p></div>
+    <div class="card"><h4>A Cabeca Real</h4><p>Inspirada numa reportagem: a cabeca de uma estatua de Santo Antonio ficou 36 anos no chao em Caridade (CE). A materia mencionava que um homem havia morado la - essa frase acendeu o romance.</p></div>
+    <div class="card"><h4>Um paragrafo para Garcia Marquez</h4><p>Sem inscricao na oficina, Socorro enviou um unico paragrafo. O Nobel colombiano a selecionou pessoalmente. Dez anos depois esse paragrafo se tornou o romance.</p></div>
+    <div class="card"><h4>50 Melhores - Nova York</h4><p>A Biblioteca Publica de Nova York elegeu o livro um dos 50 melhores para jovens adultos - honraria rara para a literatura brasileira.</p></div>
+    <div class="card"><h4>Adaptacao para o Cinema</h4><p>O livro esta em processo de adaptacao cinematografica, com a primeira sala de roteiro confirmada em 2024.</p></div>
+    <div class="card"><h4>O Fantastico e a Explosao</h4><p>Em setembro de 2023, quase dez anos apos o lancamento, um episodio do Fantastico catapultou o livro de volta as listas de mais vendidos.</p></div>
+    <div class="card"><h4>Escritora desde os 8 anos</h4><p>Foi desencorajada a escrever quando jovem. Retornou decadas depois e se tornou Premio Jabuti.</p></div>
   </div>
 </div>
 </div>
 
-
-<!-- ═══ TEMAS & LIÇÕES ═══ -->
+<!-- TEMAS -->
 <div id="panel-temas" class="panel">
 <div class="wrap">
   <p class="sec-title" style="margin-top:0;">Temas &amp; Mensagens</p>
-  <p class="sec-sub">O que A Cabeça do Santo diz sobre o humano, a fé e o sertão</p>
-
+  <p class="sec-sub">O que A Cabeca do Santo diz sobre o humano, a fe e o sertao</p>
   <div class="g2" style="margin-top:0;">
-    <div class="tema"><span class="ico">🙏</span><h3>Fé e o Sagrado Profano</h3><p>O livro questiona os limites entre milagre e malandragem. Samuel não acredita em santos, mas habita sua cabeça e torna-se intermediário do divino. A fé é real e poderosa — mesmo que o "milagre" tenha rosto humano.</p></div>
-    <div class="tema"><span class="ico">❤️</span><h3>Amor Filial e Promessa</h3><p>Toda a jornada existe por causa de uma promessa à mãe moribunda. O amor de Samuel por Mariinha é a única bússola de um homem sem rumo — a força motriz mais verdadeira do romance.</p></div>
-    <div class="tema"><span class="ico">🌺</span><h3>O Feminino e o Desejo</h3><p>As preces revelam o universo interior das mulheres de Candeia: medos, desejos de amor, solidão e resistência. São elas o coração pulsante da narrativa.</p></div>
-    <div class="tema"><span class="ico">🌵</span><h3>Sertão como Personagem</h3><p>O calor, a seca, a poeira, os pés feridos — o Nordeste não é pano de fundo, é corpo vivo. A paisagem molda Samuel com a mesma força que molda os moradores de Candeia.</p></div>
-    <div class="tema"><span class="ico">✨</span><h3>Realismo Mágico Brasileiro</h3><p>A autora foi discípula de García Márquez. O fantástico aqui é inteiramente cearense: crendices populares, santos casamenteiros e cidades amaldiçoadas do imaginário nordestino.</p></div>
-    <div class="tema"><span class="ico">🔍</span><h3>Identidade e Busca do Pai</h3><p>Sob a trama do milagre existe a busca de um filho por um pai desconhecido. Samuel carrega rancor e curiosidade. A resolução dessa busca é um dos fios mais tensos do romance.</p></div>
+    <div class="tema"><span class="ico">&#x1F64F;</span><h3>Fe e o Sagrado Profano</h3><p>Samuel nao acredita em santos, mas habita sua cabeca e torna-se intermediario do divino. A fe e real e poderosa - mesmo que o "milagre" tenha rosto humano.</p></div>
+    <div class="tema"><span class="ico">&#x2764;&#xFE0F;</span><h3>Amor Filial e Promessa</h3><p>Toda a jornada existe por causa de uma promessa a mae moribunda. O amor de Samuel por Mariinha e a unica bussola de um homem sem rumo.</p></div>
+    <div class="tema"><span class="ico">&#x1F33A;</span><h3>O Feminino e o Desejo</h3><p>As preces revelam o universo interior das mulheres de Candeia: medos, desejos de amor, solidao e resistencia. Sao elas o coracao pulsante da narrativa.</p></div>
+    <div class="tema"><span class="ico">&#x1F335;</span><h3>Sertao como Personagem</h3><p>O calor, a seca, a poeira, os pes feridos - o Nordeste nao e pano de fundo, e corpo vivo. A paisagem molda Samuel com a mesma forca que molda os moradores de Candeia.</p></div>
+    <div class="tema"><span class="ico">&#x2728;</span><h3>Realismo Magico Brasileiro</h3><p>A autora foi discipula de Garcia Marquez. O fantastico aqui e inteiramente cearense: crendices populares, santos casamenteiros e cidades amaldicadas do imaginario nordestino.</p></div>
+    <div class="tema"><span class="ico">&#x1F50D;</span><h3>Identidade e Busca do Pai</h3><p>Sob a trama do milagre existe a busca de um filho por um pai desconhecido. A resolucao dessa busca e um dos fios mais tensos do romance.</p></div>
   </div>
-
   <div class="pull">
     <p>Riam das desgraças, suas e dos outros. Desgraça é tudo coisa de se rir.</p>
     <cite>Socorro Acioli — A Cabeça do Santo</cite>
   </div>
-
   <p class="sec-title">O que o livro nos ensina</p>
-  <p class="sec-sub">As grandes lições que a narrativa carrega</p>
+  <p class="sec-sub">As grandes licoes que a narrativa carrega</p>
   <div class="g2">
-    <div class="licao"><h4>A bondade pode se disfarçar de milagre</h4><p>Samuel mente, mas sua mentira faz bem. O livro propõe que a intenção importa mais do que o método — e que às vezes o bem se realiza por vias tortas e inesperadas.</p></div>
-    <div class="licao"><h4>Prometer é um ato sagrado</h4><p>A promessa feita à mãe move o protagonista por toda a narrativa. O romance defende que cumprir a palavra dada àqueles que amamos é uma forma de honrar sua existência.</p></div>
-    <div class="licao"><h4>O regional é universal</h4><p>Uma cabeça de santo no interior do Ceará conquistou a Biblioteca de Nova York. Quanto mais específico e enraizado, mais universal o alcance de uma história.</p></div>
-    <div class="licao"><h4>A fé move — mesmo sem o fiel</h4><p>Samuel não acredita, mas age como se acreditasse. O livro sugere que o efeito da fé não depende de quem a transmite — depende de quem a recebe e o que faz com ela.</p></div>
-    <div class="licao"><h4>Escutar é um dom transformador</h4><p>O único poder real de Samuel é ouvir as preces das mulheres. Dar atenção verdadeira ao desejo do outro é apresentado como a habilidade mais rara e preciosa de todas.</p></div>
-    <div class="licao"><h4>Cidades morrem sem esperança</h4><p>Candeia para no tempo quando a obra do santo é interrompida. A redenção da cidade e de Samuel são a mesma coisa — a esperança coletiva ressuscita o que estava soterrado.</p></div>
+    <div class="licao"><h4>A bondade pode se disfarcar de milagre</h4><p>Samuel mente, mas sua mentira faz bem. O livro propoe que a intencao importa mais do que o metodo - e que as vezes o bem se realiza por vias tortas.</p></div>
+    <div class="licao"><h4>Prometer e um ato sagrado</h4><p>A promessa feita a mae move o protagonista por toda a narrativa. Cumprir a palavra dada aqueles que amamos e uma forma de honrar sua existencia.</p></div>
+    <div class="licao"><h4>O regional e universal</h4><p>Uma cabeca de santo no interior do Ceara conquistou a Biblioteca de Nova York. Quanto mais especifico e enraizado, mais universal o alcance de uma historia.</p></div>
+    <div class="licao"><h4>A fe move - mesmo sem o fiel</h4><p>Samuel nao acredita, mas age como se acreditasse. O efeito da fe nao depende de quem a transmite - depende de quem a recebe.</p></div>
+    <div class="licao"><h4>Escutar e um dom transformador</h4><p>O unico poder real de Samuel e ouvir as preces das mulheres. Dar atencao verdadeira ao desejo do outro e a habilidade mais rara e preciosa.</p></div>
+    <div class="licao"><h4>Cidades morrem sem esperanca</h4><p>Candeia para no tempo quando a obra do santo e interrompida. A redencao da cidade e de Samuel sao a mesma coisa.</p></div>
   </div>
-
   <div class="body-text" style="margin-top:2rem;">
-    <p>A mensagem central pode ser resumida numa frase que o próprio texto sugere: <em>Deus escreve certo por linhas tortas.</em> Um jovem descrente, sem família e sem rumo, entra numa cabeça de pedra e sai de lá tendo mudado uma cidade inteira — e a si mesmo.</p>
-    <p>Acioli escreve com veracidade sobre corrupção e maldade. Não há santos sem mácula no livro, nem vilões sem humanidade. Essa ambiguidade moral é uma das marcas mais sofisticadas da obra.</p>
+    <p>A mensagem central: <em>Deus escreve certo por linhas tortas.</em> Um jovem descrente entra numa cabeca de pedra e sai de la tendo mudado uma cidade inteira - e a si mesmo.</p>
+    <p>Acioli escreve com veracidade sobre corrupcao e maldade. Nao ha santos sem macula no livro, nem viloes sem humanidade. Essa ambiguidade moral e uma das marcas mais sofisticadas da obra.</p>
   </div>
 </div>
 </div>
 
-
-<!-- ═══ ESPAÇO ═══ -->
+<!-- ESPACO -->
 <div id="panel-espaco" class="panel">
 <div class="wrap">
-  <p class="sec-title" style="margin-top:0;">O Espaço Narrativo</p>
-  <p class="sec-sub">O sertão cearense como corpo vivo — entre Juazeiro do Norte e Candeia</p>
-
-  <!-- 4 ilustrações do sertão -->
+  <p class="sec-title" style="margin-top:0;">O Espaco Narrativo</p>
+  <p class="sec-sub">O sertao cearense como corpo vivo - entre Juazeiro do Norte e Candeia</p>
   <div class="fotos-grid">
-    <div class="foto-espaco">
-      <svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
+    <div class="foto-espaco"><svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#d4956a"/>
-      <stop offset="60%" stop-color="#e8c49a"/>
-      <stop offset="100%" stop-color="#c8a070"/>
-    </linearGradient>
-    <linearGradient id="ground1" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#b8843a"/>
-      <stop offset="100%" stop-color="#8a5c20"/>
-    </linearGradient>
+    <linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d4956a"/><stop offset="60%" stop-color="#e8c49a"/><stop offset="100%" stop-color="#c8a070"/></linearGradient>
+    <linearGradient id="ground1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b8843a"/><stop offset="100%" stop-color="#8a5c20"/></linearGradient>
   </defs>
-  <!-- céu -->
   <rect width="480" height="280" fill="url(#sky1)"/>
-  <!-- sol -->
   <circle cx="380" cy="55" r="32" fill="#f0c040" fill-opacity="0.9"/>
   <circle cx="380" cy="55" r="42" fill="#f0c040" fill-opacity="0.2"/>
-  <!-- nuvens escassas -->
   <ellipse cx="120" cy="45" rx="38" ry="12" fill="white" fill-opacity="0.25"/>
   <ellipse cx="145" cy="40" rx="28" ry="10" fill="white" fill-opacity="0.2"/>
-  <!-- terra -->
   <rect x="0" y="170" width="480" height="110" fill="url(#ground1)"/>
-  <!-- estrada -->
   <polygon points="210,170 270,170 290,280 190,280" fill="#c8a870"/>
   <polygon points="233,170 247,170 252,230 228,230" fill="#d4b880" fill-opacity="0.6"/>
-  <!-- pedras -->
   <ellipse cx="60" cy="200" rx="18" ry="8" fill="#9a6830" fill-opacity="0.7"/>
   <ellipse cx="140" cy="220" rx="12" ry="5" fill="#9a6830" fill-opacity="0.6"/>
   <ellipse cx="360" cy="195" rx="20" ry="7" fill="#9a6830" fill-opacity="0.7"/>
   <ellipse cx="420" cy="215" rx="10" ry="4" fill="#9a6830" fill-opacity="0.5"/>
-  <!-- mandacaru esquerda -->
   <rect x="55" y="95" width="12" height="75" rx="6" fill="#5a7a3a"/>
   <rect x="42" y="115" width="8" height="30" rx="4" fill="#5a7a3a" transform="rotate(-25,46,115)"/>
   <rect x="67" y="108" width="8" height="28" rx="4" fill="#5a7a3a" transform="rotate(20,67,108)"/>
-  <!-- mandacaru direita grande -->
   <rect x="390" y="80" width="14" height="90" rx="7" fill="#4a6a2a"/>
   <rect x="375" y="100" width="9" height="35" rx="4" fill="#4a6a2a" transform="rotate(-22,379,100)"/>
   <rect x="404" y="92" width="9" height="32" rx="4" fill="#4a6a2a" transform="rotate(25,404,92)"/>
-  <!-- arbusto caatinga -->
   <ellipse cx="160" cy="175" rx="22" ry="10" fill="#7a6030" fill-opacity="0.8"/>
   <ellipse cx="320" cy="178" rx="18" ry="8" fill="#7a6030" fill-opacity="0.7"/>
   <ellipse cx="430" cy="182" rx="14" ry="6" fill="#7a6030" fill-opacity="0.6"/>
-  <!-- horizonte montanha -->
   <polygon points="0,155 80,120 160,145 240,115 320,140 400,118 480,135 480,170 0,170" fill="#c87840" fill-opacity="0.5"/>
-</svg>
-      <div class="foto-leg">A estrada que parte de Juazeiro do Norte</div>
-    </div>
-    <div class="foto-espaco">
-      <svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
+</svg><div class="foto-leg">A estrada que parte de Juazeiro do Norte</div></div>
+    <div class="foto-espaco"><svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#8bacc8"/>
-      <stop offset="50%" stop-color="#c4d8e8"/>
-      <stop offset="100%" stop-color="#d8c8a0"/>
-    </linearGradient>
+    <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8bacc8"/><stop offset="50%" stop-color="#c4d8e8"/><stop offset="100%" stop-color="#d8c8a0"/></linearGradient>
   </defs>
   <rect width="480" height="280" fill="url(#sky2)"/>
-  <!-- sol forte -->
   <circle cx="240" cy="50" r="28" fill="#fff0a0" fill-opacity="0.95"/>
   <circle cx="240" cy="50" r="40" fill="#fff0a0" fill-opacity="0.18"/>
   <circle cx="240" cy="50" r="55" fill="#fff0a0" fill-opacity="0.07"/>
-  <!-- terra rachada -->
   <rect x="0" y="175" width="480" height="105" fill="#b87830"/>
-  <!-- rachaduras no chão -->
   <path d="M30,185 L60,195 L45,210" stroke="#8a5520" stroke-width="1.5" fill="none"/>
   <path d="M100,180 L130,192 L120,208 L140,220" stroke="#8a5520" stroke-width="1.2" fill="none"/>
   <path d="M200,183 L220,195" stroke="#8a5520" stroke-width="1.5" fill="none"/>
   <path d="M300,178 L330,188 L310,205 L340,215" stroke="#8a5520" stroke-width="1.2" fill="none"/>
   <path d="M400,182 L430,195 L418,208" stroke="#8a5520" stroke-width="1.5" fill="none"/>
-  <!-- árvores secas caatinga -->
-  <!-- árvore 1 -->
   <line x1="80" y1="175" x2="80" y2="100" stroke="#6a3a10" stroke-width="7"/>
   <line x1="80" y1="130" x2="50" y2="105" stroke="#6a3a10" stroke-width="4"/>
   <line x1="80" y1="120" x2="110" y2="95" stroke="#6a3a10" stroke-width="4"/>
@@ -530,225 +331,149 @@ body {
   <line x1="50" y1="105" x2="55" y2="88" stroke="#6a3a10" stroke-width="2.5"/>
   <line x1="110" y1="95" x2="125" y2="80" stroke="#6a3a10" stroke-width="2.5"/>
   <line x1="110" y1="95" x2="105" y2="78" stroke="#6a3a10" stroke-width="2.5"/>
-  <!-- árvore 2 menor -->
   <line x1="200" y1="175" x2="200" y2="120" stroke="#7a4a18" stroke-width="5"/>
   <line x1="200" y1="145" x2="175" y2="125" stroke="#7a4a18" stroke-width="3"/>
   <line x1="200" y1="138" x2="225" y2="118" stroke="#7a4a18" stroke-width="3"/>
   <line x1="175" y1="125" x2="162" y2="112" stroke="#7a4a18" stroke-width="2"/>
   <line x1="225" y1="118" x2="238" y2="105" stroke="#7a4a18" stroke-width="2"/>
-  <!-- mandacaru -->
   <rect x="340" y="90" width="16" height="85" rx="8" fill="#4a7030"/>
   <rect x="322" y="112" width="10" height="38" rx="5" fill="#4a7030" transform="rotate(-20,327,112)"/>
   <rect x="356" y="105" width="10" height="35" rx="5" fill="#4a7030" transform="rotate(22,356,105)"/>
   <circle cx="340" cy="90" r="8" fill="#e88040" fill-opacity="0.7"/>
-  <!-- pedra -->
   <ellipse cx="420" cy="185" rx="28" ry="12" fill="#9a7040"/>
   <ellipse cx="430" cy="182" rx="18" ry="8" fill="#b08050"/>
-  <!-- poeira -->
   <ellipse cx="150" cy="172" rx="40" ry="6" fill="#d4a060" fill-opacity="0.35"/>
-</svg>
-      <div class="foto-leg">A caatinga na seca — paisagem que molda Samuel</div>
-    </div>
-    <div class="foto-espaco">
-      <svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
+</svg><div class="foto-leg">A caatinga na seca - paisagem que molda Samuel</div></div>
+    <div class="foto-espaco"><svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="sky3" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1a3a5c"/>
-      <stop offset="40%" stop-color="#2a6090"/>
-      <stop offset="100%" stop-color="#c8a878"/>
-    </linearGradient>
-    <linearGradient id="stone" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#b0a090"/>
-      <stop offset="100%" stop-color="#807060"/>
-    </linearGradient>
+    <linearGradient id="sky3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d4956a"/><stop offset="55%" stop-color="#e8c49a"/><stop offset="100%" stop-color="#c8a060"/></linearGradient>
+    <linearGradient id="stone3" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#a09080"/><stop offset="50%" stop-color="#c0b0a0"/><stop offset="100%" stop-color="#888070"/></linearGradient>
+    <linearGradient id="ground3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b8843a"/><stop offset="100%" stop-color="#8a5c20"/></linearGradient>
+    <radialGradient id="glow3" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4a017" stop-opacity="0.25"/><stop offset="100%" stop-color="#d4a017" stop-opacity="0"/></radialGradient>
   </defs>
-  <!-- céu noturno/crepúsculo -->
   <rect width="480" height="280" fill="url(#sky3)"/>
-  <!-- estrelas -->
-  <circle cx="50" cy="30" r="1.5" fill="white" fill-opacity="0.8"/>
-  <circle cx="120" cy="20" r="1.2" fill="white" fill-opacity="0.7"/>
-  <circle cx="80" cy="55" r="1" fill="white" fill-opacity="0.6"/>
-  <circle cx="160" cy="35" r="1.5" fill="white" fill-opacity="0.9"/>
-  <circle cx="30" cy="70" r="1" fill="white" fill-opacity="0.5"/>
-  <circle cx="400" cy="25" r="1.5" fill="white" fill-opacity="0.8"/>
-  <circle cx="450" cy="45" r="1.2" fill="white" fill-opacity="0.7"/>
-  <circle cx="420" cy="70" r="1" fill="white" fill-opacity="0.6"/>
-  <!-- lua -->
-  <circle cx="410" cy="38" r="18" fill="#f8e8b0" fill-opacity="0.9"/>
-  <circle cx="418" cy="33" r="15" fill="url(#sky3)" fill-opacity="0.5"/>
-  <!-- terra -->
-  <rect x="0" y="200" width="480" height="80" fill="#7a5828"/>
-  <!-- BASE cabeça -->
-  <ellipse cx="240" cy="210" rx="85" ry="18" fill="#6a4820" fill-opacity="0.8"/>
-  <!-- CABEÇA DO SANTO - grande, no chão -->
-  <!-- pescoço cortado (base) -->
-  <ellipse cx="240" cy="205" rx="68" ry="14" fill="#908070"/>
-  <!-- cabeça oval -->
-  <ellipse cx="240" cy="135" rx="72" ry="82" fill="url(#stone)"/>
-  <!-- feições esculpidas -->
-  <!-- olhos -->
-  <ellipse cx="215" cy="118" rx="10" ry="6" fill="#6a5a4a"/>
-  <ellipse cx="265" cy="118" rx="10" ry="6" fill="#6a5a4a"/>
-  <ellipse cx="215" cy="117" rx="7" ry="4" fill="#3a2a1a"/>
-  <ellipse cx="265" cy="117" rx="7" ry="4" fill="#3a2a1a"/>
-  <!-- nariz -->
-  <path d="M232,130 Q240,148 248,130" stroke="#7a6a5a" stroke-width="3" fill="none"/>
-  <!-- boca -->
-  <path d="M220,155 Q240,165 260,155" stroke="#6a5a4a" stroke-width="3" fill="none"/>
-  <!-- barba/textura -->
-  <path d="M190,165 Q215,185 240,188 Q265,185 290,165" stroke="#908070" stroke-width="2.5" fill="none" stroke-dasharray="4,3"/>
-  <!-- auréola/halo -->
-  <circle cx="240" cy="78" r="35" fill="none" stroke="#d4a017" stroke-width="3" stroke-opacity="0.6"/>
-  <circle cx="240" cy="78" r="42" fill="none" stroke="#d4a017" stroke-width="1" stroke-opacity="0.3"/>
-  <!-- luz dramática -->
-  <ellipse cx="240" cy="240" rx="100" ry="20" fill="#d4a017" fill-opacity="0.15"/>
-  <!-- vegetação ao redor -->
-  <ellipse cx="100" cy="215" rx="25" ry="10" fill="#5a7a3a" fill-opacity="0.7"/>
-  <ellipse cx="380" cy="218" rx="20" ry="8" fill="#5a7a3a" fill-opacity="0.6"/>
-</svg>
-      <div class="foto-leg">A Cabeça do Santo — abrigo e portal</div>
-    </div>
-    <div class="foto-espaco">
-      <svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="60" cy="70" r="30" fill="#e07820" fill-opacity="0.8"/>
+  <circle cx="60" cy="70" r="44" fill="#e07820" fill-opacity="0.12"/>
+  <rect x="0" y="190" width="480" height="90" fill="url(#ground3)"/>
+  <ellipse cx="240" cy="210" rx="148" ry="22" fill="#6a4010" fill-opacity="0.45"/>
+  <ellipse cx="358" cy="193" rx="18" ry="32" fill="#807060" transform="rotate(-8,358,193)"/>
+  <ellipse cx="358" cy="193" rx="12" ry="24" fill="#5a4030" transform="rotate(-8,358,193)"/>
+  <ellipse cx="225" cy="188" rx="130" ry="88" fill="url(#stone3)" transform="rotate(-8,225,188)"/>
+  <ellipse cx="225" cy="248" rx="120" ry="14" fill="#5a3a10" fill-opacity="0.4"/>
+  <path d="M100,155 Q130,100 200,108 Q240,105 270,112" stroke="#888070" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M105,160 Q135,108 205,115" stroke="#a09888" stroke-width="4" fill="none" stroke-linecap="round" stroke-opacity="0.5"/>
+  <ellipse cx="185" cy="175" rx="22" ry="14" fill="#6a5a4a"/>
+  <ellipse cx="185" cy="175" rx="14" ry="9" fill="#2a1a0a"/>
+  <ellipse cx="180" cy="172" rx="4" ry="3" fill="white" fill-opacity="0.3"/>
+  <ellipse cx="268" cy="168" rx="18" ry="11" fill="#6a5a4a"/>
+  <ellipse cx="268" cy="168" rx="11" ry="7" fill="#2a1a0a"/>
+  <path d="M210,195 Q228,215 246,198" stroke="#7a6a5a" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="218" cy="202" rx="7" ry="5" fill="#5a4a38" fill-opacity="0.6"/>
+  <ellipse cx="240" cy="200" rx="7" ry="5" fill="#5a4a38" fill-opacity="0.6"/>
+  <path d="M192,228 Q228,242 262,228" stroke="#5a4a3a" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M200,230 Q228,238 256,230" fill="#3a2820" fill-opacity="0.6"/>
+  <path d="M165,235 Q195,258 228,262 Q260,258 285,242" stroke="#a09080" stroke-width="3" fill="none" stroke-dasharray="5,4" stroke-opacity="0.7"/>
+  <circle cx="225" cy="170" r="105" fill="url(#glow3)"/>
+  <ellipse cx="225" cy="170" rx="108" ry="92" fill="none" stroke="#d4a017" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="8,6" transform="rotate(-8,225,170)"/>
+  <ellipse cx="88" cy="210" rx="28" ry="11" fill="#5a7a3a" fill-opacity="0.75"/>
+  <ellipse cx="75" cy="204" rx="14" ry="7" fill="#4a6a2a" fill-opacity="0.8"/>
+  <ellipse cx="370" cy="215" rx="22" ry="9" fill="#5a7a3a" fill-opacity="0.7"/>
+  <ellipse cx="388" cy="208" rx="12" ry="6" fill="#4a6a2a" fill-opacity="0.75"/>
+  <rect x="418" y="120" width="9" height="70" rx="4" fill="#4a7030" fill-opacity="0.7"/>
+  <rect x="408" y="138" width="6" height="24" rx="3" fill="#4a7030" fill-opacity="0.7" transform="rotate(-20,411,138)"/>
+</svg><div class="foto-leg">A Cabeca do Santo - abrigo e portal</div></div>
+    <div class="foto-espaco"><svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="sky4" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#e8c890"/>
-      <stop offset="55%" stop-color="#f0d8a8"/>
-      <stop offset="100%" stop-color="#c8a060"/>
-    </linearGradient>
+    <linearGradient id="sky4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8c890"/><stop offset="55%" stop-color="#f0d8a8"/><stop offset="100%" stop-color="#c8a060"/></linearGradient>
   </defs>
   <rect width="480" height="280" fill="url(#sky4)"/>
-  <!-- sol poente -->
   <circle cx="60" cy="80" r="36" fill="#e07820" fill-opacity="0.85"/>
   <circle cx="60" cy="80" r="50" fill="#e07820" fill-opacity="0.15"/>
-  <!-- terra seca -->
   <rect x="0" y="185" width="480" height="95" fill="#b07830"/>
-  <!-- praça / chão da cidade -->
   <rect x="0" y="190" width="480" height="25" fill="#c89850" fill-opacity="0.6"/>
-  <!-- IGREJA pequena interior -->
-  <!-- corpo -->
   <rect x="165" y="110" width="150" height="80" fill="#e8dcc8"/>
   <rect x="165" y="110" width="150" height="80" fill="none" stroke="#b0906a" stroke-width="2"/>
-  <!-- telhado -->
   <polygon points="155,110 240,60 325,110" fill="#c87040"/>
-  <!-- torre -->
   <rect x="210" y="55" width="30" height="55" fill="#e8dcc8"/>
   <polygon points="205,55 225,30 245,55" fill="#c87040"/>
-  <!-- cruz -->
   <line x1="225" y1="22" x2="225" y2="10" stroke="#8a5820" stroke-width="3"/>
   <line x1="219" y1="16" x2="231" y2="16" stroke="#8a5820" stroke-width="3"/>
-  <!-- porta -->
   <rect x="218" y="155" width="24" height="35" rx="12" fill="#8a5820"/>
-  <!-- janelas -->
   <rect x="178" y="130" width="20" height="22" rx="3" fill="#8ab0c8" fill-opacity="0.7"/>
   <rect x="282" y="130" width="20" height="22" rx="3" fill="#8ab0c8" fill-opacity="0.7"/>
-  <!-- casas simples -->
   <rect x="50" y="150" width="80" height="45" fill="#e0c898"/>
   <polygon points="45,150 90,120 135,150" fill="#c07040"/>
   <rect x="68" y="165" width="16" height="30" fill="#8a5820"/>
   <rect x="320" y="155" width="90" height="40" fill="#dcc890"/>
   <polygon points="315,155 365,128 415,155" fill="#b86030"/>
   <rect x="350" y="168" width="18" height="27" fill="#7a4818"/>
-  <!-- ipê amarelo -->
   <line x1="130" y1="190" x2="130" y2="145" stroke="#6a4010" stroke-width="4"/>
   <circle cx="130" cy="135" r="22" fill="#d4a017" fill-opacity="0.85"/>
-  <!-- coqueiro -->
   <line x1="350" y1="192" x2="350" y2="140" stroke="#6a4010" stroke-width="3"/>
   <ellipse cx="342" cy="140" rx="18" ry="8" fill="#4a7030" transform="rotate(-20,342,140)"/>
   <ellipse cx="358" cy="138" rx="18" ry="8" fill="#3a6020" transform="rotate(15,358,138)"/>
-  <!-- sombras -->
   <ellipse cx="240" cy="196" rx="110" ry="6" fill="#8a5820" fill-opacity="0.2"/>
-</svg>
-      <div class="foto-leg">Candeia — a cidade que parou no tempo</div>
-    </div>
+</svg><div class="foto-leg">Candeia - a cidade que parou no tempo</div></div>
   </div>
-
-  <p style="font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.5rem;">O romance se passa em dois espaços principais: a estrada que corta o sertão do Ceará entre Juazeiro do Norte e Candeia, e a própria cidade — com seu centro simbólico na cabeça gigante de Santo Antônio.</p>
-
+  <p style="font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.5rem;">O romance se passa em dois espacos principais: a estrada que corta o sertao entre Juazeiro do Norte e Candeia, e a propria cidade - com seu centro simbolico na cabeca gigante de Santo Antonio.</p>
   <div class="g2">
-    <div class="lugar">
-      <h3>A Estrada — Sertão do Ceará</h3>
-      <span class="lugar-tag">Juazeiro do Norte → Candeia</span>
-      <p>A jornada a pé pelo sertão é descrita com brutalidade poética: sol impiedoso, pés em carne viva, sede e humilhação. A estrada é um rito de passagem — Samuel chega em Candeia diferente do que saiu.</p>
-    </div>
-    <div class="lugar">
-      <h3>Candeia — A Cidade Fantasma</h3>
-      <span class="lugar-tag">Interior do Ceará</span>
-      <p>Descrita como "quase nada" — vinte casas mortas, uma igrejinha velha, construções invadidas pelo mato. Como Macondo, é uma cidade suspensa no tempo, amaldiçoada pela interrupção da obra do santo.</p>
-    </div>
-    <div class="lugar">
-      <h3>A Cabeça do Santo</h3>
-      <span class="lugar-tag">Arquitetura do Insólito</span>
-      <p>Uma cabeça monumental de Santo Antônio separada do corpo por uma falha de construção, que jaz no chão como uma gruta. A entrada é o encaixe do pescoço. Dentro dela Samuel dorme e ouve as preces.</p>
-    </div>
-    <div class="lugar">
-      <h3>Caridade, CE — A Cidade Real</h3>
-      <span class="lugar-tag">Inspiração Factual</span>
-      <p>No município de Caridade, a 97 km de Fortaleza, uma cabeça de Santo Antônio ficou 36 anos no chão. Uma reportagem mencionou que um homem havia morado lá — essa frase acendeu o romance.</p>
-    </div>
+    <div class="lugar"><h3>A Estrada - Sertao do Ceara</h3><span class="lugar-tag">Juazeiro do Norte para Candeia</span><p>A jornada a pe pelo sertao e descrita com brutalidade poetica: sol impiedoso, pes em carne viva, sede e humilhacao. A estrada e um rito de passagem.</p></div>
+    <div class="lugar"><h3>Candeia - A Cidade Fantasma</h3><span class="lugar-tag">Interior do Ceara</span><p>Descrita como "quase nada" - vinte casas mortas, uma igrejinha velha. Como Macondo, e uma cidade suspensa no tempo, amaldicada pela interrupcao da obra do santo.</p></div>
+    <div class="lugar"><h3>A Cabeca do Santo</h3><span class="lugar-tag">Arquitetura do Insolito</span><p>Uma cabeca monumental de Santo Antonio separada do corpo, que jaz no chao como uma gruta. A entrada e o encaixe do pescoco. Dentro dela Samuel dorme e ouve as preces.</p></div>
+    <div class="lugar"><h3>Caridade, CE - A Cidade Real</h3><span class="lugar-tag">Inspiracao Factual</span><p>No municipio de Caridade, a 97 km de Fortaleza, uma cabeca de Santo Antonio ficou 36 anos no chao. Uma reportagem mencionou que um homem havia morado la.</p></div>
   </div>
-
   <div class="meta-box">
-    <div class="ico">🏛️</div>
-    <div>
-      <h3>A Arquitetura como Metáfora</h3>
-      <p>A cabeça separada do corpo não é apenas cenário: é a metáfora estrutural do livro. Samuel é um homem desconectado de suas raízes, sem pai, sem lugar. Habitar uma arquitetura incompleta espelha sua condição. A fratura se torna o portal.</p>
-    </div>
+    <div class="ico">&#x1F3DB;&#xFE0F;</div>
+    <div><h3>A Arquitetura como Metafora</h3><p>A cabeca separada do corpo nao e apenas cenario: e a metafora estrutural do livro. Samuel e um homem desconectado de suas raizes, sem pai, sem lugar. Habitar uma arquitetura incompleta espelha sua condicao. A fratura se torna o portal.</p></div>
   </div>
 </div>
 </div>
 
-
-<!-- ═══ AVALIAÇÕES ═══ -->
+<!-- AVALIACOES -->
 <div class="av-wrap">
   <p class="sup" style="text-align:center;margin-bottom:0.4rem;">Clube Socorro</p>
   <h2>Avaliações &amp; Comentários</h2>
   <p class="av-sub">O que o clube achou de A Cabeça do Santo</p>
-
   <div class="av-summary">
     <div>
       <div class="av-big-num" id="avg-num">—</div>
-      <div class="av-big-stars" id="avg-stars">☆☆☆☆☆</div>
+      <div class="av-big-stars" id="avg-stars">&#9734;&#9734;&#9734;&#9734;&#9734;</div>
       <div class="av-big-count" id="avg-count">0 avaliações</div>
     </div>
     <div class="bars">
-      <div class="brow"><span class="brow-lbl">5★</span><div class="brow-track"><div class="brow-fill" id="b5"></div></div><span class="brow-n" id="n5">0</span></div>
-      <div class="brow"><span class="brow-lbl">4★</span><div class="brow-track"><div class="brow-fill" id="b4"></div></div><span class="brow-n" id="n4">0</span></div>
-      <div class="brow"><span class="brow-lbl">3★</span><div class="brow-track"><div class="brow-fill" id="b3"></div></div><span class="brow-n" id="n3">0</span></div>
-      <div class="brow"><span class="brow-lbl">2★</span><div class="brow-track"><div class="brow-fill" id="b2"></div></div><span class="brow-n" id="n2">0</span></div>
-      <div class="brow"><span class="brow-lbl">1★</span><div class="brow-track"><div class="brow-fill" id="b1"></div></div><span class="brow-n" id="n1">0</span></div>
+      <div class="brow"><span class="brow-lbl">5&#9733;</span><div class="brow-track"><div class="brow-fill" id="b5"></div></div><span class="brow-n" id="n5">0</span></div>
+      <div class="brow"><span class="brow-lbl">4&#9733;</span><div class="brow-track"><div class="brow-fill" id="b4"></div></div><span class="brow-n" id="n4">0</span></div>
+      <div class="brow"><span class="brow-lbl">3&#9733;</span><div class="brow-track"><div class="brow-fill" id="b3"></div></div><span class="brow-n" id="n3">0</span></div>
+      <div class="brow"><span class="brow-lbl">2&#9733;</span><div class="brow-track"><div class="brow-fill" id="b2"></div></div><span class="brow-n" id="n2">0</span></div>
+      <div class="brow"><span class="brow-lbl">1&#9733;</span><div class="brow-track"><div class="brow-fill" id="b1"></div></div><span class="brow-n" id="n1">0</span></div>
     </div>
   </div>
-
   <div class="av-form">
     <h3>Deixe sua avaliação</h3>
     <label class="av-label">Seu nome</label>
     <input id="f-nome" class="av-input" type="text" placeholder="Como quer ser identificada?">
     <label class="av-label">Nota</label>
     <div class="stars-pick" id="star-row">
-      <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+      <span data-v="1">&#9733;</span><span data-v="2">&#9733;</span><span data-v="3">&#9733;</span><span data-v="4">&#9733;</span><span data-v="5">&#9733;</span>
     </div>
     <label class="av-label">Comentário</label>
     <textarea id="f-txt" class="av-textarea" placeholder="O que você achou? Algum trecho favorito, reflexão, sensação..."></textarea>
     <button class="av-btn" onclick="submitReview()">Publicar Avaliação</button>
     <span id="f-msg" class="av-msg"></span>
   </div>
-
-  <div id="comments"></div>
+  <div id="comments"><p class="loading">Carregando avaliações...</p></div>
 </div>
 
-
 <script>
-// ── PERSONAGENS ──
 const P = {
-  santo:    { nome:'Santo Antônio',    papel:'Símbolo · Mediador Involuntário',         desc:'A cabeça monumental separada do corpo é o coração físico e simbólico do romance. Não fala, não age — mas sua presença organiza tudo. É o casamenteiro dos devotos, o abrigo de Samuel, e o ponto em torno do qual a cidade morta volta à vida.',              tags:['Samuel','Mulheres de Candeia'] },
-  samuel:   { nome:'Samuel',           papel:'Protagonista · O Santo Involuntário',      desc:'Jovem cearense que perde a mãe e cumpre a promessa de ir encontrar a avó e o pai desconhecido em Candeia. Sem fé e sem ilusões, descobre ao habitar a cabeça de Santo Antônio que consegue ouvir as preces das mulheres. Usa — e é usado por — esse dom de formas que vão da malandragem à redenção.',  tags:['Mariinha','Francisco','Niceia','A Voz','Santo Antônio'] },
-  mariinha: { nome:'Mariinha',         papel:'Mãe de Samuel · Ausente e Onipresente',   desc:'Morre antes do início da narrativa, mas habita cada página. É ela quem impõe a jornada com seus quatro pedidos finais. O amor devocional de Samuel por Mariinha é a força mais real do romance — mais concreta do que qualquer milagre.',         tags:['Samuel','O Pai'] },
-  francisco:{ nome:'Francisco',        papel:'Amigo · Cúmplice · Empreendedor do Sagrado', desc:'Primeiro contato de Samuel em Candeia. Esperto e oportunista, enxerga no dom do amigo uma oportunidade comercial e transforma a escuta das preces em serviço de casamenteiro. Personagem cômico que humaniza a trama.', tags:['Samuel','Mulheres de Candeia'] },
-  niceia:   { nome:'Niceia',           papel:'Avó de Samuel · Guardadora de Segredos',  desc:'A avó paterna é fria e hostil — não recebe Samuel e é quem inadvertidamente o empurra para a cabeça do santo. Seus silêncios escondem a história do pai desaparecido.',                                     tags:['Samuel','O Pai'] },
-  voz:      { nome:'A Voz Misteriosa', papel:'Interesse Romântico · Enigma',            desc:'Entre as preces que Samuel escuta, uma voz se destaca: canta modinhas em língua estranha que provocam nostalgia e dor. É por ela que Samuel se apaixona sem nunca tê-la visto — amor nascido apenas da voz.',           tags:['Samuel','Mulheres de Candeia'] },
-  mulheres: { nome:'As Mulheres de Candeia', papel:'Coro · Coração da Narrativa',       desc:'Suas preces revelam o universo interior de quem raramente tem voz na literatura regional. São elas que, ao acreditarem em Samuel, ressuscitam Candeia. O livro é, em muitos sentidos, um tratado sobre o poder do desejo feminino.',  tags:['Samuel','Francisco','A Voz'] },
-  pai:      { nome:'O Pai',            papel:'Ausente · Motor da Busca',                desc:'Nunca foi apresentado a Samuel. É a lacuna que Mariinha pediu ao filho para preencher. Sua ausência estrutura metade das motivações do protagonista — não por amor, mas por rancor e curiosidade misturados.',    tags:['Niceia','Mariinha'] }
+  santo:    { nome:'Santo António',    papel:'Símbolo · Mediador Involuntário',   desc:'A cabeça monumental separada do corpo é o coração físico e simbólico do romance. É o casamenteiro dos devotos, o abrigo de Samuel, e o ponto em torno do qual a cidade morta volta à vida.',              tags:['Samuel','Mulheres de Candeia'] },
+  samuel:   { nome:'Samuel',           papel:'Protagonista · O Santo Involuntário', desc:'Jovem cearense que perde a mãe e vai cumprir a promessa de encontrar avó e pai em Candeia. Descobre que consegue ouvir as preces das mulheres. Usa esse dom de formas que vão da malandragem à redenção.',  tags:['Mariinha','Francisco','Niceia','A Voz','Santo António'] },
+  mariinha: { nome:'Mariinha',         papel:'Mãe de Samuel · Ausente e Onipresente', desc:'Morre antes do início da narrativa, mas habita cada página. Impõe a jornada com seus quatro pedidos finais. O amor de Samuel por Mariinha é a força mais real do romance.',         tags:['Samuel','O Pai'] },
+  francisco:{ nome:'Francisco',        papel:'Amigo · Cúmplice',                  desc:'Primeiro contato de Samuel em Candeia. Esperto e oportunista, transforma a escuta das preces em serviço de casamenteiro. Personagem cômico que humaniza a trama.', tags:['Samuel','Mulheres de Candeia'] },
+  niceia:   { nome:'Niceia',           papel:'Avó de Samuel · Guardadora de Segredos', desc:'A avó paterna é fria e hostil. Seus silêncios escondem a história do pai desaparecido.',  tags:['Samuel','O Pai'] },
+  voz:      { nome:'A Voz Misteriosa', papel:'Interesse Romântico · Enigma',      desc:'Entre as preces, uma voz se destaca cantando modinhas estranhas. É por ela que Samuel se apaixona sem nunca tê-la visto — amor nascido apenas da voz.',           tags:['Samuel','Mulheres de Candeia'] },
+  mulheres: { nome:'As Mulheres de Candeia', papel:'Coro · Coração da Narrativa', desc:'Suas preces revelam o universo interior de quem raramente tem voz na literatura regional. São elas que, ao acreditarem em Samuel, ressuscitam Candeia.',  tags:['Samuel','Francisco','A Voz'] },
+  pai:      { nome:'O Pai',            papel:'Ausente · Motor da Busca',          desc:'Nunca foi apresentado a Samuel. É a lacuna que Mariinha pediu ao filho para preencher. Sua ausência estrutura metade das motivações do protagonista.',    tags:['Niceia','Mariinha'] }
 };
 
 function info(id) {
@@ -761,7 +486,6 @@ function info(id) {
     p.tags.map(t => '<span>' + t + '</span>').join('');
 }
 
-// ── TABS ──
 function goTab(id, btn) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
   document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
@@ -769,7 +493,6 @@ function goTab(id, btn) {
   btn.classList.add('on');
 }
 
-// ── STARS PICKER ──
 let picked = 0;
 document.querySelectorAll('#star-row span').forEach(s => {
   s.addEventListener('mouseover', () => hilite(+s.dataset.v));
@@ -782,25 +505,44 @@ function hilite(n) {
   });
 }
 
-// ── REVIEWS ──
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbznd1pZiLhfcDeXD_iOBjvXAIYCicVhuy7oW091TESguLvLtB1o5E3ipT3sVoYshFDp/exec';
 let reviews = [];
-try { reviews = JSON.parse(localStorage.getItem('cds3_reviews') || '[]'); } catch(e) {}
 
-function submitReview() {
+async function submitReview() {
   const nome = document.getElementById('f-nome').value.trim();
   const txt  = document.getElementById('f-txt').value.trim();
   const msg  = document.getElementById('f-msg');
-  if (!nome) { msg.textContent = 'Coloque seu nome.'; msg.style.color='#c1440e'; return; }
-  if (!picked) { msg.textContent = 'Selecione uma nota ★'; msg.style.color='#c1440e'; return; }
-  if (!txt)  { msg.textContent = 'Escreva um comentário.'; msg.style.color='#c1440e'; return; }
-  reviews.unshift({ nome, nota: picked, txt, data: new Date().toLocaleDateString('pt-BR') });
-  try { localStorage.setItem('cds3_reviews', JSON.stringify(reviews)); } catch(e) {}
-  document.getElementById('f-nome').value = '';
-  document.getElementById('f-txt').value  = '';
-  picked = 0; hilite(0);
-  msg.textContent = '✓ Publicado!'; msg.style.color = '#6b8c6e';
-  setTimeout(() => msg.textContent = '', 3000);
-  renderReviews();
+  if (!nome)   { msg.textContent = 'Coloque seu nome.';      msg.style.color='#c1440e'; return; }
+  if (!picked) { msg.textContent = 'Selecione uma nota.';    msg.style.color='#c1440e'; return; }
+  if (!txt)    { msg.textContent = 'Escreva um comentário.'; msg.style.color='#c1440e'; return; }
+  const btn = document.querySelector('.av-btn');
+  btn.textContent = 'Enviando...'; btn.disabled = true;
+  msg.textContent = '';
+  try {
+    await fetch(SHEET_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome, nota: picked, comentario: txt, data: new Date().toLocaleDateString('pt-BR') })
+    });
+    document.getElementById('f-nome').value = '';
+    document.getElementById('f-txt').value  = '';
+    picked = 0; hilite(0);
+    msg.textContent = 'Publicado!'; msg.style.color = '#6b8c6e';
+    setTimeout(() => msg.textContent = '', 4000);
+    setTimeout(loadReviews, 1500);
+  } catch(e) {
+    msg.textContent = 'Erro ao enviar. Tente novamente.'; msg.style.color = '#c1440e';
+  }
+  btn.textContent = 'Publicar Avaliação'; btn.disabled = false;
+}
+
+async function loadReviews() {
+  try {
+    const res  = await fetch(SHEET_URL + '?t=' + Date.now());
+    const data = await res.json();
+    reviews = data.slice().reverse();
+    renderReviews();
+  } catch(e) { renderReviews(); }
 }
 
 function renderReviews() {
@@ -810,16 +552,16 @@ function renderReviews() {
     document.getElementById('avg-stars').textContent = '☆☆☆☆☆';
     document.getElementById('avg-count').textContent = '0 avaliações';
     [1,2,3,4,5].forEach(n => { document.getElementById('b'+n).style.width='0%'; document.getElementById('n'+n).textContent='0'; });
-    document.getElementById('comments').innerHTML = '<p class="no-reviews">Nenhuma avaliação ainda — seja a primeira! 📖</p>';
+    document.getElementById('comments').innerHTML = '<p class="no-reviews">Nenhuma avaliação ainda — seja a primeira!</p>';
     return;
   }
-  const avg = reviews.reduce((a,r) => a+r.nota, 0) / total;
+  const avg = reviews.reduce((a,r) => a + Number(r.nota), 0) / total;
   document.getElementById('avg-num').textContent   = avg.toFixed(1);
   const full = Math.round(avg);
   document.getElementById('avg-stars').textContent = '★'.repeat(full) + '☆'.repeat(5-full);
   document.getElementById('avg-count').textContent = total + (total===1 ? ' avaliação' : ' avaliações');
   [1,2,3,4,5].forEach(n => {
-    const c = reviews.filter(r => r.nota===n).length;
+    const c = reviews.filter(r => Number(r.nota)===n).length;
     document.getElementById('b'+n).style.width = (c/total*100).toFixed(0) + '%';
     document.getElementById('n'+n).textContent = c;
   });
@@ -827,14 +569,14 @@ function renderReviews() {
     <div class="comment">
       <div class="chead">
         <span class="cname">${r.nome}</span>
-        <span class="cstars">${'★'.repeat(r.nota)}${'☆'.repeat(5-r.nota)}</span>
+        <span class="cstars">${'★'.repeat(Number(r.nota))}${'☆'.repeat(5-Number(r.nota))}</span>
         <span class="cdate">${r.data}</span>
       </div>
-      <p class="ctext">${r.txt}</p>
+      <p class="ctext">${r.comentario}</p>
     </div>`).join('');
 }
 
-renderReviews();
+loadReviews();
 </script>
 </body>
 </html>
