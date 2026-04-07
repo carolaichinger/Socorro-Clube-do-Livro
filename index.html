@@ -169,6 +169,17 @@
     .btn-analise.sem-link { opacity: 0.25; cursor: default; pointer-events: none; }
     .btn-analise svg { width: 11px; height: 11px; flex-shrink: 0; }
 
+      <!-- AUTORES -->
+      <section id="autores">
+        <div class="reveal">
+          <p class="section-label">Quem escreveu</p>
+          <h2 class="section-title">Nossos Autores</h2>
+        </div>
+        <div class="autores-grid" id="autores-grid">
+          <!-- Cards gerados pelo JS abaixo -->
+        </div>
+      </section>
+    
     /* FOOTER */
     footer { background: var(--ink); color: var(--cream); padding: 4rem 6rem; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; }
     .footer-brand { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--gold); margin-bottom: 1rem; }
@@ -431,6 +442,7 @@
         <li><a href="#encontros">Encontros</a></li>
         <li><a href="#membros">Membros</a></li>
         <li><a href="#lidos">Livros lidos</a></li>
+        <li><a href="#lidos">Livros lidos</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -555,6 +567,56 @@
 
       grid.appendChild(card);
 
+      // ── Dados dos autores (fotos via Wikimedia Commons - licença livre) ──
+    const AUTOR_INFO = {
+      'Milton Hatoum':        { origem: 'Manaus, AM · Brasil',          link: 'milton_hatoum.html',
+        foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Milton_Hatoum_2011.jpg/240px-Milton_Hatoum_2011.jpg' },
+      'Marcelo Rubens Paiva': { origem: 'São Paulo, SP · Brasil',       link: null, foto: null },
+      'Socorro Acioli':       { origem: 'Quixadá, CE · Brasil',         link: null, foto: null },
+      'Mario Vargas Llosa':   { origem: 'Arequipa · Peru',              link: null, foto: null },
+      'Isabel Allende':       { origem: 'Lima · Peru / Chile',          link: null, foto: null },
+      'Carmen Maria Machado': { origem: 'Allentown, PA · EUA',          link: null, foto: null },
+      'Clarice Lispector':    { origem: 'Chechelnyk · Ucrânia / Brasil',link: null, foto: null },
+      'Han Kang':             { origem: 'Gwangju · Coreia do Sul',       link: null, foto: null },
+      'Matt Haig':            { origem: 'Sheffield · Reino Unido',       link: null, foto: null },
+      'Audrey Magee':         { origem: 'Irlanda',                      link: null, foto: null },
+      'Laura Sisteró Roca':   { origem: 'Espanha',                      link: null, foto: null },
+      'Lev Tolstói':          { origem: 'Iásnaia Poliana · Rússia',      link: null, foto: null },
+      'Sandra Lucía Ruiz':    { origem: 'Colômbia',                     link: null, foto: null },
+    };
+
+    // ── Derivar autores únicos dos livros já lidos ──
+    const autoresVistos = new Set();
+    BOOKS.forEach(b => { if (b.autor) autoresVistos.add(b.autor); });
+
+    const autoresGrid = document.getElementById('autores-grid');
+    if (autoresGrid) {
+      [...autoresVistos].sort().forEach(nome => {
+        const info = AUTOR_INFO[nome] || { origem: '', link: null, foto: null };
+        const livrosDoAutor = BOOKS.filter(b => b.autor === nome).map(b => b.titulo);
+        const inicial = nome.split(' ').map(p => p[0]).join('').slice(0,2);
+
+        const avatarHTML = info.foto
+          ? `<img class="autor-foto" src="${info.foto}" alt="${nome}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+             <div class="autor-initial" style="display:none">${inicial}</div>`
+          : `<div class="autor-initial">${inicial}</div>`;
+
+        const livrosHTML = livrosDoAutor.map(t => `<li>${t}</li>`).join('');
+        const btnHTML = info.link
+          ? `<a href="${info.link}" class="btn-analise"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg> Ver autor</a>`
+          : `<span class="btn-analise sem-link">Em breve</span>`;
+
+        autoresGrid.innerHTML += `
+          <div class="autor-card reveal">
+            ${avatarHTML}
+            <div class="autor-nome">${nome}</div>
+            <div class="autor-origem">${info.origem}</div>
+            <ul class="autor-livros">${livrosHTML}</ul>
+            ${btnHTML}
+          </div>
+        `;
+      });
+    }
       // Lazy-load cover
       const coverEl = document.getElementById(`cover-${i}`);
       const io = new IntersectionObserver(async (entries) => {
