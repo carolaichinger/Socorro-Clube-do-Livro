@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aldous Huxley — Socorro Clube do Livro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --cream: #f5f0e8; --paper: #ede8dc; --ink: #1a1208; --ink-mid: #3a2e1a; --ink-light: #6b5e42; --ink-faint: #9e9080; --rust: #c1440e; --gold: #d4a017; --gold-pale: #f5eacc; --sage: #6b8c6e; --border: rgba(26,18,8,0.1); --border-mid: rgba(26,18,8,0.2); --shadow: rgba(26,18,8,0.12); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; font-weight: 300; background: var(--cream); color: var(--ink); font-size: 17px; line-height: 1.75; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.5; }
+  nav { position: sticky; top: 0; z-index: 100; background: var(--cream); border-bottom: 1px solid var(--border); padding: 0 4rem; display: flex; align-items: center; justify-content: space-between; height: 60px; transition: box-shadow 0.3s; }
+  nav.scrolled { box-shadow: 0 4px 30px var(--shadow); }
+  .nav-brand { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--rust); text-decoration: none; letter-spacing: -0.02em; }
+  .nav-brand span { font-size: 0.75rem; font-family: 'DM Sans', sans-serif; font-weight: 300; color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase; margin-left: 0.75rem; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); opacity: 0.6; text-decoration: none; transition: opacity 0.2s; position: relative; }
+  .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 1px; background: var(--rust); transform: scaleX(0); transition: transform 0.25s; }
+  .nav-links a:hover { opacity: 1; } .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-back { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--rust); text-decoration: none; opacity: 0.8; transition: opacity 0.2s; }
+  .nav-back:hover { opacity: 1; }
+  .hero { position: relative; min-height: 88vh; display: flex; align-items: center; overflow: hidden; padding: 6rem 4rem 5rem; background: var(--ink); color: var(--cream); }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 80% 40%, rgba(212,160,23,0.12) 0%, transparent 70%), radial-gradient(ellipse 50% 80% at 10% 70%, rgba(193,68,14,0.08) 0%, transparent 60%); }
+  .hero-lines { position: absolute; inset: 0; background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(245,240,232,0.03) 39px, rgba(245,240,232,0.03) 40px); }
+  .hero-inner { position: relative; max-width: 1100px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 300px; gap: 5rem; align-items: center; animation: fadeUp 0.8s ease both; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  .hero-eyebrow { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 12px; opacity: 0.9; }
+  .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
+  .hero-name { font-family: 'DM Serif Display', serif; font-size: clamp(52px, 8vw, 90px); font-weight: 400; line-height: 0.95; color: var(--cream); margin-bottom: 0.6rem; letter-spacing: -0.03em; }
+  .hero-name em { font-style: italic; color: var(--gold); }
+  .hero-dates { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-bottom: 2rem; margin-top: 0.75rem; }
+  .hero-desc { font-size: 1.05rem; line-height: 1.75; color: rgba(245,240,232,0.7); max-width: 520px; margin-bottom: 2.5rem; }
+  .hero-stats { display: flex; gap: 2.5rem; }
+  .hero-stat-num { font-family: 'DM Serif Display', serif; font-size: 2.2rem; color: var(--gold); line-height: 1; }
+  .hero-stat-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-top: 4px; }
+  .hero-portrait { position: relative; }
+  .portrait-frame { width: 100%; aspect-ratio: 3/4; border-radius: 2px; border: 1px solid rgba(245,240,232,0.12); overflow: hidden; position: relative; }
+  .portrait-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .portrait-year-tag { position: absolute; bottom: 20px; right: 20px; background: var(--rust); color: white; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; }
+  .page-content { max-width: 1100px; margin: 0 auto; padding: 0 4rem; }
+  .section { padding: 5rem 0; border-top: 1px solid var(--border); }
+  .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3rem; }
+  .section-num { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rust); flex-shrink: 0; opacity: 0.7; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 400; color: var(--ink); line-height: 1.1; letter-spacing: -0.02em; }
+  .section-title em { font-style: italic; color: var(--rust); }
+  .bio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .bio-text { font-size: 1rem; line-height: 1.85; color: var(--ink-mid); }
+  .bio-text p + p { margin-top: 1.25rem; }
+  .timeline { display: flex; flex-direction: column; }
+  .tl-item { display: grid; grid-template-columns: 56px 1fr; gap: 1.25rem; padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
+  .tl-item:last-child { border-bottom: none; }
+  .tl-year { font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); padding-top: 3px; font-weight: 500; }
+  .tl-title { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--ink); margin-bottom: 2px; }
+  .tl-desc { font-size: 0.85rem; color: var(--ink-light); line-height: 1.6; }
+  .books-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  .book-card { background: var(--paper); border: 1px solid var(--border); padding: 1.5rem; position: relative; transition: box-shadow 0.25s, transform 0.25s; border-top: 3px solid var(--gold); }
+  .book-card:hover { box-shadow: 0 8px 30px var(--shadow); transform: translateY(-3px); }
+  .book-year { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); margin-bottom: 6px; opacity: 0.8; }
+  .book-title { font-family: 'DM Serif Display', serif; font-size: 1rem; font-style: italic; color: var(--ink); margin-bottom: 8px; line-height: 1.3; }
+  .book-note { font-size: 0.85rem; color: var(--ink-light); line-height: 1.6; }
+  .book-badge { display: inline-block; margin-top: 10px; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--gold); color: var(--ink); padding: 3px 9px; font-weight: 500; }
+  .quote-block { border-left: 4px solid var(--rust); padding: 1.5rem 2rem; margin: 2.5rem 0; background: var(--paper); }
+  .quote-text { font-family: 'Playfair Display', Georgia, serif; font-size: 1.2rem; font-style: italic; line-height: 1.65; color: var(--ink); }
+  .quote-attr { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-top: 12px; }
+  .estilo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .estilo-item { display: flex; gap: 1.25rem; align-items: flex-start; }
+  .estilo-num { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--gold); opacity: 0.35; line-height: 1; flex-shrink: 0; width: 40px; }
+  .estilo-text { font-size: 0.95rem; line-height: 1.75; color: var(--ink-mid); }
+  .influencias-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .infl-card { background: var(--paper); border: 1px solid var(--border); padding: 1rem 1.25rem; }
+  .infl-name { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--ink); margin-bottom: 3px; }
+  .infl-note { font-size: 0.78rem; color: var(--ink-faint); }
+  .premios-list { display: flex; flex-direction: column; }
+  .premio-item { display: grid; grid-template-columns: 80px 1fr; gap: 2rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+  .premio-item:last-child { border-bottom: none; }
+  .premio-year { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--gold); line-height: 1; }
+  .premio-title { font-size: 1rem; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+  .premio-sub { font-size: 0.85rem; color: var(--ink-light); }
+  .curio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .curio-item { background: var(--paper); border: 1px solid var(--border); padding: 1.75rem; }
+  .curio-icon { font-size: 1.4rem; display: block; margin-bottom: 1rem; }
+  .curio-title { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--ink); margin-bottom: 0.75rem; }
+  .curio-text { font-size: 0.88rem; color: var(--ink-light); line-height: 1.7; }
+  .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .link-card { background: var(--paper); border: 1px solid var(--border); padding: 1.25rem 1.5rem; display: flex; align-items: center; gap: 1rem; text-decoration: none; transition: box-shadow 0.2s, transform 0.2s; }
+  .link-card:hover { box-shadow: 0 4px 20px var(--shadow); transform: translateY(-2px); }
+  .link-icon-box { font-size: 1.2rem; flex-shrink: 0; }
+  .link-body { flex: 1; }
+  .link-title { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--ink); margin-bottom: 3px; }
+  .link-sub { font-size: 0.78rem; color: var(--ink-faint); line-height: 1.4; }
+  .link-arrow { font-size: 1.1rem; color: var(--rust); opacity: 0.6; }
+  footer { background: var(--ink); color: var(--cream); padding: 4rem; text-align: center; }
+  .footer-name { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--gold); margin-bottom: 1rem; }
+  .footer-divider { width: 60px; height: 1px; background: var(--rust); margin: 0 auto 1.5rem; }
+  .footer-note { font-size: 0.78rem; color: rgba(245,240,232,0.35); letter-spacing: 0.05em; }
+  .footer-back { display: inline-block; margin-top: 2rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rust); text-decoration: none; opacity: 0.7; }
+  .footer-back:hover { opacity: 1; }
+  @media (max-width: 900px) { nav { padding: 0 1.5rem; } .hero { padding: 5rem 1.5rem 4rem; } .hero-inner { grid-template-columns: 1fr; } .hero-portrait { display: none; } .page-content { padding: 0 1.5rem; } .bio-grid { grid-template-columns: 1fr; } .books-grid { grid-template-columns: 1fr 1fr; } .estilo-grid { grid-template-columns: 1fr; } .influencias-grid { grid-template-columns: 1fr 1fr; } .curio-grid { grid-template-columns: 1fr; } .nav-links { display: none; } .links-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 580px) { .books-grid { grid-template-columns: 1fr; } .hero-stats { gap: 1.5rem; } .influencias-grid { grid-template-columns: 1fr 1fr; } .premio-item { grid-template-columns: 70px 1fr; } }
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a class="nav-brand" href="index.html">Socorro <span>Clube do Livro</span></a>
+  <ul class="nav-links">
+    <li><a href="#biografia">Biografia</a></li>
+    <li><a href="#obra">Obra</a></li>
+    <li><a href="#estilo">Estilo</a></li>
+    <li><a href="#premios">Prêmios</a></li>
+    <li><a href="#curiosidades">Curiosidades</a></li>
+    <li><a href="#entrevistas">Entrevistas</a></li>
+  </ul>
+  <a class="nav-back" href="index.html#autores">← Autores</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Ficção Científica · Ensaio · Literatura Inglesa</div>
+      <h1 class="hero-name">Aldous<br><em>Huxley</em></h1>
+      <div class="hero-dates">Godalming, Surrey, 26 de julho de 1894 &nbsp;·&nbsp; Los Angeles, 22 de novembro de 1963</div>
+      <p class="hero-desc">Romancista, ensaísta e filósofo britânico. Autor de Admirável Mundo Novo, uma das mais poderosas distopias já escritas, e explorador incansável dos limites entre ciência, consciência e liberdade humana.</p>
+      <div class="hero-stats">
+        <div><div class="hero-stat-num">9</div><div class="hero-stat-label">Romances</div></div>
+        <div><div class="hero-stat-num">50+</div><div class="hero-stat-label">Obras publicadas</div></div>
+        <div><div class="hero-stat-num">1932</div><div class="hero-stat-label">Admirável Mundo Novo</div></div>
+      </div>
+    </div>
+    <div class="hero-portrait">
+      <div class="portrait-frame">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Aldous_Huxley_retouched.jpg/400px-Aldous_Huxley_retouched.jpg" alt="Foto de Aldous Huxley">
+        <div class="portrait-year-tag">Surrey · 1894</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="page-content">
+
+  <section class="section reveal" id="biografia">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Biografia</h2>
+    </div>
+    <div class="bio-grid">
+      <div class="bio-text">
+        <p>Aldous Leonard Huxley nasceu em 1894 em Godalming, Surrey, numa das famílias mais ilustres da intelectualidade britânica. Seu avô Thomas Henry Huxley foi o maior defensor do darwinismo na Inglaterra; seu irmão Julian, famoso biólogo evolucionista. Desde a infância, Aldous foi mergulhado num ambiente de ciência, literatura e debates de ideias.</p>
+        <p>Aos 16 anos, uma doença nos olhos quase o deixou completamente cego — experiência traumática que o forçou a aprender braille e que, ironicamente, aguçou sua percepção do mundo de maneiras que marcaram profundamente sua escrita. Depois de recuperar parcialmente a visão, graduou-se em Letras pelo Balliol College, em Oxford.</p>
+        <p>Nos anos 1920, frequentou os círculos literários de D.H. Lawrence e Bertrand Russell, produzindo sátiras sociais mordazes. Em 1932, publicou Admirável Mundo Novo, que o consagrou mundialmente. Na década de 1950, mudou-se para a Califórnia, onde se envolveu com misticismo oriental, pacifismo e experiências com substâncias psicodélicas — documentadas em As Portas da Percepção (1954). Morreu no mesmo dia em que foi assassinado John F. Kennedy.</p>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">1894</div>
+          <div><div class="tl-title">Nasce em Surrey</div><div class="tl-desc">Família de grandes intelectuais britânicos. Avô Thomas Huxley, o "Buldogue de Darwin".</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1910</div>
+          <div><div class="tl-title">Quase cegueira</div><div class="tl-desc">Doença ocular grave aos 16 anos. Aprende braille. A experiência transforma seu modo de perceber o mundo.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1916</div>
+          <div><div class="tl-title">Oxford — Letras</div><div class="tl-desc">Graduação no Balliol College. Conhece os principais intelectuais britânicos da época.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1921</div>
+          <div><div class="tl-title">Estreia em romance</div><div class="tl-desc">Chrome Yellow — sátira do intelectualismo britânico. Amizade próxima com D.H. Lawrence.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1932</div>
+          <div><div class="tl-title">Admirável Mundo Novo</div><div class="tl-desc">Distopia que prevê a manipulação genética, o consumismo e o controle social pelo prazer.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1954</div>
+          <div><div class="tl-title">As Portas da Percepção</div><div class="tl-desc">Relato de sua experiência com mescalina. Influenciou gerações — dos beatniks aos hippies e ao rock.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1963</div>
+          <div><div class="tl-title">Morte em Los Angeles</div><div class="tl-desc">Falece no mesmo dia que JFK. Pediu que sua última dose de LSD lhe fosse administrada na cama.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="obra">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Obra principal</h2>
+    </div>
+    <div class="books-grid">
+      <div class="book-card">
+        <div class="book-year">1932</div>
+        <div class="book-title">Admirável Mundo Novo</div>
+        <div class="book-note">Distopia futurista onde os seres humanos são produzidos em laboratório e condicionados para serem felizes e obedientes. Uma das obras mais influentes do século XX, ao lado de 1984, de George Orwell.</div>
+        <span class="book-badge">Obra-prima · 100 melhores romances</span>
+      </div>
+      <div class="book-card">
+        <div class="book-year">1954</div>
+        <div class="book-title">As Portas da Percepção</div>
+        <div class="book-note">Ensaio sobre sua experiência com mescalina. Explora a consciência expandida e os limites da percepção humana. O título inspirou o nome da banda The Doors, de Jim Morrison.</div>
+        <span class="book-badge">Influência na contracultura</span>
+      </div>
+      <div class="book-card">
+        <div class="book-year">1962</div>
+        <div class="book-title">Ilha</div>
+        <div class="book-note">Utopia — o oposto de Admirável Mundo Novo. Uma sociedade imaginária que combina o melhor do Oriente e do Ocidente. Último romance de Huxley, publicado um ano antes de sua morte.</div>
+        <span class="book-badge">Último romance</span>
+      </div>
+      <div class="book-card">
+        <div class="book-year">1921</div>
+        <div class="book-title">Chrome Yellow</div>
+        <div class="book-note">Estreia em romance. Sátira brilhante da aristocracia intelectual inglesa, repleta de conversas filosóficas e personagens excêntricos reunidos numa casa de campo.</div>
+      </div>
+      <div class="book-card">
+        <div class="book-year">1928</div>
+        <div class="book-title">Contraponto</div>
+        <div class="book-note">Considerado por muitos críticos seu romance mais ambicioso. Retratos entrelaçados de múltiplos personagens da sociedade londrina dos anos 1920. Influenciado por Dostoiévski e Thomas Mann.</div>
+      </div>
+      <div class="book-card">
+        <div class="book-year">1958</div>
+        <div class="book-title">Regresso ao Admirável Mundo Novo</div>
+        <div class="book-note">Ensaio que revisa as profecias de 1932 à luz dos acontecimentos do pós-guerra. Huxley conclui, perturbado, que suas previsões estão se tornando realidade mais rápido do que esperava.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="estilo">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Estilo e referências</h2>
+    </div>
+    <div class="estilo-grid" style="margin-bottom:3rem;">
+      <div class="estilo-item">
+        <div class="estilo-num">01</div>
+        <div class="estilo-text"><strong>Sátira intelectual:</strong> Huxley constrói situações absurdas para criticar as pretensões da sociedade moderna — o cientificismo excessivo, o consumismo, o conformismo disfarçado de progresso.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">02</div>
+        <div class="estilo-text"><strong>Distopia como profecia:</strong> ao contrário de Orwell, que imagina um futuro de controle pelo medo e pela dor, Huxley prevê um controle pelo prazer, pela droga e pelo entretenimento — argumento que muitos pensadores consideram mais relevante hoje.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">03</div>
+        <div class="estilo-text"><strong>Ensaísmo dentro da ficção:</strong> seus romances incluem longas digressões filosóficas, debate de ideias e personagens que funcionam como porta-vozes de diferentes visões de mundo.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">04</div>
+        <div class="estilo-text"><strong>Misticismo e ciência:</strong> ao longo da vida, Huxley buscou conciliar o rigor científico herdado da família com a busca espiritual — misticismo hindu, budismo, psicologia transpessoal.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">05</div>
+        <div class="estilo-text"><strong>Prosa erudita e irônica:</strong> vocabulário vasto, referências culturais densas, ironia fina. Huxley nunca simplifica — exige do leitor uma bagagem intelectual que ele próprio vai construindo ao longo do texto.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">06</div>
+        <div class="estilo-text"><strong>Utopia e distopia como espelhos:</strong> Huxley usa os dois gêneros não para propor soluções, mas para fazer perguntas: o que é felicidade? O que é liberdade? Quem decide o que é progresso?</div>
+      </div>
+    </div>
+    <h3 style="font-family:'DM Serif Display',serif;font-size:1.4rem;font-weight:400;margin-bottom:1.5rem;">Influências declaradas</h3>
+    <div class="influencias-grid">
+      <div class="infl-card"><div class="infl-name">H.G. Wells</div><div class="infl-note">Ficção científica inglesa</div></div>
+      <div class="infl-card"><div class="infl-name">Fyodor Dostoiévski</div><div class="infl-note">Literatura russa</div></div>
+      <div class="infl-card"><div class="infl-name">D.H. Lawrence</div><div class="infl-note">Literatura inglesa modernista</div></div>
+      <div class="infl-card"><div class="infl-name">Filosofia Hindu</div><div class="infl-note">Vedanta e misticismo</div></div>
+      <div class="infl-card"><div class="infl-name">Bertrand Russell</div><div class="infl-note">Filosofia analítica</div></div>
+      <div class="infl-card"><div class="infl-name">Thomas Henry Huxley</div><div class="infl-note">Avô — tradição científica</div></div>
+    </div>
+    <div class="quote-block" style="margin-top:2.5rem;">
+      <div class="quote-text">"Um Estado totalitário realmente eficiente seria aquele em que os chefes políticos e seu exército de administradores controlassem uma população de escravos que não precisassem ser coagidos, pois amariam sua servidão."</div>
+      <div class="quote-attr">— Aldous Huxley, Admirável Mundo Novo, prefácio de 1946</div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="premios">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Prêmios e reconhecimentos</h2>
+    </div>
+    <div class="premios-list">
+      <div class="premio-item">
+        <div class="premio-year">1939</div>
+        <div>
+          <div class="premio-title">American Book Award (indicação)</div>
+          <div class="premio-sub">Após a Marcha do Tempo — reconhecimento pela crítica americana de sua obra ensaística.</div>
+        </div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">1959</div>
+        <div>
+          <div class="premio-title">American Academy of Arts and Letters — Companion of Literature</div>
+          <div class="premio-sub">Uma das mais altas honrarias literárias dos Estados Unidos, concedida a escritores de contribuição extraordinária.</div>
+        </div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">1962</div>
+        <div>
+          <div class="premio-title">Companion of Literature — Royal Society of Literature</div>
+          <div class="premio-sub">Reconhecimento máximo da Royal Society of Literature britânica pelo conjunto da obra.</div>
+        </div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">Atemporal</div>
+        <div>
+          <div class="premio-title">100 Melhores Romances em Inglês — Modern Library</div>
+          <div class="premio-sub">Admirável Mundo Novo figura na lista da Modern Library entre os 100 maiores romances em língua inglesa do século XX.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="curiosidades">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Curiosidades</h2>
+    </div>
+    <div class="curio-grid">
+      <div class="curio-item">
+        <span class="curio-icon">💊</span>
+        <div class="curio-title">LSD na hora da morte</div>
+        <div class="curio-text">Ao saber que estava morrendo de câncer, Huxley pediu à esposa que lhe administrasse uma dose de LSD. Assim morreu — em 22 de novembro de 1963, o mesmo dia do assassinato de John F. Kennedy, o que fez sua morte passar quase despercebida pelo mundo.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">🚪</span>
+        <div class="curio-title">Pai do nome "The Doors"</div>
+        <div class="curio-text">Jim Morrison escolheu o nome de sua banda a partir do título As Portas da Percepção, de Huxley — que por sua vez havia tomado a expressão do poema de William Blake: "Se as portas da percepção fossem limpas, tudo apareceria ao homem como realmente é: infinito."</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">🔮</span>
+        <div class="curio-title">Profeta do século XXI</div>
+        <div class="curio-text">O jornalista Neil Postman argumentou que não foi Orwell, mas Huxley quem previu o mundo atual: não somos dominados pela censura e pelo medo, mas pelo entretenimento, pelas redes sociais e pelo excesso de informação prazerosa que nos torna passivos.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">👁️</span>
+        <div class="curio-title">A visão que quase perdeu</div>
+        <div class="curio-text">Aos 16 anos, uma infecção ocular (ceratite) quase o deixou completamente cego. Durante 18 meses leu em braille. Quando recuperou parcialmente a visão, passou a usar óculos com lentes grossíssimas e dedicou um livro inteiro — A Arte de Ver — a um método de reabilitação visual que descobriu.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">🧬</span>
+        <div class="curio-title">Família de gênios</div>
+        <div class="curio-text">Seu avô Thomas Huxley foi o principal defensor do darwinismo na Inglaterra. Seu irmão Julian Huxley foi um dos biólogos evolucionistas mais importantes do século XX e primeiro diretor-geral da UNESCO. Aldous conviveu desde criança com os maiores cientistas e intelectuais britânicos.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">🕉️</span>
+        <div class="curio-title">Místico e pacifista</div>
+        <div class="curio-text">Nos últimos anos de vida, Huxley se aprofundou no Vedanta hinduísta, estudou com o swami Prabhavananda e escreveu A Filosofia Perene — uma antologia de textos místicos de todas as tradições. Era pacifista declarado e recusou a cidadania americana para não ser convocado na guerra.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="entrevistas">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Para conhecer melhor</h2>
+    </div>
+    <div class="links-grid">
+      <a class="link-card" href="https://www.youtube.com/watch?v=alasBxZsb40" target="_blank" rel="noopener">
+        <div class="link-icon-box">📺</div>
+        <div class="link-body">
+          <div class="link-title">Entrevista com Mike Wallace — CBS (1958)</div>
+          <div class="link-sub">YouTube · Huxley discute liberdade, controle e o futuro da democracia · clássico</div>
+        </div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a class="link-card" href="https://www.theparisreview.org/interviews/4698/the-art-of-fiction-no-24-aldous-huxley" target="_blank" rel="noopener">
+        <div class="link-icon-box">📖</div>
+        <div class="link-body">
+          <div class="link-title">The Paris Review — The Art of Fiction</div>
+          <div class="link-sub">Entrevista clássica sobre processo criativo e filosofia · 1960</div>
+        </div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a class="link-card" href="https://www.bbc.co.uk/programmes/p00fxfv3" target="_blank" rel="noopener">
+        <div class="link-icon-box">🎙️</div>
+        <div class="link-body">
+          <div class="link-title">BBC — Arquivo de entrevistas</div>
+          <div class="link-sub">Rádio BBC · conversas sobre Admirável Mundo Novo e consciência</div>
+        </div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a class="link-card" href="https://www.aldoushuxley.com" target="_blank" rel="noopener">
+        <div class="link-icon-box">🌐</div>
+        <div class="link-body">
+          <div class="link-title">Site oficial Aldous Huxley Society</div>
+          <div class="link-sub">Recursos, ensaios e arquivo completo da obra</div>
+        </div>
+        <span class="link-arrow">↗</span>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="footer-name">Aldous Huxley</div>
+  <div class="footer-divider"></div>
+  <div class="footer-note">Fontes: The Paris Review · BBC · Modern Library · Encyclopaedia Britannica · The Guardian</div>
+  <div class="footer-note" style="margin-top:8px;opacity:0.2;">Apresentação literária · Socorro Clube do Livro · 2025</div>
+  <a class="footer-back" href="index.html#autores">← Voltar para Autores</a>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); });
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 60); observer.unobserve(e.target); } });
+  }, { threshold: 0.06 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
