@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>João Anzanello Carrascoza — Socorro Clube do Livro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#f5f0e8;--paper:#ede8dc;--ink:#1a1208;--ink-mid:#3a2e1a;--ink-light:#6b5e42;--ink-faint:#9e9080;--rust:#c1440e;--gold:#d4a017;--border:rgba(26,18,8,.1);--shadow:rgba(26,18,8,.12)}*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;font-weight:300;background:var(--cream);color:var(--ink);font-size:17px;line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden}body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.5}nav{position:sticky;top:0;z-index:100;background:var(--cream);border-bottom:1px solid var(--border);padding:0 4rem;display:flex;align-items:center;justify-content:space-between;height:60px;transition:box-shadow .3s}.scrolled{box-shadow:0 4px 30px var(--shadow)}.nav-brand{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--rust);text-decoration:none}.nav-brand span{font-size:.75rem;font-family:'DM Sans',sans-serif;font-weight:300;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase;margin-left:.75rem}.nav-links{display:flex;gap:2rem;list-style:none}.nav-links a,.nav-back{font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}.nav-links a{color:var(--ink);opacity:.65}.nav-back{color:var(--rust);opacity:.85}.hero{position:relative;min-height:88vh;display:flex;align-items:center;overflow:hidden;padding:6rem 4rem 5rem;background:var(--ink);color:var(--cream)}.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 80% 40%, rgba(212,160,23,.12) 0%, transparent 70%),radial-gradient(ellipse 50% 80% at 10% 70%, rgba(193,68,14,.08) 0%, transparent 60%)}.hero-lines{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(245,240,232,.03) 39px,rgba(245,240,232,.03) 40px)}.hero-inner{position:relative;max-width:1100px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 320px;gap:5rem;align-items:center}.hero-eyebrow{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem}.hero-name{font-family:'DM Serif Display',serif;font-size:clamp(42px,7vw,78px);line-height:.95;color:var(--cream);margin-bottom:.6rem;letter-spacing:-.03em}.hero-name em{font-style:italic;color:var(--gold)}.hero-dates{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,240,232,.45);margin-bottom:2rem}.hero-desc{font-size:1.05rem;line-height:1.75;color:rgba(245,240,232,.74);max-width:580px;margin-bottom:2.5rem}.hero-stats{display:flex;gap:2.2rem}.hero-stat-num{font-family:'DM Serif Display',serif;font-size:2.1rem;color:var(--gold)}.hero-stat-label{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,240,232,.42);margin-top:4px}.portrait-frame{width:100%;aspect-ratio:3/4;border:1px solid rgba(245,240,232,.12);padding:10px;background:rgba(245,240,232,.04)}.portrait-frame img{width:100%;height:100%;object-fit:cover;display:block}.page-content{max-width:1100px;margin:0 auto;padding:0 4rem}.section{padding:5rem 0;border-top:1px solid var(--border)}.section-header{display:flex;align-items:baseline;gap:1.5rem;margin-bottom:3rem}.section-num{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--rust);opacity:.7}.section-title{font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,3vw,2.8rem);line-height:1.1;letter-spacing:-.02em}.bio-grid,.curio-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}.bio-text p+p{margin-top:1.1rem}.timeline{display:flex;flex-direction:column}.tl-item{display:grid;grid-template-columns:70px 1fr;gap:1.2rem;padding:1.1rem 0;border-bottom:1px solid var(--border)}.tl-year{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);padding-top:3px;font-weight:500}.tl-title{font-family:'DM Serif Display',serif;font-size:.98rem;margin-bottom:2px}.tl-desc{font-size:.86rem;color:var(--ink-light);line-height:1.6}.books-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}.book-card,.curio-item,.estilo-item,.infl-card,.link-card{background:var(--paper);border:1px solid var(--border)}.book-card{padding:1.5rem;border-top:3px solid var(--gold)}.book-year{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--rust);margin-bottom:6px}.book-title{font-family:'DM Serif Display',serif;font-size:1rem;font-style:italic;margin-bottom:8px;line-height:1.3}.book-note{font-size:.85rem;color:var(--ink-light);line-height:1.6}.book-badge{display:inline-block;margin-top:10px;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:3px 9px;font-weight:500}.quote-block{border-left:4px solid var(--rust);padding:1.5rem 2rem;margin:2.5rem 0;background:var(--paper)}.quote-text{font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;font-style:italic;line-height:1.65}.quote-attr{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-top:12px}.estilo-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem;margin-bottom:3rem}.estilo-item{display:flex;gap:14px;padding:1.4rem}.estilo-num{font-size:.68rem;letter-spacing:.1em;color:var(--gold);padding-top:2px;font-weight:500}.estilo-text{font-size:.9rem;line-height:1.7;color:var(--ink-mid)}.influencias-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}.infl-card{padding:1.1rem;text-align:center}.infl-name{font-family:'DM Serif Display',serif;font-size:.95rem;margin-bottom:4px}.infl-note{font-size:.65rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}.premio-item{display:grid;grid-template-columns:90px 1fr;gap:1.4rem;padding:1rem 0;border-bottom:1px solid var(--border)}.premio-year{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:500}.premio-title{font-size:.95rem;font-weight:500;font-family:'DM Serif Display',serif}.premio-sub{font-size:.82rem;color:var(--ink-light);margin-top:2px}.curio-grid{gap:1.2rem}.curio-item{border-left:4px solid var(--gold);padding:1.5rem}.curio-title{font-family:'DM Serif Display',serif;font-size:1rem;margin-bottom:6px}.curio-text{font-size:.85rem;color:var(--ink-light);line-height:1.7}.links-grid{display:flex;flex-direction:column;gap:10px}.link-card{display:flex;gap:16px;align-items:center;padding:1.1rem 1.5rem;text-decoration:none;color:inherit}.link-icon-box{width:44px;height:44px;background:var(--cream);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}.link-title{font-size:.9rem;font-weight:500}.link-sub{font-size:.75rem;color:var(--ink-faint);margin-top:2px}.link-arrow{font-size:1.1rem;color:var(--rust);opacity:.7}footer{background:var(--ink);color:var(--cream);padding:3rem 4rem;display:flex;flex-direction:column;align-items:center;text-align:center;margin-top:2rem}.footer-name{font-family:'DM Serif Display',serif;font-size:1.8rem;font-style:italic;color:var(--gold);margin-bottom:.75rem}.footer-note{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(245,240,232,.35)}@media (max-width:900px){nav,.page-content,footer,.hero{padding-left:1.5rem;padding-right:1.5rem}.hero-inner,.bio-grid,.curio-grid,.estilo-grid{grid-template-columns:1fr}.hero{padding-top:5rem}.books-grid{grid-template-columns:1fr 1fr}.influencias-grid{grid-template-columns:1fr 1fr}.nav-links{display:none}}@media (max-width:580px){.books-grid{grid-template-columns:1fr}.hero-stats{gap:1.2rem;flex-wrap:wrap}.influencias-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a class="nav-brand" href="index.html">Socorro <span>Clube do Livro</span></a>
+  <ul class="nav-links">
+    <li><a href="#biografia">Biografia</a></li>
+    <li><a href="#obra">Obra</a></li>
+    <li><a href="#estilo">Estilo</a></li>
+    <li><a href="#premios">Prêmios</a></li>
+    <li><a href="#curiosidades">Curiosidades</a></li>
+    <li><a href="#entrevistas">Entrevistas</a></li>
+  </ul>
+  <a class="nav-back" href="index.html#autores">← Autores</a>
+</nav>
+<section class="hero">
+  <div class="hero-bg"></div><div class="hero-lines"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Literatura brasileira contemporânea</div>
+      <h1 class="hero-name">João Anzanello<br><em>Carrascoza</em></h1>
+      <div class="hero-dates">Cravinhos, 1962 · conto, romance e literatura infantojuvenil</div>
+      <p class="hero-desc">Escritor, professor e publicitário. É uma das vozes mais delicadas da prosa brasileira contemporânea, conhecido por narrativas curtas de grande densidade emocional, marcadas por memória, perda, infância e relações familiares.</p>
+      <div class="hero-stats">
+        <div><div class="hero-stat-num">60+</div><div class="hero-stat-label">Livros</div></div>
+        <div><div class="hero-stat-num">1990s</div><div class="hero-stat-label">Estreia em livro</div></div>
+        <div><div class="hero-stat-num">USP</div><div class="hero-stat-label">Professor e pesquisador</div></div>
+      </div>
+    </div>
+    <div class="portrait-frame">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Jo%C3%A3o%20Carrascoza.jpg" alt="Foto de João Anzanello Carrascoza">
+    </div>
+  </div>
+</section>
+<div class="page-content">
+  <section class="section" id="biografia">
+    <div class="section-header"><span class="section-num">01</span><h2 class="section-title">Biografia</h2></div>
+    <div class="bio-grid">
+      <div class="bio-text">
+        <p>João Luís Anzanello Carrascoza nasceu em Cravinhos, interior de São Paulo, em 1962. A infância no ambiente interiorano deixou marcas profundas em sua literatura: a vida doméstica, os pequenos gestos, o silêncio, o afeto e a despedida aparecem em sua escrita como matéria central.</p>
+        <p>Na juventude, mudou-se para São Paulo, onde estudou publicidade e propaganda. Além da carreira literária, tornou-se referência também no campo da comunicação, atuando como redator publicitário e professor universitário. Essa dupla formação ajuda a explicar sua atenção extrema ao ritmo, à escolha vocabular e à concisão.</p>
+        <p>Ao longo da carreira, publicou contos, romances e livros infantojuvenis. Em todos esses registros, consolidou uma prosa de aparente simplicidade, mas de grande intensidade afetiva, em que o cotidiano ganha espessura poética. É frequentemente associado à arte do conto brasileiro contemporâneo.</p>
+      </div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-year">1962</div><div><div class="tl-title">Nascimento em Cravinhos</div><div class="tl-desc">Interior paulista como reservatório afetivo de sua obra.</div></div></div>
+        <div class="tl-item"><div class="tl-year">1970s</div><div><div class="tl-title">Mudança para São Paulo</div><div class="tl-desc">Passa a estudar e depois atuar no campo da publicidade.</div></div></div>
+        <div class="tl-item"><div class="tl-year">1991</div><div><div class="tl-title">Primeiros livros</div><div class="tl-desc">Publica <em>As flores do lado de baixo</em> no campo infantojuvenil.</div></div></div>
+        <div class="tl-item"><div class="tl-year">1994</div><div><div class="tl-title">Hotel Solidão</div><div class="tl-desc">Primeiro livro voltado ao público adulto em formato de contos.</div></div></div>
+        <div class="tl-item"><div class="tl-year">2010s</div><div><div class="tl-title">Reconhecimento ampliado</div><div class="tl-desc">Consolida-se como um dos grandes contistas brasileiros em atividade.</div></div></div>
+        <div class="tl-item"><div class="tl-year">2023</div><div><div class="tl-title">O céu implacável</div><div class="tl-desc">Romance recente que reafirma sua prosa sensível e meditativa.</div></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="section" id="obra">
+    <div class="section-header"><span class="section-num">02</span><h2 class="section-title">Obra principal</h2></div>
+    <div class="books-grid">
+      <div class="book-card"><div class="book-year">1994</div><div class="book-title">Hotel Solidão</div><div class="book-note">Livro de contos que ajuda a marcar sua entrada na ficção adulta.</div></div>
+      <div class="book-card"><div class="book-year">2012</div><div class="book-title">Amores mínimos</div><div class="book-note">Exemplo forte de sua capacidade de condensar emoção em narrativas curtas.</div><span class="book-badge">Contos</span></div>
+      <div class="book-card"><div class="book-year">2013</div><div class="book-title">Aquela água toda</div><div class="book-note">Livro voltado à memória e aos vínculos familiares, com delicadeza rara.</div></div>
+      <div class="book-card"><div class="book-year">2016</div><div class="book-title">Aos 7 e aos 40</div><div class="book-note">Romance de vozes e tempos entrelaçados, trabalhando infância e maturidade.</div></div>
+      <div class="book-card"><div class="book-year">2017</div><div class="book-title">Tempo justo</div><div class="book-note">Reconhecido também em sua produção para jovens leitores.</div><span class="book-badge">Infantojuvenil</span></div>
+      <div class="book-card"><div class="book-year">2023</div><div class="book-title">O céu implacável</div><div class="book-note">Romance recente que reforça o tom contemplativo e lírico de sua obra.</div><span class="book-badge">Obra recente</span></div>
+    </div>
+  </section>
+  <section class="section" id="estilo">
+    <div class="section-header"><span class="section-num">03</span><h2 class="section-title">Estilo e referências</h2></div>
+    <div class="estilo-grid">
+      <div class="estilo-item"><div class="estilo-num">01</div><div class="estilo-text"><strong>Economia verbal:</strong> frases precisas, sem excesso, mas carregadas de ressonância afetiva.</div></div>
+      <div class="estilo-item"><div class="estilo-num">02</div><div class="estilo-text"><strong>Poética do cotidiano:</strong> cenas mínimas ganham densidade existencial.</div></div>
+      <div class="estilo-item"><div class="estilo-num">03</div><div class="estilo-text"><strong>Infância e memória:</strong> muitos textos retornam à formação do sujeito pelos afetos e pelas perdas.</div></div>
+      <div class="estilo-item"><div class="estilo-num">04</div><div class="estilo-text"><strong>Silêncio e subtexto:</strong> o mais importante muitas vezes está no que não é dito diretamente.</div></div>
+    </div>
+    <div class="influencias-grid">
+      <div class="infl-card"><div class="infl-name">Interior</div><div class="infl-note">Origem e memória</div></div>
+      <div class="infl-card"><div class="infl-name">Família</div><div class="infl-note">Núcleo emocional</div></div>
+      <div class="infl-card"><div class="infl-name">Perda</div><div class="infl-note">Tema recorrente</div></div>
+      <div class="infl-card"><div class="infl-name">Concisão</div><div class="infl-note">Marca de estilo</div></div>
+    </div>
+    <div class="quote-block"><div class="quote-text">“A vida comum, quando olhada de perto, já contém toda a grandeza do drama humano.”</div><div class="quote-attr">— formulação que resume a atmosfera da obra de Carrascoza</div></div>
+  </section>
+  <section class="section" id="premios">
+    <div class="section-header"><span class="section-num">04</span><h2 class="section-title">Prêmios e reconhecimentos</h2></div>
+    <div class="premios-list">
+      <div class="premio-item"><div class="premio-year">2015</div><div><div class="premio-title">Livro Juvenil Altamente Recomendável — FNLIJ</div><div class="premio-sub">Reconhecimento na literatura para crianças e jovens.</div></div></div>
+      <div class="premio-item"><div class="premio-year">2017</div><div><div class="premio-title">Prêmio Literário Biblioteca Nacional</div><div class="premio-sub">Destaque para sua produção infantojuvenil.</div></div></div>
+      <div class="premio-item"><div class="premio-year">2018–2020</div><div><div class="premio-title">Premiações FNLIJ e seleções literárias</div><div class="premio-sub">Consagração contínua em diferentes frentes da obra.</div></div></div>
+    </div>
+  </section>
+  <section class="section" id="curiosidades">
+    <div class="section-header"><span class="section-num">05</span><h2 class="section-title">Curiosidades</h2></div>
+    <div class="curio-grid">
+      <div class="curio-item"><div class="curio-title">Também é publicitário</div><div class="curio-text">A experiência com linguagem publicitária contribuiu para sua disciplina verbal e atenção ao ritmo.</div></div>
+      <div class="curio-item"><div class="curio-title">Professor universitário</div><div class="curio-text">Sua trajetória acadêmica acompanha a literária, especialmente nas áreas de comunicação e escrita.</div></div>
+      <div class="curio-item"><div class="curio-title">Escritor de muitos registros</div><div class="curio-text">Publica contos, romances e literatura infantojuvenil sem perder a identidade estilística.</div></div>
+      <div class="curio-item"><div class="curio-title">A saudade como força</div><div class="curio-text">Em entrevistas, frequentemente relaciona sua escrita à memória do pai, da infância e dos laços familiares.</div></div>
+    </div>
+  </section>
+  <section class="section" id="entrevistas">
+    <div class="section-header"><span class="section-num">06</span><h2 class="section-title">Entrevistas e referências</h2></div>
+    <div class="links-grid">
+      <a class="link-card" href="https://enciclopedia.itaucultural.org.br/pessoas/28083-joao-anzanello-carrascoza" target="_blank" rel="noopener"><div class="link-icon-box">📚</div><div><div class="link-title">Verbete biográfico</div><div class="link-sub">Enciclopédia Itaú Cultural</div></div><span class="link-arrow">↗</span></a>
+      <a class="link-card" href="https://www.itaucultural.org.br/secoes/entrevista/joao-anzanello-carrascoza-certo-alguem" target="_blank" rel="noopener"><div class="link-icon-box">🎤</div><div><div class="link-title">Entrevista: um certo alguém</div><div class="link-sub">Itaú Cultural</div></div><span class="link-arrow">↗</span></a>
+      <a class="link-card" href="https://www.itaucultural.org.br/joao-anzanello-carrascoza-encontros-de-interrogacao-2011" target="_blank" rel="noopener"><div class="link-icon-box">▶</div><div><div class="link-title">Encontro de Interrogação</div><div class="link-sub">Conversa sobre trajetória e processo criativo</div></div><span class="link-arrow">↗</span></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div class="footer-name">João Anzanello Carrascoza</div>
+  <div class="footer-note">Fontes: Enciclopédia Itaú Cultural · Itaú Cultural · Wikimedia Commons</div>
+  <div class="footer-note" style="margin-top:8px;opacity:.2;">Apresentação literária · Socorro Clube do Livro</div>
+</footer>
+<script>const nav=document.getElementById('nav');window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>40));</script>
+</body>
+</html>
