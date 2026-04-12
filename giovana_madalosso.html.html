@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giovana Madalosso — Socorro Clube do Livro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --paper: #ede8dc;
+    --ink: #1a1208;
+    --ink-mid: #3a2e1a;
+    --ink-light: #6b5e42;
+    --ink-faint: #9e9080;
+    --rust: #c1440e;
+    --gold: #d4a017;
+    --border: rgba(26,18,8,0.1);
+    --shadow: rgba(26,18,8,0.12);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 17px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.5;
+  }
+  nav {
+    position: sticky; top: 0; z-index: 100; background: var(--cream);
+    border-bottom: 1px solid var(--border); padding: 0 4rem; display: flex;
+    align-items: center; justify-content: space-between; height: 60px; transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 30px var(--shadow); }
+  .nav-brand {
+    font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--rust); text-decoration: none;
+  }
+  .nav-brand span {
+    font-size: 0.75rem; font-family: 'DM Sans', sans-serif; font-weight: 300; color: var(--ink-faint);
+    letter-spacing: 0.06em; text-transform: uppercase; margin-left: 0.75rem;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a, .nav-back {
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink); text-decoration: none; opacity: 0.75;
+  }
+  .nav-back { color: var(--rust); }
+  .hero {
+    position: relative; min-height: 88vh; display: flex; align-items: center; overflow: hidden;
+    padding: 6rem 4rem 5rem; background: var(--ink); color: var(--cream);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 80% 40%, rgba(212,160,23,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 80% at 10% 70%, rgba(193,68,14,0.08) 0%, transparent 60%);
+  }
+  .hero-lines {
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(245,240,232,0.03) 39px, rgba(245,240,232,0.03) 40px);
+  }
+  .hero-inner {
+    position: relative; max-width: 1100px; margin: 0 auto; width: 100%; display: grid;
+    grid-template-columns: 1fr 340px; gap: 5rem; align-items: center;
+  }
+  .hero-eyebrow {
+    font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold);
+    margin-bottom: 1.5rem; display: flex; align-items: center; gap: 12px; opacity: 0.9;
+  }
+  .hero-eyebrow::before { content: ''; display:block; width:32px; height:1px; background:var(--gold); }
+  .hero-name {
+    font-family: 'DM Serif Display', serif; font-size: clamp(52px, 8vw, 90px); line-height: 0.95;
+    color: var(--cream); margin-bottom: 0.6rem; letter-spacing: -0.03em;
+  }
+  .hero-name em { font-style: italic; color: var(--gold); }
+  .hero-dates {
+    font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,232,0.45);
+    margin-bottom: 2rem; margin-top: 0.75rem;
+  }
+  .hero-desc { font-size: 1.05rem; line-height: 1.75; color: rgba(245,240,232,0.78); max-width: 560px; margin-bottom: 2.25rem; }
+  .hero-stats { display: flex; gap: 2rem; flex-wrap: wrap; }
+  .hero-stat-num { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--gold); line-height: 1; }
+  .hero-stat-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,232,0.42); margin-top: 4px; }
+  .hero-portrait img {
+    width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block; border: 1px solid rgba(245,240,232,0.12);
+    box-shadow: 0 18px 50px rgba(0,0,0,0.25);
+  }
+  .portrait-credit { margin-top: 0.75rem; font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(245,240,232,0.45); }
+  .page-content { max-width: 1100px; margin: 0 auto; padding: 0 4rem; }
+  .section { padding: 5rem 0; border-top: 1px solid var(--border); }
+  .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3rem; }
+  .section-num { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rust); opacity: 0.7; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); line-height: 1.1; }
+  .bio-grid, .estilo-grid, .curio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem 3rem; }
+  .bio-text p + p { margin-top: 1rem; }
+  .timeline { display: flex; flex-direction: column; }
+  .tl-item { display: grid; grid-template-columns: 72px 1fr; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+  .tl-year { font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+  .tl-title { font-family: 'DM Serif Display', serif; font-size: 1rem; margin-bottom: 0.15rem; }
+  .tl-desc { font-size: 0.88rem; color: var(--ink-light); }
+  .books-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  .book-card, .estilo-item, .curio-item {
+    background: var(--paper); border: 1px solid var(--border); padding: 1.4rem; box-shadow: 0 6px 24px rgba(26,18,8,0.04);
+  }
+  .book-card { border-top: 3px solid var(--gold); }
+  .book-year, .small-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.35rem; }
+  .book-title, .curio-title { font-family: 'DM Serif Display', serif; font-size: 1rem; margin-bottom: 0.45rem; }
+  .book-note, .estilo-item p, .curio-text { font-size: 0.88rem; color: var(--ink-light); }
+  .quote-block { border-left: 4px solid var(--rust); padding: 1.5rem 2rem; margin: 2.5rem 0; background: var(--paper); }
+  .quote-text { font-family: 'Playfair Display', Georgia, serif; font-size: 1.2rem; font-style: italic; line-height: 1.65; }
+  .quote-attr { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-top: 0.8rem; }
+  .links-grid { display: flex; flex-direction: column; gap: 10px; }
+  .link-card {
+    display: flex; justify-content: space-between; gap: 16px; align-items: center; background: var(--paper); border: 1px solid var(--border);
+    padding: 1rem 1.25rem; text-decoration: none; color: inherit;
+  }
+  footer { background: var(--ink); color: var(--cream); padding: 3rem 4rem; text-align: center; margin-top: 2rem; }
+  .footer-name { font-family: 'DM Serif Display', serif; font-size: 1.8rem; font-style: italic; color: var(--gold); margin-bottom: 0.75rem; }
+  .footer-note { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(245,240,232,0.35); }
+  .reveal { opacity: 1; transform: none; }
+  @media (max-width: 900px) {
+    nav, .hero, .page-content, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .hero-inner, .bio-grid, .estilo-grid, .curio-grid { grid-template-columns: 1fr; }
+    .books-grid { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 580px) {
+    .books-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a class="nav-brand" href="index.html">Socorro <span>Clube do Livro</span></a>
+  <ul class="nav-links">
+    <li><a href="#biografia">Biografia</a></li>
+    <li><a href="#obra">Obras</a></li>
+    <li><a href="#estilo">Estilo</a></li>
+    <li><a href="#curiosidades">Curiosidades</a></li>
+    <li><a href="#links">Links</a></li>
+  </ul>
+  <a class="nav-back" href="index.html#autores">← Autores</a>
+</nav>
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Literatura Brasileira Contemporânea</div>
+      <h1 class="hero-name">Giovana<br><em>Madalosso</em></h1>
+      <div class="hero-dates">Curitiba, 1975 · escritora, jornalista e roteirista</div>
+      <p class="hero-desc">Autora de romances e contos que exploram maternidade, identidade feminina, desigualdade, humor e tensão social com uma prosa afiada, urbana e muito observadora.</p>
+      <div class="hero-stats">
+        <div><div class="hero-stat-num">5</div><div class="hero-stat-label">livros publicados</div></div><div><div class="hero-stat-num">2025</div><div class="hero-stat-label">ingresso na APL</div></div><div><div class="hero-stat-num">2021</div><div class="hero-stat-label">finalista do Jabuti</div></div>
+      </div>
+    </div>
+    <div class="hero-portrait">
+      <img src="https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/imagem/2025-04/giovana_madalosso._foto_por_renato_prada.jpg" alt="Foto de Giovana Madalosso">
+      <div class="portrait-credit">Foto: Renato Prada / Secretaria da Cultura do Paraná</div>
+    </div>
+  </div>
+</section>
+<div class="page-content">
+  <section class="section reveal" id="biografia">
+    <div class="section-header"><span class="section-num">01</span><h2 class="section-title">Biografia</h2></div>
+    <div class="bio-grid">
+      <div class="bio-text"><p>Nascida em Curitiba, Giovana Madalosso formou-se em Jornalismo pela Universidade Federal do Paraná e construiu uma trajetória que passa pela publicidade, pelo roteiro e pela literatura. Essa formação híbrida aparece no ritmo cinematográfico de seus textos e na precisão com que observa comportamentos.</p><p>Seu livro de estreia, <em>A Teta Racional</em>, chamou atenção ao tratar maternidade e amamentação sem idealização. Depois vieram <em>Tudo Pode Ser Roubado</em> e <em>Suíte Tóquio</em>, obra que ampliou sua circulação e foi finalista do Prêmio Jabuti na categoria Romance Literário.</p><p>Além dos livros, Madalosso participou da criação do Memorial Inumeráveis, foi colunista da <em>Folha de S.Paulo</em> e, em 2025, tomou posse na Academia Paranaense de Letras, consolidando seu nome entre as vozes mais relevantes da literatura brasileira contemporânea.</p></div>
+      <div class="timeline"><div class="tl-item"><div class="tl-year">1975</div><div><div class="tl-title">Nascimento em Curitiba</div><div class="tl-desc">Cidade que permanece como referência afetiva e intelectual em sua trajetória.</div></div></div>
+<div class="tl-item"><div class="tl-year">2016</div><div><div class="tl-title">Estreia com A Teta Racional</div><div class="tl-desc">Livro de contos sobre maternidade, corpo e linguagem.</div></div></div>
+<div class="tl-item"><div class="tl-year">2018</div><div><div class="tl-title">Tudo Pode Ser Roubado</div><div class="tl-desc">Romance com humor, desejo e crítica social em chave urbana.</div></div></div>
+<div class="tl-item"><div class="tl-year">2019</div><div><div class="tl-title">Suíte Tóquio</div><div class="tl-desc">Romance que ampliou seu reconhecimento no Brasil e no exterior.</div></div></div>
+<div class="tl-item"><div class="tl-year">2020</div><div><div class="tl-title">Memorial Inumeráveis</div><div class="tl-desc">Participa do projeto dedicado a narrar vidas perdidas na pandemia.</div></div></div>
+<div class="tl-item"><div class="tl-year">2025</div><div><div class="tl-title">Academia Paranaense de Letras</div><div class="tl-desc">Assume a cadeira 24 da instituição.</div></div></div></div>
+    </div>
+  </section>
+  <section class="section reveal" id="obra">
+    <div class="section-header"><span class="section-num">02</span><h2 class="section-title">Obras em destaque</h2></div>
+    <div class="books-grid"><div class="book-card"><div class="book-year">2016</div><div class="book-title">A Teta Racional</div><div class="book-note">Coletânea de contos que aborda maternidade e amamentação por um ângulo crítico, inteligente e nada sentimental.</div></div>
+<div class="book-card"><div class="book-year">2018</div><div class="book-title">Tudo Pode Ser Roubado</div><div class="book-note">Romance com pulsação pop e urbana, centrado em desejo, furto, deslocamento e relações de poder.</div></div>
+<div class="book-card"><div class="book-year">2019</div><div class="book-title">Suíte Tóquio</div><div class="book-note">Um de seus livros mais conhecidos, com foco em papéis sociais, casamento, trabalho doméstico e maternidade.</div></div>
+<div class="book-card"><div class="book-year">2024</div><div class="book-title">Altos e Baixos</div><div class="book-note">Livro voltado ao público jovem, mantendo o interesse da autora por vulnerabilidade, crescimento e conflito.</div></div>
+<div class="book-card"><div class="book-year">2025</div><div class="book-title">Batida Só</div><div class="book-note">Romance que articula doença, amizade, fé e fragilidade humana.</div></div></div>
+  </section>
+  <section class="section reveal" id="estilo">
+    <div class="section-header"><span class="section-num">03</span><h2 class="section-title">Estilo e temas</h2></div>
+    <div class="estilo-grid"><div class="estilo-item"><div><div class="small-label">01</div><p><strong>Olhar urbano:</strong> Suas histórias costumam nascer do atrito entre intimidade e cidade, revelando tensões sociais muito concretas.</p></div></div>
+<div class="estilo-item"><div><div class="small-label">02</div><p><strong>Humor e desconforto:</strong> Mesmo em situações duras, a autora trabalha ironia e estranhamento como força narrativa.</p></div></div>
+<div class="estilo-item"><div><div class="small-label">03</div><p><strong>Foco nas mulheres:</strong> Maternidade, desejo, exaustão, trabalho e identidade aparecem com densidade e sem idealização.</p></div></div>
+<div class="estilo-item"><div><div class="small-label">04</div><p><strong>Ritmo visual:</strong> A experiência como roteirista ajuda a construir cenas rápidas, diálogos vivos e boa cadência dramática.</p></div></div></div>
+    <div class="quote-block">
+      <div class="quote-text">“Numa cela ou num hotel cinco estrelas, eu vou escrever.”</div>
+      <div class="quote-attr">— Giovana Madalosso, em perfil da Gazeta do Povo</div>
+    </div>
+  </section>
+  <section class="section reveal" id="curiosidades">
+    <div class="section-header"><span class="section-num">04</span><h2 class="section-title">Curiosidades</h2></div>
+    <div class="curio-grid"><div class="curio-item"><div class="curio-title">Publicidade e roteiro</div><div class="curio-text">Antes de ganhar amplo reconhecimento literário, trabalhou em áreas que ajudaram a afiar sua síntese e senso de cena.</div></div>
+<div class="curio-item"><div class="curio-title">Projeto memorial</div><div class="curio-text">Foi uma das organizadoras do Memorial Inumeráveis, iniciativa de grande impacto simbólico durante a pandemia.</div></div>
+<div class="curio-item"><div class="curio-title">Leitura do cotidiano</div><div class="curio-text">Sua ficção costuma transformar pequenos gestos e relações domésticas em motores dramáticos.</div></div>
+<div class="curio-item"><div class="curio-title">Presença pública</div><div class="curio-text">Também atua em debates sobre literatura, mulheres escritoras e espaço público da cultura.</div></div></div>
+  </section>
+  <section class="section reveal" id="links">
+    <div class="section-header"><span class="section-num">05</span><h2 class="section-title">Entrevistas e referências</h2></div>
+    <div class="links-grid"><a class="link-card" href="https://pt.wikipedia.org/wiki/Giovana_Madalosso" target="_blank" rel="noopener"><div><div class="book-title" style="margin-bottom:0">Perfil biográfico</div><div class="book-note">Verbete biográfico com trajetória e obras.</div></div><div style="color:var(--rust)">↗</div></a>
+<a class="link-card" href="https://www.cultura.pr.gov.br/Noticia/Projeto-literario-da-Biblioteca-Publica-estreia-novo-formato-em-abril-com-Giovana-Madalosso" target="_blank" rel="noopener"><div><div class="book-title" style="margin-bottom:0">Projeto na Biblioteca Pública do Paraná</div><div class="book-note">Matéria com foto oficial e atividade literária de 2025.</div></div><div style="color:var(--rust)">↗</div></a>
+<a class="link-card" href="https://www.ebc.com.br/imprensa/2025/giovana-madalosso-fala-de-sua-obra-literaria-no-conversa-com-o-autor-especial-da-flip" target="_blank" rel="noopener"><div><div class="book-title" style="margin-bottom:0">Entrevista na EBC</div><div class="book-note">Conversa sobre obra literária durante a Flip.</div></div><div style="color:var(--rust)">↗</div></a></div>
+  </section>
+</div>
+<footer>
+  <div class="footer-name">Giovana Madalosso</div>
+  <div class="footer-note">Página criada a partir do layout de referência do arquivo Milton Hatoum</div>
+  <div class="footer-note" style="margin-top:8px;">Socorro Clube do Livro · 2026</div>
+</footer>
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+</script>
+</body>
+</html>
