@@ -464,6 +464,30 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
   <div id="comments"><p class="loading">Carregando avaliações...</p></div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyB03BscdfdfZGW42Btqbmzt72Dpusu45NU",
+    authDomain: "socorro-clube-do-livro.firebaseapp.com",
+    projectId: "socorro-clube-do-livro",
+    storageBucket: "socorro-clube-do-livro.firebasestorage.app",
+    messagingSenderId: "729551936788",
+    appId: "1:729551936788:web:001a6e284a63a51fc37601"
+  };
+  let db = null;
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+    db.settings({ experimentalAutoDetectLongPolling: true, useFetchStreams: false });
+  } catch (e) { db = null; }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+</script>
 <script>
 const P = {
   santo:    { nome:'Santo António',    papel:'Símbolo · Mediador Involuntário',   desc:'A cabeça monumental separada do corpo é o coração físico e simbólico do romance. É o casamenteiro dos devotos, o abrigo de Samuel, e o ponto em torno do qual a cidade morta volta à vida.',              tags:['Samuel','Mulheres de Candeia'] },
@@ -505,7 +529,8 @@ function hilite(n) {
   });
 }
 
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbznd1pZiLhfcDeXD_iOBjvXAIYCicVhuy7oW091TESguLvLtB1o5E3ipT3sVoYshFDp/exec';
+const BOOK_SLUG = 'a-cabeca-do-santo';
+const reviewsCol = db ? db.collection('livros').doc(BOOK_SLUG).collection('reviews') : null;
 let reviews = [];
 
 async function submitReview() {
@@ -515,34 +540,25 @@ async function submitReview() {
   if (!nome)   { msg.textContent = 'Coloque seu nome.';      msg.style.color='#c1440e'; return; }
   if (!picked) { msg.textContent = 'Selecione uma nota.';    msg.style.color='#c1440e'; return; }
   if (!txt)    { msg.textContent = 'Escreva um comentário.'; msg.style.color='#c1440e'; return; }
+  if (!reviewsCol) { msg.textContent = 'Avaliações indisponíveis no momento.'; msg.style.color='#c1440e'; return; }
   const btn = document.querySelector('.av-btn');
   btn.textContent = 'Enviando...'; btn.disabled = true;
   msg.textContent = '';
   try {
-    await fetch(SHEET_URL, {
-      method: 'POST', mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome, nota: picked, comentario: txt, data: new Date().toLocaleDateString('pt-BR') })
+    await reviewsCol.add({
+      nome, nota: picked, comentario: txt,
+      data: new Date().toLocaleDateString('pt-BR'),
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp()
     });
     document.getElementById('f-nome').value = '';
     document.getElementById('f-txt').value  = '';
     picked = 0; hilite(0);
     msg.textContent = 'Publicado!'; msg.style.color = '#6b8c6e';
     setTimeout(() => msg.textContent = '', 4000);
-    setTimeout(loadReviews, 1500);
   } catch(e) {
     msg.textContent = 'Erro ao enviar. Tente novamente.'; msg.style.color = '#c1440e';
   }
   btn.textContent = 'Publicar Avaliação'; btn.disabled = false;
-}
-
-async function loadReviews() {
-  try {
-    const res  = await fetch(SHEET_URL + '?t=' + Date.now());
-    const data = await res.json();
-    reviews = data.slice().reverse();
-    renderReviews();
-  } catch(e) { renderReviews(); }
 }
 
 function renderReviews() {
@@ -568,15 +584,25 @@ function renderReviews() {
   document.getElementById('comments').innerHTML = reviews.map(r => `
     <div class="comment">
       <div class="chead">
-        <span class="cname">${r.nome}</span>
+        <span class="cname">${escapeHtml(r.nome)}</span>
         <span class="cstars">${'★'.repeat(Number(r.nota))}${'☆'.repeat(5-Number(r.nota))}</span>
-        <span class="cdate">${r.data}</span>
+        <span class="cdate">${escapeHtml(r.data)}</span>
       </div>
-      <p class="ctext">${r.comentario}</p>
+      <p class="ctext">${escapeHtml(r.comentario)}</p>
     </div>`).join('');
 }
 
-loadReviews();
+if (reviewsCol) {
+  reviewsCol.orderBy('criadoEm', 'desc').onSnapshot(function (snap) {
+    reviews = snap.docs.map(d => d.data());
+    renderReviews();
+  }, function () {
+    reviews = [];
+    renderReviews();
+  });
+} else {
+  renderReviews();
+}
 </script>
 </body>
 </html>
