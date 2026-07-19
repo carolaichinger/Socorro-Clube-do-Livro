@@ -1150,6 +1150,30 @@
 <!-- ══════════════════════════════
      JAVASCRIPT
 ═══════════════════════════════════ -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyB03BscdfdfZGW42Btqbmzt72Dpusu45NU",
+    authDomain: "socorro-clube-do-livro.firebaseapp.com",
+    projectId: "socorro-clube-do-livro",
+    storageBucket: "socorro-clube-do-livro.firebasestorage.app",
+    messagingSenderId: "729551936788",
+    appId: "1:729551936788:web:001a6e284a63a51fc37601"
+  };
+  let db = null;
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+    db.settings({ experimentalAutoDetectLongPolling: true, useFetchStreams: false });
+  } catch (e) { db = null; }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+</script>
 <script>
 /* ── Personagens ── */
 const P = {
@@ -1222,45 +1246,34 @@ function goTab(id, btn) {
   btn.classList.add('on');
 }
 
-/* ── Reviews ── */
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbznd1pZiLhfcDeXD_iOBjvXAIYCicVhuy7oW091TESguLvLtB1o5E3ipT3sVoYshFDp/exec';
-const BOOK_ID = 'a_pediatra';
+/* ── Reviews (Firebase) ── */
+const BOOK_SLUG = 'a-pediatra';
+const reviewsCol = db ? db.collection('livros').doc(BOOK_SLUG).collection('reviews') : null;
 
 async function submitReview() {
   const nome  = document.getElementById('rev-nome').value.trim();
-  const nota  = document.getElementById('rev-nota').value;
+  const nota  = Number(document.getElementById('rev-nota').value);
   const texto = document.getElementById('rev-texto').value.trim();
   if (!nome || !texto) { alert('Preencha seu nome e a avaliação.'); return; }
+  if (!reviewsCol) { alert('Avaliações indisponíveis no momento.'); return; }
 
   const btn = document.querySelector('.btn-submit');
   btn.textContent = 'Enviando…'; btn.disabled = true;
 
   try {
-    await fetch(SHEETS_URL, {
-      method: 'POST', mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ book: BOOK_ID, nome, nota, texto, data: new Date().toISOString() })
+    await reviewsCol.add({
+      nome, nota, texto,
+      data: new Date().toLocaleDateString('pt-BR'),
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp()
     });
     document.getElementById('rev-nome').value = '';
     document.getElementById('rev-texto').value = '';
     document.getElementById('rev-nota').value = '5';
     btn.textContent = 'Avaliação enviada!';
     setTimeout(() => { btn.textContent = 'Enviar Avaliação'; btn.disabled = false; }, 3000);
-    loadReviews();
   } catch(e) {
     btn.textContent = 'Enviar Avaliação'; btn.disabled = false;
     alert('Erro ao enviar. Tente novamente.');
-  }
-}
-
-async function loadReviews() {
-  try {
-    const res  = await fetch(`${SHEETS_URL}?book=${BOOK_ID}`);
-    const data = await res.json();
-    renderReviews(data);
-  } catch(e) {
-    document.getElementById('reviews-container').innerHTML =
-      '<p class="reviews-empty">Seja a primeira a avaliar este livro.</p>';
   }
 }
 
@@ -1273,20 +1286,29 @@ function renderReviews(data) {
   el.innerHTML = '<div class="reviews-list">' +
     data.map(r => {
       const stars = '★'.repeat(+r.nota) + '☆'.repeat(5 - +r.nota);
-      const date  = r.data ? new Date(r.data).toLocaleDateString('pt-BR') : '';
       return `
         <div class="review-card">
           <div class="review-header">
-            <span class="review-name">${r.nome || 'Leitora'}</span>
+            <span class="review-name">${escapeHtml(r.nome) || 'Leitora'}</span>
             <span class="review-stars">${stars}</span>
           </div>
-          <p class="review-text">${r.texto || ''}</p>
-          ${date ? `<p class="review-date">${date}</p>` : ''}
+          <p class="review-text">${escapeHtml(r.texto)}</p>
+          ${r.data ? `<p class="review-date">${escapeHtml(r.data)}</p>` : ''}
         </div>`;
     }).join('') + '</div>';
 }
 
-loadReviews();
+if (reviewsCol) {
+  reviewsCol.orderBy('criadoEm', 'desc').onSnapshot(function (snap) {
+    renderReviews(snap.docs.map(d => d.data()));
+  }, function () {
+    document.getElementById('reviews-container').innerHTML =
+      '<p class="reviews-empty">Não foi possível carregar as avaliações.</p>';
+  });
+} else {
+  document.getElementById('reviews-container').innerHTML =
+    '<p class="reviews-empty">Avaliações indisponíveis no momento.</p>';
+}
 </script>
 </body>
 </html>
