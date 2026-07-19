@@ -621,44 +621,6 @@
       min-height: 1rem;
     }
 
-    .lido-rating {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 0.6rem;
-    }
-
-    .lido-stars {
-      display: flex;
-      gap: 0.1rem;
-    }
-
-    .lido-star {
-      cursor: pointer;
-      font-size: 0.95rem;
-      line-height: 1;
-      color: rgba(245, 240, 232, 0.18);
-      transition: color 0.15s ease, transform 0.15s ease;
-      user-select: none;
-    }
-
-    .lido-star:hover { transform: scale(1.2); }
-
-    .lido-star.filled { color: var(--gold); }
-
-    .lido-rating-info {
-      font-size: 0.6rem;
-      letter-spacing: 0.02em;
-      opacity: 0.45;
-      color: var(--cream);
-    }
-
-    .lido-rating-info.voted {
-      opacity: 0.8;
-      color: var(--gold);
-    }
-
     .btn-analise {
       display: flex;
       align-items: center;
@@ -1191,34 +1153,8 @@
     <p>Feito com amor e muitos encontros</p>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-
   <script>
     (function () {
-      // ======= AVALIAÇÕES (Firebase) — EDITE AQUI =======
-      // Cole aqui a configuração do seu projeto Firebase.
-      // Console Firebase > Configurações do projeto > Seus apps > SDK setup and configuration.
-      const firebaseConfig = {
-        apiKey: "AIzaSyB03BscdfdfZGW42Btqbmzt72Dpusu45NU",
-        authDomain: "socorro-clube-do-livro.firebaseapp.com",
-        projectId: "socorro-clube-do-livro",
-        storageBucket: "socorro-clube-do-livro.firebasestorage.app",
-        messagingSenderId: "729551936788",
-        appId: "1:729551936788:web:001a6e284a63a51fc37601"
-      };
-
-      let db = null;
-      try {
-        if (firebaseConfig.apiKey !== 'SEU_API_KEY_AQUI' && typeof firebase !== 'undefined') {
-          firebase.initializeApp(firebaseConfig);
-          db = firebase.firestore();
-        }
-      } catch (e) {
-        db = null;
-      }
-      // ======= FIM DA CONFIGURAÇÃO =======
-
       const COVER_FALLBACKS = {
         "A Cabeça do Santo": "data:image/jpeg;base64,COVER_CABECA_DO_SANTO",
         "Cinco Esquinas": "data:image/jpeg;base64,COVER_CINCO_ESQUINAS"
@@ -1395,101 +1331,6 @@
         return element;
       }
 
-      function slugify(texto) {
-        return texto
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/(^-|-$)/g, '');
-      }
-
-      function getVoterId() {
-        const key = 'socorro_voter_id';
-        let id = localStorage.getItem(key);
-        if (!id) {
-          id = 'v-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
-          localStorage.setItem(key, id);
-        }
-        return id;
-      }
-
-      function createBookRating(livro) {
-        const slug = slugify(livro.titulo);
-        const voterId = getVoterId();
-
-        const wrap = document.createElement('div');
-        wrap.className = 'lido-rating';
-
-        const starsWrap = document.createElement('div');
-        starsWrap.className = 'lido-stars';
-
-        const stars = [];
-        for (let i = 1; i <= 5; i++) {
-          const star = document.createElement('span');
-          star.className = 'lido-star';
-          star.textContent = '★';
-          star.dataset.value = i;
-          star.setAttribute('role', 'button');
-          star.setAttribute('aria-label', 'Dar nota ' + i + ' para ' + livro.titulo);
-          stars.push(star);
-          starsWrap.appendChild(star);
-        }
-
-        const info = document.createElement('div');
-        info.className = 'lido-rating-info';
-        info.textContent = db ? 'Carregando…' : 'Avaliações indisponíveis';
-
-        wrap.appendChild(starsWrap);
-        wrap.appendChild(info);
-
-        function paint(notas) {
-          const valores = Object.values(notas || {});
-          const count = valores.length;
-          const media = count ? valores.reduce(function (a, b) { return a + b; }, 0) / count : 0;
-          const minhaNota = notas ? notas[voterId] : null;
-
-          stars.forEach(function (star) {
-            const v = Number(star.dataset.value);
-            star.classList.toggle('filled', v <= Math.round(minhaNota || media));
-          });
-
-          if (minhaNota) {
-            info.textContent = 'Sua nota: ' + minhaNota + ' · média ' + media.toFixed(1) + ' (' + count + ')';
-            info.classList.add('voted');
-          } else if (count) {
-            info.textContent = media.toFixed(1) + ' · ' + count + (count === 1 ? ' avaliação' : ' avaliações');
-            info.classList.remove('voted');
-          } else {
-            info.textContent = 'Seja o primeiro a avaliar';
-            info.classList.remove('voted');
-          }
-        }
-
-        if (db) {
-          db.collection('avaliacoes').doc(slug).onSnapshot(function (docSnap) {
-            paint(docSnap.exists ? docSnap.data().notas : null);
-          }, function () {
-            info.textContent = 'Avaliações indisponíveis';
-          });
-        }
-
-        stars.forEach(function (star) {
-          star.addEventListener('click', function () {
-            if (!db) return;
-            const value = Number(star.dataset.value);
-            const fieldPath = 'notas.' + voterId;
-            db.collection('avaliacoes').doc(slug).set(
-              { [fieldPath]: value },
-              { merge: true }
-            ).catch(function () {
-              info.textContent = 'Não foi possível salvar sua nota';
-            });
-          });
-        });
-
-        return wrap;
-      }
 
       function createBookCard(livro, index) {
         const card = document.createElement('div');
@@ -1518,7 +1359,6 @@
         body.appendChild(mes);
         body.appendChild(titulo);
         body.appendChild(autor);
-        body.appendChild(createBookRating(livro));
         body.appendChild(createBookAction(livro));
 
         card.appendChild(cover);
