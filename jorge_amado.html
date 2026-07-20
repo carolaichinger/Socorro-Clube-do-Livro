@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jorge Amado — Socorro Clube do Livro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --paper: #ede8dc;
+    --ink: #1a1208;
+    --ink-mid: #3a2e1a;
+    --ink-light: #6b5e42;
+    --ink-faint: #9e9080;
+    --rust: #c1440e;
+    --gold: #d4a017;
+    --gold-pale: #f5eacc;
+    --sage: #6b8c6e;
+    --border: rgba(26,18,8,0.1);
+    --border-mid: rgba(26,18,8,0.2);
+    --shadow: rgba(26,18,8,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 17px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.5;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    padding: 0 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 30px var(--shadow); }
+
+  .nav-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    color: var(--rust);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+  .nav-brand span {
+    font-size: 0.75rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-left: 0.75rem;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: 0.6;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+    height: 1px; background: var(--rust); transform: scaleX(0); transition: transform 0.25s;
+  }
+  .nav-links a:hover { opacity: 1; }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .nav-back {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--rust);
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .nav-back:hover { opacity: 1; }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 6rem 4rem 5rem;
+    background: var(--ink);
+    color: var(--cream);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 80% 40%, rgba(212,160,23,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 80% at 10% 70%, rgba(193,68,14,0.08) 0%, transparent 60%);
+  }
+  .hero-lines {
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent, transparent 39px,
+      rgba(245,240,232,0.03) 39px,
+      rgba(245,240,232,0.03) 40px
+    );
+  }
+  .hero-inner {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 5rem;
+    align-items: center;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0.9;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px; height: 1px;
+    background: var(--gold);
+  }
+  .hero-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(52px, 8vw, 90px);
+    font-weight: 400;
+    line-height: 0.95;
+    color: var(--cream);
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.03em;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-dates {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+    margin-bottom: 2rem;
+    margin-top: 0.75rem;
+  }
+  .hero-desc {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: rgba(245,240,232,0.7);
+    max-width: 520px;
+    margin-bottom: 2.5rem;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 2.5rem;
+  }
+  .hero-stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .hero-stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+    margin-top: 4px;
+  }
+
+  .hero-portrait { position: relative; }
+  .portrait-frame {
+    width: 100%;
+    aspect-ratio: 3/4;
+    border-radius: 2px;
+    background: rgba(245,240,232,0.04);
+    border: 1px solid rgba(245,240,232,0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .portrait-frame::before {
+    content: '';
+    position: absolute; inset: 8px;
+    border: 1px solid rgba(245,240,232,0.07);
+    border-radius: 1px;
+    pointer-events: none;
+  }
+  .portrait-monogram {
+    font-family: 'DM Serif Display', serif;
+    font-size: 80px;
+    font-style: italic;
+    color: var(--gold);
+    opacity: 0.5;
+  }
+  .portrait-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.3);
+    margin-top: 16px;
+  }
+  .portrait-year-tag {
+    position: absolute;
+    bottom: 20px; right: 20px;
+    background: var(--rust);
+    color: white;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+  }
+
+  .page-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 4rem;
+  }
+
+  .section {
+    padding: 5rem 0;
+    border-top: 1px solid var(--border);
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  .section-num {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--rust);
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .section-title em { font-style: italic; color: var(--rust); }
+
+  /* ─── AVALIAÇÃO ─── */
+  .av-summary {
+    background: var(--paper);
+    border: 1px solid rgba(26,18,8,0.1);
+    padding: 2rem;
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .av-big-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3.2rem;
+    color: var(--rust);
+    line-height: 1;
+    text-align: center;
+  }
+  .av-big-stars { font-size: 1.4rem; text-align: center; margin: 0.3rem 0; color: var(--gold); }
+  .av-big-count {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    text-align: center;
+  }
+  .brow { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem; }
+  .brow-lbl { font-size: 0.68rem; font-weight: 600; color: var(--ink); min-width: 26px; }
+  .brow-track { flex: 1; height: 8px; background: rgba(26,18,8,0.08); border-radius: 4px; overflow: hidden; }
+  .brow-fill { height: 100%; background: var(--rust); border-radius: 4px; transition: width 0.5s; width: 0%; }
+  .brow-n { font-size: 0.68rem; color: var(--ink-light); min-width: 16px; text-align: right; }
+  .av-form { background: var(--cream); border: 1px solid rgba(26,18,8,0.1); padding: 2rem; margin-bottom: 2.5rem; }
+  .av-form h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+  .av-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+  .av-input, .av-textarea {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid rgba(26,18,8,0.15);
+    background: var(--paper);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    outline: none;
+    box-sizing: border-box;
+  }
+  .av-textarea { resize: vertical; line-height: 1.65; min-height: 100px; }
+  .av-input:focus, .av-textarea:focus { border-color: var(--rust); }
+  .stars-pick { display: flex; gap: 0.3rem; margin-bottom: 1.3rem; }
+  .stars-pick span { font-size: 2rem; cursor: pointer; line-height: 1; color: rgba(26,18,8,0.2); transition: color 0.15s; user-select: none; }
+  .av-btn {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--rust);
+    color: white;
+    border: none;
+    padding: 0.85rem 2.5rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .av-btn:hover { background: #a33508; }
+  .av-btn:disabled { background: #aaa; cursor: default; }
+  .av-msg { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.06em; margin-left: 1rem; }
+  .comment { border: 1px solid rgba(26,18,8,0.1); padding: 1.4rem 1.6rem; margin-bottom: 1rem; background: var(--paper); }
+  .chead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.4rem; }
+  .cname { font-weight: 600; color: var(--ink); font-size: 0.85rem; }
+  .cstars { color: var(--rust); font-size: 1rem; }
+  .cdate { font-size: 0.62rem; color: var(--ink-faint); }
+  .ctext { font-size: 0.95rem; line-height: 1.75; color: var(--ink); }
+  .no-reviews, .loading {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    color: var(--ink-faint);
+    font-size: 1rem;
+    text-align: center;
+    padding: 2rem 0;
+  }
+
+  /* ─── BIOGRAFIA / TIMELINE ─── */
+  .bio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .bio-text {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: var(--ink-mid);
+  }
+  .bio-text p + p { margin-top: 1.25rem; }
+
+  .timeline { display: flex; flex-direction: column; }
+  .tl-item {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .tl-item:last-child { border-bottom: none; }
+  .tl-year {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding-top: 3px;
+    font-weight: 500;
+  }
+  .tl-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .tl-desc {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    line-height: 1.6;
+  }
+
+  /* ─── BOOKS GRID ─── */
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+  }
+  .book-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    position: relative;
+    transition: box-shadow 0.25s, transform 0.25s;
+    border-top: 3px solid var(--gold);
+  }
+  .book-card:hover {
+    box-shadow: 0 8px 30px var(--shadow);
+    transform: translateY(-3px);
+  }
+  .book-year {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 6px;
+    opacity: 0.8;
+  }
+  .book-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .book-note {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    line-height: 1.6;
+  }
+  .book-badge {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--gold);
+    color: var(--ink);
+    padding: 3px 9px;
+    font-weight: 500;
+  }
+
+  /* ─── QUOTE ─── */
+  .quote-block {
+    border-left: 4px solid var(--rust);
+    padding: 1.5rem 2rem;
+    margin: 2.5rem 0;
+    background: var(--paper);
+  }
+  .quote-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .quote-attr {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 12px;
+  }
+
+  /* ─── ESTILO ─── */
+  .estilo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .estilo-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 1.5rem;
+    background: var(--paper);
+    border-top: 2px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .estilo-item:hover { border-color: var(--gold); }
+  .estilo-num {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    flex-shrink: 0;
+    padding-top: 2px;
+    font-weight: 500;
+  }
+  .estilo-text { font-size: 0.9rem; line-height: 1.7; color: var(--ink-mid); }
+  .estilo-text strong { color: var(--ink); font-weight: 500; }
+
+  /* ─── INFLUÊNCIAS ─── */
+  .influencias-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  .infl-card {
+    border: 1px solid var(--border);
+    padding: 1.1rem;
+    background: var(--paper);
+    text-align: center;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .infl-card:hover {
+    box-shadow: 0 4px 20px var(--shadow);
+    border-color: var(--gold);
+  }
+  .infl-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .infl-note {
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ─── PRÊMIOS ─── */
+  .premios-list { display: flex; flex-direction: column; }
+  .premio-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1.5rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: baseline;
+  }
+  .premio-item:last-child { border-bottom: none; }
+  .premio-year {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+  }
+  .premio-title { font-size: 0.95rem; color: var(--ink); font-weight: 500; font-family: 'DM Serif Display', serif; }
+  .premio-sub { font-size: 0.82rem; color: var(--ink-light); margin-top: 2px; }
+
+  /* ─── CURIOSIDADES ─── */
+  .curio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+  .curio-item {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    padding: 1.5rem;
+    transition: box-shadow 0.2s;
+  }
+  .curio-item:hover { box-shadow: 0 6px 24px var(--shadow); }
+  .curio-icon { font-size: 1.4rem; margin-bottom: 0.75rem; display: block; }
+  .curio-title { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--ink); margin-bottom: 6px; }
+  .curio-text { font-size: 0.85rem; color: var(--ink-light); line-height: 1.7; }
+
+  /* ─── LINKS ─── */
+  .links-grid { display: flex; flex-direction: column; gap: 10px; }
+  .link-card {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    padding: 1.1rem 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .link-card:hover {
+    box-shadow: 0 4px 20px var(--shadow);
+    border-color: var(--rust);
+    transform: translateX(4px);
+  }
+  .link-icon-box {
+    width: 44px; height: 44px;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .link-body { flex: 1; }
+  .link-title { font-size: 0.9rem; font-weight: 500; color: var(--ink); }
+  .link-sub { font-size: 0.75rem; color: var(--ink-faint); letter-spacing: 0.04em; margin-top: 2px; }
+  .link-arrow { font-size: 1.1rem; color: var(--rust); opacity: 0.7; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 3rem 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 2rem;
+  }
+  .footer-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+  .footer-divider {
+    width: 40px; height: 1px;
+    background: rgba(245,240,232,0.2);
+    margin: 1rem auto;
+  }
+  .footer-note {
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.3);
+  }
+  .footer-back {
+    margin-top: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--rust);
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+  .footer-back:hover { opacity: 1; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 1.5rem; }
+    .hero { padding: 5rem 1.5rem 4rem; }
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-portrait { display: none; }
+    .page-content { padding: 0 1.5rem; }
+    .bio-grid { grid-template-columns: 1fr; }
+    .books-grid { grid-template-columns: 1fr 1fr; }
+    .estilo-grid { grid-template-columns: 1fr; }
+    .influencias-grid { grid-template-columns: 1fr 1fr; }
+    .curio-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 580px) {
+    .books-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 1.5rem; }
+    .influencias-grid { grid-template-columns: 1fr 1fr; }
+    .premio-item { grid-template-columns: 70px 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="nav-brand" href="index.html">Socorro <span>Clube do Livro</span></a>
+  <ul class="nav-links">
+    <li><a href="#biografia">Biografia</a></li>
+    <li><a href="#obra">Obra</a></li>
+    <li><a href="#estilo">Estilo</a></li>
+    <li><a href="#premios">Prêmios</a></li>
+    <li><a href="#curiosidades">Curiosidades</a></li>
+    <li><a href="#avaliacao">Avaliação</a></li>
+  </ul>
+  <a class="nav-back" href="index.html#autores">← Autores</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Romance Regionalista Baiano</div>
+      <h1 class="hero-name">Jorge<br><em>Amado</em></h1>
+      <div class="hero-dates">Itabuna, Bahia, 1912 &nbsp;·&nbsp; Salvador, Bahia, 2001</div>
+      <p class="hero-desc">Um dos maiores romancistas brasileiros do século XX. Uniu a Bahia popular — becos, terreiros, boêmios e pescadores — à crítica social, com humor, sensualidade e uma vasta obra traduzida em mais de trinta idiomas.</p>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-num">~45</div>
+          <div class="hero-stat-label">Livros publicados</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">30+</div>
+          <div class="hero-stat-label">Idiomas traduzidos</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">1961</div>
+          <div class="hero-stat-label">Academia Brasileira de Letras</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-portrait">
+      <div class="portrait-frame">
+        <div class="portrait-monogram">JA</div>
+        <div class="portrait-label">ITABUNA · 1912</div>
+        <div class="portrait-year-tag">SALVADOR · 2001</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="page-content">
+
+  <!-- BIOGRAFIA -->
+  <section class="section reveal" id="biografia">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Biografia</h2>
+    </div>
+    <div class="bio-grid">
+      <div class="bio-text">
+        <p>Jorge Amado nasceu em 1912 na fazenda Auricídia, distrito de Ferradas, em Itabuna, no sul da Bahia, filho de um fazendeiro de cacau. Com um ano de idade, a família se mudou para Ilhéus, terra que marcaria para sempre sua obra e sua visão de mundo.</p>
+        <p>Estudou em Salvador, no Colégio Antônio Vieira, mas foi nas ruas da cidade — entre boêmios, capoeiristas, pescadores e trabalhadores do cacau — que encontrou a matéria-prima de seus romances. Aos catorze anos já participava da vida literária, cofundador da "Academia dos Rebeldes".</p>
+        <p>Politicamente engajado com o Partido Comunista desde jovem, foi preso duas vezes, em 1936 e 1937, e viveu exilado na Argentina, França e Tchecoslováquia. Retornou definitivamente ao Brasil em 1952, afastando-se progressivamente da militância partidária para se dedicar por inteiro à literatura.</p>
+        <p>Casou-se em 1945 com a escritora Zélia Gattai, com quem teve dois filhos, João Jorge e Paloma. Eleito para a Academia Brasileira de Letras em 1961, tornou-se um dos autores brasileiros mais lidos e traduzidos do mundo, com romances como Gabriela, Cravo e Canela e Dona Flor e Seus Dois Maridos.</p>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">1912</div>
+          <div><div class="tl-title">Nasce em Itabuna</div><div class="tl-desc">Filho de fazendeiros de cacau; cresce em Ilhéus, Bahia.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1931</div>
+          <div><div class="tl-title">Primeiro romance</div><div class="tl-desc">Publica O País do Carnaval ainda estudante de Direito.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1937</div>
+          <div><div class="tl-title">Capitães da Areia</div><div class="tl-desc">O livro sobre menores abandonados de Salvador é apreendido pela censura do Estado Novo.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1941–52</div>
+          <div><div class="tl-title">Exílio político</div><div class="tl-desc">Vive na Argentina, França e Tchecoslováquia fugindo da repressão ao Partido Comunista.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1945</div>
+          <div><div class="tl-title">Casa-se com Zélia Gattai</div><div class="tl-desc">A escritora se torna companheira de vida e revisora de sua obra.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1958</div>
+          <div><div class="tl-title">Gabriela, Cravo e Canela</div><div class="tl-desc">Best-seller que recebe os prêmios Jabuti e Machado de Assis.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1959</div>
+          <div><div class="tl-title">Quincas Berro D'Água</div><div class="tl-desc">Publica a novela na revista Senhor — hoje um clássico absoluto.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1961</div>
+          <div><div class="tl-title">Academia Brasileira de Letras</div><div class="tl-desc">Eleito por unanimidade para a cadeira 23.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2001</div>
+          <div><div class="tl-title">Morre em Salvador</div><div class="tl-desc">Falece aos 89 anos, com cerca de 45 livros publicados e traduzidos para mais de 30 idiomas.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OBRA -->
+  <section class="section reveal" id="obra">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Obra <em>Principal</em></h2>
+    </div>
+    <div class="books-grid">
+      <div class="book-card">
+        <div class="book-year">1937</div>
+        <div class="book-title">Capitães da Areia</div>
+        <div class="book-note">Sobre menores abandonados nas ruas de Salvador; apreendido e queimado pela censura do Estado Novo.</div>
+      </div>
+      <div class="book-card">
+        <div class="book-year">1958</div>
+        <div class="book-title">Gabriela, Cravo e Canela</div>
+        <div class="book-note">Best-seller ambientado em Ilhéus na era do cacau; venceu os prêmios Jabuti e Machado de Assis.</div>
+      </div>
+      <div class="book-card">
+        <div class="book-year">1959</div>
+        <div class="book-title">A Morte e a Morte de Quincas Berro D'Água</div>
+        <div class="book-note">Novela cômica sobre um funcionário que abandona tudo para viver como boêmio na Bahia.</div>
+        <span class="book-badge">Livro do Clube</span>
+      </div>
+      <div class="book-card">
+        <div class="book-year">1966</div>
+        <div class="book-title">Dona Flor e Seus Dois Maridos</div>
+        <div class="book-note">Crônica de costumes baiana sobre uma mulher entre dois casamentos — um vivo, outro fantasma.</div>
+      </div>
+      <div class="book-card">
+        <div class="book-year">1972</div>
+        <div class="book-title">Tereza Batista Cansada de Guerra</div>
+        <div class="book-note">Retrato da luta de uma mulher contra a violência e a exploração no sertão e na cidade.</div>
+      </div>
+      <div class="book-card">
+        <div class="book-year">1977</div>
+        <div class="book-title">Tieta do Agreste</div>
+        <div class="book-note">O retorno de uma mulher expulsa de casa que volta rica e transforma a cidade natal.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESTILO -->
+  <section class="section reveal" id="estilo">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Estilo</h2>
+    </div>
+    <div class="estilo-grid">
+      <div class="estilo-item">
+        <div class="estilo-num">01</div>
+        <div class="estilo-text"><strong>Regionalismo baiano.</strong> Ambienta quase toda a obra na Bahia — suas paisagens marítimas, rurais e urbanas, seus costumes e sua mistura de raças e culturas são a matéria-prima constante.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">02</div>
+        <div class="estilo-text"><strong>Humor e sensualidade.</strong> Mesmo tratando de temas sérios, Amado nunca abandona o tom leve, irônico e sensual que se tornou sua marca registrada mais reconhecível.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">03</div>
+        <div class="estilo-text"><strong>Realismo vivido, não inventado.</strong> Ele próprio dizia ser incapaz de escrever sobre o que não havia vivido — seus personagens populares vêm de observação direta, não de estereótipo.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">04</div>
+        <div class="estilo-text"><strong>Denúncia social com leveza.</strong> Crítica a desigualdade, a hipocrisia burguesa e a exploração — mas prefere fazê-lo através do riso e da ironia, não do discurso direto.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRÊMIOS -->
+  <section class="section reveal" id="premios">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Prêmios &amp; <em>Reconhecimento</em></h2>
+    </div>
+    <div class="premios-list">
+      <div class="premio-item">
+        <div class="premio-year">1959</div>
+        <div><div class="premio-title">Prêmio Jabuti</div><div class="premio-sub">Por Gabriela, Cravo e Canela (também recebido em 1995)</div></div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">1959</div>
+        <div><div class="premio-title">Prêmio Machado de Assis</div><div class="premio-sub">Por Gabriela, Cravo e Canela</div></div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">1961</div>
+        <div><div class="premio-title">Academia Brasileira de Letras</div><div class="premio-sub">Eleito para a cadeira 23</div></div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">1994</div>
+        <div><div class="premio-title">Prêmio Camões</div><div class="premio-sub">Maior honraria da literatura em língua portuguesa</div></div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">1951</div>
+        <div><div class="premio-title">Prêmio Stalin da Paz</div><div class="premio-sub">União Soviética, por sua obra e militância política</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CURIOSIDADES -->
+  <section class="section reveal" id="curiosidades">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Curiosidades</h2>
+    </div>
+    <div class="curio-grid">
+      <div class="curio-item">
+        <span class="curio-icon">🐚</span>
+        <div class="curio-title">Obá do Candomblé</div>
+        <div class="curio-text">Orgulhava-se do título de Obá, posto civil honorário que ocupava no terreiro Ilê Axé Opô Afonjá, em Salvador — sinal de sua relação profunda com a cultura afro-baiana.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">✊</span>
+        <div class="curio-title">Preso duas vezes</div>
+        <div class="curio-text">Sua militância comunista lhe custou prisões em 1936 e 1937, e um longo exílio pela Argentina, França e Tchecoslováquia antes de retornar ao Brasil em 1952.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">📖</span>
+        <div class="curio-title">Escritor desde os 14 anos</div>
+        <div class="curio-text">Ainda adolescente, foi cofundador da "Academia dos Rebeldes", grupo de jovens artistas empenhados em renovar a literatura baiana.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">💰</span>
+        <div class="curio-title">Viveu só dos livros</div>
+        <div class="curio-text">Diferente de muitos escritores de sua geração, Jorge Amado viveu exclusivamente dos direitos autorais de suas obras — sinal do sucesso comercial raro para um autor brasileiro.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AVALIAÇÃO -->
+  <section class="section reveal" id="avaliacao">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Avalie <em>Quincas Berro D'Água</em></h2>
+    </div>
+
+    <div class="av-summary">
+      <div>
+        <div class="av-big-num" id="avg-num">—</div>
+        <div class="av-big-stars" id="avg-stars">☆☆☆☆☆</div>
+        <div class="av-big-count" id="avg-count">0 avaliações</div>
+      </div>
+      <div class="bars" style="flex:1;min-width:220px;">
+        <div class="brow"><span class="brow-lbl">5★</span><div class="brow-track"><div class="brow-fill" id="b5"></div></div><span class="brow-n" id="n5">0</span></div>
+        <div class="brow"><span class="brow-lbl">4★</span><div class="brow-track"><div class="brow-fill" id="b4"></div></div><span class="brow-n" id="n4">0</span></div>
+        <div class="brow"><span class="brow-lbl">3★</span><div class="brow-track"><div class="brow-fill" id="b3"></div></div><span class="brow-n" id="n3">0</span></div>
+        <div class="brow"><span class="brow-lbl">2★</span><div class="brow-track"><div class="brow-fill" id="b2"></div></div><span class="brow-n" id="n2">0</span></div>
+        <div class="brow"><span class="brow-lbl">1★</span><div class="brow-track"><div class="brow-fill" id="b1"></div></div><span class="brow-n" id="n1">0</span></div>
+      </div>
+    </div>
+
+    <div class="av-form">
+      <h3>Deixe sua avaliação</h3>
+      <label class="av-label">Seu nome</label>
+      <input id="f-nome" class="av-input" type="text" placeholder="Como quer ser identificada?">
+      <label class="av-label">Nota</label>
+      <div class="stars-pick" id="star-row">
+        <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+      </div>
+      <label class="av-label">Comentário</label>
+      <textarea id="f-txt" class="av-textarea" placeholder="O que você achou do livro?"></textarea>
+      <button class="av-btn" onclick="submitReview()">Publicar Avaliação</button>
+      <span id="f-msg" class="av-msg"></span>
+    </div>
+
+    <div id="comments"><p class="loading">Carregando avaliações…</p></div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Jorge Amado</div>
+  <div class="footer-divider"></div>
+  <div class="footer-note">Fontes: Academia Brasileira de Letras · Fundação Casa de Jorge Amado · imprensa literária</div>
+  <div class="footer-note" style="margin-top:8px;opacity:0.2;">Apresentação literária · Socorro Clube do Livro · 2026</div>
+  <a class="footer-back" href="index.html#autores">← Voltar para Autores</a>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyB03BscdfdfZGW42Btqbmzt72Dpusu45NU",
+    authDomain: "socorro-clube-do-livro.firebaseapp.com",
+    projectId: "socorro-clube-do-livro",
+    storageBucket: "socorro-clube-do-livro.firebasestorage.app",
+    messagingSenderId: "729551936788",
+    appId: "1:729551936788:web:001a6e284a63a51fc37601"
+  };
+  let db = null;
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+    db.settings({ experimentalAutoDetectLongPolling: true, useFetchStreams: false });
+  } catch (e) { db = null; }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
+  let picked = 0;
+  document.querySelectorAll('#star-row span').forEach(s => {
+    s.addEventListener('mouseover', () => hilite(+s.dataset.v));
+    s.addEventListener('mouseout',  () => hilite(picked));
+    s.addEventListener('click',     () => { picked = +s.dataset.v; hilite(picked); });
+  });
+  function hilite(n) {
+    document.querySelectorAll('#star-row span').forEach(s => {
+      s.style.color = +s.dataset.v <= n ? '#c1440e' : 'rgba(26,18,8,0.2)';
+    });
+  }
+
+  const BOOK_SLUG = 'quincas-berro-dagua';
+  const reviewsCol = db ? db.collection('livros').doc(BOOK_SLUG).collection('reviews') : null;
+  let reviews = [];
+
+  async function submitReview() {
+    const nome = document.getElementById('f-nome').value.trim();
+    const txt  = document.getElementById('f-txt').value.trim();
+    const msg  = document.getElementById('f-msg');
+    if (!nome)   { msg.textContent = 'Coloque seu nome.';      msg.style.color='#c1440e'; return; }
+    if (!picked) { msg.textContent = 'Selecione uma nota.';    msg.style.color='#c1440e'; return; }
+    if (!txt)    { msg.textContent = 'Escreva um comentário.'; msg.style.color='#c1440e'; return; }
+    if (!reviewsCol) { msg.textContent = 'Avaliações indisponíveis no momento.'; msg.style.color='#c1440e'; return; }
+    const btn = document.querySelector('.av-btn');
+    btn.textContent = 'Enviando...'; btn.disabled = true;
+    msg.textContent = '';
+    try {
+      await reviewsCol.add({
+        nome, nota: picked, comentario: txt,
+        data: new Date().toLocaleDateString('pt-BR'),
+        criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      document.getElementById('f-nome').value = '';
+      document.getElementById('f-txt').value  = '';
+      picked = 0; hilite(0);
+      msg.textContent = 'Publicado!'; msg.style.color = '#6b8c6e';
+      setTimeout(() => msg.textContent = '', 4000);
+    } catch(e) {
+      msg.textContent = 'Erro ao enviar. Tente novamente.'; msg.style.color = '#c1440e';
+    }
+    btn.textContent = 'Publicar Avaliação'; btn.disabled = false;
+  }
+
+  function renderReviews() {
+    const total = reviews.length;
+    if (!total) {
+      document.getElementById('avg-num').textContent   = '—';
+      document.getElementById('avg-stars').textContent = '☆☆☆☆☆';
+      document.getElementById('avg-count').textContent = '0 avaliações';
+      [1,2,3,4,5].forEach(n => { document.getElementById('b'+n).style.width='0%'; document.getElementById('n'+n).textContent='0'; });
+      document.getElementById('comments').innerHTML = '<p class="no-reviews">Nenhuma avaliação ainda — seja a primeira!</p>';
+      return;
+    }
+    const avg = reviews.reduce((a,r) => a + Number(r.nota), 0) / total;
+    document.getElementById('avg-num').textContent   = avg.toFixed(1);
+    const full = Math.round(avg);
+    document.getElementById('avg-stars').textContent = '★'.repeat(full) + '☆'.repeat(5-full);
+    document.getElementById('avg-count').textContent = total + (total===1 ? ' avaliação' : ' avaliações');
+    [1,2,3,4,5].forEach(n => {
+      const c = reviews.filter(r => Number(r.nota)===n).length;
+      document.getElementById('b'+n).style.width = (c/total*100).toFixed(0) + '%';
+      document.getElementById('n'+n).textContent = c;
+    });
+    document.getElementById('comments').innerHTML = reviews.map(r => `
+      <div class="comment">
+        <div class="chead">
+          <span class="cname">${escapeHtml(r.nome)}</span>
+          <span class="cstars">${'★'.repeat(Number(r.nota))}${'☆'.repeat(5-Number(r.nota))}</span>
+          <span class="cdate">${escapeHtml(r.data)}</span>
+        </div>
+        <p class="ctext">${escapeHtml(r.comentario)}</p>
+      </div>`).join('');
+  }
+
+  if (reviewsCol) {
+    reviewsCol.orderBy('criadoEm', 'desc').onSnapshot(function (snap) {
+      reviews = snap.docs.map(d => d.data());
+      renderReviews();
+    }, function () {
+      reviews = [];
+      renderReviews();
+    });
+  } else {
+    renderReviews();
+  }
+</script>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.06 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
