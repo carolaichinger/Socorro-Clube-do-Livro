@@ -1,1573 +1,223 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Socorro — Clube do Livro</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@1,400&display=swap"
-    rel="stylesheet"
-  />
-  <style>
-    :root {
-      --cream: #f5f0e8;
-      --ink: #1a1208;
-      --rust: #c1440e;
-      --gold: #d4a017;
-      --sage: #6b8c6e;
-      --paper: #ede8dc;
-      --shadow: rgba(26, 18, 8, 0.12);
-    }
-
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--cream);
-      color: var(--ink);
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 300;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 10;
-      opacity: 0.5;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    a:focus-visible,
-    button:focus-visible {
-      outline: 2px solid var(--gold);
-      outline-offset: 3px;
-    }
-
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 200;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.2rem 4rem;
-      background: var(--cream);
-      border-bottom: 1px solid rgba(26, 18, 8, 0.1);
-      transition: box-shadow 0.3s;
-    }
-
-    nav.scrolled { box-shadow: 0 4px 30px var(--shadow); }
-
-    .nav-logo {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.5rem;
-      color: var(--rust);
-      letter-spacing: -0.02em;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: var(--ink);
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      opacity: 0.7;
-      transition: opacity 0.2s;
-      position: relative;
-    }
-
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: var(--rust);
-      transform: scaleX(0);
-      transition: transform 0.25s;
-    }
-
-    .nav-links a:hover { opacity: 1; }
-    .nav-links a:hover::after { transform: scaleX(1); }
-
-    .hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      padding-top: 80px;
-      overflow: hidden;
-    }
-
-    .hero-left {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 6rem 4rem 6rem 6rem;
-    }
-
-    .hero-tag {
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--rust);
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.2s forwards;
-    }
-
-    .hero-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(4rem, 7vw, 7rem);
-      line-height: 0.95;
-      letter-spacing: -0.03em;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.4s forwards;
-    }
-
-    .hero-title em {
-      font-style: italic;
-      color: var(--rust);
-    }
-
-    .hero-sub {
-      margin-top: 2rem;
-      font-size: 1.05rem;
-      line-height: 1.7;
-      max-width: 380px;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.6s forwards;
-    }
-
-    .hero-cta {
-      margin-top: 3rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.8s forwards;
-    }
-
-    .btn-primary {
-      background: var(--rust);
-      color: white;
-      border: none;
-      padding: 0.9rem 2.2rem;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      text-decoration: none;
-      cursor: pointer;
-      display: inline-block;
-      transition: background 0.25s, transform 0.2s;
-    }
-
-    .btn-primary:hover {
-      background: #a33509;
-      transform: translateY(-2px);
-    }
-
-    .hero-right {
-      position: relative;
-      background: var(--paper);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .deco-circle {
-      position: absolute;
-      border-radius: 50%;
-      background: var(--gold);
-      opacity: 0.15;
-    }
-
-    .deco-circle-large {
-      width: 400px;
-      height: 400px;
-      top: -100px;
-      right: -100px;
-    }
-
-    .deco-circle-small {
-      width: 200px;
-      height: 200px;
-      bottom: 80px;
-      left: 40px;
-      background: var(--rust);
-      opacity: 0.08;
-    }
-
-    .books-wrapper {
-      position: relative;
-      width: 320px;
-      height: 380px;
-      opacity: 0;
-      animation: fadeIn 1s 1s forwards;
-    }
-
-    section { padding: 7rem 6rem; }
-
-    .section-label {
-      font-size: 0.7rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--rust);
-      margin-bottom: 1rem;
-    }
-
-    .section-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(2.2rem, 4vw, 3.5rem);
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-    }
-
-    #sobre {
-      background: var(--ink);
-      color: var(--cream);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-    }
-
-    #sobre .section-label { color: var(--gold); }
-    #sobre .section-title { color: var(--cream); }
-
-    #sobre p {
-      margin-top: 1.5rem;
-      line-height: 1.8;
-      opacity: 0.75;
-    }
-
-    .sobre-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-    }
-
-    .stat {
-      border-top: 1px solid rgba(245, 240, 232, 0.2);
-      padding-top: 1.5rem;
-    }
-
-    .stat-number {
-      font-family: 'DM Serif Display', serif;
-      font-size: 3rem;
-      color: var(--gold);
-      line-height: 1;
-    }
-
-    .stat-label {
-      font-size: 0.8rem;
-      opacity: 0.5;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-top: 0.4rem;
-    }
-
-    #livro {
-      background: var(--cream);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6rem;
-      align-items: center;
-    }
-
-    .book-cover {
-      aspect-ratio: 2/3;
-      max-width: 260px;
-      background: var(--ink);
-      position: relative;
-      box-shadow: 16px 20px 60px rgba(26, 18, 8, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .book-cover::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 18px;
-      background: rgba(0, 0, 0, 0.25);
-      z-index: 1;
-    }
-
-    .book-cover img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .book-cover-inner {
-      padding: 2.5rem;
-      text-align: center;
-      color: white;
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .book-cover-inner .book-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
-
-    .book-cover-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.3rem;
-      font-style: italic;
-      line-height: 1.3;
-    }
-
-    .book-cover-author {
-      margin-top: 0.6rem;
-      font-size: 0.78rem;
-      opacity: 0.65;
-      letter-spacing: 0.08em;
-    }
-
-    .book-badge {
-      display: inline-block;
-      background: var(--gold);
-      color: var(--ink);
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 0.35rem 0.9rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .book-info p {
-      margin-top: 1rem;
-      line-height: 1.8;
-      opacity: 0.65;
-    }
-
-    .book-meta {
-      margin-top: 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-
-    .book-meta-item {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.85rem;
-    }
-
-    .book-meta-item strong { font-weight: 500; }
-
-    #encontros { background: var(--paper); }
-
-    .encontro-destaque {
-      background: var(--cream);
-      border-left: 4px solid var(--rust);
-      padding: 2.2rem 2.5rem;
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      margin-top: 2.5rem;
-      max-width: 620px;
-    }
-
-    .encontro-icon {
-      font-size: 2.8rem;
-      flex-shrink: 0;
-    }
-
-    .encontro-destaque h3 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.3rem;
-      margin-bottom: 0.4rem;
-    }
-
-    .encontro-destaque p {
-      font-size: 0.88rem;
-      opacity: 0.6;
-      line-height: 1.65;
-    }
-
-    #membros { background: var(--cream); }
-
-    .membros-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.2rem;
-      margin-top: 3rem;
-    }
-
-    .membro-card {
-      background: var(--paper);
-      padding: 1.5rem;
-      border-top: 3px solid var(--gold);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .membro-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 30px var(--shadow);
-    }
-
-    .membro-nome {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.15rem;
-      margin-bottom: 0.3rem;
-    }
-
-    .membro-data {
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--rust);
-      opacity: 0.8;
-    }
-
-    #manifesto {
-      background: var(--rust);
-      color: var(--cream);
-      text-align: center;
-      padding: 8rem 12rem;
-    }
-
-    #manifesto .section-label { color: rgba(245, 240, 232, 0.6); }
-
-    .manifesto-quote {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: clamp(1.6rem, 3vw, 2.6rem);
-      line-height: 1.45;
-      margin: 2rem 0;
-    }
-
-    .manifesto-author {
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      opacity: 0.5;
-    }
-
-    #lidos {
-      background: var(--ink);
-      color: var(--cream);
-    }
-
-    #lidos .section-label { color: var(--gold); }
-    #lidos .section-title { color: var(--cream); }
-
-    #lidos .section-sub {
-      margin-top: 0.75rem;
-      font-size: 0.9rem;
-      opacity: 0.45;
-    }
-
-    .lidos-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 1.2rem;
-      margin-top: 3rem;
-    }
-
-    .lido-card {
-      display: flex;
-      flex-direction: column;
-      background: rgba(245, 240, 232, 0.04);
-      border: 1px solid rgba(245, 240, 232, 0.07);
-      transition: transform 0.25s, background 0.25s, box-shadow 0.25s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .lido-card:hover {
-      transform: translateY(-5px);
-      background: rgba(245, 240, 232, 0.08);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
-    }
-
-    .lido-card.atual { border-color: var(--rust); }
-
-    .lido-card.atual::after {
-      content: 'Atual';
-      position: absolute;
-      top: 0.6rem;
-      right: 0.6rem;
-      background: var(--rust);
-      color: white;
-      font-size: 0.58rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.2rem 0.5rem;
-      z-index: 2;
-    }
-
-    .lido-cover {
-      width: 100%;
-      aspect-ratio: 1/1;
-      position: relative;
-      overflow: hidden;
-      background: #2a2010;
-      flex-shrink: 0;
-    }
-
-    .lido-cover img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: opacity 0.4s;
-    }
-
-    .lido-cover img.loading { opacity: 0; }
-    .lido-cover img.loaded { opacity: 1; }
-
-    .cover-placeholder {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      text-align: center;
-      gap: 0.5rem;
-    }
-
-    .cover-placeholder .cp-icon {
-      font-size: 1.8rem;
-      opacity: 0.3;
-    }
-
-    .cover-placeholder .cp-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: 0.75rem;
-      font-style: italic;
-      line-height: 1.3;
-      opacity: 0.5;
-    }
-
-    .cover-placeholder .cp-author {
-      font-size: 0.6rem;
-      letter-spacing: 0.06em;
-      opacity: 0.3;
-      margin-top: 0.2rem;
-    }
-
-    .lido-body {
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
-    .lido-mes {
-      font-size: 0.6rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 0.35rem;
-    }
-
-    .lido-titulo {
-      font-family: 'DM Serif Display', serif;
-      font-size: 0.88rem;
-      line-height: 1.3;
-      color: var(--cream);
-      flex: 1;
-    }
-
-    .lido-autor {
-      font-size: 0.7rem;
-      opacity: 0.45;
-      margin-top: 0.25rem;
-      margin-bottom: 0.85rem;
-    }
-
-    .lido-autor-vazio {
-      min-height: 1rem;
-    }
-
-    .btn-analise {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      width: 100%;
-      padding: 0.55rem 0.5rem;
-      background: transparent;
-      border: 1px solid rgba(245, 240, 232, 0.15);
-      color: var(--cream);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.2s, border-color 0.2s, color 0.2s;
-    }
-
-    .btn-analise:hover {
-      background: var(--rust);
-      border-color: var(--rust);
-      color: white;
-    }
-
-    .btn-analise.sem-link {
-      opacity: 0.25;
-      cursor: default;
-      pointer-events: none;
-    }
-
-    .btn-analise svg {
-      width: 11px;
-      height: 11px;
-      flex-shrink: 0;
-    }
-
-    #autores {
-      background: var(--paper);
-      color: var(--ink);
-    }
-
-    #autores .section-label { color: var(--rust); }
-    #autores .section-title { color: var(--ink); }
-
-    #autores .btn-analise {
-      border-color: rgba(26, 18, 8, 0.18);
-      color: var(--ink);
-    }
-
-    #autores .btn-analise:hover {
-      background: var(--rust);
-      border-color: var(--rust);
-      color: white;
-    }
-
-    .autores-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-      margin-top: 3rem;
-    }
-
-    .autor-card {
-      background: var(--cream);
-      border-top: 3px solid var(--rust);
-      padding: 1.8rem 1.5rem;
-      transition: transform 0.25s, box-shadow 0.25s;
-    }
-
-    .autor-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px var(--shadow);
-    }
-
-    .autor-foto,
-    .autor-initial {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      margin-bottom: 1.2rem;
-    }
-
-    .autor-foto {
-      object-fit: cover;
-      border: 2px solid var(--gold);
-    }
-
-    .autor-initial {
-      background: var(--ink);
-      color: var(--gold);
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.5rem;
-      font-style: italic;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .autor-nome {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.1rem;
-      line-height: 1.2;
-      margin-bottom: 0.3rem;
-    }
-
-    .autor-origem {
-      font-size: 0.68rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--rust);
-      opacity: 0.75;
-      margin-bottom: 1rem;
-    }
-
-    .autor-livros {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      margin-bottom: 1rem;
-    }
-
-    .autor-livros li {
-      font-size: 0.78rem;
-      opacity: 0.55;
-      padding-left: 0.9rem;
-      position: relative;
-    }
-
-    .autor-livros li::before {
-      content: '—';
-      position: absolute;
-      left: 0;
-      color: var(--gold);
-      font-size: 0.65rem;
-    }
-
-    footer {
-      background: var(--ink);
-      color: var(--cream);
-      padding: 4rem 6rem;
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 4rem;
-    }
-
-    .footer-brand {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2rem;
-      color: var(--gold);
-      margin-bottom: 1rem;
-    }
-
-    .footer-desc {
-      font-size: 0.85rem;
-      opacity: 0.55;
-      line-height: 1.7;
-      max-width: 280px;
-    }
-
-    .footer-col h4 {
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      opacity: 0.5;
-      margin-bottom: 1.2rem;
-    }
-
-    .footer-col ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-
-    .footer-col ul li a,
-    .footer-link-disabled {
-      text-decoration: none;
-      color: var(--cream);
-      font-size: 0.88rem;
-      opacity: 0.7;
-      transition: opacity 0.2s;
-    }
-
-    .footer-col ul li a:hover { opacity: 1; }
-
-    .footer-link-disabled {
-      display: inline-block;
-      cursor: default;
-    }
-
-    .footer-bottom {
-      background: var(--ink);
-      padding: 1.2rem 6rem;
-      border-top: 1px solid rgba(245, 240, 232, 0.08);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer-bottom p {
-      font-size: 0.75rem;
-      color: rgba(245, 240, 232, 0.38);
-    }
-
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: none;
-    }
-
-    @media (max-width: 1200px) {
-      .lidos-grid { grid-template-columns: repeat(5, 1fr); }
-      .autores-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-
-    @media (max-width: 900px) {
-      nav { padding: 1rem 2rem; }
-
-      .nav-links { gap: 1rem; }
-      .nav-links a { font-size: 0.7rem; }
-
-      section { padding: 5rem 2rem; }
-
-      .hero { grid-template-columns: 1fr; }
-      .hero-left { padding: 5rem 2rem 3rem; }
-      .hero-right { height: 320px; }
-
-      #sobre,
-      #livro {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-      }
-
-      #manifesto { padding: 6rem 2rem; }
-
-      .membros-grid { grid-template-columns: repeat(2, 1fr); }
-      .lidos-grid { grid-template-columns: repeat(3, 1fr); }
-      .autores-grid { grid-template-columns: repeat(2, 1fr); }
-
-      footer {
-        grid-template-columns: 1fr;
-        gap: 2.5rem;
-        padding: 3rem 2rem;
-      }
-
-      .footer-bottom {
-        padding: 1rem 2rem;
-        flex-direction: column;
-        gap: 0.5rem;
-        text-align: center;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .membros-grid { grid-template-columns: 1fr 1fr; }
-      .lidos-grid { grid-template-columns: repeat(2, 1fr); }
-      .autores-grid { grid-template-columns: 1fr; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-
-      *,
-      *::before,
-      *::after {
-        animation: none !important;
-        transition: none !important;
-      }
-
-      .reveal {
-        opacity: 1;
-        transform: none;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novos Conteúdos - Socorro Clube do Livro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1208; --rust:#c1440e; --gold:#d4a017; --sage:#6b8c6e;
+  --cream:#f5f0e8; --paper:#ede8dc; --border:rgba(193,68,14,0.22); --surf:rgba(26,18,8,0.05);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;padding-top:68px;overflow-x:hidden;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:68px;background:rgba(245,240,232,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
+.nav-logo{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--rust);text-decoration:none;}
+.nav-tag{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(26,18,8,0.45);}
+.nav-links{display:flex;gap:2rem;}
+.nav-links a{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink);text-decoration:none;opacity:0.65;transition:opacity 0.2s;}
+.nav-links a:hover{opacity:1;color:var(--rust);}
+
+.page-header{text-align:center;padding:3.5rem 2rem 1rem;}
+.sup{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-bottom:0.6rem;}
+.page-header h1{font-family:'Cinzel',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:700;color:var(--ink);letter-spacing:0.04em;}
+.page-header p{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.65);font-size:1.15rem;margin-top:0.6rem;max-width:600px;margin-left:auto;margin-right:auto;line-height:1.5;}
+
+.section-wrap{max-width:1200px;margin:0 auto;padding:2rem 2rem 1rem;}
+.section-title{font-family:'Cinzel',serif;font-size:1.1rem;font-weight:700;color:var(--ink);letter-spacing:0.1em;text-transform:uppercase;border-bottom:2px solid var(--border);padding-bottom:0.8rem;margin-bottom:2rem;display:flex;align-items:baseline;gap:0.8rem;}
+.section-title span{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;text-transform:none;letter-spacing:0;font-size:1rem;color:rgba(26,18,8,0.55);}
+
+.books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.6rem;padding-bottom:4rem;}
+.book-card{display:flex;flex-direction:column;text-decoration:none;color:inherit;background:var(--paper);border:1px solid var(--border);transition:transform 0.25s, box-shadow 0.25s;}
+.book-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(26,18,8,0.16);}
+.book-cover{width:100%;aspect-ratio:2/3;overflow:hidden;background:#ded6c4;border-bottom:1px solid var(--border);}
+.book-cover img{width:100%;height:100%;object-fit:cover;display:block;}
+.book-info{padding:0.9rem 1rem 1.1rem;}
+.book-title{font-family:'Cinzel',serif;font-size:0.82rem;font-weight:700;color:var(--ink);line-height:1.35;margin-bottom:0.3rem;}
+.book-author{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.85rem;color:rgba(26,18,8,0.6);}
+
+.authors-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.6rem;padding-bottom:2rem;}
+.author-card{display:flex;gap:1rem;align-items:center;text-decoration:none;color:inherit;background:var(--paper);border:1px solid var(--border);padding:1.1rem;transition:transform 0.25s, box-shadow 0.25s;}
+.author-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(26,18,8,0.14);}
+.author-photo{width:60px;height:60px;border-radius:50%;overflow:hidden;border:2px solid var(--border);flex-shrink:0;background:#ded6c4;}
+.author-photo img,.author-photo svg{width:100%;height:100%;object-fit:cover;display:block;}
+.author-name{font-family:'Cinzel',serif;font-size:0.85rem;font-weight:700;color:var(--ink);line-height:1.3;}
+.author-origin{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.8rem;color:rgba(26,18,8,0.55);margin-top:0.2rem;}
+
+.see-all{display:inline-block;margin:0 0 3.5rem;font-family:'Cinzel',serif;font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--rust);text-decoration:none;border-bottom:1px solid var(--rust);padding-bottom:2px;}
+.see-all:hover{opacity:0.7;}
+
+footer{background:var(--ink);color:var(--cream);padding:3rem 2rem;text-align:center;margin-top:1rem;}
+.footer-note{font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.08em;color:rgba(245,240,232,0.4);}
+
+@media (max-width:600px){
+  .nav{padding:0 1.2rem;}
+  .nav-links{display:none;}
+  .books-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1rem;}
+  .authors-grid{grid-template-columns:1fr;}
+}
+</style>
 </head>
 <body>
-  <nav id="nav" aria-label="Navegação principal">
-    <span class="nav-logo">Socorro</span>
-    <ul class="nav-links">
-      <li><a href="#sobre">Sobre</a></li>
-      <li><a href="#livro">Livro do Mês</a></li>
-      <li><a href="#encontros">Encontros</a></li>
-      <li><a href="#membros">Membros</a></li>
-      <li><a href="#lidos">Lidos</a></li>
-      <li><a href="#autores">Autores</a></li>
-    </ul>
-  </nav>
 
-  <section class="hero" id="inicio">
-    <div class="hero-left">
-      <p class="hero-tag">Clube do Livro · Clube Fechado</p>
-      <h1 class="hero-title">So<em>cor</em><br>ro.</h1>
-      <p class="hero-sub">
-        Um lugar para quem precisa de livros tanto quanto de ar. Encontros mensais,
-        leituras intensas, conversas honestas.
-      </p>
-      <div class="hero-cta">
-        <a href="#livro" class="btn-primary">Livro do mês</a>
-      </div>
-    </div>
-
-    <div class="hero-right">
-      <div class="deco-circle deco-circle-large" aria-hidden="true"></div>
-      <div class="deco-circle deco-circle-small" aria-hidden="true"></div>
-
-      <div class="books-wrapper" aria-hidden="true">
-        <svg viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
-          <ellipse cx="160" cy="355" rx="110" ry="14" fill="rgba(26,18,8,0.15)"/>
-          <rect x="60" y="295" width="200" height="40" rx="2" fill="#6b8c6e"/>
-          <rect x="60" y="295" width="18" height="40" rx="2" fill="rgba(0,0,0,0.18)"/>
-          <text x="112" y="320" font-family="Georgia,serif" font-size="10" fill="white" opacity="0.85">O PERIGO DE ESTAR LÚCIDA</text>
-
-          <rect x="70" y="235" width="190" height="62" rx="2" fill="#d4a017"/>
-          <rect x="70" y="235" width="18" height="62" rx="2" fill="rgba(0,0,0,0.18)"/>
-          <text x="162" y="261" font-family="Georgia,serif" font-size="11" fill="#1a1208" opacity="0.85" text-anchor="middle">MEU NOME É</text>
-          <text x="162" y="276" font-family="Georgia,serif" font-size="11" fill="#1a1208" opacity="0.85" text-anchor="middle">EMÍLIA DEL VALLE</text>
-          <text x="162" y="291" font-family="Georgia,serif" font-size="9" fill="#1a1208" opacity="0.6" text-anchor="middle">ISABEL ALLENDE</text>
-
-          <rect x="55" y="168" width="210" height="70" rx="2" fill="#1a1208"/>
-          <rect x="55" y="168" width="18" height="70" rx="2" fill="rgba(255,255,255,0.08)"/>
-          <text x="160" y="200" font-family="Georgia,serif" font-style="italic" font-size="12" fill="#f5f0e8" text-anchor="middle">Ainda Estou Aqui</text>
-          <text x="160" y="220" font-family="Georgia,serif" font-size="9" fill="#d4a017" text-anchor="middle">MARCELO RUBENS PAIVA</text>
-
-          <rect x="72" y="85" width="188" height="88" rx="2" fill="#c1440e"/>
-          <rect x="72" y="85" width="18" height="88" rx="2" fill="rgba(0,0,0,0.2)"/>
-          <text x="162" y="118" font-family="Georgia,serif" font-style="italic" font-size="11.5" fill="white" text-anchor="middle">Relato de um certo</text>
-          <text x="162" y="135" font-family="Georgia,serif" font-style="italic" font-size="11.5" fill="white" text-anchor="middle">Oriente</text>
-          <text x="162" y="156" font-family="Georgia,serif" font-size="9" fill="rgba(255,255,255,0.7)" text-anchor="middle">MILTON HATOUM</text>
-
-          <rect x="218" y="77" width="12" height="32" fill="#d4a017"/>
-          <polygon points="218,109 224,103 230,109" fill="#d4a017"/>
-          <rect x="86" y="71" width="76" height="18" rx="9" fill="#d4a017"/>
-        </svg>
-      </div>
-    </div>
-  </section>
-
-  <section id="sobre">
-    <div class="reveal">
-      <p class="section-label">Quem somos</p>
-      <h2 class="section-title">Um clube fechado<br>de gente que lê de verdade.</h2>
-      <p>
-        O Socorro nasceu da urgência. Da necessidade de criar um espaço acolhedor
-        para trocar ideias, refletir e debater leituras entre amigas, fortalecendo
-        conexões e ampliando perspectivas de forma leve e enriquecedora.
-      </p>
-    </div>
-
-    <div class="sobre-stats reveal">
-      <div class="stat"><div class="stat-number">12</div><div class="stat-label">Membros</div></div>
-      <div class="stat"><div class="stat-number">19</div><div class="stat-label">Livros lidos</div></div>
-      <div class="stat"><div class="stat-number">1×</div><div class="stat-label">Por mês</div></div>
-      <div class="stat"><div class="stat-number">∞</div><div class="stat-label">Conversas</div></div>
-    </div>
-  </section>
-
-  <section id="livro">
-    <div class="book-cover reveal" id="capa-mes">
-      <div class="book-cover-inner" id="capa-mes-fallback">
-        <div class="book-icon">📖</div>
-        <div class="book-cover-title">Persépolis</div>
-        <div class="book-cover-author">Marjane Satrapi</div>
-      </div>
-    </div>
-
-    <div class="book-info reveal">
-      <span class="book-badge">Livro do Mês · Julho 2026</span>
-      <h2 class="section-title">Persépolis</h2>
-
-      <p>
-        "Persépolis", de Marjane Satrapi, é uma autobiografia em quadrinhos que
-        acompanha a infância e a juventude da autora no Irã, durante e após a
-        Revolução Islâmica de 1979. Em preto e branco, o livro narra o dia a dia
-        de uma família que resiste dentro de casa a um regime cada vez mais
-        repressivo do lado de fora.
-      </p>
-
-      <p>
-        Entre a escola, o exílio na Áustria e o retorno a Teerã, Marji cresce
-        tentando entender o próprio país, sua fé e sua identidade em meio a
-        guerra, censura e perda.
-      </p>
-
-      <div class="book-meta">
-        <div class="book-meta-item">
-          <span>📅</span>
-          <span>Próximo encontro: <strong>1ª terça-feira de julho</strong></span>
-        </div>
-
-        <div class="book-meta-item">
-          <span>✍️</span>
-          <span>Autora: <strong>Marjane Satrapi</strong></span>
-        </div>
-
-        <div class="book-meta-item">
-          <span>🏆</span>
-          <span>
-            Prêmio:
-            <strong>
-              A adaptação animada de Persépolis venceu o Prêmio do Júri no
-              Festival de Cannes e foi indicada ao Oscar de Melhor Filme de Animação.
-            </strong>
-          </span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="encontros">
-    <div class="reveal">
-      <p class="section-label">Agenda</p>
-      <h2 class="section-title">Nossos encontros</h2>
-    </div>
-
-    <div class="encontro-destaque reveal">
-      <div class="encontro-icon">📅</div>
-      <div>
-        <h3>Toda primeira terça-feira do mês</h3>
-        <p>
-          Nos reunimos mensalmente para discutir o livro escolhido, trocar impressões
-          e tomar um café. A data é fixa — primeiro encontro do mês, sempre.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section id="membros">
-    <div class="reveal">
-      <p class="section-label">O grupo</p>
-      <h2 class="section-title">Nossas Leitoras</h2>
-    </div>
-
-    <div class="membros-grid">
-      <div class="membro-card reveal"><div class="membro-nome">Laura</div><div class="membro-data">12 de janeiro</div></div>
-      <div class="membro-card reveal"><div class="membro-nome">Andressa</div><div class="membro-data">18 de janeiro</div></div>
-      <div class="membro-card reveal"><div class="membro-nome">Caro</div><div class="membro-data">23 de janeiro</div></div>
-      <div class="membro-card reveal"><div class="membro-nome">Fernanda</div><div class="membro-data">05 de fevereiro</div></div>
-      <div class="membro-card reveal"><div class="membro-nome">Carol</div><div class="membro-data">22 de março</div></div>
-      <div class="membro-card reveal"><div class="membro-nome">Renata</div><div class="membro-data">27 de maio</div></div>
-      <div class="membro-card reveal"><div class="membro-nome">Kassie</div><div class="membro-data">28 de maio</div></div>
-      <div class="membro-card reveal"><div class="membro-nome">Ciça</div><div class="membro-data">01 de setembro</div></div>
-      <div class="membro-card reveal"><div class="membro-nome">Andrea</div><div class="membro-data">18 de setembro</div></div>
-      <div class="membro-card reveal"><div class="membro-nome">Lu Alanis</div><div class="membro-data">19 de setembro</div></div>
-      <div class="membro-card reveal"><div class="membro-nome">Sabrina</div><div class="membro-data">13 de outubro</div></div>
-      <div class="membro-card reveal"><div class="membro-nome">Clau</div><div class="membro-data">28 de dezembro</div></div>
-    </div>
-  </section>
-
-  <section id="manifesto">
-    <p class="section-label">Nossa crença</p>
-    <blockquote class="manifesto-quote">
-      "A leitura é o socorro de todos os instantes,<br>a consolação de todos os momentos."
-    </blockquote>
-    <p class="manifesto-author">— Nossa razão de existir</p>
-  </section>
-
-  <section id="lidos">
-    <div class="reveal">
-      <p class="section-label">Nossa estante</p>
-      <h2 class="section-title">Livros que já lemos</h2>
-      <p class="section-sub">
-        Clique em "Ver análise" para acessar a discussão interativa de cada livro.
-      </p>
-    </div>
-    <div class="lidos-grid" id="lidos-grid"></div>
-  </section>
-
-  <section id="autores">
-    <div class="reveal">
-      <p class="section-label">Quem escreveu</p>
-      <h2 class="section-title">Nossos Autores</h2>
-    </div>
-    <div class="autores-grid" id="autores-grid"></div>
-  </section>
-
-  <footer>
-    <div>
-      <div class="footer-brand">Socorro.</div>
-      <p class="footer-desc">
-        Clube fechado do livro para quem acredita que a literatura é uma forma
-        de sobrevivência. Curitiba, Paraná.
-      </p>
-    </div>
-
-    <div class="footer-col">
-      <h4>Navegação</h4>
-      <ul>
-        <li><a href="#sobre">Sobre</a></li>
-        <li><a href="#livro">Livro do mês</a></li>
-        <li><a href="#encontros">Encontros</a></li>
-        <li><a href="#membros">Membros</a></li>
-        <li><a href="#lidos">Livros lidos</a></li>
-      </ul>
-    </div>
-
-    <div class="footer-col">
-      <h4>Contato</h4>
-      <ul>
-        <li><span class="footer-link-disabled" aria-disabled="true">Instagram</span></li>
-        <li><span class="footer-link-disabled" aria-disabled="true">WhatsApp</span></li>
-      </ul>
-    </div>
-  </footer>
-
-  <div class="footer-bottom">
-    <p>© 2026 Clube do Livro Socorro · Curitiba, Brasil.</p>
-    <p>Feito com amor e muitos encontros</p>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Socorro.</a>
+  <span class="nav-tag">Novos Conteúdos</span>
+  <div class="nav-links">
+    <a href="#lidos">Livros</a>
+    <a href="#autores">Autores</a>
   </div>
+</nav>
+
+<div class="page-header">
+  <p class="sup">Socorro Clube do Livro</p>
+  <h1>Tudo que foi criado nesta conversa</h1>
+  <p>19 análises de livros e 5 perfis de autores, prontos para publicar ou integrar ao site.</p>
+</div>
+
+<div class="section-wrap" id="lidos">
+  <p class="section-title">Análises de Livros <span>19 páginas</span></p>
+  <div class="books-grid">
+
+    <a class="book-card" href="a_biblioteca_da_meia_noite.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9786558380542-M.jpg" alt="Capa de A Biblioteca da Meia-Noite" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">A Biblioteca da Meia-Noite</div><div class="book-author">Matt Haig</div></div>
+    </a>
+
+    <a class="book-card" href="a_ilha.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9788525058867-M.jpg" alt="Capa de A Ilha" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">A Ilha</div><div class="book-author">Aldous Huxley</div></div>
+    </a>
+
+    <a class="book-card" href="a_morte_de_ivan_ilitch.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9788573263596-M.jpg" alt="Capa de A Morte de Ivan Ilitch" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">A Morte de Ivan Ilitch</div><div class="book-author">Liev Tolstói</div></div>
+    </a>
+
+    <a class="book-card" href="a_morte_e_a_morte_de_quincas_berro_dagua.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9788535911831-M.jpg" alt="Capa de A Morte e a Morte de Quincas Berro D'Água" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">A Morte e a Morte de Quincas Berro D'Água</div><div class="book-author">Jorge Amado</div></div>
+    </a>
+
+    <a class="book-card" href="a_vegetariana.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9788588808287-M.jpg" alt="Capa de A Vegetariana" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">A Vegetariana</div><div class="book-author">Han Kang</div></div>
+    </a>
+
+    <a class="book-card" href="ainda_estou_aqui.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9788579624162-M.jpg" alt="Capa de Ainda Estou Aqui" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">Ainda Estou Aqui</div><div class="book-author">Marcelo Rubens Paiva</div></div>
+    </a>
+
+    <a class="book-card" href="batida_so.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9786556928203-M.jpg" alt="Capa de Batida Só" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">Batida Só</div><div class="book-author">Giovana Madalosso</div></div>
+    </a>
+
+    <a class="book-card" href="caderno_proibido.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9786559212194-M.jpg" alt="Capa de Caderno Proibido" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">Caderno Proibido</div><div class="book-author">Alba de Céspedes</div></div>
+    </a>
+
+    <a class="book-card" href="caminhando_com_os_mortos.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9786559214044-M.jpg" alt="Capa de Caminhando com os Mortos" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">Caminhando com os Mortos</div><div class="book-author">Micheliny Verunschk</div></div>
+    </a>
+
+    <a class="book-card" href="cinco_esquinas.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9788556520227-M.jpg" alt="Capa de Cinco Esquinas" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">Cinco Esquinas</div><div class="book-author">Mario Vargas Llosa</div></div>
+    </a>
+
+    <a class="book-card" href="deus_na_escuridao.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9786558302100-M.jpg" alt="Capa de Deus na Escuridão" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">Deus na Escuridão</div><div class="book-author">valter hugo mãe</div></div>
+    </a>
+
+    <a class="book-card" href="diario_das_coincidencias.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9788556520241-M.jpg" alt="Capa de Diário das Coincidências" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">Diário das Coincidências</div><div class="book-author">João Anzanello Carrascoza</div></div>
+    </a>
+
+    <a class="book-card" href="fim.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9788535923599-M.jpg" alt="Capa de Fim" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">Fim</div><div class="book-author">Fernanda Torres</div></div>
+    </a>
+
+    <a class="book-card" href="linha_m.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9788535926934-M.jpg" alt="Capa de Linha M" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">Linha M</div><div class="book-author">Patti Smith</div></div>
+    </a>
+
+    <a class="book-card" href="meu_nome_e_emilia_del_valle.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9786558383826-M.jpg" alt="Capa de Meu Nome é Emília del Valle" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">Meu Nome é Emília del Valle</div><div class="book-author">Isabel Allende</div></div>
+    </a>
+
+    <a class="book-card" href="na_voz_dela.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9788535939934-M.jpg" alt="Capa de Na Voz Dela" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">Na Voz Dela</div><div class="book-author">Alba de Céspedes</div></div>
+    </a>
+
+    <a class="book-card" href="o_jovem.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9786584568426-M.jpg" alt="Capa de O Jovem" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">O Jovem</div><div class="book-author">Annie Ernaux</div></div>
+    </a>
+
+    <a class="book-card" href="o_perigo_de_estar_lucida.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9786556925493-M.jpg" alt="Capa de O Perigo de Estar Lúcida" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">O Perigo de Estar Lúcida</div><div class="book-author">Rosa Montero</div></div>
+    </a>
+
+    <a class="book-card" href="uma_mulher.html">
+      <div class="book-cover"><img src="https://covers.openlibrary.org/b/isbn/9786560000124-M.jpg" alt="Capa de Uma Mulher" loading="lazy"></div>
+      <div class="book-info"><div class="book-title">Uma Mulher</div><div class="book-author">Annie Ernaux</div></div>
+    </a>
+
+  </div>
+</div>
+
+<div class="section-wrap" id="autores">
+  <p class="section-title">Autores <span>5 perfis completos</span></p>
+  <div class="authors-grid">
+
+    <a class="author-card" href="rosa_montero.html">
+      <div class="author-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Rosa_Montero_en_la_Feria_del_Libro_de_Madrid_2007.jpg" alt="Rosa Montero" loading="lazy"></div>
+      <div><div class="author-name">Rosa Montero</div><div class="author-origin">Madri · Espanha</div></div>
+    </a>
+
+    <a class="author-card" href="socorro_acioli.html">
+      <div class="author-photo">
+        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="60" fill="#e4ddd0"/><circle cx="30" cy="24" r="12" fill="#c1b89a"/><ellipse cx="30" cy="62" rx="20" ry="16" fill="#c1b89a"/></svg>
+      </div>
+      <div><div class="author-name">Socorro Acioli</div><div class="author-origin">Fortaleza, CE · Brasil</div></div>
+    </a>
+
+    <a class="author-card" href="susan_sontag.html">
+      <div class="author-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Susan_Sontag_1979_%C2%A9Lynn_Gilbert.jpg" alt="Susan Sontag" loading="lazy"></div>
+      <div><div class="author-name">Susan Sontag</div><div class="author-origin">Nova York · Estados Unidos</div></div>
+    </a>
+
+    <a class="author-card" href="valter_hugo_mae.html">
+      <div class="author-photo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Valter_Hugo_M%C3%A3e.jpg" alt="valter hugo mãe" loading="lazy"></div>
+      <div><div class="author-name">valter hugo mãe</div><div class="author-origin">Angola / Portugal</div></div>
+    </a>
+
+    <a class="author-card" href="joao_anzanello_carrascoza.html">
+      <div class="author-photo">
+        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><rect width="60" height="60" fill="#e4ddd0"/><circle cx="30" cy="24" r="12" fill="#c1b89a"/><ellipse cx="30" cy="62" rx="20" ry="16" fill="#c1b89a"/></svg>
+      </div>
+      <div><div class="author-name">João Anzanello Carrascoza</div><div class="author-origin">Cravinhos, SP · Brasil</div></div>
+    </a>
+
+  </div>
+  <a class="see-all" href="autores.html">Ver galeria completa de autores →</a>
+</div>
+
+<footer>
+  <p class="footer-note">Socorro Clube do Livro · Índice gerado a partir desta conversa</p>
+</footer>
 
-  <script>
-    (function () {
-      const COVER_FALLBACKS = {
-        "A Cabeça do Santo": "data:image/jpeg;base64,COVER_CABECA_DO_SANTO",
-        "Cinco Esquinas": "data:image/jpeg;base64,COVER_CINCO_ESQUINAS"
-      };
-
-      const BOOKS = [
-        { mes: 'Mai/2024', titulo: 'A Cabeça do Santo', autor: 'Socorro Acioli', claudeLink: 'cabeca_do_santo.html' },
-        { mes: 'Jun/2024', titulo: 'A Pediatra', autor: 'Andrea Del Fuego', claudeLink: 'a_pediatra.html' },
-        { mes: 'Jul/2024', titulo: 'Cinco Esquinas', autor: 'Mario Vargas Llosa', claudeLink: '' },
-        { mes: 'Jul/2024', titulo: 'Diário das Coincidências', autor: 'João Anzanello Carrascoza', claudeLink: '' },
-        { mes: 'Ago/2024', titulo: 'Uma Mulher — O Jovem', autor: 'Annie Ernaux', claudeLink: '' },
-        { mes: 'Set/2024', titulo: 'Caderno Proibido', autor: 'Alba de Céspedes', claudeLink: '' },
-        { mes: 'Nov/2024', titulo: 'Ainda Estou Aqui', autor: 'Marcelo Rubens Paiva', claudeLink: '' },
-        { mes: 'Dez/2024', titulo: 'Deus na Escuridão', autor: 'Valter Hugo Mãe', claudeLink: '' },
-        { mes: 'Fev/2025', titulo: 'A Vegetariana', autor: 'Han Kang', claudeLink: '' },
-        { mes: 'Mar/2025', titulo: 'Caminhando com os Mortos', autor: 'Micheliny Verunschk', claudeLink: '' },
-        { mes: 'Abr/2025', titulo: 'A Biblioteca da Meia-Noite', autor: 'Matt Haig', claudeLink: '' },
-        { mes: 'Mai–Jun/2025', titulo: 'A Ilha', autor: 'Aldous Huxley', claudeLink: '' },
-        { mes: 'Jul/2025', titulo: 'Fim', autor: 'Fernanda Torres', claudeLink: '' },
-        { mes: 'Ago/2025', titulo: 'Batida Só', autor: 'Giovana Madalosso', claudeLink: '' },
-        { mes: 'Set/2025', titulo: 'A Morte de Ivan Ilitch', autor: 'Lev Tolstói', claudeLink: '' },
-        { mes: 'Out–Nov/2025', titulo: 'Na Voz Dela', autor: 'Alba de Céspedes', claudeLink: '' },
-        { mes: 'Dez 25–Jan 26', titulo: 'Meu Nome é Emília del Valle', autor: 'Isabel Allende', claudeLink: '' },
-        { mes: 'Fev/2026', titulo: 'O Perigo de Estar Lúcida', autor: 'Rosa Monteiro', claudeLink: '' },
-        { mes: 'Mar/2026', titulo: 'Relato de um certo Oriente', autor: 'Milton Hatoum', claudeLink: 'milton_hatoum.html' },
-        { mes: 'Abr/2026', titulo: 'Linha M', autor: 'Patti Smith', claudeLink: '' },
-        { mes: 'Mai/2026', titulo: "A Morte e a Morte de Quincas Berro D'Água", autor: 'Jorge Amado', claudeLink: 'quincas_berro_dagua.html' },
-        { mes: 'Jun/2026', titulo: 'Sobre as Mulheres', autor: 'Susan Sontag', claudeLink: 'sobre_as_mulheres.html' },
-        { mes: 'Jul/2026', titulo: 'Persépolis', autor: 'Marjane Satrapi', claudeLink: 'persepolis.html', atual: true }
-      ];
-
-      const AUTHOR_INFO = {
-        'Milton Hatoum': { origem: 'Manaus, AM · Brasil', link: 'milton_hatoum.html', foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Milton_Hatoum_2011.jpg/240px-Milton_Hatoum_2011.jpg' },
-        'Marcelo Rubens Paiva': { origem: 'São Paulo, SP · Brasil', link: 'marcelo_rubens_paiva.html', foto: null },
-        'Socorro Acioli': { origem: 'Quixadá, CE · Brasil', link: null, foto: null },
-        'Mario Vargas Llosa': { origem: 'Arequipa · Peru', link:'mario_vargas_llosa.html', foto: null },
-        'Isabel Allende': { origem: 'Lima · Peru / Chile', link: 'isabel_allende.html', foto: null },
-        'Han Kang': { origem: 'Gwangju · Coreia do Sul', link: 'han_kang.html', foto: null },
-        'Matt Haig': { origem: 'Sheffield · Reino Unido', link: 'matt_haig.html', foto: null },
-        'Lev Tolstói': { origem: 'Iásnaia Poliana · Rússia', link: 'lev_tolstoi.html', foto: null },
-        'Alba de Céspedes': { origem: 'Roma · Itália', link: 'alba_de_cespedes.html', foto: 'images/autores/alba-de-cespedes.jpg' },
-        'Aldous Huxley': { origem: 'Surrey · Reino Unido', link: 'aldous_huxley.html', foto: null },
-        'Fernanda Torres': { origem: 'Rio de Janeiro, RJ · Brasil', link: 'fernanda_torres.html', foto: null },
-        'Giovana Madalosso': { origem: 'Curitiba, PR · Brasil', link: 'giovana_madalosso.html', foto: null },
-        'Micheliny Verunschk': { origem: 'Pernambuco · Brasil', link: 'micheliny_verunschk.html', foto: null },
-        'Rosa Monteiro': { origem: 'Portugal', link: null, foto: null },
-        'Valter Hugo Mãe': { origem: 'Angola / Portugal', link: null, foto: null },
-        'Annie Ernaux': { origem: 'Lillebonne · França', link: 'annie_ernaux.html', foto: null },
-        'Andrea Del Fuego': { origem: 'São Paulo, SP · Brasil', link: 'andrea_del_fuego.html', foto: null },
-        'João Anzanello Carrascoza': { origem: 'Brodowski, SP · Brasil', link: 'joao_carrascoza.html', foto: 'images/autores/joao-anzanello-carrascoza.jpg' },
-        'Patti Smith': { origem: 'Chicago, Illinois · Estados Unidos', link: 'patti_smith.html', foto: null },
-        'Jorge Amado': { origem: 'Itabuna, BA · Brasil', link: 'jorge_amado.html', foto: null },
-        'Susan Sontag': { origem: 'Nova York · Estados Unidos', link: 'susan_sontag.html', foto: null },
-        'Marjane Satrapi': { origem: 'Rasht · Irã', link: 'marjane_satrapi.html', foto: null }
-      };
-
-      const SELECTORS = {
-        nav: document.getElementById('nav'),
-        lidosGrid: document.getElementById('lidos-grid'),
-        autoresGrid: document.getElementById('autores-grid'),
-        capaMes: document.getElementById('capa-mes'),
-        capaMesFallback: document.getElementById('capa-mes-fallback')
-      };
-
-      const CLAUDE_ICON = `
-        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-          <path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8z"></path>
-          <path d="M5.5 6.5a.5.5 0 01.5-.5h4a.5.5 0 010 1H6a.5.5 0 01-.5-.5zM5.5 9a.5.5 0 01.5-.5h2.5a.5.5 0 010 1H6a.5.5 0 01-.5-.5z"></path>
-        </svg>
-      `;
-
-      function setupNavigationShadow() {
-        if (!SELECTORS.nav) return;
-
-        window.addEventListener('scroll', function () {
-          SELECTORS.nav.classList.toggle('scrolled', window.scrollY > 40);
-        });
-      }
-
-      function createRevealObserver() {
-        const revealElements = document.querySelectorAll('.reveal');
-        const revealIndexMap = new Map();
-
-        revealElements.forEach(function (element, index) {
-          revealIndexMap.set(element, index);
-        });
-
-        const observer = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
-
-            const index = revealIndexMap.get(entry.target) || 0;
-            setTimeout(function () {
-              entry.target.classList.add('visible');
-            }, index * 60);
-
-            observer.unobserve(entry.target);
-          });
-        }, { threshold: 0.08 });
-
-        revealElements.forEach(function (element) {
-          observer.observe(element);
-        });
-
-        return { observer, revealIndexMap };
-      }
-
-      function observeNewRevealElements(revealTools) {
-        const pendingElements = document.querySelectorAll('.reveal:not(.visible)');
-
-        pendingElements.forEach(function (element) {
-          if (!revealTools.revealIndexMap.has(element)) {
-            revealTools.revealIndexMap.set(element, revealTools.revealIndexMap.size);
-          }
-
-          revealTools.observer.observe(element);
-        });
-      }
-
-      async function fetchCover(titulo, autor) {
-        if (COVER_FALLBACKS[titulo]) {
-          return COVER_FALLBACKS[titulo];
-        }
-
-        try {
-          const query = encodeURIComponent(titulo + (autor ? ' ' + autor : ''));
-          const response = await fetch('https://openlibrary.org/search.json?q=' + query + '&limit=1&fields=cover_i');
-          const data = await response.json();
-          const coverId = data && data.docs && data.docs[0] && data.docs[0].cover_i;
-
-          if (coverId) {
-            return 'https://covers.openlibrary.org/b/id/' + coverId + '-M.jpg';
-          }
-        } catch (error) {
-          console.error('Erro ao buscar capa:', titulo, error);
-        }
-
-        return null;
-      }
-
-      function createPlaceholder(titulo, autor) {
-        const placeholder = document.createElement('div');
-        placeholder.className = 'cover-placeholder';
-
-        const icon = document.createElement('div');
-        icon.className = 'cp-icon';
-        icon.textContent = '📚';
-
-        const title = document.createElement('div');
-        title.className = 'cp-title';
-        title.textContent = titulo;
-
-        placeholder.appendChild(icon);
-        placeholder.appendChild(title);
-
-        if (autor) {
-          const author = document.createElement('div');
-          author.className = 'cp-author';
-          author.textContent = autor;
-          placeholder.appendChild(author);
-        }
-
-        return placeholder;
-      }
-
-      function createBookAction(livro) {
-        const hasLink = livro.claudeLink && livro.claudeLink.trim() !== '';
-        const element = document.createElement(hasLink ? 'a' : 'span');
-        element.className = hasLink ? 'btn-analise' : 'btn-analise sem-link';
-
-        if (hasLink) {
-          element.href = livro.claudeLink;
-          element.target = '_blank';
-          element.rel = 'noopener';
-        } else {
-          element.setAttribute('aria-disabled', 'true');
-        }
-
-        element.innerHTML = CLAUDE_ICON + '<span>' + (hasLink ? 'Ver análise' : 'Análise em breve') + '</span>';
-        return element;
-      }
-
-
-      function createBookCard(livro, index) {
-        const card = document.createElement('div');
-        card.className = 'lido-card reveal' + (livro.atual ? ' atual' : '');
-
-        const cover = document.createElement('div');
-        cover.className = 'lido-cover';
-        cover.id = 'cover-' + index;
-        cover.appendChild(createPlaceholder(livro.titulo, livro.autor));
-
-        const body = document.createElement('div');
-        body.className = 'lido-body';
-
-        const mes = document.createElement('div');
-        mes.className = 'lido-mes';
-        mes.textContent = livro.mes;
-
-        const titulo = document.createElement('div');
-        titulo.className = 'lido-titulo';
-        titulo.textContent = livro.titulo;
-
-        const autor = document.createElement('div');
-        autor.className = livro.autor ? 'lido-autor' : 'lido-autor lido-autor-vazio';
-        autor.textContent = livro.autor || '';
-
-        body.appendChild(mes);
-        body.appendChild(titulo);
-        body.appendChild(autor);
-        body.appendChild(createBookAction(livro));
-
-        card.appendChild(cover);
-        card.appendChild(body);
-
-        setupBookCoverLazyLoading(cover, livro);
-
-        return card;
-      }
-
-      function setupBookCoverLazyLoading(coverElement, livro) {
-        const observer = new IntersectionObserver(async function (entries) {
-          const entry = entries[0];
-          if (!entry.isIntersecting) return;
-
-          observer.disconnect();
-
-          const imageUrl = await fetchCover(livro.titulo, livro.autor);
-          if (!imageUrl) return;
-
-          const image = document.createElement('img');
-          image.alt = livro.titulo;
-          image.className = 'loading';
-          image.loading = 'lazy';
-
-          image.onload = function () {
-            image.classList.remove('loading');
-            image.classList.add('loaded');
-          };
-
-          image.onerror = function () {
-            image.remove();
-          };
-
-          image.src = imageUrl;
-          coverElement.prepend(image);
-        }, { rootMargin: '200px' });
-
-        observer.observe(coverElement);
-      }
-
-      function renderBooks() {
-        if (!SELECTORS.lidosGrid) return;
-
-        BOOKS.forEach(function (livro, index) {
-          const card = createBookCard(livro, index);
-          SELECTORS.lidosGrid.appendChild(card);
-        });
-      }
-
-      function getAuthorInitials(nome) {
-        return nome
-          .split(' ')
-          .map(function (parte) { return parte[0]; })
-          .join('')
-          .slice(0, 2);
-      }
-
-      function createAuthorAvatar(nome, info) {
-        const wrapper = document.createElement('div');
-
-        if (info.foto) {
-          const image = document.createElement('img');
-          image.className = 'autor-foto';
-          image.src = info.foto;
-          image.alt = nome;
-          image.loading = 'lazy';
-
-          const fallback = document.createElement('div');
-          fallback.className = 'autor-initial';
-          fallback.textContent = getAuthorInitials(nome);
-          fallback.hidden = true;
-
-          image.onerror = function () {
-            image.remove();
-            fallback.hidden = false;
-          };
-
-          wrapper.appendChild(image);
-          wrapper.appendChild(fallback);
-          return wrapper;
-        }
-
-        const initials = document.createElement('div');
-        initials.className = 'autor-initial';
-        initials.textContent = getAuthorInitials(nome);
-        wrapper.appendChild(initials);
-        return wrapper;
-      }
-
-      function createAuthorBooksList(livrosDoAutor) {
-        const list = document.createElement('ul');
-        list.className = 'autor-livros';
-
-        livrosDoAutor.forEach(function (titulo) {
-          const item = document.createElement('li');
-          item.textContent = titulo;
-          list.appendChild(item);
-        });
-
-        return list;
-      }
-
-      function createAuthorAction(link) {
-        if (link) {
-          const action = document.createElement('a');
-          action.href = link;
-          action.className = 'btn-analise';
-          action.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg><span>Ver autor</span>';
-          return action;
-        }
-
-        const action = document.createElement('span');
-        action.className = 'btn-analise sem-link';
-        action.textContent = 'Em breve';
-        action.setAttribute('aria-disabled', 'true');
-        return action;
-      }
-
-      function createAuthorCard(nome, info, livrosDoAutor) {
-        const card = document.createElement('div');
-        card.className = 'autor-card reveal';
-
-        card.appendChild(createAuthorAvatar(nome, info));
-
-        const name = document.createElement('div');
-        name.className = 'autor-nome';
-        name.textContent = nome;
-
-        const origem = document.createElement('div');
-        origem.className = 'autor-origem';
-        origem.textContent = info.origem || '';
-
-        card.appendChild(name);
-        card.appendChild(origem);
-        card.appendChild(createAuthorBooksList(livrosDoAutor));
-        card.appendChild(createAuthorAction(info.link));
-
-        return card;
-      }
-
-      function renderAuthors() {
-        if (!SELECTORS.autoresGrid) return;
-
-        const autoresVistos = new Set();
-
-        BOOKS.forEach(function (livro) {
-          if (livro.autor) {
-            autoresVistos.add(livro.autor);
-          }
-        });
-
-        Array.from(autoresVistos)
-          .sort()
-          .forEach(function (nome) {
-            const info = AUTHOR_INFO[nome] || { origem: '', link: null, foto: null };
-            const livrosDoAutor = BOOKS
-              .filter(function (livro) { return livro.autor === nome; })
-              .map(function (livro) { return livro.titulo; });
-
-            const card = createAuthorCard(nome, info, livrosDoAutor);
-            SELECTORS.autoresGrid.appendChild(card);
-          });
-      }
-
-      async function loadFeaturedBookCover() {
-        if (!SELECTORS.capaMes || !SELECTORS.capaMesFallback) return;
-
-        const imageUrl = await fetchCover('Linha M', 'Patti Smith');
-        if (!imageUrl) return;
-
-        const image = document.createElement('img');
-        image.src = imageUrl;
-        image.alt = 'Linha M';
-        image.loading = 'lazy';
-        image.style.position = 'absolute';
-        image.style.inset = '0';
-        image.style.width = '100%';
-        image.style.height = '100%';
-        image.style.objectFit = 'cover';
-
-        image.onload = function () {
-          SELECTORS.capaMesFallback.style.display = 'none';
-          SELECTORS.capaMes.appendChild(image);
-        };
-      }
-
-      function init() {
-        setupNavigationShadow();
-
-        const revealTools = createRevealObserver();
-
-        renderBooks();
-        renderAuthors();
-
-        observeNewRevealElements(revealTools);
-        loadFeaturedBookCover();
-      }
-
-      init();
-    })();
-  </script>
 </body>
 </html>
