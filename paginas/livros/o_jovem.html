@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Jovem - Análise</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1208; --rust:#c1440e; --gold:#d4a017; --sage:#6b8c6e;
+  --cream:#f5f0e8; --paper:#ede8dc; --border:rgba(193,68,14,0.22); --surf:rgba(26,18,8,0.05);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;padding-top:68px;overflow-x:hidden;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:68px;background:rgba(245,240,232,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
+.nav-logo{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--rust);text-decoration:none;}
+.nav-tag{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(26,18,8,0.45);}
+.nav-back{font-family:'Cinzel',serif;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:2px solid rgba(193,68,14,0.4);padding:0.45rem 1.1rem;transition:all 0.2s;}
+.nav-back:hover{color:var(--rust);border-color:var(--rust);}
+.page-header{text-align:center;padding:2.5rem 2rem 0;}
+.capa-wrap{width:132px;margin:0 auto 1.2rem;border:1px solid var(--border);box-shadow:0 10px 28px rgba(26,18,8,0.28);}
+.capa-wrap img{display:block;width:100%;height:auto;}
+.sup{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-bottom:0.5rem;}
+.page-header h1{font-family:'Cinzel',serif;font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;color:var(--ink);letter-spacing:0.04em;}
+.page-header h1 em{font-style:italic;color:var(--rust);font-family:'Cormorant Garamond',serif;font-size:1.1em;}
+.page-header p{font-style:italic;color:rgba(26,18,8,0.7);font-size:0.95rem;margin-top:0.3rem;}
+.tabs-bar{display:flex;justify-content:center;max-width:960px;margin:2rem auto 0;border-bottom:2px solid var(--border);flex-wrap:wrap;}
+.tab{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.50);background:none;border:none;padding:0.9rem 1.8rem;cursor:pointer;position:relative;transition:color 0.25s;}
+.tab::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;background:var(--rust);transform:scaleX(0);transition:transform 0.25s;}
+.tab:hover{color:var(--ink);}
+.tab.on{color:var(--ink);}
+.tab.on::after{transform:scaleX(1);}
+.panel{display:none;}
+.panel.on{display:block;animation:fadeUp 0.35s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.teia-wrap{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;padding:1.5rem 2rem 3rem;min-height:780px;}
+#net-wrap{height:750px;}
+#net-svg{width:100%;height:100%;}
+.nlab{font-family:'Cinzel',serif;font-size:15px;font-weight:700;fill:#1a1208;text-anchor:middle;pointer-events:none;}
+.nlab-white{font-family:'Cinzel',serif;font-size:15px;font-weight:700;fill:white;text-anchor:middle;pointer-events:none;}
+.nrole{font-family:'Cinzel',serif;font-size:11px;font-weight:600;fill:rgba(26,18,8,0.75);text-anchor:middle;pointer-events:none;}
+.node{cursor:pointer;}
+.node circle{transition:filter 0.25s;}
+.node:hover circle{filter:brightness(1.2);}
+.info-panel{border-left:1px solid var(--border);padding:2rem 1.8rem;display:flex;flex-direction:column;overflow-y:auto;max-height:750px;}
+.info-panel h3{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.info-role{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1rem;}
+.info-desc{font-size:0.93rem;line-height:1.78;color:var(--ink);flex:1;}
+.info-tags{margin-top:1.2rem;}
+.info-tags span{display:inline-block;margin:0.2rem 0.2rem 0 0;background:var(--surf);border:1px solid var(--border);padding:0.22rem 0.65rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);}
+.legend{display:flex;gap:0.8rem;margin-top:auto;padding-top:1.5rem;border-top:1px solid var(--border);flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;font-weight:600;color:var(--ink);}
+.leg-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.wrap{max-width:900px;margin:0 auto;padding:3rem 2rem 4rem;}
+.sec-title{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--ink);letter-spacing:0.12em;text-transform:uppercase;margin:2.5rem 0 0.5rem;}
+.sec-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;margin-bottom:1.5rem;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.card{background:var(--surf);border:1px solid var(--border);padding:1.4rem;}
+.card h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--rust);margin-bottom:0.6rem;}
+.card p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.pull{border:1px solid var(--border);border-left:4px solid var(--rust);padding:1.8rem 2rem;margin:2.5rem 0;background:var(--surf);}
+.pull p{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;line-height:1.7;color:var(--ink);}
+.pull cite{display:block;margin-top:0.8rem;font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);}
+.body-text p{font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.2rem;}
+.autor-grid{display:grid;grid-template-columns:240px 1fr;gap:3rem;align-items:start;margin-bottom:3rem;}
+.foto-box{width:240px;overflow:hidden;position:relative;border:2px solid var(--border);}
+.foto-box img{display:block;width:100%;height:auto;}
+.foto-cap{position:absolute;bottom:0;left:0;right:0;background:rgba(26,18,8,0.65);padding:0.5rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(245,240,232,0.9);text-align:center;font-weight:700;}
+.bio h2{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.bio .dates{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1.2rem;}
+.bio p{font-size:0.97rem;line-height:1.85;color:var(--ink);margin-bottom:1rem;}
+.timeline{position:relative;margin:1.5rem 0;}
+.timeline::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:1px;background:linear-gradient(to bottom,var(--rust),transparent);}
+.tl{display:flex;gap:1.4rem;margin-bottom:1.5rem;}
+.tl-dot{width:15px;height:15px;border-radius:50%;border:2px solid var(--rust);background:var(--paper);flex-shrink:0;margin-top:2px;position:relative;z-index:1;}
+.tl-yr{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.14em;color:var(--rust);min-width:46px;padding-top:1px;}
+.tl-txt{font-size:0.92rem;line-height:1.68;color:var(--ink);}
+.tema{background:var(--surf);border-left:4px solid var(--rust);padding:1.4rem 1.6rem;}
+.tema .ico{font-size:1.6rem;display:block;margin-bottom:0.6rem;}
+.tema h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.7rem;}
+.tema p{font-size:0.92rem;line-height:1.78;color:var(--ink);}
+.licao{background:var(--paper);border-left:4px solid var(--gold);padding:1.3rem 1.5rem;}
+.licao h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);margin-bottom:0.5rem;}
+.licao p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.fotos-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:2.5rem;}
+.foto-espaco{position:relative;overflow:hidden;border:1px solid var(--border);}
+.foto-espaco svg{display:block;width:100%;height:auto;}
+.foto-espaco img{display:block;width:100%;height:260px;object-fit:cover;}
+.foto-leg{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(26,18,8,0.75));padding:1.5rem 0.9rem 0.6rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,240,232,0.92);}
+.lugar{background:var(--surf);border:1px solid var(--border);padding:1.6rem;position:relative;overflow:hidden;}
+.lugar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rust),transparent);}
+.lugar h3{font-family:'Cinzel',serif;font-size:0.75rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.4rem;}
+.lugar-tag{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;color:var(--ink);display:block;margin-bottom:0.5rem;}
+.lugar p{font-size:0.90rem;line-height:1.72;color:var(--ink);}
+.meta-box{background:var(--paper);border:1px solid var(--border);padding:2rem;margin:2.5rem 0;display:grid;grid-template-columns:60px 1fr;gap:1.5rem;align-items:start;}
+.meta-box .ico{font-size:2.6rem;}
+.meta-box h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.5rem;}
+.meta-box p{font-size:0.92rem;line-height:1.75;color:var(--ink);}
+.midia-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.midia-card{display:flex;gap:1rem;background:var(--surf);border:1px solid var(--border);padding:1.2rem 1.3rem;align-items:flex-start;text-decoration:none;transition:border-color 0.2s,transform 0.2s;}
+.midia-card:hover{border-color:var(--rust);transform:translateY(-2px);}
+.midia-ico{font-size:1.5rem;flex-shrink:0;margin-top:0.1rem;}
+.midia-tipo{font-family:'Cinzel',serif;font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.3rem;display:block;}
+.midia-titulo{font-family:'DM Sans',sans-serif;font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;display:block;}
+.midia-fonte{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.85rem;color:rgba(26,18,8,0.65);}
+.av-wrap{max-width:900px;margin:0 auto;padding:4rem 2rem 5rem;border-top:1px solid var(--border);}
+.av-wrap h2{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:0.08em;text-align:center;margin-bottom:0.4rem;}
+.av-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;text-align:center;margin-bottom:2.5rem;}
+.av-summary{background:var(--surf);border:1px solid var(--border);padding:2rem;display:flex;gap:3rem;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;}
+.av-big-num{font-family:'Cinzel',serif;font-size:4rem;font-weight:700;color:var(--rust);line-height:1;text-align:center;}
+.av-big-stars{font-size:1.5rem;text-align:center;margin:0.3rem 0;}
+.av-big-count{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.6);text-align:center;}
+.brow{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;}
+.brow-lbl{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;color:var(--ink);min-width:28px;}
+.brow-track{flex:1;height:8px;background:rgba(26,18,8,0.1);border-radius:4px;overflow:hidden;}
+.brow-fill{height:100%;background:var(--rust);border-radius:4px;transition:width 0.5s;width:0%;}
+.brow-n{font-family:'Cinzel',serif;font-size:0.62rem;font-weight:700;color:rgba(26,18,8,0.6);min-width:16px;text-align:right;}
+.av-form{background:var(--paper);border:1px solid var(--border);padding:2rem;margin-bottom:2.5rem;}
+.av-form h3{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink);margin-bottom:1.5rem;}
+.av-label{font-family:'Cinzel',serif;font-size:0.63rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);display:block;margin-bottom:0.4rem;}
+.av-input{width:100%;padding:0.7rem 1rem;margin-bottom:1.2rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;}
+.av-input:focus{border-color:var(--rust);}
+.av-textarea{width:100%;padding:0.7rem 1rem;margin-bottom:1.5rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;resize:vertical;line-height:1.65;min-height:100px;}
+.av-textarea:focus{border-color:var(--rust);}
+.stars-pick{display:flex;gap:0.3rem;margin-bottom:1.3rem;}
+.stars-pick span{font-size:2.2rem;cursor:pointer;line-height:1;color:rgba(26,18,8,0.2);transition:color 0.15s;user-select:none;}
+.av-btn{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;background:var(--rust);color:white;border:none;padding:0.85rem 2.5rem;cursor:pointer;transition:background 0.2s;}
+.av-btn:hover{background:#a33508;}
+.av-btn:disabled{background:#aaa;cursor:default;}
+.av-msg{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;margin-left:1rem;}
+.comment{border:1px solid var(--border);padding:1.4rem 1.6rem;margin-bottom:1rem;background:var(--cream);}
+.chead{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;flex-wrap:wrap;gap:0.4rem;}
+.cname{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;color:var(--ink);}
+.cstars{color:var(--rust);font-size:1.05rem;}
+.cdate{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:600;color:rgba(26,18,8,0.5);}
+.ctext{font-size:0.95rem;line-height:1.75;color:var(--ink);}
+.no-reviews{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.5);font-size:1rem;text-align:center;padding:2rem 0;}
+.loading{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.12em;color:rgba(26,18,8,0.5);text-align:center;padding:1.5rem 0;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Socorro.</a>
+  <span class="nav-tag">Clube do Livro · Análise</span>
+  <a href="index.html#lidos" class="nav-back">← Voltar à Estante</a>
+</nav>
+
+<div class="page-header">
+  <div class="capa-wrap"><img src="https://covers.openlibrary.org/b/isbn/9786584568426-L.jpg" alt="Capa de O Jovem"></div>
+  <p class="sup">Annie Ernaux &nbsp;·&nbsp; 2022 &nbsp;·&nbsp; Análise Literária</p>
+  <h1><em>O Jovem</em></h1>
+  <p>Teia de Relações · A Autora · Temas · Espaço Narrativo · Mídia</p>
+</div>
+
+<div class="tabs-bar">
+  <button class="tab on"  onclick="goTab('teia',this)">Teia de Relações</button>
+  <button class="tab"     onclick="goTab('autora',this)">A Autora</button>
+  <button class="tab"     onclick="goTab('temas',this)">Temas &amp; Lições</button>
+  <button class="tab"     onclick="goTab('espaco',this)">O Espaço Narrativo</button>
+  <button class="tab"     onclick="goTab('midia',this)">Mídia</button>
+</div>
+
+<!-- MAPA -->
+<div id="panel-teia" class="panel on">
+<div class="teia-wrap">
+  <div id="net-wrap">
+  <svg id="net-svg" viewBox="0 0 860 750" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+    <line x1="430" y1="390" x2="430" y2="110" stroke="#c1440e" stroke-width="3" stroke-opacity="0.7"/>
+    <line x1="430" y1="390" x2="170" y2="200" stroke="#d4a017" stroke-width="3.5" stroke-opacity="0.7"/>
+    <line x1="430" y1="390" x2="660" y2="200" stroke="#d4a017" stroke-width="3.5" stroke-opacity="0.7"/>
+    <line x1="430" y1="390" x2="150" y2="500" stroke="#6b8c6e" stroke-width="3" stroke-opacity="0.65"/>
+    <line x1="430" y1="390" x2="700" y2="500" stroke="#6b8c6e" stroke-width="3" stroke-opacity="0.65"/>
+    <line x1="430" y1="390" x2="280" y2="650" stroke="#1a1208" stroke-opacity="0.4" stroke-width="2.5" stroke-dasharray="7,4"/>
+    <line x1="430" y1="390" x2="580" y2="650" stroke="#1a1208" stroke-opacity="0.4" stroke-width="2.5" stroke-dasharray="7,4"/>
+    <g class="node" onclick="info('livro')"><circle cx="430" cy="390" r="80" fill="#c1440e" fill-opacity="0.12" stroke="#c1440e" stroke-width="3.5"/><circle cx="430" cy="390" r="60" fill="#c1440e" fill-opacity="0.93"/><text x="430" y="385" class="nlab-white" style="font-size:16px;">O</text><text x="430" y="403" class="nlab-white" style="font-size:16px;">Jovem</text><text x="430" y="478" class="nrole">Le Jeune Homme, 2022</text></g>
+    <g class="node" onclick="info('a')"><circle cx="430" cy="110" r="54" fill="#c1440e" fill-opacity="0.85"/><text x="430" y="107" class="nlab-white" style="font-size:13px;">A., o</text><text x="430" y="123" class="nlab-white" style="font-size:13px;">Jovem Amante</text><text x="430" y="174" class="nrole">estudante, trinta anos mais novo</text></g>
+    <g class="node" onclick="info('rouen')"><circle cx="170" cy="200" r="50" fill="#d4a017" fill-opacity="0.9"/><text x="170" y="197" class="nlab-white">A Volta a</text><text x="170" y="213" class="nlab-white">Rouen</text><text x="170" y="256" class="nrole">retorno ao passado</text></g>
+    <g class="node" onclick="info('corpo')"><circle cx="660" cy="200" r="50" fill="#d4a017" fill-opacity="0.9"/><text x="660" y="197" class="nlab-white" style="font-size:13px;">O Corpo e</text><text x="660" y="213" class="nlab-white" style="font-size:13px;">o Desejo</text><text x="660" y="256" class="nrole">aos 54 anos</text></g>
+    <g class="node" onclick="info('olhar')"><circle cx="150" cy="500" r="52" fill="#6b8c6e" fill-opacity="0.88"/><text x="150" y="493" class="nlab-white" style="font-size:12px;">O Olhar</text><text x="150" y="509" class="nlab-white" style="font-size:12px;">dos Outros</text><text x="150" y="562" class="nrole">julgamento social</text></g>
+    <g class="node" onclick="info('classe')"><circle cx="700" cy="500" r="50" fill="#6b8c6e" fill-opacity="0.82"/><text x="700" y="497" class="nlab-white" style="font-size:12px;">Memória</text><text x="700" y="513" class="nlab-white" style="font-size:12px;">de Origem</text><text x="700" y="558" class="nrole">a classe deixada para trás</text></g>
+    <g class="node" onclick="info('escrever')"><circle cx="280" cy="650" r="44" fill="#1a1208" fill-opacity="0.3" stroke="#1a1208" stroke-width="2.5" stroke-dasharray="6,4"/><text x="280" y="647" class="nlab" style="font-size:12px;">Escrever</text><text x="280" y="663" class="nlab" style="font-size:12px;">para Terminar</text><text x="280" y="702" class="nrole">a epígrafe</text></g>
+    <g class="node" onclick="info('aborto')"><circle cx="580" cy="650" r="44" fill="#1a1208" fill-opacity="0.3" stroke="#1a1208" stroke-width="2.5" stroke-dasharray="6,4"/><text x="580" y="647" class="nlab" style="font-size:12px;">Eco de</text><text x="580" y="663" class="nlab" style="font-size:12px;">O Acontecimento</text><text x="580" y="702" class="nrole">memória que retorna</text></g>
+  </svg>
+  </div>
+  <div class="info-panel">
+    <h3 id="i-name">Clique em um nó</h3>
+    <p class="info-role" id="i-role">para ver do que trata</p>
+    <p class="info-desc" id="i-desc">O Jovem narra, em poucas páginas, a relação que Annie Ernaux teve, aos 54 anos, com um estudante trinta anos mais novo — e como esse relacionamento a reconectou com sua própria origem de classe e com o próprio ato de escrever.</p>
+    <div class="info-tags" id="i-tags"></div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:#c1440e"></div>Figura Central</div>
+      <div class="leg"><div class="leg-dot" style="background:#d4a017"></div>Corpo &amp; Retorno</div>
+      <div class="leg"><div class="leg-dot" style="background:#6b8c6e"></div>Classe &amp; Julgamento</div>
+      <div class="leg"><svg width="24" height="8"><line x1="0" y1="4" x2="24" y2="4" stroke="#1a1208" stroke-width="2" stroke-dasharray="5,3"/></svg>Projeto de Escrita</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- A AUTORA -->
+<div id="panel-autora" class="panel">
+<div class="wrap">
+  <div class="autor-grid">
+    <div class="foto-box">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Annie_Ernaux_(cropped_and_rotated).jpg" alt="Annie Ernaux">
+      <div class="foto-cap">Annie Ernaux</div>
+    </div>
+    <div class="bio">
+      <h2>Annie Ernaux</h2>
+      <p class="dates">Lillebonne, 1940</p>
+      <p>Annie Ernaux nasceu em Lillebonne, na Normandia, e cresceu em Yvetot, filha de pais que deixaram o trabalho operário para abrir um pequeno café-mercearia. Formou-se em Letras Modernas e lecionou por décadas, ao mesmo tempo em que construía uma obra que documenta, livro a livro, sua própria vida como material sociológico — o que ela chama de "autossociobiografia".</p>
+      <p><em>O Jovem</em> ocupa um lugar peculiar nessa obra: escrito entre 1998 e 2000, ficou guardado por mais de duas décadas antes de ser publicado, em 2022, já depois do Prêmio Nobel. É um dos textos mais curtos e concentrados da autora — cerca de cinquenta páginas que, segundo a crítica francesa Nelly Kaprièlian, funcionam como uma "miniatura perfeita" de todo o seu projeto literário.</p>
+      <p>O livro relembra a relação que Ernaux teve, aos 54 anos, com um estudante identificado apenas como A., trinta anos mais jovem — episódio que ela já havia deixado entrever em outros textos, mas que aqui ganha tratamento central. Como em <em>Uma Mulher</em> e <em>O Lugar</em>, o corpo, a memória e a classe social se entrelaçam numa prosa deliberadamente sem ornamentos.</p>
+      <div class="timeline">
+        <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1940</div><div class="tl-txt">Nasce em Lillebonne, Normandia.</div></div>
+        <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1974</div><div class="tl-txt">Publica seu primeiro livro, <em>Les Armoires Vides</em>.</div></div>
+        <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1991</div><div class="tl-txt">Publica <em>Paixão Simples</em>, sobre outra relação amorosa marcante.</div></div>
+        <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1998–2000</div><div class="tl-txt">Escreve o texto que se tornaria <em>O Jovem</em>, mas não o publica.</div></div>
+        <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2022</div><div class="tl-txt">Recebe o Prêmio Nobel de Literatura; publica <em>O Jovem</em> na França.</div></div>
+        <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2022</div><div class="tl-txt"><em>O Jovem</em> chega ao Brasil pela Fósforo, tradução de Marília Garcia.</div></div>
+      </div>
+      <p class="sec-title">Seis curiosidades sobre a autora e o livro</p>
+      <p class="sec-sub">Detalhes que revelam o método por trás do texto mais breve de Ernaux</p>
+      <div class="g2">
+        <div class="card"><h4>O apartamento em frente ao hospital</h4><p>O apartamento de A. ficava na mesma rua do hospital onde, décadas antes, Ernaux havia sido levada após um aborto clandestino — a coincidência geográfica reconecta literalmente o presente da autora ao trauma narrado em <em>O Acontecimento</em>.</p></div>
+        <div class="card"><h4>O poder invertido</h4><p>Sendo mais velha, mais rica e mais estável, Ernaux ocupava a posição de poder na relação — o inverso do padrão homem mais velho/mulher mais jovem, e algo que ela examina sem constrangimento.</p></div>
+        <div class="card"><h4>Vinte anos na gaveta</h4><p>Escrito entre 1998 e 2000, o texto só foi publicado em 2022 — poucos meses antes do anúncio do Nobel, o que deu ao pequeno livro uma repercussão internacional que não teria tido duas décadas antes.</p></div>
+        <div class="card"><h4>Recepção dividida</h4><p>Parte da crítica considerou o livro "fino demais" — um mero esboço se comparado a <em>O Acontecimento</em> — enquanto outros leitores o veem como uma "miniatura perfeita" que condensa todos os temas centrais da autora.</p></div>
+        <div class="card"><h4>Eco de "Paixão Simples"</h4><p>Não é a primeira vez que Ernaux escreve sobre um amante mais jovem: <em>Paixão Simples</em> (1991) já havia explorado território parecido — os dois livros dialogam como variações sobre o mesmo tema do desejo fora do script social.</p></div>
+        <div class="card"><h4>Nasceu de uma recusa</h4><p>Segundo a própria autora, buscou o relacionamento com A. em parte para se afastar de uma sensação de desistência da vida — o que, paradoxalmente, desencadeou o processo de escrita de <em>O Acontecimento</em>.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- TEMAS -->
+<div id="panel-temas" class="panel">
+<div class="wrap">
+  <p class="sec-title">Temas Centrais</p>
+  <p class="sec-sub">O que se concentra nestas poucas páginas</p>
+  <div class="g2">
+    <div class="tema"><span class="ico">⏳</span><h3>Assimetria de Idade</h3><p>Ernaux não esconde o desconforto alheio diante da diferença de trinta anos — mas recusa tratá-la como escândalo, preferindo investigar o que esse desequilíbrio revela sobre desejo, tempo e liberdade.</p></div>
+    <div class="tema"><span class="ico">🧭</span><h3>Retorno à Classe de Origem</h3><p>A. é descrito como "portador da memória" do mundo de onde Ernaux veio — através dele, ela reencontra gestos, lugares e sensações da própria juventude operária.</p></div>
+    <div class="tema"><span class="ico">🔥</span><h3>Corpo e Desejo Feminino</h3><p>Como em outros livros da autora, o desejo de uma mulher madura é tratado sem pudor nem justificativa — um gesto político em si, numa sociedade que raramente concede esse espaço às mulheres.</p></div>
+    <div class="tema"><span class="ico">✒️</span><h3>A Escrita como Conclusão</h3><p>A epígrafe do livro — "se não escrevo as coisas, elas não encontram seu termo" — resume o projeto de Ernaux: viver não basta; só a escrita completa a experiência.</p></div>
+  </div>
+  <p class="sec-title" style="margin-top:3rem;">Seis Lições da Narrativa</p>
+  <div class="g2">
+    <div class="licao"><h4>Sobre concisão</h4><p>Em pouco mais de cinquenta páginas, Ernaux demonstra que densidade emocional não depende de extensão — cada frase carrega o peso de décadas de reflexão.</p></div>
+    <div class="licao"><h4>Sobre publicar tarde</h4><p>O fato de o texto ter esperado mais de vinte anos para ser publicado convida a pensar sobre o tempo de maturação de uma obra — e sobre o que muda quando finalmente a soltamos no mundo.</p></div>
+    <div class="licao"><h4>Sobre desejo sem pedido de desculpas</h4><p>Ernaux não implora compreensão do leitor para seu desejo por um homem mais jovem — apenas o descreve. A ausência de justificativa é, em si, uma posição política sobre o direito das mulheres ao próprio corpo.</p></div>
+    <div class="licao"><h4>Sobre o poder que muda de mãos</h4><p>O livro mostra que dinâmicas de poder em relacionamentos não são fixas por gênero — dependem de dinheiro, idade, estabilidade — e podem se inverter de formas que desafiam o senso comum.</p></div>
+    <div class="licao"><h4>Sobre amantes como portais para o passado</h4><p>A. não é só um parceiro — é, para Ernaux, uma via de acesso a uma versão mais jovem de si mesma. O livro sugere que as pessoas que amamos às vezes nos devolvem a nós mesmos.</p></div>
+    <div class="licao"><h4>Sobre o que a brevidade pode ocultar — e revelar</h4><p>A extrema economia do texto tanto ilumina (cada frase pesa) quanto oculta (muito fica não dito) — cabe ao leitor decidir se a brevidade é força ou limitação.</p></div>
+  </div>
+  <p class="sec-title" style="margin-top:3rem;">Síntese</p>
+  <div class="body-text">
+    <p>O Jovem é o livro mais pequeno e, ao mesmo tempo, mais denso do projeto de Annie Ernaux: em cinquenta páginas escritas duas décadas antes de sua publicação, a autora condensa quase todos os temas que atravessam sua obra — classe, corpo, memória, tempo, escrita como forma de completar a experiência vivida. O relacionamento com A. funciona como lente retrospectiva: através do jovem amante, Ernaux revisita não apenas sua juventude, mas o próprio ato de escrever sobre ela.</p>
+    <p>Publicado poucos meses antes do Nobel, o livro ganhou uma repercussão que talvez não tivesse tido em 2000 — e essa própria história editorial, o texto guardado por vinte anos, ecoa um dos temas centrais da autora: a ideia de que viver não basta, é preciso também que a experiência encontre, mais cedo ou mais tarde, sua forma escrita. Para o clube, O Jovem funciona como porta de entrada rápida e certeira para todo o método de Ernaux — e um convite a ler o restante de sua obra maior.</p>
+  </div>
+</div>
+</div>
+
+<!-- CONTEXTO -->
+<div id="panel-espaco" class="panel">
+<div class="wrap">
+  <p class="sec-title">Rouen e o Retorno ao Passado</p>
+  <p class="sec-sub">O cenário físico e afetivo do relacionamento</p>
+  <div class="fotos-grid">
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Overview_of_Rouen_20140514_1.jpg" alt="Rouen, Normandia"><div class="foto-leg">Rouen — a cidade dos anos de estudante de Ernaux</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Bistro_(Varengeville-sur-Mer).jpg" alt="Bistrô na Normandia"><div class="foto-leg">Um bistrô normando — cenário dos encontros do casal</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Cath%C3%A9drale_Notre-Dame_de_Rouen.JPG" alt="Catedral de Rouen"><div class="foto-leg">A Catedral de Rouen — marco da cidade que guarda a memória de Ernaux</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Voies_de_la_gare_de_Rouen-Rive-Droite.jpg" alt="Estação de trem de Rouen"><div class="foto-leg">A estação de Rouen — o vaivém entre presente e passado</div></div>
+  </div>
+  <p style="font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.2rem;">Ao conhecer A., estudante numa cidade que remete à Rouen onde ela própria estudou décadas antes, Ernaux é levada de volta não apenas à sua juventude, mas à Normandia operária de onde veio — o mesmo território que atravessa <em>Uma Mulher</em> e <em>O Lugar</em>. O relacionamento funciona como uma máquina do tempo involuntária.</p>
+  <p style="font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.5rem;">O livro foi escrito entre 1998 e 2000, período em que Ernaux já preparava outros textos autobiográficos, mas optou por guardá-lo — só o publicou em 2022, poucos meses após o anúncio do Nobel. Essa distância temporal entre a escrita e a publicação é, em si, um dado interessante: a autora reencontra, ao revisar o texto vinte anos depois, uma versão mais jovem de si mesma escrevendo sobre um amante mais jovem ainda.</p>
+  <div class="g2">
+    <div class="lugar"><h3>Yvetot vs. Rouen</h3><span class="lugar-tag">Origem × Formação</span><p>Yvetot é a cidade pequena da infância operária; Rouen, a cidade maior onde Ernaux estudou e, décadas depois, revive sensações semelhantes através de A.</p></div>
+    <div class="lugar"><h3>Écrire la Vie</h3><span class="lugar-tag">Projeto de uma obra</span><p><em>O Jovem</em> se soma a <em>O Lugar</em>, <em>Uma Mulher</em>, <em>Paixão Simples</em> e <em>O Acontecimento</em> como mais uma peça do grande projeto autobiográfico de Ernaux.</p></div>
+    <div class="lugar"><h3>Publicação Tardia</h3><span class="lugar-tag">1998–2000 → 2022</span><p>Mais de vinte anos separam a escrita da publicação — um intervalo que a própria autora usa para refletir sobre a passagem do tempo dentro do texto.</p></div>
+    <div class="lugar"><h3>Depois do Nobel</h3><span class="lugar-tag">2022, ano do Prêmio</span><p>Publicado no mesmo ano em que Ernaux recebe o Nobel, o livro chega a um público internacional muito mais amplo do que teria tido duas décadas antes.</p></div>
+  </div>
+  <div class="meta-box">
+    <div class="ico">🕰️</div>
+    <div><h3>O Tempo Como Personagem</h3><p>Mais do que A. ou a própria narradora, o verdadeiro protagonista de <em>O Jovem</em> pode ser o tempo — sua capacidade de reaparecer, se sobrepor e permitir que a mesma pessoa viva, décadas depois, ecos exatos do que já viveu.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- MÍDIA -->
+<div id="panel-midia" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Mídia</p>
+  <p class="sec-sub">Podcasts, vídeos e publicações para aprofundar a leitura do clube</p>
+  <div class="midia-grid">
+    <a class="midia-card" href="https://www.youtube.com/watch?v=d-9CjOfj3bY" target="_blank" rel="noopener">
+      <span class="midia-ico">📹</span>
+      <span>
+        <span class="midia-tipo">Vídeo · Resenha</span>
+        <span class="midia-titulo">O Jovem: uma verdade profunda sobre o tempo</span>
+        <span class="midia-fonte">YouTube</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.youtube.com/watch?v=GM2NPysgcOc" target="_blank" rel="noopener">
+      <span class="midia-ico">📹</span>
+      <span>
+        <span class="midia-tipo">Vídeo · Resenha</span>
+        <span class="midia-titulo">O Jovem, Annie Ernaux</span>
+        <span class="midia-fonte">YouTube</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://cliohistoriaeliteratura.com/2023/05/29/o-jovemannie-ernaux/" target="_blank" rel="noopener">
+      <span class="midia-ico">🎙️</span>
+      <span>
+        <span class="midia-tipo">Podcast</span>
+        <span class="midia-titulo">O Jovem — Resenha Relâmpago Ep. 32</span>
+        <span class="midia-fonte">Clio: História e Literatura</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://culturadoria.com.br/o-jovem-annie-ernaux/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação</span>
+        <span class="midia-titulo">Annie Ernaux reconstrói relacionamento com homem trinta anos mais jovem</span>
+        <span class="midia-fonte">Culturadoria</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.janelaliteraria.com.br/2023/01/resenha-o-jovem-annie-ernaux.html" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação</span>
+        <span class="midia-titulo">Resenha: O Jovem</span>
+        <span class="midia-fonte">Janela Literária</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.aleitoraclassica.com.br/post/a-beleza-est%C3%A1-nos-olhos-de-quem-v%C3%AA-ser%C3%A1-uma-reflex%C3%A3o-a-partir-de-o-jovem-de-annie-ernaux" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação</span>
+        <span class="midia-titulo">A beleza está nos olhos de quem vê</span>
+        <span class="midia-fonte">A Leitora Clássica</span>
+      </span>
+    </a>
+  </div>
+</div>
+</div>
+
+<!-- AVALIAÇÃO -->
+<div class="av-wrap">
+  <p class="sup" style="text-align:center;margin-bottom:0.4rem;">Clube Socorro</p>
+  <h2>Avaliações &amp; Comentários</h2>
+  <p class="av-sub">O que o clube achou de O Jovem</p>
+  <div class="av-summary">
+    <div>
+      <div class="av-big-num" id="avg-num">—</div>
+      <div class="av-big-stars" id="avg-stars">☆☆☆☆☆</div>
+      <div class="av-big-count" id="avg-count">0 avaliações</div>
+    </div>
+    <div class="bars">
+      <div class="brow"><span class="brow-lbl">5★</span><div class="brow-track"><div class="brow-fill" id="b5"></div></div><span class="brow-n" id="n5">0</span></div>
+      <div class="brow"><span class="brow-lbl">4★</span><div class="brow-track"><div class="brow-fill" id="b4"></div></div><span class="brow-n" id="n4">0</span></div>
+      <div class="brow"><span class="brow-lbl">3★</span><div class="brow-track"><div class="brow-fill" id="b3"></div></div><span class="brow-n" id="n3">0</span></div>
+      <div class="brow"><span class="brow-lbl">2★</span><div class="brow-track"><div class="brow-fill" id="b2"></div></div><span class="brow-n" id="n2">0</span></div>
+      <div class="brow"><span class="brow-lbl">1★</span><div class="brow-track"><div class="brow-fill" id="b1"></div></div><span class="brow-n" id="n1">0</span></div>
+    </div>
+  </div>
+  <div class="av-form">
+    <h3>Deixe sua avaliação</h3>
+    <label class="av-label">Seu nome</label>
+    <input id="f-nome" class="av-input" type="text" placeholder="Como quer ser identificada?">
+    <label class="av-label">Nota</label>
+    <div class="stars-pick" id="star-row">
+      <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+    </div>
+    <label class="av-label">Comentário</label>
+    <textarea id="f-txt" class="av-textarea" placeholder="O que você achou do livro?"></textarea>
+    <button class="av-btn" onclick="submitReview()">Publicar Avaliação</button>
+    <span id="f-msg" class="av-msg"></span>
+  </div>
+  <div id="comments"><p class="loading">Carregando avaliações...</p></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyB03BscdfdfZGW42Btqbmzt72Dpusu45NU",
+  authDomain: "socorro-clube-do-livro.firebaseapp.com",
+  projectId: "socorro-clube-do-livro",
+  storageBucket: "socorro-clube-do-livro.firebasestorage.app",
+  messagingSenderId: "729551936788",
+  appId: "1:729551936788:web:001a6e284a63a51fc37601"
+};
+let db = null;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  db.settings({ experimentalAutoDetectLongPolling: true, useFetchStreams: false });
+} catch (e) { db = null; }
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str == null ? '' : String(str);
+  return div.innerHTML;
+}
+
+const P = {
+  livro:    { nome:'O Jovem', papel:'Le Jeune Homme · 2022 (escrito 1998–2000)', desc:'Annie Ernaux relembra a relação que teve, aos 54 anos, com um estudante trinta anos mais novo — e como esse relacionamento a reconectou com sua origem de classe.', tags:['Memória','Desejo','Classe','Autoficção'] },
+  a:        { nome:'A., o Jovem Amante', papel:'Estudante, Trinta Anos Mais Novo', desc:'Identificado apenas pela inicial, A. é descrito como "o portador da memória" do mundo de origem de Ernaux — através dele ela revive sensações de sua própria juventude.', tags:['Memória','Origem'] },
+  rouen:    { nome:'A Volta a Rouen', papel:'Retorno ao Passado', desc:'A relação leva Ernaux de volta a uma cidade que ecoa sua juventude estudantil, reativando memórias físicas e sociais adormecidas.', tags:['Lugar','Memória'] },
+  corpo:    { nome:'O Corpo e o Desejo', papel:'Aos 54 Anos', desc:'Ernaux escreve sobre desejo feminino maduro sem pudor nem justificativa — um dos fios mais constantes de toda sua obra.', tags:['Corpo','Desejo'] },
+  olhar:    { nome:'O Olhar dos Outros', papel:'Julgamento Social', desc:'A diferença de idade do casal provoca reações visíveis de estranhamento alheio, que Ernaux registra com distanciamento quase clínico.', tags:['Julgamento','Sociedade'] },
+  classe:   { nome:'Memória de Origem', papel:'A Classe Deixada para Trás', desc:'A. reconecta a narradora à classe trabalhadora de onde veio — um tema central em toda a "autossociobiografia" de Ernaux.', tags:['Classe','Identidade'] },
+  escrever: { nome:'Escrever para Terminar', papel:'A Epígrafe do Livro', desc:'"Se não escrevo as coisas, elas não encontram seu termo" — a frase de abertura resume o projeto literário inteiro da autora.', tags:['Método','Escrita'] },
+  aborto:   { nome:'Eco de O Acontecimento', papel:'Memória que Retorna', desc:'Ernaux menciona brevemente o aborto clandestino já narrado em outro livro seu, mostrando como sua obra dialoga consigo mesma.', tags:['Intertextualidade'] }
+};
+
+function info(id) {
+  const p = P[id]; if (!p) return;
+  document.getElementById('i-name').textContent = p.nome;
+  document.getElementById('i-role').textContent = p.papel;
+  document.getElementById('i-desc').textContent = p.desc;
+  document.getElementById('i-tags').innerHTML =
+    '<p style="font-family:Cinzel,serif;font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);margin-bottom:0.4rem;">Conteúdo do nó</p>' +
+    p.tags.map(t => '<span>' + t + '</span>').join('');
+}
+
+function goTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  document.getElementById('panel-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+let picked = 0;
+document.querySelectorAll('#star-row span').forEach(s => {
+  s.addEventListener('mouseover', () => hilite(+s.dataset.v));
+  s.addEventListener('mouseout',  () => hilite(picked));
+  s.addEventListener('click',     () => { picked = +s.dataset.v; hilite(picked); });
+});
+function hilite(n) {
+  document.querySelectorAll('#star-row span').forEach(s => {
+    s.style.color = +s.dataset.v <= n ? '#c1440e' : 'rgba(26,18,8,0.2)';
+  });
+}
+
+const BOOK_SLUG = 'o-jovem';
+const reviewsCol = db ? db.collection('livros').doc(BOOK_SLUG).collection('reviews') : null;
+let reviews = [];
+
+async function submitReview() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const txt  = document.getElementById('f-txt').value.trim();
+  const msg  = document.getElementById('f-msg');
+  if (!nome)   { msg.textContent = 'Coloque seu nome.';      msg.style.color='#c1440e'; return; }
+  if (!picked) { msg.textContent = 'Selecione uma nota.';    msg.style.color='#c1440e'; return; }
+  if (!txt)    { msg.textContent = 'Escreva um comentário.'; msg.style.color='#c1440e'; return; }
+  if (!reviewsCol) { msg.textContent = 'Avaliações indisponíveis no momento.'; msg.style.color='#c1440e'; return; }
+  const btn = document.querySelector('.av-btn');
+  btn.textContent = 'Enviando...'; btn.disabled = true;
+  msg.textContent = '';
+  try {
+    await reviewsCol.add({
+      nome, nota: picked, comentario: txt,
+      data: new Date().toLocaleDateString('pt-BR'),
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('f-nome').value = '';
+    document.getElementById('f-txt').value  = '';
+    picked = 0; hilite(0);
+    msg.textContent = 'Publicado!'; msg.style.color = '#6b8c6e';
+    setTimeout(() => msg.textContent = '', 4000);
+  } catch(e) {
+    msg.textContent = 'Erro ao enviar. Tente novamente.'; msg.style.color = '#c1440e';
+  }
+  btn.textContent = 'Publicar Avaliação'; btn.disabled = false;
+}
+
+function renderReviews() {
+  const total = reviews.length;
+  if (!total) {
+    document.getElementById('avg-num').textContent   = '—';
+    document.getElementById('avg-stars').textContent = '☆☆☆☆☆';
+    document.getElementById('avg-count').textContent = '0 avaliações';
+    [1,2,3,4,5].forEach(n => { document.getElementById('b'+n).style.width='0%'; document.getElementById('n'+n).textContent='0'; });
+    document.getElementById('comments').innerHTML = '<p class="no-reviews">Nenhuma avaliação ainda — seja a primeira!</p>';
+    return;
+  }
+  const avg = reviews.reduce((a,r) => a + Number(r.nota), 0) / total;
+  document.getElementById('avg-num').textContent   = avg.toFixed(1);
+  const full = Math.round(avg);
+  document.getElementById('avg-stars').textContent = '★'.repeat(full) + '☆'.repeat(5-full);
+  document.getElementById('avg-count').textContent = total + (total===1 ? ' avaliação' : ' avaliações');
+  [1,2,3,4,5].forEach(n => {
+    const c = reviews.filter(r => Number(r.nota)===n).length;
+    document.getElementById('b'+n).style.width = (c/total*100).toFixed(0) + '%';
+    document.getElementById('n'+n).textContent = c;
+  });
+  document.getElementById('comments').innerHTML = reviews.map(r => `
+    <div class="comment">
+      <div class="chead">
+        <span class="cname">${escapeHtml(r.nome)}</span>
+        <span class="cstars">${'★'.repeat(Number(r.nota))}${'☆'.repeat(5-Number(r.nota))}</span>
+        <span class="cdate">${escapeHtml(r.data)}</span>
+      </div>
+      <p class="ctext">${escapeHtml(r.comentario)}</p>
+    </div>`).join('');
+}
+
+if (reviewsCol) {
+  reviewsCol.orderBy('criadoEm', 'desc').onSnapshot(function (snap) {
+    reviews = snap.docs.map(d => d.data());
+    renderReviews();
+  }, function () {
+    reviews = [];
+    renderReviews();
+  });
+} else {
+  renderReviews();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Na Voz Dela — Análise</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1208; --rust:#c1440e; --gold:#d4a017; --sage:#6b8c6e;
+  --cream:#f5f0e8; --paper:#ede8dc; --border:rgba(193,68,14,0.22); --surf:rgba(26,18,8,0.05);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;padding-top:68px;overflow-x:hidden;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:68px;background:rgba(245,240,232,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
+.nav-logo{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--rust);text-decoration:none;}
+.nav-tag{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(26,18,8,0.45);}
+.nav-back{font-family:'Cinzel',serif;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:2px solid rgba(193,68,14,0.4);padding:0.45rem 1.1rem;transition:all 0.2s;}
+.nav-back:hover{color:var(--rust);border-color:var(--rust);}
+.page-header{text-align:center;padding:2.5rem 2rem 0;}
+.capa-wrap{width:150px;margin:0 auto 1.2rem;box-shadow:0 12px 28px rgba(26,18,8,0.28);}
+.capa-wrap img{display:block;width:100%;height:auto;}
+.sup{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-bottom:0.5rem;}
+.page-header h1{font-family:'Cinzel',serif;font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;color:var(--ink);letter-spacing:0.04em;}
+.page-header h1 em{font-style:italic;color:var(--rust);font-family:'Cormorant Garamond',serif;font-size:1.1em;}
+.page-header p{font-style:italic;color:rgba(26,18,8,0.7);font-size:0.95rem;margin-top:0.3rem;}
+.tabs-bar{display:flex;justify-content:center;max-width:960px;margin:2rem auto 0;border-bottom:2px solid var(--border);flex-wrap:wrap;}
+.tab{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.50);background:none;border:none;padding:0.9rem 1.8rem;cursor:pointer;position:relative;transition:color 0.25s;}
+.tab::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;background:var(--rust);transform:scaleX(0);transition:transform 0.25s;}
+.tab:hover{color:var(--ink);}
+.tab.on{color:var(--ink);}
+.tab.on::after{transform:scaleX(1);}
+.panel{display:none;}
+.panel.on{display:block;animation:fadeUp 0.35s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.teia-wrap{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;padding:1.5rem 2rem 3rem;min-height:780px;}
+#net-wrap{height:750px;}
+#net-svg{width:100%;height:100%;}
+.nlab{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:#1a1208;text-anchor:middle;pointer-events:none;}
+.nlab-white{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:white;text-anchor:middle;pointer-events:none;}
+.nrole{font-family:'Cinzel',serif;font-size:12px;font-weight:600;fill:rgba(26,18,8,0.75);text-anchor:middle;pointer-events:none;}
+.node{cursor:pointer;}
+.node circle{transition:filter 0.25s;}
+.node:hover circle{filter:brightness(1.2);}
+.info-panel{border-left:1px solid var(--border);padding:2rem 1.8rem;display:flex;flex-direction:column;overflow-y:auto;max-height:750px;}
+.info-panel h3{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.info-role{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1rem;}
+.info-desc{font-size:0.93rem;line-height:1.78;color:var(--ink);flex:1;}
+.info-tags{margin-top:1.2rem;}
+.info-tags span{display:inline-block;margin:0.2rem 0.2rem 0 0;background:var(--surf);border:1px solid var(--border);padding:0.22rem 0.65rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);}
+.legend{display:flex;gap:0.8rem;margin-top:auto;padding-top:1.5rem;border-top:1px solid var(--border);flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;font-weight:600;color:var(--ink);}
+.leg-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.wrap{max-width:900px;margin:0 auto;padding:3rem 2rem 4rem;}
+.sec-title{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--ink);letter-spacing:0.12em;text-transform:uppercase;margin:2.5rem 0 0.5rem;}
+.sec-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;margin-bottom:1.5rem;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.card{background:var(--surf);border:1px solid var(--border);padding:1.4rem;}
+.card h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--rust);margin-bottom:0.6rem;}
+.card p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.pull{border:1px solid var(--border);border-left:4px solid var(--rust);padding:1.8rem 2rem;margin:2.5rem 0;background:var(--surf);}
+.pull p{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;line-height:1.7;color:var(--ink);}
+.pull cite{display:block;margin-top:0.8rem;font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);}
+.body-text p{font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.2rem;}
+.autor-grid{display:grid;grid-template-columns:240px 1fr;gap:3rem;align-items:start;margin-bottom:3rem;}
+.foto-box{width:240px;overflow:hidden;position:relative;border:2px solid var(--border);}
+.foto-box svg{display:block;width:100%;height:auto;}
+.foto-box img{display:block;width:100%;height:auto;}
+.foto-cap{position:absolute;bottom:0;left:0;right:0;background:rgba(26,18,8,0.65);padding:0.5rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(245,240,232,0.9);text-align:center;font-weight:700;}
+.bio h2{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.bio .dates{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1.2rem;}
+.bio p{font-size:0.97rem;line-height:1.85;color:var(--ink);margin-bottom:1rem;}
+.timeline{position:relative;margin:1.5rem 0;}
+.timeline::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:1px;background:linear-gradient(to bottom,var(--rust),transparent);}
+.tl{display:flex;gap:1.4rem;margin-bottom:1.5rem;}
+.tl-dot{width:15px;height:15px;border-radius:50%;border:2px solid var(--rust);background:var(--paper);flex-shrink:0;margin-top:2px;position:relative;z-index:1;}
+.tl-yr{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.14em;color:var(--rust);min-width:40px;padding-top:1px;}
+.tl-txt{font-size:0.92rem;line-height:1.68;color:var(--ink);}
+.tema{background:var(--surf);border-left:4px solid var(--rust);padding:1.4rem 1.6rem;}
+.tema .ico{font-size:1.6rem;display:block;margin-bottom:0.6rem;}
+.tema h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.7rem;}
+.tema p{font-size:0.92rem;line-height:1.78;color:var(--ink);}
+.licao{background:var(--paper);border-left:4px solid var(--gold);padding:1.3rem 1.5rem;}
+.licao h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);margin-bottom:0.5rem;}
+.licao p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.fotos-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:2.5rem;}
+.foto-espaco{position:relative;overflow:hidden;border:1px solid var(--border);}
+.foto-espaco img{display:block;width:100%;height:280px;object-fit:cover;}
+.foto-leg{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(26,18,8,0.75));padding:1.5rem 0.9rem 0.6rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,240,232,0.92);}
+.lugar{background:var(--surf);border:1px solid var(--border);padding:1.6rem;position:relative;overflow:hidden;}
+.lugar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rust),transparent);}
+.lugar h3{font-family:'Cinzel',serif;font-size:0.75rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.4rem;}
+.lugar-tag{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;color:var(--ink);display:block;margin-bottom:0.5rem;}
+.lugar p{font-size:0.90rem;line-height:1.72;color:var(--ink);}
+.meta-box{background:var(--paper);border:1px solid var(--border);padding:2rem;margin:2.5rem 0;display:grid;grid-template-columns:60px 1fr;gap:1.5rem;align-items:start;}
+.meta-box .ico{font-size:2.6rem;}
+.meta-box h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.5rem;}
+.meta-box p{font-size:0.92rem;line-height:1.75;color:var(--ink);}
+.midia-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.midia-card{display:flex;gap:1rem;background:var(--surf);border:1px solid var(--border);padding:1.2rem 1.3rem;align-items:flex-start;text-decoration:none;transition:border-color 0.2s,transform 0.2s;}
+.midia-card:hover{border-color:var(--rust);transform:translateY(-2px);}
+.midia-ico{font-size:1.5rem;flex-shrink:0;margin-top:0.1rem;}
+.midia-tipo{font-family:'Cinzel',serif;font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.3rem;display:block;}
+.midia-titulo{font-family:'DM Sans',sans-serif;font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;display:block;}
+.midia-fonte{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.85rem;color:rgba(26,18,8,0.65);}
+.av-wrap{max-width:900px;margin:0 auto;padding:4rem 2rem 5rem;border-top:1px solid var(--border);}
+.av-wrap h2{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:0.08em;text-align:center;margin-bottom:0.4rem;}
+.av-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;text-align:center;margin-bottom:2.5rem;}
+.av-summary{background:var(--surf);border:1px solid var(--border);padding:2rem;display:flex;gap:3rem;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;}
+.av-big-num{font-family:'Cinzel',serif;font-size:4rem;font-weight:700;color:var(--rust);line-height:1;text-align:center;}
+.av-big-stars{font-size:1.5rem;text-align:center;margin:0.3rem 0;}
+.av-big-count{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.6);text-align:center;}
+.brow{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;}
+.brow-lbl{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;color:var(--ink);min-width:28px;}
+.brow-track{flex:1;height:8px;background:rgba(26,18,8,0.1);border-radius:4px;overflow:hidden;}
+.brow-fill{height:100%;background:var(--rust);border-radius:4px;transition:width 0.5s;width:0%;}
+.brow-n{font-family:'Cinzel',serif;font-size:0.62rem;font-weight:700;color:rgba(26,18,8,0.6);min-width:16px;text-align:right;}
+.av-form{background:var(--paper);border:1px solid var(--border);padding:2rem;margin-bottom:2.5rem;}
+.av-form h3{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink);margin-bottom:1.5rem;}
+.av-label{font-family:'Cinzel',serif;font-size:0.63rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);display:block;margin-bottom:0.4rem;}
+.av-input{width:100%;padding:0.7rem 1rem;margin-bottom:1.2rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;}
+.av-input:focus{border-color:var(--rust);}
+.av-textarea{width:100%;padding:0.7rem 1rem;margin-bottom:1.5rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;resize:vertical;line-height:1.65;min-height:100px;}
+.av-textarea:focus{border-color:var(--rust);}
+.stars-pick{display:flex;gap:0.3rem;margin-bottom:1.3rem;}
+.stars-pick span{font-size:2.2rem;cursor:pointer;line-height:1;color:rgba(26,18,8,0.2);transition:color 0.15s;user-select:none;}
+.av-btn{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;background:var(--rust);color:white;border:none;padding:0.85rem 2.5rem;cursor:pointer;transition:background 0.2s;}
+.av-btn:hover{background:#a33508;}
+.av-btn:disabled{background:#aaa;cursor:default;}
+.av-msg{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;margin-left:1rem;}
+.comment{border:1px solid var(--border);padding:1.4rem 1.6rem;margin-bottom:1rem;background:var(--cream);}
+.chead{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;flex-wrap:wrap;gap:0.4rem;}
+.cname{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;color:var(--ink);}
+.cstars{color:var(--rust);font-size:1.05rem;}
+.cdate{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:600;color:rgba(26,18,8,0.5);}
+.ctext{font-size:0.95rem;line-height:1.75;color:var(--ink);}
+.no-reviews{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.5);font-size:1rem;text-align:center;padding:2rem 0;}
+.loading{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.12em;color:rgba(26,18,8,0.5);text-align:center;padding:1.5rem 0;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Socorro.</a>
+  <span class="nav-tag">Clube do Livro · Análise</span>
+  <a href="index.html#lidos" class="nav-back">← Voltar à Estante</a>
+</nav>
+
+<div class="page-header">
+  <div class="capa-wrap"><img src="https://covers.openlibrary.org/b/isbn/9788535939934-L.jpg" alt="Capa de Na Voz Dela"></div>
+  <p class="sup">Alba de Céspedes &nbsp;·&nbsp; 1949 &nbsp;·&nbsp; Análise Literária</p>
+  <h1><em>Na Voz Dela</em></h1>
+  <p>Teia de Relações · A Autora · Temas · Espaço Narrativo · Mídia</p>
+</div>
+
+<div class="tabs-bar">
+  <button class="tab on"  onclick="goTab('teia',this)">Teia de Relações</button>
+  <button class="tab"     onclick="goTab('autora',this)">A Autora</button>
+  <button class="tab"     onclick="goTab('temas',this)">Temas &amp; Lições</button>
+  <button class="tab"     onclick="goTab('espaco',this)">O Espaço Narrativo</button>
+  <button class="tab"     onclick="goTab('midia',this)">Mídia</button>
+</div>
+
+<!-- TEIA -->
+<div id="panel-teia" class="panel on">
+<div class="teia-wrap">
+  <div id="net-wrap">
+  <svg id="net-svg" viewBox="0 0 860 750" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+    <line x1="430" y1="390" x2="430" y2="120" stroke="#6b8c6e" stroke-width="3" stroke-opacity="0.6" stroke-dasharray="8,5"/>
+    <line x1="430" y1="390" x2="170" y2="210" stroke="#2a9d8f" stroke-width="3" stroke-opacity="0.7"/>
+    <line x1="430" y1="390" x2="660" y2="210" stroke="#d4a017" stroke-width="2.5" stroke-opacity="0.55" stroke-dasharray="6,4"/>
+    <line x1="430" y1="390" x2="150" y2="520" stroke="#c1440e" stroke-width="3" stroke-opacity="0.65"/>
+    <line x1="430" y1="390" x2="700" y2="520" stroke="#9b5078" stroke-width="3" stroke-opacity="0.7"/>
+    <line x1="430" y1="390" x2="430" y2="660" stroke="#1a1208" stroke-width="2" stroke-opacity="0.3" stroke-dasharray="6,4"/>
+    <line x1="150" y1="520" x2="700" y2="520" stroke="#c1440e" stroke-width="1.5" stroke-opacity="0.3"/>
+    <line x1="170" y1="210" x2="150" y2="520" stroke="#2a9d8f" stroke-width="1.5" stroke-opacity="0.3"/>
+    <g class="node" onclick="info('alessandra')"><circle cx="430" cy="390" r="82" fill="#c1440e" fill-opacity="0.12" stroke="#c1440e" stroke-width="3.5"/><circle cx="430" cy="390" r="62" fill="#c1440e" fill-opacity="0.93"/><text x="430" y="385" class="nlab-white" style="font-size:13px;">Alessandra</text><text x="430" y="403" class="nlab-white" style="font-size:12px;">a voz que resiste</text><text x="430" y="480" class="nrole">a protagonista</text></g>
+    <g class="node" onclick="info('eleonora')"><circle cx="430" cy="120" r="48" fill="#6b8c6e" fill-opacity="0.55" stroke="#6b8c6e" stroke-width="2.5" stroke-dasharray="6,4"/><text x="430" y="117" class="nlab" style="font-size:13px;">Eleonora</text><text x="430" y="133" class="nlab" style="font-size:11px;">a mãe pianista</text><text x="430" y="180" class="nrole">a memória fundadora</text></g>
+    <g class="node" onclick="info('pai')"><circle cx="170" cy="210" r="52" fill="#2a9d8f" fill-opacity="0.85"/><text x="170" y="207" class="nlab-white" style="font-size:14px;">O Pai</text><text x="170" y="270" class="nrole">o conservadorismo</text></g>
+    <g class="node" onclick="info('francesco')"><circle cx="660" cy="210" r="50" fill="#d4a017" fill-opacity="0.85"/><text x="660" y="207" class="nlab-white" style="font-size:14px;">Francesco</text><text x="660" y="270" class="nrole">o amor antifascista</text></g>
+    <g class="node" onclick="info('roma')"><circle cx="150" cy="520" r="50" fill="#c1440e" fill-opacity="0.7"/><text x="150" y="513" class="nlab-white" style="font-size:13px;">Roma e</text><text x="150" y="529" class="nlab-white" style="font-size:11px;">Abruzzo</text><text x="150" y="580" class="nrole">o espaço</text></g>
+    <g class="node" onclick="info('fascismo')"><circle cx="700" cy="520" r="52" fill="#9b5078" fill-opacity="0.82"/><text x="700" y="512" class="nlab-white" style="font-size:12px;">O Fascismo</text><text x="700" y="528" class="nlab-white" style="font-size:11px;">e a guerra</text><text x="700" y="582" class="nrole">o pano de fundo</text></g>
+    <g class="node" onclick="info('desfecho')"><circle cx="430" cy="660" r="44" fill="#1a1208" fill-opacity="0.35" stroke="#9b5078" stroke-width="2" stroke-dasharray="5,4"/><text x="430" y="653" class="nlab" style="font-size:12px;">O Desfecho</text><text x="430" y="669" class="nlab" style="font-size:11px;">chocante</text><text x="430" y="714" class="nrole">o clímax</text></g>
+  </svg>
+  </div>
+  <div class="info-panel">
+    <h3 id="i-name">Clique em um personagem</h3>
+    <p class="info-role" id="i-role">para ver o perfil</p>
+    <p class="info-desc" id="i-desc">Alessandra Corteggiani cresce sob a sombra do suicídio da mãe, pianista talentosa sufocada por um casamento infeliz. Enviada a Abruzzo para seguir o roteiro tradicional reservado às mulheres, aos poucos toma consciência das injustiças de gênero — e, ao se apaixonar por Francesco, professor antifascista, é lançada numa espiral de eventos que atravessa o fascismo e a guerra até um desfecho definitivo.</p>
+    <div class="info-tags" id="i-tags"></div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:#c1440e"></div>Alessandra &amp; o espaço</div>
+      <div class="leg"><div class="leg-dot" style="background:#2a9d8f"></div>Conservadorismo</div>
+      <div class="leg"><div class="leg-dot" style="background:#d4a017"></div>Amor &amp; resistência</div>
+      <div class="leg"><div class="leg-dot" style="background:#9b5078"></div>Contexto histórico</div>
+      <div class="leg"><svg width="24" height="8"><line x1="0" y1="4" x2="24" y2="4" stroke="#1a1208" stroke-width="2" stroke-dasharray="5,3"/></svg>Memória &amp; desfecho</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- AUTORA -->
+<div id="panel-autora" class="panel">
+<div class="wrap">
+  <div class="autor-grid">
+    <div class="foto-box">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Alba_de_C%C3%A9spedes,_Rome,_1952.jpg" alt="Alba de Céspedes">
+      <div class="foto-cap">Roma, Itália · 1911–1997</div>
+    </div>
+    <div class="bio">
+      <h2>Alba de Céspedes</h2>
+      <p class="dates">Roma, Itália, 1911 — Paris, França, 1997</p>
+      <p>Alba de Céspedes y Bertini nasceu em Roma em 1911, filha de uma italiana com o embaixador cubano Carlos Manuel de Céspedes y Quesada — que seria brevemente presidente de Cuba em 1933 — e neta do herói da independência cubana que dá nome à família. Casou-se pela primeira vez em Paris aos apenas quinze anos. Estreou na literatura em 1935 com os contos de <em>L'anima degli altri</em>, no mesmo ano em que foi presa pela primeira vez por atividades antifascistas.</p>
+      <p>Seu romance de estreia, <em>Nessuno torna indietro</em> (1938), foi banido pelo regime fascista por retratar mulheres independentes demais. Durante a guerra, atuou na Resistência italiana como locutora da Rádio Partigiana em Bari, sob o codinome "Clorinda", sendo presa novamente em 1943. Em 1944, fundou a influente revista <em>Mercurio</em>. <em>Na Voz Dela</em> (1949) e <em>Caderno Proibido</em> (1952) consagraram-na como uma das grandes vozes da literatura italiana do século XX — e uma influência assumida de Elena Ferrante.</p>
+    </div>
+  </div>
+  <p class="sec-title">Linha do Tempo</p>
+  <div class="timeline">
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1911</div><div class="tl-txt">Nasce em Roma, filha do embaixador cubano Carlos Manuel de Céspedes y Quesada.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1926</div><div class="tl-txt">Casa-se em Paris aos quinze anos.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1935</div><div class="tl-txt">Estreia na literatura com <em>L'anima degli altri</em>; é presa pela primeira vez por atividades antifascistas.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1938</div><div class="tl-txt">Publica <em>Nessuno torna indietro</em>, banido pelo regime fascista.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1943</div><div class="tl-txt">É presa novamente por atuar como locutora da Rádio Partigiana, sob o codinome "Clorinda".</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1944</div><div class="tl-txt">Funda a revista <em>Mercurio</em>, fórum intelectual com colaborações de Natalia Ginzburg e Alberto Moravia.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1949</div><div class="tl-txt">Publica <em>Dalla parte di lei</em> (Na Voz Dela).</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1997</div><div class="tl-txt">Morre em Paris, aos 86 anos.</div></div>
+  </div>
+  <p class="sec-title">Seis curiosidades sobre a autora e o livro</p>
+  <p class="sec-sub">Detalhes que revelam a origem real desta história improvável</p>
+  <div class="g2">
+    <div class="card"><h4>Uma locutora de codinome na Resistência</h4><p>Durante a Segunda Guerra, Alba de Céspedes atuou na Rádio Partigiana em Bari sob o pseudônimo "Clorinda", sendo presa por essa atuação em 1943 — uma vida de ativismo tão intensa quanto sua ficção.</p></div>
+    <div class="card"><h4>O livro mais antigo que inspirou Ferrante</h4><p>Elena Ferrante cita <em>Dalla parte di lei</em> — este livro — em <em>Frantumaglia</em>, seu volume de não ficção, como uma de suas referências diretas, ao lado do já famoso <em>Caderno Proibido</em>.</p></div>
+    <div class="card"><h4>Escreveu para o cinema de Antonioni</h4><p>Assinou o roteiro de <em>Le Amiche</em> (1955), filme do cineasta italiano Michelangelo Antonioni, expandindo sua obra da literatura para o cinema, o rádio e a televisão.</p></div>
+    <div class="card"><h4>Uma coluna com o mesmo título do livro</h4><p>Entre 1952 e 1958, assinou uma coluna de aconselhamento na revista Epoca também chamada "Dalla parte di lei" — o mesmo título original deste romance, sinal de como o tema acompanhou toda sua carreira.</p></div>
+    <div class="card"><h4>Elena Ferrante assina o posfácio</h4><p>A edição brasileira de 2025 traz posfácio da própria Elena Ferrante, que descreve o livro como parte da "pequena lista" de obras que a encorajaram a escrever.</p></div>
+    <div class="card"><h4>Precede Caderno Proibido em três anos</h4><p>Publicado originalmente em 1949, este é o romance que antecedeu — e preparou o terreno para — o já célebre Caderno Proibido (1952), ambos explorando o mesmo universo de mulheres em busca de voz própria.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- TEMAS -->
+<div id="panel-temas" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Temas Centrais do Livro</p>
+  <p class="sec-sub">O que o romance diz sobre fé, escuta e o peso das promessas</p>
+  <div class="g2" style="margin-top:0;">
+    <div class="tema"><span class="ico">🎹</span><h3>O Legado Silenciado da Mãe</h3><p>Eleonora, pianista talentosa sufocada por um casamento infeliz, transmite a Alessandra — mesmo após a morte — uma inquietação que a filha só decifra aos poucos: o custo de abrir mão da própria voz.</p></div>
+    <div class="tema"><span class="ico">👔</span><h3>O Peso do Conservadorismo Paterno</h3><p>O pai de Alessandra representa a convicção de toda uma época: a de que o lugar da mulher é dentro de casa, servindo a família — visão que a protagonista precisa desmontar peça por peça.</p></div>
+    <div class="tema"><span class="ico">✊</span><h3>Amor e Consciência Política</h3><p>A paixão por Francesco, professor antifascista, não é apenas romance — é também a porta de entrada de Alessandra para uma consciência política que transforma sua compreensão de si mesma e do mundo.</p></div>
+    <div class="tema"><span class="ico">⚔️</span><h3>Fascismo e Guerra Como Pano de Fundo Íntimo</h3><p>Céspedes recusa tratar a Segunda Guerra Mundial como cenário distante — a história política atravessa diretamente o corpo e as escolhas de Alessandra ao longo de mais de uma década.</p></div>
+    <div class="tema"><span class="ico">🗣️</span><h3>A Busca por Voz Própria</h3><p>Dar título ao livro como "na voz dela" não é acidental: a narrativa inteira é a tentativa de Alessandra de finalmente ser ouvida — mesmo que, muitas vezes, ninguém ao redor esteja disposto a escutar.</p></div>
+    <div class="tema"><span class="ico">💔</span><h3>Até Onde Vai a Libertação</h3><p>O desfecho radical do romance pergunta, sem meias palavras, até que ponto uma mulher está disposta a ir para reivindicar a própria dignidade — questão que a crítica descreve como "assustadoramente atual".</p></div>
+  </div>
+  <div class="pull">
+    <p>Uma mulher que só queria comprar cigarros para o marido e, em vez disso, comprou um destino: décadas de silêncio, e a certeza tardia de que ao menos haveria voz — mesmo que ninguém, à sua volta, estivesse disposto a escutar.</p>
+    <cite>Sobre Na Voz Dela</cite>
+  </div>
+  <p class="sec-title">Seis lições da narrativa</p>
+  <p class="sec-sub">O que o clube pode levar desta leitura</p>
+  <div class="g2">
+    <div class="licao"><h4>O silêncio de uma geração ecoa na seguinte</h4><p>Alessandra só consegue nomear sua própria inquietação depois de reconhecer a mesma inquietação, não dita, na mãe — heranças emocionais atravessam gerações mesmo sem palavras.</p></div>
+    <div class="licao"><h4>Amor pode ser também despertar político</h4><p>A relação com Francesco ensina que paixão e consciência crítica não são forças opostas — às vezes, uma abre caminho para a outra.</p></div>
+    <div class="licao"><h4>Contextos históricos moldam escolhas íntimas</h4><p>O fascismo e a guerra não são pano de fundo decorativo — determinam concretamente o que é ou não possível na vida amorosa e profissional de Alessandra.</p></div>
+    <div class="licao"><h4>Buscar ser ouvida é, em si, um ato de resistência</h4><p>Numa sociedade que preferia mulheres caladas, a simples insistência de Alessandra em ter voz própria já configura desafio ao sistema que a cerca.</p></div>
+    <div class="licao"><h4>Nem toda libertação tem final feliz</h4><p>O desfecho do romance recusa consolo fácil — Céspedes sugere que o preço da dignidade, historicamente, raramente foi pago sem perda.</p></div>
+    <div class="licao"><h4>Literatura de décadas atrás pode ainda incomodar hoje</h4><p>Escrito em 1949, o livro é descrito pela crítica como "assustadoramente atual" — prova de que certas injustiças de gênero ainda não foram plenamente superadas.</p></div>
+  </div>
+  <p class="sec-title">Síntese</p>
+  <div class="body-text">
+    <p>Na Voz Dela é a obra que, três anos antes de Caderno Proibido, já lançava as bases do projeto literário mais duradouro de Alba de Céspedes: dar corpo textual à vida interior de mulheres que a sociedade preferia manter em silêncio. Ao acompanhar mais de uma década na vida de Alessandra Corteggiani — da infância marcada pelo suicídio da mãe até a maturidade atravessada pelo fascismo, pela guerra e por um amor que muda seu destino —, o romance funciona como um bildungsroman de consciência política e emocional ao mesmo tempo.</p>
+    <p>Escrito por uma autora que viveu na pele o que descrevia — presa duas vezes por resistência antifascista, ativa na clandestinidade sob codinome —, o livro carrega uma urgência que ultrapassa a ficção. Considerada por Elena Ferrante uma de suas influências fundamentais, a obra confirma Céspedes como precursora de uma linhagem literária que, décadas depois, continua a examinar os mesmos territórios: o que significa, para uma mulher, ter — e reivindicar — voz própria.</p>
+  </div>
+</div>
+</div>
+
+<!-- ESPAÇO -->
+<div id="panel-espaco" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">O Espaço Narrativo</p>
+  <p class="sec-sub">Roma e Abruzzo sob a sombra do fascismo e da guerra</p>
+  <div class="fotos-grid">
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Colosseum_Rome.jpg" alt="Coliseu, Roma"><div class="foto-leg">Roma — a cidade onde Alessandra nasce e enfrenta o suicídio da mãe</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Abruzzo,_Lazio_and_Molise_National_Park_aerial.jpg" alt="Paisagem de Abruzzo, Itália"><div class="foto-leg">Abruzzo — para onde Alessandra é enviada seguindo o roteiro tradicional</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Piano_Keys.JPG" alt="Teclas de piano"><div class="foto-leg">O piano de Eleonora — o instrumento da mãe pianista, símbolo de um talento sufocado</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Radio_old_40%27s.jpg" alt="Rádio antigo dos anos 1940"><div class="foto-leg">O rádio da Resistência — o meio pelo qual a própria autora lutou sob o codinome "Clorinda"</div></div>
+  </div>
+  <p style="font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.5rem;">O romance atravessa mais de uma década na Itália do século XX — de Roma a Abruzzo —, acompanhando o avanço do fascismo e da Segunda Guerra Mundial como forças que moldam diretamente as escolhas íntimas de Alessandra.</p>
+  <div class="g2">
+    <div class="lugar"><h3>Roma</h3><span class="lugar-tag">A Infância e o Trauma</span><p>Cidade natal de Alessandra, palco do casamento infeliz e do suicídio da mãe — origem da inquietação que a acompanhará por toda a narrativa.</p></div>
+    <div class="lugar"><h3>Abruzzo</h3><span class="lugar-tag">O Roteiro Imposto</span><p>Região para onde Alessandra é enviada na esperança de que siga o destino tradicional reservado às mulheres da época — mas onde, em vez disso, começa a questioná-lo.</p></div>
+    <div class="lugar"><h3>A Itália Fascista</h3><span class="lugar-tag">Pano de Fundo Histórico</span><p>O avanço do regime autoritário não é cenário distante: molda diretamente as possibilidades de amor, trabalho e liberdade disponíveis a Alessandra.</p></div>
+    <div class="lugar"><h3>A Guerra</h3><span class="lugar-tag">O Ponto de Não Retorno</span><p>A iminência e depois a realidade da Segunda Guerra Mundial transformam a vida de Alessandra de maneira irreversível, levando a narrativa ao seu desfecho definitivo.</p></div>
+  </div>
+  <div class="meta-box">
+    <div class="ico">📻</div>
+    <div><h3>A Autora Que Viveu o Que Escreveu</h3><p>Assim como Alessandra encontra em Francesco a porta de entrada para a consciência política, a própria Alba de Céspedes viveu a resistência antifascista na pele — presa duas vezes, atuando como locutora clandestina sob o codinome "Clorinda" na Rádio Partigiana de Bari.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- MÍDIA -->
+<div id="panel-midia" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Mídia</p>
+  <p class="sec-sub">Podcasts, vídeos e publicações para aprofundar a leitura do clube</p>
+  <div class="midia-grid">
+    <a class="midia-card" href="https://quatrocincoum.com.br/noticias/listao/listao-da-semana/__trashed-2/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação</span>
+        <span class="midia-titulo">A voz da mulher</span>
+        <span class="midia-fonte">Quatro Cinco Um</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.tiktok.com/@book.ster/video/7491427273824849174" target="_blank" rel="noopener">
+      <span class="midia-ico">📹</span>
+      <span>
+        <span class="midia-tipo">Resenha · Vídeo</span>
+        <span class="midia-titulo">Na voz dela, de Alba de Céspedes</span>
+        <span class="midia-fonte">Bookster, via TikTok</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.em.com.br/app/noticia/pensar/2022/07/22/interna_pensar,1381837/caderno-proibido-faz-da-escrita-um-ato-de-liberdade.shtml" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Sobre a autora</span>
+        <span class="midia-titulo">"Caderno proibido" faz da escrita um ato de liberdade</span>
+        <span class="midia-fonte">Estado de Minas</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://open.spotify.com/episode/0Q6devNF0lpSCA9rNLqszl" target="_blank" rel="noopener">
+      <span class="midia-ico">🎙️</span>
+      <span>
+        <span class="midia-tipo">Podcast · Sobre a autora</span>
+        <span class="midia-titulo">1ª leitura de Alba de Céspedes</span>
+        <span class="midia-fonte">Florescendo com Livros</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://quatrocincoum.com.br/resenhas/literatura/nova-velha-historia/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação</span>
+        <span class="midia-titulo">Nova velha história</span>
+        <span class="midia-fonte">Quatro Cinco Um</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.companhiadasletras.com.br/livro/9788535939934/na-voz-dela" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação</span>
+        <span class="midia-titulo">Na Voz Dela — ficha e sinopse</span>
+        <span class="midia-fonte">Companhia das Letras</span>
+      </span>
+    </a>
+  </div>
+</div>
+</div>
+
+<!-- AVALIAÇÃO -->
+<div class="av-wrap">
+  <p class="sup" style="text-align:center;margin-bottom:0.4rem;">Clube Socorro</p>
+  <h2>Avaliações &amp; Comentários</h2>
+  <p class="av-sub">O que o clube achou de Na Voz Dela</p>
+  <div class="av-summary">
+    <div>
+      <div class="av-big-num" id="avg-num">—</div>
+      <div class="av-big-stars" id="avg-stars">☆☆☆☆☆</div>
+      <div class="av-big-count" id="avg-count">0 avaliações</div>
+    </div>
+    <div class="bars">
+      <div class="brow"><span class="brow-lbl">5★</span><div class="brow-track"><div class="brow-fill" id="b5"></div></div><span class="brow-n" id="n5">0</span></div>
+      <div class="brow"><span class="brow-lbl">4★</span><div class="brow-track"><div class="brow-fill" id="b4"></div></div><span class="brow-n" id="n4">0</span></div>
+      <div class="brow"><span class="brow-lbl">3★</span><div class="brow-track"><div class="brow-fill" id="b3"></div></div><span class="brow-n" id="n3">0</span></div>
+      <div class="brow"><span class="brow-lbl">2★</span><div class="brow-track"><div class="brow-fill" id="b2"></div></div><span class="brow-n" id="n2">0</span></div>
+      <div class="brow"><span class="brow-lbl">1★</span><div class="brow-track"><div class="brow-fill" id="b1"></div></div><span class="brow-n" id="n1">0</span></div>
+    </div>
+  </div>
+  <div class="av-form">
+    <h3>Deixe sua avaliação</h3>
+    <label class="av-label">Seu nome</label>
+    <input id="f-nome" class="av-input" type="text" placeholder="Como quer ser identificada?">
+    <label class="av-label">Nota</label>
+    <div class="stars-pick" id="star-row">
+      <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+    </div>
+    <label class="av-label">Comentário</label>
+    <textarea id="f-txt" class="av-textarea" placeholder="O que você achou do livro?"></textarea>
+    <button class="av-btn" onclick="submitReview()">Publicar Avaliação</button>
+    <span id="f-msg" class="av-msg"></span>
+  </div>
+  <div id="comments"><p class="loading">Carregando avaliações...</p></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyB03BscdfdfZGW42Btqbmzt72Dpusu45NU",
+  authDomain: "socorro-clube-do-livro.firebaseapp.com",
+  projectId: "socorro-clube-do-livro",
+  storageBucket: "socorro-clube-do-livro.firebasestorage.app",
+  messagingSenderId: "729551936788",
+  appId: "1:729551936788:web:001a6e284a63a51fc37601"
+};
+let db = null;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  db.settings({ experimentalAutoDetectLongPolling: true, useFetchStreams: false });
+} catch (e) { db = null; }
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str == null ? '' : String(str);
+  return div.innerHTML;
+}
+
+const P = {
+  alessandra: { nome:'Alessandra Corteggiani', papel:'Protagonista · A Voz que Resiste', desc:'Cresce sob a sombra do suicídio da mãe e é enviada a Abruzzo para seguir o roteiro tradicional reservado às mulheres. Aos poucos, toma consciência das injustiças de gênero e busca o mesmo respeito dispensado aos homens — busca que a paixão por Francesco transforma em espiral irreversível.', tags:['Eleonora','O Pai','Francesco'] },
+  eleonora:   { nome:'Eleonora', papel:'A Mãe Pianista · Memória Fundadora', desc:'Musicista talentosa, mãe de Alessandra, sufocada por um casamento infeliz e pelas convenções de sua época. Sua morte por suicídio, ainda na infância da filha, organiza silenciosamente toda a trajetória de Alessandra.', tags:['Alessandra Corteggiani','O Pai'] },
+  pai:        { nome:'O Pai', papel:'O Conservadorismo', desc:'Representa o homem da metade do século XX convicto de que o lugar da mulher é dentro de casa, cuidando da família — visão que Alessandra precisa desmontar, peça por peça, ao longo da narrativa.', tags:['Eleonora','Alessandra Corteggiani'] },
+  francesco:  { nome:'Francesco', papel:'O Amor Antifascista', desc:'Professor por quem Alessandra se apaixona — relação que a lança numa espiral de acontecimentos entrelaçada ao avanço do fascismo e da guerra, transformando romance em despertar político.', tags:['Alessandra Corteggiani','O Fascismo'] },
+  roma:       { nome:'Roma e Abruzzo', papel:'Espaço · Dois Mundos', desc:'Roma, cidade natal marcada pelo trauma da infância; Abruzzo, região para onde Alessandra é enviada na esperança de que siga o destino tradicional das mulheres de sua época.', tags:['Alessandra Corteggiani','Eleonora'] },
+  fascismo:   { nome:'O Fascismo e a Guerra', papel:'Pano de Fundo Histórico', desc:'A Itália sob o regime fascista e, depois, mergulhada na Segunda Guerra Mundial — força histórica que atravessa diretamente as escolhas amorosas e políticas de Alessandra.', tags:['Francesco','Alessandra Corteggiani'] },
+  desfecho:   { nome:'O Desfecho', papel:'O Clímax · Um Final Chocante', desc:'Após mais de uma década acompanhando a vida de Alessandra, o romance chega a um desfecho radical, que a crítica descreve como "chocante" — pergunta final sobre até onde vai o preço da própria libertação.', tags:['Alessandra Corteggiani'] }
+};
+
+function info(id) {
+  const p = P[id]; if (!p) return;
+  document.getElementById('i-name').textContent = p.nome;
+  document.getElementById('i-role').textContent = p.papel;
+  document.getElementById('i-desc').textContent = p.desc;
+  document.getElementById('i-tags').innerHTML =
+    '<p style="font-family:Cinzel,serif;font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);margin-bottom:0.4rem;">Conexões</p>' +
+    p.tags.map(t => '<span>' + t + '</span>').join('');
+}
+
+function goTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  document.getElementById('panel-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+let picked = 0;
+document.querySelectorAll('#star-row span').forEach(s => {
+  s.addEventListener('mouseover', () => hilite(+s.dataset.v));
+  s.addEventListener('mouseout',  () => hilite(picked));
+  s.addEventListener('click',     () => { picked = +s.dataset.v; hilite(picked); });
+});
+function hilite(n) {
+  document.querySelectorAll('#star-row span').forEach(s => {
+    s.style.color = +s.dataset.v <= n ? '#c1440e' : 'rgba(26,18,8,0.2)';
+  });
+}
+
+const BOOK_SLUG = 'na-voz-dela';
+const reviewsCol = db ? db.collection('livros').doc(BOOK_SLUG).collection('reviews') : null;
+let reviews = [];
+
+async function submitReview() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const txt  = document.getElementById('f-txt').value.trim();
+  const msg  = document.getElementById('f-msg');
+  if (!nome)   { msg.textContent = 'Coloque seu nome.';      msg.style.color='#c1440e'; return; }
+  if (!picked) { msg.textContent = 'Selecione uma nota.';    msg.style.color='#c1440e'; return; }
+  if (!txt)    { msg.textContent = 'Escreva um comentário.'; msg.style.color='#c1440e'; return; }
+  if (!reviewsCol) { msg.textContent = 'Avaliações indisponíveis no momento.'; msg.style.color='#c1440e'; return; }
+  const btn = document.querySelector('.av-btn');
+  btn.textContent = 'Enviando...'; btn.disabled = true;
+  msg.textContent = '';
+  try {
+    await reviewsCol.add({
+      nome, nota: picked, comentario: txt,
+      data: new Date().toLocaleDateString('pt-BR'),
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('f-nome').value = '';
+    document.getElementById('f-txt').value  = '';
+    picked = 0; hilite(0);
+    msg.textContent = 'Publicado!'; msg.style.color = '#6b8c6e';
+    setTimeout(() => msg.textContent = '', 4000);
+  } catch(e) {
+    msg.textContent = 'Erro ao enviar. Tente novamente.'; msg.style.color = '#c1440e';
+  }
+  btn.textContent = 'Publicar Avaliação'; btn.disabled = false;
+}
+
+function renderReviews() {
+  const total = reviews.length;
+  if (!total) {
+    document.getElementById('avg-num').textContent   = '—';
+    document.getElementById('avg-stars').textContent = '☆☆☆☆☆';
+    document.getElementById('avg-count').textContent = '0 avaliações';
+    [1,2,3,4,5].forEach(n => { document.getElementById('b'+n).style.width='0%'; document.getElementById('n'+n).textContent='0'; });
+    document.getElementById('comments').innerHTML = '<p class="no-reviews">Nenhuma avaliação ainda — seja a primeira!</p>';
+    return;
+  }
+  const avg = reviews.reduce((a,r) => a + Number(r.nota), 0) / total;
+  document.getElementById('avg-num').textContent   = avg.toFixed(1);
+  const full = Math.round(avg);
+  document.getElementById('avg-stars').textContent = '★'.repeat(full) + '☆'.repeat(5-full);
+  document.getElementById('avg-count').textContent = total + (total===1 ? ' avaliação' : ' avaliações');
+  [1,2,3,4,5].forEach(n => {
+    const c = reviews.filter(r => Number(r.nota)===n).length;
+    document.getElementById('b'+n).style.width = (c/total*100).toFixed(0) + '%';
+    document.getElementById('n'+n).textContent = c;
+  });
+  document.getElementById('comments').innerHTML = reviews.map(r => `
+    <div class="comment">
+      <div class="chead">
+        <span class="cname">${escapeHtml(r.nome)}</span>
+        <span class="cstars">${'★'.repeat(Number(r.nota))}${'☆'.repeat(5-Number(r.nota))}</span>
+        <span class="cdate">${escapeHtml(r.data)}</span>
+      </div>
+      <p class="ctext">${escapeHtml(r.comentario)}</p>
+    </div>`).join('');
+}
+
+if (reviewsCol) {
+  reviewsCol.orderBy('criadoEm', 'desc').onSnapshot(function (snap) {
+    reviews = snap.docs.map(d => d.data());
+    renderReviews();
+  }, function () {
+    reviews = [];
+    renderReviews();
+  });
+} else {
+  renderReviews();
+}
+</script>
+</body>
+</html>

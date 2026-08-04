@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relato de um Certo Oriente — Análise</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1208; --rust:#c1440e; --gold:#d4a017; --sage:#6b8c6e;
+  --cream:#f5f0e8; --paper:#ede8dc; --border:rgba(193,68,14,0.22); --surf:rgba(26,18,8,0.05);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;padding-top:68px;overflow-x:hidden;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:68px;background:rgba(245,240,232,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
+.nav-logo{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--rust);text-decoration:none;}
+.nav-tag{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(26,18,8,0.45);}
+.nav-back{font-family:'Cinzel',serif;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:2px solid rgba(193,68,14,0.4);padding:0.45rem 1.1rem;transition:all 0.2s;}
+.nav-back:hover{color:var(--rust);border-color:var(--rust);}
+.page-header{text-align:center;padding:2.5rem 2rem 0;}
+.capa-wrap{width:150px;margin:0 auto 1.2rem;box-shadow:0 12px 28px rgba(26,18,8,0.28);}
+.capa-wrap img{display:block;width:100%;height:auto;}
+.sup{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-bottom:0.5rem;}
+.page-header h1{font-family:'Cinzel',serif;font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;color:var(--ink);letter-spacing:0.04em;}
+.page-header h1 em{font-style:italic;color:var(--rust);font-family:'Cormorant Garamond',serif;font-size:1.1em;}
+.page-header p{font-style:italic;color:rgba(26,18,8,0.7);font-size:0.95rem;margin-top:0.3rem;}
+.tabs-bar{display:flex;justify-content:center;max-width:960px;margin:2rem auto 0;border-bottom:2px solid var(--border);flex-wrap:wrap;}
+.tab{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.50);background:none;border:none;padding:0.9rem 1.8rem;cursor:pointer;position:relative;transition:color 0.25s;}
+.tab::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;background:var(--rust);transform:scaleX(0);transition:transform 0.25s;}
+.tab:hover{color:var(--ink);}
+.tab.on{color:var(--ink);}
+.tab.on::after{transform:scaleX(1);}
+.panel{display:none;}
+.panel.on{display:block;animation:fadeUp 0.35s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.teia-wrap{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;padding:1.5rem 2rem 3rem;min-height:780px;}
+#net-wrap{height:750px;}
+#net-svg{width:100%;height:100%;}
+.nlab{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:#1a1208;text-anchor:middle;pointer-events:none;}
+.nlab-white{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:white;text-anchor:middle;pointer-events:none;}
+.nrole{font-family:'Cinzel',serif;font-size:12px;font-weight:600;fill:rgba(26,18,8,0.75);text-anchor:middle;pointer-events:none;}
+.node{cursor:pointer;}
+.node circle{transition:filter 0.25s;}
+.node:hover circle{filter:brightness(1.2);}
+.info-panel{border-left:1px solid var(--border);padding:2rem 1.8rem;display:flex;flex-direction:column;overflow-y:auto;max-height:750px;}
+.info-panel h3{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.info-role{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1rem;}
+.info-desc{font-size:0.93rem;line-height:1.78;color:var(--ink);flex:1;}
+.info-tags{margin-top:1.2rem;}
+.info-tags span{display:inline-block;margin:0.2rem 0.2rem 0 0;background:var(--surf);border:1px solid var(--border);padding:0.22rem 0.65rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);}
+.legend{display:flex;gap:0.8rem;margin-top:auto;padding-top:1.5rem;border-top:1px solid var(--border);flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;font-weight:600;color:var(--ink);}
+.leg-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.wrap{max-width:900px;margin:0 auto;padding:3rem 2rem 4rem;}
+.sec-title{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--ink);letter-spacing:0.12em;text-transform:uppercase;margin:2.5rem 0 0.5rem;}
+.sec-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;margin-bottom:1.5rem;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.card{background:var(--surf);border:1px solid var(--border);padding:1.4rem;}
+.card h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--rust);margin-bottom:0.6rem;}
+.card p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.pull{border:1px solid var(--border);border-left:4px solid var(--rust);padding:1.8rem 2rem;margin:2.5rem 0;background:var(--surf);}
+.pull p{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;line-height:1.7;color:var(--ink);}
+.pull cite{display:block;margin-top:0.8rem;font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);}
+.body-text p{font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.2rem;}
+.autor-grid{display:grid;grid-template-columns:240px 1fr;gap:3rem;align-items:start;margin-bottom:3rem;}
+.foto-box{width:240px;overflow:hidden;position:relative;border:2px solid var(--border);}
+.foto-box svg{display:block;width:100%;height:auto;}
+.foto-box img{display:block;width:100%;height:auto;}
+.foto-cap{position:absolute;bottom:0;left:0;right:0;background:rgba(26,18,8,0.65);padding:0.5rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(245,240,232,0.9);text-align:center;font-weight:700;}
+.bio h2{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.bio .dates{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1.2rem;}
+.bio p{font-size:0.97rem;line-height:1.85;color:var(--ink);margin-bottom:1rem;}
+.timeline{position:relative;margin:1.5rem 0;}
+.timeline::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:1px;background:linear-gradient(to bottom,var(--rust),transparent);}
+.tl{display:flex;gap:1.4rem;margin-bottom:1.5rem;}
+.tl-dot{width:15px;height:15px;border-radius:50%;border:2px solid var(--rust);background:var(--paper);flex-shrink:0;margin-top:2px;position:relative;z-index:1;}
+.tl-yr{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.14em;color:var(--rust);min-width:40px;padding-top:1px;}
+.tl-txt{font-size:0.92rem;line-height:1.68;color:var(--ink);}
+.tema{background:var(--surf);border-left:4px solid var(--rust);padding:1.4rem 1.6rem;}
+.tema .ico{font-size:1.6rem;display:block;margin-bottom:0.6rem;}
+.tema h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.7rem;}
+.tema p{font-size:0.92rem;line-height:1.78;color:var(--ink);}
+.licao{background:var(--paper);border-left:4px solid var(--gold);padding:1.3rem 1.5rem;}
+.licao h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);margin-bottom:0.5rem;}
+.licao p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.fotos-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:2.5rem;}
+.foto-espaco{position:relative;overflow:hidden;border:1px solid var(--border);}
+.foto-espaco img{display:block;width:100%;height:280px;object-fit:cover;}
+.foto-leg{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(26,18,8,0.75));padding:1.5rem 0.9rem 0.6rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,240,232,0.92);}
+.lugar{background:var(--surf);border:1px solid var(--border);padding:1.6rem;position:relative;overflow:hidden;}
+.lugar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rust),transparent);}
+.lugar h3{font-family:'Cinzel',serif;font-size:0.75rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.4rem;}
+.lugar-tag{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;color:var(--ink);display:block;margin-bottom:0.5rem;}
+.lugar p{font-size:0.90rem;line-height:1.72;color:var(--ink);}
+.meta-box{background:var(--paper);border:1px solid var(--border);padding:2rem;margin:2.5rem 0;display:grid;grid-template-columns:60px 1fr;gap:1.5rem;align-items:start;}
+.meta-box .ico{font-size:2.6rem;}
+.meta-box h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.5rem;}
+.meta-box p{font-size:0.92rem;line-height:1.75;color:var(--ink);}
+.midia-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.midia-card{display:flex;gap:1rem;background:var(--surf);border:1px solid var(--border);padding:1.2rem 1.3rem;align-items:flex-start;text-decoration:none;transition:border-color 0.2s,transform 0.2s;}
+.midia-card:hover{border-color:var(--rust);transform:translateY(-2px);}
+.midia-ico{font-size:1.5rem;flex-shrink:0;margin-top:0.1rem;}
+.midia-tipo{font-family:'Cinzel',serif;font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.3rem;display:block;}
+.midia-titulo{font-family:'DM Sans',sans-serif;font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;display:block;}
+.midia-fonte{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.85rem;color:rgba(26,18,8,0.65);}
+.av-wrap{max-width:900px;margin:0 auto;padding:4rem 2rem 5rem;border-top:1px solid var(--border);}
+.av-wrap h2{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:0.08em;text-align:center;margin-bottom:0.4rem;}
+.av-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;text-align:center;margin-bottom:2.5rem;}
+.av-summary{background:var(--surf);border:1px solid var(--border);padding:2rem;display:flex;gap:3rem;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;}
+.av-big-num{font-family:'Cinzel',serif;font-size:4rem;font-weight:700;color:var(--rust);line-height:1;text-align:center;}
+.av-big-stars{font-size:1.5rem;text-align:center;margin:0.3rem 0;}
+.av-big-count{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.6);text-align:center;}
+.brow{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;}
+.brow-lbl{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;color:var(--ink);min-width:28px;}
+.brow-track{flex:1;height:8px;background:rgba(26,18,8,0.1);border-radius:4px;overflow:hidden;}
+.brow-fill{height:100%;background:var(--rust);border-radius:4px;transition:width 0.5s;width:0%;}
+.brow-n{font-family:'Cinzel',serif;font-size:0.62rem;font-weight:700;color:rgba(26,18,8,0.6);min-width:16px;text-align:right;}
+.av-form{background:var(--paper);border:1px solid var(--border);padding:2rem;margin-bottom:2.5rem;}
+.av-form h3{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink);margin-bottom:1.5rem;}
+.av-label{font-family:'Cinzel',serif;font-size:0.63rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);display:block;margin-bottom:0.4rem;}
+.av-input{width:100%;padding:0.7rem 1rem;margin-bottom:1.2rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;}
+.av-input:focus{border-color:var(--rust);}
+.av-textarea{width:100%;padding:0.7rem 1rem;margin-bottom:1.5rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;resize:vertical;line-height:1.65;min-height:100px;}
+.av-textarea:focus{border-color:var(--rust);}
+.stars-pick{display:flex;gap:0.3rem;margin-bottom:1.3rem;}
+.stars-pick span{font-size:2.2rem;cursor:pointer;line-height:1;color:rgba(26,18,8,0.2);transition:color 0.15s;user-select:none;}
+.av-btn{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;background:var(--rust);color:white;border:none;padding:0.85rem 2.5rem;cursor:pointer;transition:background 0.2s;}
+.av-btn:hover{background:#a33508;}
+.av-btn:disabled{background:#aaa;cursor:default;}
+.av-msg{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;margin-left:1rem;}
+.comment{border:1px solid var(--border);padding:1.4rem 1.6rem;margin-bottom:1rem;background:var(--cream);}
+.chead{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;flex-wrap:wrap;gap:0.4rem;}
+.cname{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;color:var(--ink);}
+.cstars{color:var(--rust);font-size:1.05rem;}
+.cdate{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:600;color:rgba(26,18,8,0.5);}
+.ctext{font-size:0.95rem;line-height:1.75;color:var(--ink);}
+.no-reviews{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.5);font-size:1rem;text-align:center;padding:2rem 0;}
+.loading{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.12em;color:rgba(26,18,8,0.5);text-align:center;padding:1.5rem 0;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Socorro.</a>
+  <span class="nav-tag">Clube do Livro · Análise</span>
+  <a href="index.html#lidos" class="nav-back">← Voltar à Estante</a>
+</nav>
+
+<div class="page-header">
+  <div class="capa-wrap"><img src="https://covers.openlibrary.org/b/isbn/9788535912661-L.jpg" alt="Capa de Relato de um Certo Oriente"></div>
+  <p class="sup">Milton Hatoum &nbsp;·&nbsp; 1989 &nbsp;·&nbsp; Análise Literária</p>
+  <h1><em>Relato de um Certo Oriente</em></h1>
+  <p>Teia de Relações · O Autor · Temas · Espaço Narrativo · Mídia</p>
+</div>
+
+<div class="tabs-bar">
+  <button class="tab on"  onclick="goTab('teia',this)">Teia de Relações</button>
+  <button class="tab"     onclick="goTab('autora',this)">O Autor</button>
+  <button class="tab"     onclick="goTab('temas',this)">Temas &amp; Lições</button>
+  <button class="tab"     onclick="goTab('espaco',this)">O Espaço Narrativo</button>
+  <button class="tab"     onclick="goTab('midia',this)">Mídia</button>
+</div>
+
+<!-- TEIA -->
+<div id="panel-teia" class="panel on">
+<div class="teia-wrap">
+  <div id="net-wrap">
+  <svg id="net-svg" viewBox="0 0 860 750" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+    <line x1="430" y1="390" x2="430" y2="120" stroke="#6b8c6e" stroke-width="3" stroke-opacity="0.6" stroke-dasharray="8,5"/>
+    <line x1="430" y1="390" x2="170" y2="210" stroke="#2a9d8f" stroke-width="3" stroke-opacity="0.7"/>
+    <line x1="430" y1="390" x2="660" y2="210" stroke="#d4a017" stroke-width="2.5" stroke-opacity="0.55" stroke-dasharray="6,4"/>
+    <line x1="430" y1="390" x2="150" y2="520" stroke="#c1440e" stroke-width="3" stroke-opacity="0.65"/>
+    <line x1="430" y1="390" x2="700" y2="520" stroke="#9b5078" stroke-width="3" stroke-opacity="0.7"/>
+    <line x1="430" y1="390" x2="430" y2="660" stroke="#1a1208" stroke-width="2" stroke-opacity="0.3" stroke-dasharray="6,4"/>
+    <line x1="150" y1="520" x2="700" y2="520" stroke="#c1440e" stroke-width="1.5" stroke-opacity="0.3"/>
+    <line x1="170" y1="210" x2="150" y2="520" stroke="#2a9d8f" stroke-width="1.5" stroke-opacity="0.3"/>
+    <g class="node" onclick="info('narradora')"><circle cx="430" cy="390" r="82" fill="#c1440e" fill-opacity="0.12" stroke="#c1440e" stroke-width="3.5"/><circle cx="430" cy="390" r="62" fill="#c1440e" fill-opacity="0.93"/><text x="430" y="385" class="nlab-white" style="font-size:13px;">A Narradora</text><text x="430" y="403" class="nlab-white" style="font-size:12px;">filha adotiva</text><text x="430" y="480" class="nrole">quem reconstitui</text></g>
+    <g class="node" onclick="info('emilie')"><circle cx="430" cy="120" r="48" fill="#6b8c6e" fill-opacity="0.55" stroke="#6b8c6e" stroke-width="2.5" stroke-dasharray="6,4"/><text x="430" y="117" class="nlab" style="font-size:13px;">Emilie</text><text x="430" y="133" class="nlab" style="font-size:11px;">a matriarca</text><text x="430" y="180" class="nrole">a memória fundadora</text></g>
+    <g class="node" onclick="info('hakim')"><circle cx="170" cy="210" r="52" fill="#2a9d8f" fill-opacity="0.85"/><text x="170" y="207" class="nlab-white" style="font-size:14px;">Hakim</text><text x="170" y="270" class="nrole">tio · guarda o árabe</text></g>
+    <g class="node" onclick="info('dorner')"><circle cx="660" cy="210" r="50" fill="#d4a017" fill-opacity="0.85"/><text x="660" y="207" class="nlab-white" style="font-size:14px;">Dorner</text><text x="660" y="270" class="nrole">o fotógrafo alemão</text></g>
+    <g class="node" onclick="info('manaus')"><circle cx="150" cy="520" r="50" fill="#c1440e" fill-opacity="0.7"/><text x="150" y="513" class="nlab-white" style="font-size:13px;">Manaus</text><text x="150" y="580" class="nrole">o espaço</text></g>
+    <g class="node" onclick="info('hindie')"><circle cx="700" cy="520" r="52" fill="#9b5078" fill-opacity="0.82"/><text x="700" y="512" class="nlab-white" style="font-size:12px;">Hindié</text><text x="700" y="528" class="nlab-white" style="font-size:11px;">Conceição</text><text x="700" y="582" class="nrole">a amiga fiel</text></g>
+    <g class="node" onclick="info('irmao')"><circle cx="430" cy="660" r="44" fill="#1a1208" fill-opacity="0.35" stroke="#9b5078" stroke-width="2" stroke-dasharray="5,4"/><text x="430" y="653" class="nlab" style="font-size:12px;">O Irmão</text><text x="430" y="669" class="nlab" style="font-size:11px;">em Barcelona</text><text x="430" y="714" class="nrole">o destinatário</text></g>
+  </svg>
+  </div>
+  <div class="info-panel">
+    <h3 id="i-name">Clique em um personagem</h3>
+    <p class="info-role" id="i-role">para ver o perfil</p>
+    <p class="info-desc" id="i-desc">Após quase vinte anos de ausência, uma mulher retorna a Manaus na noite que precede a morte de Emilie, sua mãe adotiva e matriarca de uma família de imigrantes libaneses. A partir daí, ela reconstitui — através de vozes alternadas, cartas e memórias emprestadas — a história de uma família inteira, num relato endereçado ao irmão que vive em Barcelona.</p>
+    <div class="info-tags" id="i-tags"></div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:#c1440e"></div>Narradora &amp; Manaus</div>
+      <div class="leg"><div class="leg-dot" style="background:#2a9d8f"></div>Herança árabe</div>
+      <div class="leg"><div class="leg-dot" style="background:#d4a017"></div>Memória emprestada</div>
+      <div class="leg"><div class="leg-dot" style="background:#9b5078"></div>Amizade &amp; solidão</div>
+      <div class="leg"><svg width="24" height="8"><line x1="0" y1="4" x2="24" y2="4" stroke="#1a1208" stroke-width="2" stroke-dasharray="5,3"/></svg>Memória &amp; destinatário</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- AUTORA -->
+<div id="panel-autora" class="panel">
+<div class="wrap">
+  <div class="autor-grid">
+    <div class="foto-box">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Milton_hatoum_tvbrasil.jpg" alt="Milton Hatoum">
+      <div class="foto-cap">Manaus, Amazonas · n. 1952</div>
+    </div>
+    <div class="bio">
+      <h2>Milton Hatoum</h2>
+      <p class="dates">Manaus, Amazonas, 1952</p>
+      <p>Milton Assi Hatoum nasceu em Manaus em 1952, filho de imigrantes libaneses. Cresceu imerso em três línguas — português, árabe e fragmentos de francês — entre a culinária sírio-libanesa e a Manaus da belle époque tardia. Aos quinze anos mudou-se para Brasília, onde foi preso como estudante secundarista durante a ditadura militar. Formou-se em Arquitetura e Urbanismo pela FAU-USP e fez pós-graduação em Estudos Literários em Paris, onde escreveu seu primeiro romance.</p>
+      <p>De volta ao Brasil em 1984, lecionou Língua e Literatura Francesas na UFAM por quatorze anos. <em>Relato de um Certo Oriente</em> (1989), sua estreia na ficção, venceu o Prêmio Jabuti de Melhor Romance. Venceria o prêmio mais duas vezes ao longo da carreira. Em agosto de 2025, foi eleito para a Academia Brasileira de Letras com 33 de 34 votos — o único representante da região Norte na instituição, e considerado por muitos o maior escritor brasileiro vivo.</p>
+    </div>
+  </div>
+  <p class="sec-title">Linha do Tempo</p>
+  <div class="timeline">
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1952</div><div class="tl-txt">Nasce em Manaus, filho de imigrantes libaneses.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1968</div><div class="tl-txt">Muda-se para Brasília; é preso como estudante secundarista durante a ditadura militar.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1970s</div><div class="tl-txt">Forma-se em Arquitetura e Urbanismo pela FAU-USP, orientado pelo geógrafo Milton Santos.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1980</div><div class="tl-txt">Vive em Madri, Barcelona e Paris, onde escreve seu primeiro romance durante a pós-graduação.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1984</div><div class="tl-txt">Retorna ao Brasil e começa a lecionar Língua e Literatura Francesas na UFAM.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1989</div><div class="tl-txt">Publica <em>Relato de um Certo Oriente</em>, vencedor do Prêmio Jabuti de Melhor Romance.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2024</div><div class="tl-txt">O filme <em>Retrato de um Certo Oriente</em>, inspirado no livro, estreia mundialmente no Festival de Roterdã.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2025</div><div class="tl-txt">É eleito para a Academia Brasileira de Letras; o filme é um dos 16 habilitados a representar o Brasil no Oscar 2026.</div></div>
+  </div>
+  <p class="sec-title">Seis curiosidades sobre a autora e o livro</p>
+  <p class="sec-sub">Detalhes que revelam a origem real desta história improvável</p>
+  <div class="g2">
+    <div class="card"><h4>"Escrevi como forma de vingança"</h4><p>Sobre ser preso durante a ditadura e décadas depois lecionar numa universidade financiada pelo mesmo regime, Hatoum declarou à revista Bravo!: "Escrevi também como uma forma de vingança".</p></div>
+    <div class="card"><h4>O avô que subiu o rio Purus</h4><p>O primeiro imigrante da família Hatoum chegou de Beirute ao Brasil em 1904, passando por Recife, Belém e Manaus antes de subir o rio Purus até Rio Branco — saga de deslocamentos que se tornou matéria-prima de toda a ficção do escritor.</p></div>
+    <div class="card"><h4>Virou filme concorrente ao Oscar</h4><p><em>Retrato de um Certo Oriente</em> (2024), do diretor Marcelo Gomes, estreou mundialmente no Festival de Roterdã e foi um dos 16 filmes habilitados a representar o Brasil na disputa por uma vaga no Oscar 2026 de Melhor Filme Internacional.</p></div>
+    <div class="card"><h4>Uma "transcrição", não uma adaptação</h4><p>O diretor do filme evita chamar sua obra de adaptação: prefere "transcriação", termo emprestado de Haroldo de Campos — o filme conta a história de Emilie e seu irmão Emir fugindo do Líbano, ponto de partida apenas sugerido no livro.</p></div>
+    <div class="card"><h4>Estrutura circular emprestada das Mil e Uma Noites</h4><p>A narrativa se organiza como um mosaico de vozes alternadas — técnica que ecoa a tradição oral árabe, na qual uma história nasce de dentro de outra história.</p></div>
+    <div class="card"><h4>Imortal da Academia Brasileira de Letras</h4><p>Em agosto de 2025, foi eleito para a ABL com 33 dos 34 votos possíveis — tornando-se o único acadêmico representante da região Norte do Brasil na instituição.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- TEMAS -->
+<div id="panel-temas" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Temas Centrais do Livro</p>
+  <p class="sec-sub">O que o romance diz sobre fé, escuta e o peso das promessas</p>
+  <div class="g2" style="margin-top:0;">
+    <div class="tema"><span class="ico">🧩</span><h3>Memória Como Mosaico</h3><p>A história de Emilie e sua família não é contada de forma linear, mas reconstruída através de vozes alternadas, cartas e lembranças emprestadas — um quebra-cabeça que nunca se completa totalmente.</p></div>
+    <div class="tema"><span class="ico">🌍</span><h3>Imigração e Deslocamento</h3><p>Libaneses que atravessam o oceano rumo à Amazônia, um fotógrafo alemão radicado em Manaus, filhos que partem para o sul ou para a Europa — o livro é povoado por personagens em trânsito permanente.</p></div>
+    <div class="tema"><span class="ico">🗣️</span><h3>A Tradição Oral Árabe</h3><p>A estrutura circular do romance, com histórias que nascem dentro de outras histórias, ecoa diretamente a tradição das Mil e Uma Noites, ligando a Amazônia ao Oriente por vias narrativas.</p></div>
+    <div class="tema"><span class="ico">🏛️</span><h3>Manaus Como Fronteira Cultural</h3><p>Cidade que se separa da floresta pelas águas e faz fronteira com três países, Manaus é retratada como espaço de hibridismo — onde línguas, religiões e costumes distintos convivem e colidem.</p></div>
+    <div class="tema"><span class="ico">👪</span><h3>Famílias e Seus Silêncios</h3><p>Filhos "sem nome", um suicídio nunca plenamente explicado, uma neta surda-muda maltratada pelos tios — o romance expõe como famílias guardam segredos que moldam gerações inteiras.</p></div>
+    <div class="tema"><span class="ico">✉️</span><h3>Escrever Para Alguém Específico</h3><p>Toda a narrativa é endereçada ao irmão adotivo em Barcelona — um relato pessoal e íntimo, não uma história genérica, o que confere calor humano a cada memória reconstituída.</p></div>
+  </div>
+  <div class="pull">
+    <p>Uma casa desfeita, como desfeitas para sempre estão as casas da infância — e, no entanto, é justamente desse desfazimento que nascem as vozes capazes de reconstituir, ainda que em fragmentos, um mundo perdido entre o Oriente e o Amazonas.</p>
+    <cite>Sobre Relato de um Certo Oriente</cite>
+  </div>
+  <p class="sec-title">Seis lições da narrativa</p>
+  <p class="sec-sub">O que o clube pode levar desta leitura</p>
+  <div class="g2">
+    <div class="licao"><h4>Memória é sempre reconstrução coletiva</h4><p>A narradora nunca reconstitui a história sozinha — precisa das vozes de Hakim, Dorner e Hindié para montar um retrato que nenhum deles, isoladamente, poderia oferecer.</p></div>
+    <div class="licao"><h4>Identidade se constrói entre lugares, não apesar deles</h4><p>Os personagens não escolhem entre ser libaneses ou amazonenses — habitam ambas as identidades simultaneamente, numa síntese que o livro trata com naturalidade.</p></div>
+    <div class="licao"><h4>Alguns silêncios familiares nunca se resolvem totalmente</h4><p>O suicídio de Emir permanece parcialmente inexplicado até o fim — o livro ensina que aceitar a incompletude pode ser mais honesto do que forçar uma explicação definitiva.</p></div>
+    <div class="licao"><h4>Escrever para alguém específico muda o tom do relato</h4><p>Ao endereçar tudo ao irmão em Barcelona, a narradora produz um texto mais íntimo do que produziria para um leitor genérico — destinatário molda linguagem.</p></div>
+    <div class="licao"><h4>Cidades carregam histórias que ultrapassam suas fronteiras</h4><p>Manaus, no livro, não é só cenário amazônico — é também ponto de encontro entre Líbano, Alemanha e Brasil, prova de que nenhum lugar é culturalmente "puro".</p></div>
+    <div class="licao"><h4>Adaptações podem reinventar sem trair</h4><p>O filme "Retrato de um Certo Oriente" se declara "transcriação", não adaptação fiel — lição sobre como diferentes mídias podem dialogar com uma obra sem tentar replicá-la literalmente.</p></div>
+  </div>
+  <p class="sec-title">Síntese</p>
+  <div class="body-text">
+    <p>Relato de um Certo Oriente já nasce maduro: romance de estreia que, décadas depois, permanece um dos textos fundacionais da literatura brasileira contemporânea sobre imigração e memória. Milton Hatoum transforma sua própria história familiar — libaneses que atravessaram o oceano rumo à Amazônia — em uma narrativa construída como mosaico de vozes, onde a verdade sobre Emilie e sua família só emerge da soma de perspectivas parciais e às vezes contraditórias.</p>
+    <p>Mais de três décadas após sua publicação, o livro segue gerando novas leituras — inclusive cinematográficas, com o filme concorrente a uma vaga no Oscar 2026. Para o clube, a obra oferece a rara oportunidade de discutir como memória, identidade e pertencimento se constroem não apesar do deslocamento geográfico e cultural, mas justamente através dele — e como toda história familiar, por mais fragmentada que pareça, ainda pode ser contada com precisão lírica e comovente.</p>
+  </div>
+</div>
+</div>
+
+<!-- ESPAÇO -->
+<div id="panel-espaco" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">O Espaço Narrativo</p>
+  <p class="sec-sub">Entre o Líbano de origem e a Manaus da belle époque tardia</p>
+  <div class="fotos-grid">
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Teatro_Amazonas,_Manaus_(AM),_em_1940.jpg" alt="Teatro Amazonas em 1940"><div class="foto-leg">O Teatro Amazonas — símbolo da Manaus da belle époque tardia</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Beirut,_Hamra_Street_1940.jpg" alt="Rua Hamra, Beirute, 1940"><div class="foto-leg">Beirute, década de 1940 — o Líbano de onde partiram os imigrantes da família</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Rio_Amazonas_-_Porto_Velho_a_Manaus_06.JPG" alt="Rio Amazonas"><div class="foto-leg">O rio Amazonas — via de chegada e travessia interna da família</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/50th_Anniversary_Hasselblad.jpg" alt="Câmera Hasselblad"><div class="foto-leg">Uma Hasselblad — a câmera com que Dorner fotografa "Deus e o mundo" em Manaus</div></div>
+  </div>
+  <p style="font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.5rem;">O romance se estende por quase um século, atravessando duas geografias inseparáveis: o Líbano de onde a família parte fugindo de conflitos, e Manaus, cidade amazônica onde os imigrantes se estabelecem — capital que se separa da floresta pelas águas e faz fronteira com três países.</p>
+  <div class="g2">
+    <div class="lugar"><h3>A Casa de Emilie</h3><span class="lugar-tag">O Centro Gravitacional</span><p>Casarão que abriga a família por décadas — no presente da narração, já "desfeito", como desfeitas estão para sempre as casas da infância.</p></div>
+    <div class="lugar"><h3>Manaus</h3><span class="lugar-tag">Fronteira Cultural</span><p>Cidade de hibridismo, onde línguas, religiões e costumes de diferentes origens convivem — cenário perfeito para uma família libanesa em terra amazônica.</p></div>
+    <div class="lugar"><h3>O Líbano de Origem</h3><span class="lugar-tag">A Terra Deixada</span><p>Presente por ausência ao longo de todo o livro — os costumes, a língua árabe e a religiosidade da família carregam a marca de uma terra que a maioria dos personagens nunca revisitou.</p></div>
+    <div class="lugar"><h3>Barcelona</h3><span class="lugar-tag">O Destino da Carta</span><p>Cidade europeia onde vive o irmão adotivo destinatário de todo o relato — presença que dá à narrativa seu formato epistolar e íntimo.</p></div>
+  </div>
+  <div class="meta-box">
+    <div class="ico">🎬</div>
+    <div><h3>Do Livro à Tela — Rumo ao Oscar</h3><p>Em 2024, o filme "Retrato de um Certo Oriente", dirigido por Marcelo Gomes, levou a história da família de Emilie e Emir aos cinemas — estreando mundialmente em Roterdã e figurando entre os 16 filmes habilitados a representar o Brasil na disputa por uma vaga no Oscar 2026 de Melhor Filme Internacional.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- MÍDIA -->
+<div id="panel-midia" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Mídia</p>
+  <p class="sec-sub">Podcasts, vídeos e publicações para aprofundar a leitura do clube</p>
+  <div class="midia-grid">
+    <a class="midia-card" href="https://www.publishnews.com.br/materias/2024/11/22/retrato-de-um-certo-oriente-estreia-nos-cinemas-a-partir-de-transcriacao-de-livro-de-milton-hatoum" target="_blank" rel="noopener">
+      <span class="midia-ico">🎬</span>
+      <span>
+        <span class="midia-tipo">Publicação · Sobre o filme</span>
+        <span class="midia-titulo">Retrato de um certo oriente estreia nos cinemas</span>
+        <span class="midia-fonte">PublishNews</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://open.spotify.com/episode/4Y8BWMPBVUeGiuAPgOR9EB" target="_blank" rel="noopener">
+      <span class="midia-ico">🎙️</span>
+      <span>
+        <span class="midia-tipo">Podcast</span>
+        <span class="midia-titulo">Página Cinco — Vida entre livros</span>
+        <span class="midia-fonte">Spotify</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://open.spotify.com/episode/6ARmYKLP7VrIl7kntu2glf" target="_blank" rel="noopener">
+      <span class="midia-ico">🎙️</span>
+      <span>
+        <span class="midia-tipo">Podcast</span>
+        <span class="midia-titulo">Vozes do Planeta — Entrevista na FLIP 2024</span>
+        <span class="midia-fonte">Spotify</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.ebc.com.br/imprensa/2025/tv-brasil-apresenta-entrevista-exclusiva-com-milton-hatoum-novo-imortal-da-abl-no-trilha-de-letras" target="_blank" rel="noopener">
+      <span class="midia-ico">📺</span>
+      <span>
+        <span class="midia-tipo">Vídeo · Entrevista</span>
+        <span class="midia-titulo">Trilha de Letras — entrevista exclusiva com o novo Imortal da ABL</span>
+        <span class="midia-fonte">TV Brasil</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://deusmelivro.com/mil-folhas/relato-de-um-certo-oriente-milton-hatoum-14-5-2018/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação</span>
+        <span class="midia-titulo">Relato de Um Certo Oriente</span>
+        <span class="midia-fonte">Deus Me Livro</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://culturalizando.blog/2019/10/11/resenha-relato-de-um-certo-oriente-milton-hatoum/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação</span>
+        <span class="midia-titulo">Resenha: Relato de um certo Oriente</span>
+        <span class="midia-fonte">Culturalizando</span>
+      </span>
+    </a>
+  </div>
+</div>
+</div>
+
+<!-- AVALIAÇÃO -->
+<div class="av-wrap">
+  <p class="sup" style="text-align:center;margin-bottom:0.4rem;">Clube Socorro</p>
+  <h2>Avaliações &amp; Comentários</h2>
+  <p class="av-sub">O que o clube achou de Relato de um Certo Oriente</p>
+  <div class="av-summary">
+    <div>
+      <div class="av-big-num" id="avg-num">—</div>
+      <div class="av-big-stars" id="avg-stars">☆☆☆☆☆</div>
+      <div class="av-big-count" id="avg-count">0 avaliações</div>
+    </div>
+    <div class="bars">
+      <div class="brow"><span class="brow-lbl">5★</span><div class="brow-track"><div class="brow-fill" id="b5"></div></div><span class="brow-n" id="n5">0</span></div>
+      <div class="brow"><span class="brow-lbl">4★</span><div class="brow-track"><div class="brow-fill" id="b4"></div></div><span class="brow-n" id="n4">0</span></div>
+      <div class="brow"><span class="brow-lbl">3★</span><div class="brow-track"><div class="brow-fill" id="b3"></div></div><span class="brow-n" id="n3">0</span></div>
+      <div class="brow"><span class="brow-lbl">2★</span><div class="brow-track"><div class="brow-fill" id="b2"></div></div><span class="brow-n" id="n2">0</span></div>
+      <div class="brow"><span class="brow-lbl">1★</span><div class="brow-track"><div class="brow-fill" id="b1"></div></div><span class="brow-n" id="n1">0</span></div>
+    </div>
+  </div>
+  <div class="av-form">
+    <h3>Deixe sua avaliação</h3>
+    <label class="av-label">Seu nome</label>
+    <input id="f-nome" class="av-input" type="text" placeholder="Como quer ser identificada?">
+    <label class="av-label">Nota</label>
+    <div class="stars-pick" id="star-row">
+      <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+    </div>
+    <label class="av-label">Comentário</label>
+    <textarea id="f-txt" class="av-textarea" placeholder="O que você achou do livro?"></textarea>
+    <button class="av-btn" onclick="submitReview()">Publicar Avaliação</button>
+    <span id="f-msg" class="av-msg"></span>
+  </div>
+  <div id="comments"><p class="loading">Carregando avaliações...</p></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyB03BscdfdfZGW42Btqbmzt72Dpusu45NU",
+  authDomain: "socorro-clube-do-livro.firebaseapp.com",
+  projectId: "socorro-clube-do-livro",
+  storageBucket: "socorro-clube-do-livro.firebasestorage.app",
+  messagingSenderId: "729551936788",
+  appId: "1:729551936788:web:001a6e284a63a51fc37601"
+};
+let db = null;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  db.settings({ experimentalAutoDetectLongPolling: true, useFetchStreams: false });
+} catch (e) { db = null; }
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str == null ? '' : String(str);
+  return div.innerHTML;
+}
+
+const P = {
+  narradora: { nome:'A Narradora', papel:'Filha Adotiva · Quem Reconstitui', desc:'Retorna a Manaus após quase vinte anos de ausência, chegando na noite que precede a morte de Emilie, sua mãe adotiva. A partir daí, reconstitui a história da família através de vozes emprestadas, endereçando todo o relato ao irmão em Barcelona.', tags:['Emilie','Hakim','O Irmão em Barcelona'] },
+  emilie:    { nome:'Emilie', papel:'A Matriarca · Memória Fundadora', desc:'Matriarca da família libanesa radicada em Manaus, católica casada com um muçulmano. Sua morte, no início do romance, desencadeia todo o processo de reconstituição de memória que estrutura a narrativa.', tags:['A Narradora','Hakim','Hindié Conceição'] },
+  hakim:     { nome:'Hakim', papel:'Tio · Guarda o Árabe', desc:'Filho mais velho de Emilie, o único a aprender a língua árabe da família — e também o que mais se distancia dos demais, mudando-se para o sul do Brasil.', tags:['Emilie','A Narradora'] },
+  dorner:    { nome:'Dorner', papel:'O Fotógrafo Alemão', desc:'Amigo da família radicado em Manaus, registra com sua câmera Hasselblad "Deus e o mundo" na cidade corroída pela solidão. É através de sua memória que a narradora recupera a figura do marido de Emilie, já falecido.', tags:['Emilie','A Narradora'] },
+  manaus:    { nome:'Manaus', papel:'Espaço · Fronteira Cultural', desc:'Capital amazônica onde a família libanesa se estabelece — cidade de hibridismo cultural, separada da floresta pelas águas e fronteira com três países.', tags:['A Narradora','Emilie','Dorner'] },
+  hindie:    { nome:'Hindié Conceição', papel:'A Amiga Fiel', desc:'Grande amiga de Emilie, acompanha-a até o fim, partilhando com a conterrânea a solidão da velhice — e depois conversa longamente com a narradora, revelando fragmentos da infância da protagonista.', tags:['Emilie','A Narradora'] },
+  irmao:     { nome:'O Irmão em Barcelona', papel:'O Destinatário', desc:'Também adotado por Emilie, vive na Europa e é quem pede à narradora que escreva o relato — presença que nunca aparece diretamente, mas que molda o tom íntimo e epistolar de toda a narrativa.', tags:['A Narradora'] }
+};
+
+function info(id) {
+  const p = P[id]; if (!p) return;
+  document.getElementById('i-name').textContent = p.nome;
+  document.getElementById('i-role').textContent = p.papel;
+  document.getElementById('i-desc').textContent = p.desc;
+  document.getElementById('i-tags').innerHTML =
+    '<p style="font-family:Cinzel,serif;font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);margin-bottom:0.4rem;">Conexões</p>' +
+    p.tags.map(t => '<span>' + t + '</span>').join('');
+}
+
+function goTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  document.getElementById('panel-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+let picked = 0;
+document.querySelectorAll('#star-row span').forEach(s => {
+  s.addEventListener('mouseover', () => hilite(+s.dataset.v));
+  s.addEventListener('mouseout',  () => hilite(picked));
+  s.addEventListener('click',     () => { picked = +s.dataset.v; hilite(picked); });
+});
+function hilite(n) {
+  document.querySelectorAll('#star-row span').forEach(s => {
+    s.style.color = +s.dataset.v <= n ? '#c1440e' : 'rgba(26,18,8,0.2)';
+  });
+}
+
+const BOOK_SLUG = 'relato-de-um-certo-oriente';
+const reviewsCol = db ? db.collection('livros').doc(BOOK_SLUG).collection('reviews') : null;
+let reviews = [];
+
+async function submitReview() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const txt  = document.getElementById('f-txt').value.trim();
+  const msg  = document.getElementById('f-msg');
+  if (!nome)   { msg.textContent = 'Coloque seu nome.';      msg.style.color='#c1440e'; return; }
+  if (!picked) { msg.textContent = 'Selecione uma nota.';    msg.style.color='#c1440e'; return; }
+  if (!txt)    { msg.textContent = 'Escreva um comentário.'; msg.style.color='#c1440e'; return; }
+  if (!reviewsCol) { msg.textContent = 'Avaliações indisponíveis no momento.'; msg.style.color='#c1440e'; return; }
+  const btn = document.querySelector('.av-btn');
+  btn.textContent = 'Enviando...'; btn.disabled = true;
+  msg.textContent = '';
+  try {
+    await reviewsCol.add({
+      nome, nota: picked, comentario: txt,
+      data: new Date().toLocaleDateString('pt-BR'),
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('f-nome').value = '';
+    document.getElementById('f-txt').value  = '';
+    picked = 0; hilite(0);
+    msg.textContent = 'Publicado!'; msg.style.color = '#6b8c6e';
+    setTimeout(() => msg.textContent = '', 4000);
+  } catch(e) {
+    msg.textContent = 'Erro ao enviar. Tente novamente.'; msg.style.color = '#c1440e';
+  }
+  btn.textContent = 'Publicar Avaliação'; btn.disabled = false;
+}
+
+function renderReviews() {
+  const total = reviews.length;
+  if (!total) {
+    document.getElementById('avg-num').textContent   = '—';
+    document.getElementById('avg-stars').textContent = '☆☆☆☆☆';
+    document.getElementById('avg-count').textContent = '0 avaliações';
+    [1,2,3,4,5].forEach(n => { document.getElementById('b'+n).style.width='0%'; document.getElementById('n'+n).textContent='0'; });
+    document.getElementById('comments').innerHTML = '<p class="no-reviews">Nenhuma avaliação ainda — seja a primeira!</p>';
+    return;
+  }
+  const avg = reviews.reduce((a,r) => a + Number(r.nota), 0) / total;
+  document.getElementById('avg-num').textContent   = avg.toFixed(1);
+  const full = Math.round(avg);
+  document.getElementById('avg-stars').textContent = '★'.repeat(full) + '☆'.repeat(5-full);
+  document.getElementById('avg-count').textContent = total + (total===1 ? ' avaliação' : ' avaliações');
+  [1,2,3,4,5].forEach(n => {
+    const c = reviews.filter(r => Number(r.nota)===n).length;
+    document.getElementById('b'+n).style.width = (c/total*100).toFixed(0) + '%';
+    document.getElementById('n'+n).textContent = c;
+  });
+  document.getElementById('comments').innerHTML = reviews.map(r => `
+    <div class="comment">
+      <div class="chead">
+        <span class="cname">${escapeHtml(r.nome)}</span>
+        <span class="cstars">${'★'.repeat(Number(r.nota))}${'☆'.repeat(5-Number(r.nota))}</span>
+        <span class="cdate">${escapeHtml(r.data)}</span>
+      </div>
+      <p class="ctext">${escapeHtml(r.comentario)}</p>
+    </div>`).join('');
+}
+
+if (reviewsCol) {
+  reviewsCol.orderBy('criadoEm', 'desc').onSnapshot(function (snap) {
+    reviews = snap.docs.map(d => d.data());
+    renderReviews();
+  }, function () {
+    reviews = [];
+    renderReviews();
+  });
+} else {
+  renderReviews();
+}
+</script>
+</body>
+</html>

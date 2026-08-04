@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Perigo de Estar Lúcida — Análise</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1208; --rust:#c1440e; --gold:#d4a017; --sage:#6b8c6e;
+  --cream:#f5f0e8; --paper:#ede8dc; --border:rgba(193,68,14,0.22); --surf:rgba(26,18,8,0.05);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;padding-top:68px;overflow-x:hidden;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:68px;background:rgba(245,240,232,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
+.nav-logo{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--rust);text-decoration:none;}
+.nav-tag{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(26,18,8,0.45);}
+.nav-back{font-family:'Cinzel',serif;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:2px solid rgba(193,68,14,0.4);padding:0.45rem 1.1rem;transition:all 0.2s;}
+.nav-back:hover{color:var(--rust);border-color:var(--rust);}
+.page-header{text-align:center;padding:2.5rem 2rem 0;}
+.capa-wrap{width:150px;margin:0 auto 1.2rem;box-shadow:0 12px 28px rgba(26,18,8,0.28);}
+.capa-wrap img{display:block;width:100%;height:auto;}
+.sup{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-bottom:0.5rem;}
+.page-header h1{font-family:'Cinzel',serif;font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;color:var(--ink);letter-spacing:0.04em;}
+.page-header h1 em{font-style:italic;color:var(--rust);font-family:'Cormorant Garamond',serif;font-size:1.1em;}
+.page-header p{font-style:italic;color:rgba(26,18,8,0.7);font-size:0.95rem;margin-top:0.3rem;}
+.tabs-bar{display:flex;justify-content:center;max-width:960px;margin:2rem auto 0;border-bottom:2px solid var(--border);flex-wrap:wrap;}
+.tab{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.50);background:none;border:none;padding:0.9rem 1.8rem;cursor:pointer;position:relative;transition:color 0.25s;}
+.tab::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;background:var(--rust);transform:scaleX(0);transition:transform 0.25s;}
+.tab:hover{color:var(--ink);}
+.tab.on{color:var(--ink);}
+.tab.on::after{transform:scaleX(1);}
+.panel{display:none;}
+.panel.on{display:block;animation:fadeUp 0.35s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.teia-wrap{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;padding:1.5rem 2rem 3rem;min-height:780px;}
+#net-wrap{height:750px;}
+#net-svg{width:100%;height:100%;}
+.nlab{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:#1a1208;text-anchor:middle;pointer-events:none;}
+.nlab-white{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:white;text-anchor:middle;pointer-events:none;}
+.nrole{font-family:'Cinzel',serif;font-size:12px;font-weight:600;fill:rgba(26,18,8,0.75);text-anchor:middle;pointer-events:none;}
+.node{cursor:pointer;}
+.node circle{transition:filter 0.25s;}
+.node:hover circle{filter:brightness(1.2);}
+.info-panel{border-left:1px solid var(--border);padding:2rem 1.8rem;display:flex;flex-direction:column;overflow-y:auto;max-height:750px;}
+.info-panel h3{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.info-role{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1rem;}
+.info-desc{font-size:0.93rem;line-height:1.78;color:var(--ink);flex:1;}
+.info-tags{margin-top:1.2rem;}
+.info-tags span{display:inline-block;margin:0.2rem 0.2rem 0 0;background:var(--surf);border:1px solid var(--border);padding:0.22rem 0.65rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);}
+.legend{display:flex;gap:0.8rem;margin-top:auto;padding-top:1.5rem;border-top:1px solid var(--border);flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;font-weight:600;color:var(--ink);}
+.leg-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.wrap{max-width:900px;margin:0 auto;padding:3rem 2rem 4rem;}
+.sec-title{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--ink);letter-spacing:0.12em;text-transform:uppercase;margin:2.5rem 0 0.5rem;}
+.sec-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;margin-bottom:1.5rem;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.card{background:var(--surf);border:1px solid var(--border);padding:1.4rem;}
+.card h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--rust);margin-bottom:0.6rem;}
+.card p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.pull{border:1px solid var(--border);border-left:4px solid var(--rust);padding:1.8rem 2rem;margin:2.5rem 0;background:var(--surf);}
+.pull p{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;line-height:1.7;color:var(--ink);}
+.pull cite{display:block;margin-top:0.8rem;font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);}
+.body-text p{font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.2rem;}
+.autor-grid{display:grid;grid-template-columns:240px 1fr;gap:3rem;align-items:start;margin-bottom:3rem;}
+.foto-box{width:240px;overflow:hidden;position:relative;border:2px solid var(--border);}
+.foto-box svg{display:block;width:100%;height:auto;}
+.foto-box img{display:block;width:100%;height:auto;}
+.foto-cap{position:absolute;bottom:0;left:0;right:0;background:rgba(26,18,8,0.65);padding:0.5rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(245,240,232,0.9);text-align:center;font-weight:700;}
+.bio h2{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.bio .dates{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1.2rem;}
+.bio p{font-size:0.97rem;line-height:1.85;color:var(--ink);margin-bottom:1rem;}
+.timeline{position:relative;margin:1.5rem 0;}
+.timeline::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:1px;background:linear-gradient(to bottom,var(--rust),transparent);}
+.tl{display:flex;gap:1.4rem;margin-bottom:1.5rem;}
+.tl-dot{width:15px;height:15px;border-radius:50%;border:2px solid var(--rust);background:var(--paper);flex-shrink:0;margin-top:2px;position:relative;z-index:1;}
+.tl-yr{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.14em;color:var(--rust);min-width:40px;padding-top:1px;}
+.tl-txt{font-size:0.92rem;line-height:1.68;color:var(--ink);}
+.tema{background:var(--surf);border-left:4px solid var(--rust);padding:1.4rem 1.6rem;}
+.tema .ico{font-size:1.6rem;display:block;margin-bottom:0.6rem;}
+.tema h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.7rem;}
+.tema p{font-size:0.92rem;line-height:1.78;color:var(--ink);}
+.licao{background:var(--paper);border-left:4px solid var(--gold);padding:1.3rem 1.5rem;}
+.licao h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);margin-bottom:0.5rem;}
+.licao p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.fotos-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:2.5rem;}
+.foto-espaco{position:relative;overflow:hidden;border:1px solid var(--border);}
+.foto-espaco img{display:block;width:100%;height:280px;object-fit:cover;}
+.foto-leg{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(26,18,8,0.75));padding:1.5rem 0.9rem 0.6rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,240,232,0.92);}
+.lugar{background:var(--surf);border:1px solid var(--border);padding:1.6rem;position:relative;overflow:hidden;}
+.lugar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rust),transparent);}
+.lugar h3{font-family:'Cinzel',serif;font-size:0.75rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.4rem;}
+.lugar-tag{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;color:var(--ink);display:block;margin-bottom:0.5rem;}
+.lugar p{font-size:0.90rem;line-height:1.72;color:var(--ink);}
+.meta-box{background:var(--paper);border:1px solid var(--border);padding:2rem;margin:2.5rem 0;display:grid;grid-template-columns:60px 1fr;gap:1.5rem;align-items:start;}
+.meta-box .ico{font-size:2.6rem;}
+.meta-box h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.5rem;}
+.meta-box p{font-size:0.92rem;line-height:1.75;color:var(--ink);}
+.midia-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.midia-card{display:flex;gap:1rem;background:var(--surf);border:1px solid var(--border);padding:1.2rem 1.3rem;align-items:flex-start;text-decoration:none;transition:border-color 0.2s,transform 0.2s;}
+.midia-card:hover{border-color:var(--rust);transform:translateY(-2px);}
+.midia-ico{font-size:1.5rem;flex-shrink:0;margin-top:0.1rem;}
+.midia-tipo{font-family:'Cinzel',serif;font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.3rem;display:block;}
+.midia-titulo{font-family:'DM Sans',sans-serif;font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;display:block;}
+.midia-fonte{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.85rem;color:rgba(26,18,8,0.65);}
+.av-wrap{max-width:900px;margin:0 auto;padding:4rem 2rem 5rem;border-top:1px solid var(--border);}
+.av-wrap h2{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:0.08em;text-align:center;margin-bottom:0.4rem;}
+.av-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;text-align:center;margin-bottom:2.5rem;}
+.av-summary{background:var(--surf);border:1px solid var(--border);padding:2rem;display:flex;gap:3rem;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;}
+.av-big-num{font-family:'Cinzel',serif;font-size:4rem;font-weight:700;color:var(--rust);line-height:1;text-align:center;}
+.av-big-stars{font-size:1.5rem;text-align:center;margin:0.3rem 0;}
+.av-big-count{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.6);text-align:center;}
+.brow{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;}
+.brow-lbl{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;color:var(--ink);min-width:28px;}
+.brow-track{flex:1;height:8px;background:rgba(26,18,8,0.1);border-radius:4px;overflow:hidden;}
+.brow-fill{height:100%;background:var(--rust);border-radius:4px;transition:width 0.5s;width:0%;}
+.brow-n{font-family:'Cinzel',serif;font-size:0.62rem;font-weight:700;color:rgba(26,18,8,0.6);min-width:16px;text-align:right;}
+.av-form{background:var(--paper);border:1px solid var(--border);padding:2rem;margin-bottom:2.5rem;}
+.av-form h3{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink);margin-bottom:1.5rem;}
+.av-label{font-family:'Cinzel',serif;font-size:0.63rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);display:block;margin-bottom:0.4rem;}
+.av-input{width:100%;padding:0.7rem 1rem;margin-bottom:1.2rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;}
+.av-input:focus{border-color:var(--rust);}
+.av-textarea{width:100%;padding:0.7rem 1rem;margin-bottom:1.5rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;resize:vertical;line-height:1.65;min-height:100px;}
+.av-textarea:focus{border-color:var(--rust);}
+.stars-pick{display:flex;gap:0.3rem;margin-bottom:1.3rem;}
+.stars-pick span{font-size:2.2rem;cursor:pointer;line-height:1;color:rgba(26,18,8,0.2);transition:color 0.15s;user-select:none;}
+.av-btn{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;background:var(--rust);color:white;border:none;padding:0.85rem 2.5rem;cursor:pointer;transition:background 0.2s;}
+.av-btn:hover{background:#a33508;}
+.av-btn:disabled{background:#aaa;cursor:default;}
+.av-msg{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;margin-left:1rem;}
+.comment{border:1px solid var(--border);padding:1.4rem 1.6rem;margin-bottom:1rem;background:var(--cream);}
+.chead{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;flex-wrap:wrap;gap:0.4rem;}
+.cname{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;color:var(--ink);}
+.cstars{color:var(--rust);font-size:1.05rem;}
+.cdate{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:600;color:rgba(26,18,8,0.5);}
+.ctext{font-size:0.95rem;line-height:1.75;color:var(--ink);}
+.no-reviews{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.5);font-size:1rem;text-align:center;padding:2rem 0;}
+.loading{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.12em;color:rgba(26,18,8,0.5);text-align:center;padding:1.5rem 0;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Socorro.</a>
+  <span class="nav-tag">Clube do Livro · Análise</span>
+  <a href="index.html#lidos" class="nav-back">← Voltar à Estante</a>
+</nav>
+
+<div class="page-header">
+  <div class="capa-wrap"><img src="https://covers.openlibrary.org/b/isbn/9786556925516-L.jpg" alt="Capa de O Perigo de Estar Lúcida"></div>
+  <p class="sup">Rosa Montero &nbsp;·&nbsp; 2022 &nbsp;·&nbsp; Análise Literária</p>
+  <h1><em>O Perigo de Estar Lúcida</em></h1>
+  <p>Mapa dos Ensaios · A Autora · Temas · Espaço Narrativo · Mídia</p>
+</div>
+
+<div class="tabs-bar">
+  <button class="tab on"  onclick="goTab('teia',this)">Mapa dos Ensaios</button>
+  <button class="tab"     onclick="goTab('autora',this)">A Autora</button>
+  <button class="tab"     onclick="goTab('temas',this)">Temas &amp; Lições</button>
+  <button class="tab"     onclick="goTab('espaco',this)">O Espaço Narrativo</button>
+  <button class="tab"     onclick="goTab('midia',this)">Mídia</button>
+</div>
+
+<!-- TEIA -->
+<div id="panel-teia" class="panel on">
+<div class="teia-wrap">
+  <div id="net-wrap">
+  <svg id="net-svg" viewBox="0 0 860 750" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+    <line x1="430" y1="390" x2="430" y2="120" stroke="#6b8c6e" stroke-width="3" stroke-opacity="0.6" stroke-dasharray="8,5"/>
+    <line x1="430" y1="390" x2="170" y2="210" stroke="#2a9d8f" stroke-width="3" stroke-opacity="0.7"/>
+    <line x1="430" y1="390" x2="660" y2="210" stroke="#d4a017" stroke-width="2.5" stroke-opacity="0.55" stroke-dasharray="6,4"/>
+    <line x1="430" y1="390" x2="150" y2="520" stroke="#c1440e" stroke-width="3" stroke-opacity="0.65"/>
+    <line x1="430" y1="390" x2="700" y2="520" stroke="#9b5078" stroke-width="3" stroke-opacity="0.7"/>
+    <line x1="430" y1="390" x2="430" y2="660" stroke="#1a1208" stroke-width="2" stroke-opacity="0.3" stroke-dasharray="6,4"/>
+    <line x1="150" y1="520" x2="700" y2="520" stroke="#c1440e" stroke-width="1.5" stroke-opacity="0.3"/>
+    <line x1="170" y1="210" x2="150" y2="520" stroke="#2a9d8f" stroke-width="1.5" stroke-opacity="0.3"/>
+    <g class="node" onclick="info('montero')"><circle cx="430" cy="390" r="82" fill="#c1440e" fill-opacity="0.12" stroke="#c1440e" stroke-width="3.5"/><circle cx="430" cy="390" r="62" fill="#c1440e" fill-opacity="0.93"/><text x="430" y="385" class="nlab-white" style="font-size:13px;">Rosa Montero</text><text x="430" y="403" class="nlab-white" style="font-size:12px;">a investigadora</text><text x="430" y="480" class="nrole">a autora-narradora</text></g>
+    <g class="node" onclick="info('tempestade')"><circle cx="430" cy="120" r="48" fill="#6b8c6e" fill-opacity="0.55" stroke="#6b8c6e" stroke-width="2.5" stroke-dasharray="6,4"/><text x="430" y="113" class="nlab" style="font-size:11px;">A Tempestade</text><text x="430" y="129" class="nlab" style="font-size:11px;">Perfeita</text><text x="430" y="180" class="nrole">a teoria central</text></g>
+    <g class="node" onclick="info('plath')"><circle cx="170" cy="210" r="52" fill="#2a9d8f" fill-opacity="0.85"/><text x="170" y="207" class="nlab-white" style="font-size:14px;">Sylvia Plath</text><text x="170" y="270" class="nrole">capítulo dedicado</text></g>
+    <g class="node" onclick="info('woolf')"><circle cx="660" cy="210" r="50" fill="#d4a017" fill-opacity="0.85"/><text x="660" y="207" class="nlab-white" style="font-size:14px;">Virginia Woolf</text><text x="660" y="270" class="nrole">a mente em crise</text></g>
+    <g class="node" onclick="info('vangogh')"><circle cx="150" cy="520" r="50" fill="#c1440e" fill-opacity="0.7"/><text x="150" y="513" class="nlab-white" style="font-size:13px;">Van</text><text x="150" y="529" class="nlab-white" style="font-size:11px;">Gogh</text><text x="150" y="580" class="nrole">a pintura e o abismo</text></g>
+    <g class="node" onclick="info('fadas')"><circle cx="700" cy="520" r="52" fill="#9b5078" fill-opacity="0.82"/><text x="700" y="512" class="nlab-white" style="font-size:12px;">As Fadas</text><text x="700" y="528" class="nlab-white" style="font-size:11px;">o dom e o preço</text><text x="700" y="582" class="nrole">a metáfora central</text></g>
+    <g class="node" onclick="info('lessing')"><circle cx="430" cy="660" r="44" fill="#1a1208" fill-opacity="0.35" stroke="#9b5078" stroke-width="2" stroke-dasharray="5,4"/><text x="430" y="653" class="nlab" style="font-size:12px;">Doris</text><text x="430" y="669" class="nlab" style="font-size:11px;">Lessing</text><text x="430" y="714" class="nrole">a entrevista final</text></g>
+  </svg>
+  </div>
+  <div class="info-panel">
+    <h3 id="i-name">Clique em um personagem</h3>
+    <p class="info-role" id="i-role">para ver o perfil</p>
+    <p class="info-desc" id="i-desc">Misturando ensaio, memória pessoal e investigação, Rosa Montero explora as ligações entre criatividade e instabilidade mental, revisitando as vidas de escritores e artistas que habitaram território próximo à loucura — e compartilhando sua própria experiência com crises de pânico e a teoria da "tempestade perfeita" que precede toda explosão criativa.</p>
+    <div class="info-tags" id="i-tags"></div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:#c1440e"></div>Montero &amp; Van Gogh</div>
+      <div class="leg"><div class="leg-dot" style="background:#2a9d8f"></div>Escritoras em crise</div>
+      <div class="leg"><div class="leg-dot" style="background:#d4a017"></div>A mente instável</div>
+      <div class="leg"><div class="leg-dot" style="background:#9b5078"></div>A metáfora central</div>
+      <div class="leg"><svg width="24" height="8"><line x1="0" y1="4" x2="24" y2="4" stroke="#1a1208" stroke-width="2" stroke-dasharray="5,3"/></svg>Teoria &amp; fechamento</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- AUTORA -->
+<div id="panel-autora" class="panel">
+<div class="wrap">
+  <div class="autor-grid">
+    <div class="foto-box">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Malaga_Film_Festival_2025_-_Rosa_Montero.jpg" alt="Rosa Montero">
+      <div class="foto-cap">Madri, Espanha · n. 1951</div>
+    </div>
+    <div class="bio">
+      <h2>Rosa Montero</h2>
+      <p class="dates">Madri, Espanha, 1951</p>
+      <p>Rosa Montero Gayo nasceu em 1951 no bairro de Cuatro Caminos, em Madri, filha de um ex-novilheiro de touradas. Entre os cinco e os nove anos, contraiu tuberculose e ficou reclusa em casa — período em que começou a ler e escrever compulsivamente. Formou-se em Jornalismo e Filosofia, e tornou-se redatora-chefe do jornal El País, reconhecida internacionalmente como entrevistadora.</p>
+      <p>Estreou na ficção em 1979 e já publicou mais de 30 livros, traduzidos para mais de 20 idiomas. Recebeu o Prêmio Primavera de Narrativa (1997) e o Prêmio Nacional das Letras Espanholas (2017), reconhecimento pelo conjunto da obra. Em 2009, perdeu o marido, o jornalista Pablo Lizcano, após 21 anos juntos — luto que inspiraria o livro <em>A Ridícula Ideia de Nunca Mais Te Ver</em>. Publicado originalmente como <em>El peligro de estar cuerda</em> ("o perigo de estar sã"), este ensaio nasce de décadas convivendo de perto com crises de pânico e ansiedade.</p>
+    </div>
+  </div>
+  <p class="sec-title">Linha do Tempo</p>
+  <div class="timeline">
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1951</div><div class="tl-txt">Nasce em Madri, Espanha.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1956</div><div class="tl-txt">Contrai tuberculose e passa quatro anos reclusa em casa, período em que começa a ler e escrever.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1977</div><div class="tl-txt">Inicia colaboração com o jornal El País, do qual se tornaria redatora-chefe.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1979</div><div class="tl-txt">Publica seu primeiro romance, <em>Crónica del desamor</em>.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1997</div><div class="tl-txt">Vence o Prêmio Primavera de Narrativa com <em>A Filha do Canibal</em>, best-seller na Espanha.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2009</div><div class="tl-txt">Perde o marido, Pablo Lizcano, após 21 anos juntos.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2017</div><div class="tl-txt">Recebe o Prêmio Nacional das Letras Espanholas pelo conjunto da obra.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2022</div><div class="tl-txt">Publica <em>El peligro de estar cuerda</em>, lançado no Brasil como <em>O Perigo de Estar Lúcida</em> em 2023.</div></div>
+  </div>
+  <p class="sec-title">Seis curiosidades sobre a autora e o livro</p>
+  <p class="sec-sub">Detalhes que revelam a origem real desta história improvável</p>
+  <div class="g2">
+    <div class="card"><h4>A reclusão que a transformou em leitora</h4><p>Os quatro anos de isolamento por tuberculose, entre os cinco e nove anos, moldaram seu hábito de leitura voraz e a impulsionaram a escrever seus primeiros contos, sobre ratinhas falantes.</p></div>
+    <div class="card"><h4>Um título que muda de sentido na tradução</h4><p>O original em espanhol, "El peligro de estar cuerda" ("o perigo de estar sã"), tornou-se "O Perigo de Estar Lúcida" na edição brasileira — uma escolha de tradução que desloca sutilmente o eixo da discussão, de sanidade mental para lucidez racional.</p></div>
+    <div class="card"><h4>De fã de Paul McCartney a sua entrevistadora</h4><p>Aos doze anos, era apaixonada pelo beatle; décadas depois, já jornalista consagrada, teve a oportunidade de entrevistá-lo pessoalmente.</p></div>
+    <div class="card"><h4>Encerra com uma entrevista rara a Doris Lessing</h4><p>O livro traz, como apêndice, uma entrevista que a própria Montero fez com Doris Lessing para o jornal El País — realizada antes de a autora britânica receber o Nobel de Literatura.</p></div>
+    <div class="card"><h4>Um mosaico de escritores à beira do abismo</h4><p>Além de Sylvia Plath, Virginia Woolf e Van Gogh, o livro percorre as histórias de F. Scott Fitzgerald, Charles Bukowski, William Faulkner, Emily Dickinson e outros nomes menos conhecidos, todos ligados por um fio comum de instabilidade criativa.</p></div>
+    <div class="card"><h4>Recepção crítica dividida</h4><p>Parte dos leitores elogia a honestidade da autora ao expor sua própria experiência com pânico e ansiedade; outra parte da crítica questiona se o livro adota posicionamento crítico suficiente ao tratar temas delicados como adição e sofrimento psíquico extremo.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- TEMAS -->
+<div id="panel-temas" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Temas Centrais do Livro</p>
+  <p class="sec-sub">O que o romance diz sobre fé, escuta e o peso das promessas</p>
+  <div class="g2" style="margin-top:0;">
+    <div class="tema"><span class="ico">🌩️</span><h3>A Teoria da Tempestade Perfeita</h3><p>Montero defende que a explosão criativa exige uma combinação irrepetível de fatores químicos, emocionais e situacionais — não um "dom" fixo, mas um raro alinhamento de circunstâncias.</p></div>
+    <div class="tema"><span class="ico">🧠</span><h3>Neurociência da Criação</h3><p>O livro traduz pesquisas sobre como o cérebro funciona durante o processo criativo, aproximando achados científicos recentes da experiência subjetiva de escritores e artistas.</p></div>
+    <div class="tema"><span class="ico">🎭</span><h3>O Preço do Dom</h3><p>A metáfora das "fadas" que concedem talento mas cobram um preço alto percorre o livro inteiro — a criatividade extraordinária, sugere Montero, raramente vem sem custo emocional.</p></div>
+    <div class="tema"><span class="ico">💊</span><h3>Vulnerabilidade Como Matéria-Prima</h3><p>Ao expor sua própria experiência com crises de pânico, Montero recusa a distância segura do ensaísta acadêmico — ela mesma é objeto de estudo tanto quanto os escritores que analisa.</p></div>
+    <div class="tema"><span class="ico">⚖️</span><h3>Os Limites de Romantizar o Sofrimento</h3><p>Parte da crítica alerta que associar genialidade a instabilidade mental, mesmo com boas intenções, corre o risco de glamourizar experiências que são, na prática, profundamente dolorosas.</p></div>
+    <div class="tema"><span class="ico">✍️</span><h3>Escrever Como Sobrevivência</h3><p>Para além da teoria, o livro defende a escrita como prática concreta de organização e resistência diante do caos interno — um ato que pode ajudar a "permanecer inteira".</p></div>
+  </div>
+  <div class="pull">
+    <p>As fadas nos dão um dom e cobram um preço por ele — quem não recebe o dom não paga esse preço, mas corre o risco oposto: morrer de tédio, em vez de morrer de excesso de sentir.</p>
+    <cite>Sobre O Perigo de Estar Lúcida</cite>
+  </div>
+  <p class="sec-title">Seis lições da narrativa</p>
+  <p class="sec-sub">O que o clube pode levar desta leitura</p>
+  <div class="g2">
+    <div class="licao"><h4>Criatividade não é simples nem redentora por si só</h4><p>Montero recusa a narrativa fácil de que a arte "cura" o sofrimento — muitas vezes, ela apenas oferece uma forma de conviver com ele.</p></div>
+    <div class="licao"><h4>Expor vulnerabilidade exige responsabilidade</h4><p>Ao tratar de temas como pânico, luto e sofrimento psíquico, autores têm o dever de considerar como o texto pode afetar leitores em situação de vulnerabilidade.</p></div>
+    <div class="licao"><h4>Ciência e experiência pessoal podem dialogar</h4><p>O livro mostra que dados de neurociência e relato subjetivo não são incompatíveis — juntos, podem iluminar melhor um fenômeno complexo do que isoladamente.</p></div>
+    <div class="licao"><h4>Nem todo sofrimento produz arte</h4><p>Apesar de reunir tantos exemplos de escritores em crise, o livro não afirma que a dor é pré-requisito para criar — apenas que, para alguns, os dois caminhos se cruzaram.</p></div>
+    <div class="licao"><h4>Ler sobre a dor alheia pode ser espelho, não só informação</h4><p>Para leitores que reconhecem a própria experiência nos relatos do livro, vale lembrar que identificação não substitui apoio profissional quando necessário.</p></div>
+    <div class="licao"><h4>Investigar é também uma forma de cuidado de si</h4><p>Ao pesquisar tanto sobre os outros quanto sobre si mesma, Montero modela um processo de autoconhecimento que combina rigor intelectual e honestidade emocional.</p></div>
+  </div>
+  <p class="sec-title">Síntese</p>
+  <div class="body-text">
+    <p>O Perigo de Estar Lúcida entrelaça décadas de leitura sobre neurociência, psicologia e biografias de artistas com a experiência pessoal de Rosa Montero, construindo um ensaio híbrido que se recusa a categorizar-se facilmente como não ficção pura. Ao percorrer as vidas de Sylvia Plath, Virginia Woolf, Van Gogh e tantos outros que viveram próximos ao que a autora chama de "loucura", Montero investiga não apenas o que teria produzido tanta genialidade, mas o preço concreto — muitas vezes alto demais — que essas mentes pagaram por ela.</p>
+    <p>O livro não é isento de controvérsia: parte da crítica e de leitores questiona se a narrativa, ao romantizar certos aspectos da instabilidade mental sem sempre oferecer contraponto crítico suficiente, pode ser lida de forma pouco cuidadosa por quem atravessa dificuldades semelhantes. Para o clube, essa tensão pode ser justamente o ponto de partida mais rico da discussão: até que ponto celebrar a criatividade nascida do sofrimento é diferente de glamourizá-lo — e como Rosa Montero, ao expor sua própria vulnerabilidade sem pedir desculpas por ela, tenta (nem sempre com sucesso, segundo seus críticos) equilibrar essas duas possibilidades.</p>
+  </div>
+</div>
+</div>
+
+<!-- ESPAÇO -->
+<div id="panel-espaco" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">O Espaço Narrativo</p>
+  <p class="sec-sub">Um mapa simbólico entre Madri, o cérebro e a tempestade criativa</p>
+  <div class="fotos-grid">
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Madrid_Cityscape.jpg" alt="Madri, Espanha"><div class="foto-leg">Madri — cidade natal de Rosa Montero e cenário de sua trajetória jornalística</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Complete_neuron_cell_diagram_en.svg" alt="Diagrama de neurônio"><div class="foto-leg">A neurociência da criação — o funcionamento do cérebro que Montero investiga</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Hands_typing_on_a_vintage_typewriter_in_a_cozy_workspace.jpg" alt="Máquina de escrever vintage"><div class="foto-leg">O ato de escrever — prática de organização diante do caos interno</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Storm_clouds.jpg" alt="Nuvens de tempestade"><div class="foto-leg">A "tempestade perfeita" — metáfora central para a explosão criativa</div></div>
+  </div>
+  <p style="font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.5rem;">Mais do que um espaço geográfico, o livro se move por um território simbólico: entre a Madri onde Montero construiu carreira, o cérebro que ela investiga com rigor quase científico, e a metáfora da tempestade que dá nome à sua teoria central sobre criatividade.</p>
+  <div class="g2">
+    <div class="lugar"><h3>Madri</h3><span class="lugar-tag">O Ponto de Partida</span><p>Cidade onde Montero nasceu, adoeceu na infância e construiu, décadas depois, sua carreira no jornal El País.</p></div>
+    <div class="lugar"><h3>O Cérebro Criativo</h3><span class="lugar-tag">O Objeto de Investigação</span><p>Território central do ensaio — Montero mapeia, com apoio da neurociência, os mecanismos que ligam instabilidade mental e explosão criativa.</p></div>
+    <div class="lugar"><h3>A Vida dos Outros</h3><span class="lugar-tag">Biografias Emprestadas</span><p>Plath, Woolf, Van Gogh e dezenas de outros artistas funcionam como território biográfico que Montero percorre em busca de padrões e exceções.</p></div>
+    <div class="lugar"><h3>A Própria Autora</h3><span class="lugar-tag">Território Pessoal</span><p>Suas crises de pânico e décadas vividas "nas vizinhanças da loucura" tornam Montero tanto investigadora quanto objeto de sua própria pesquisa.</p></div>
+  </div>
+  <div class="meta-box">
+    <div class="ico">💜</div>
+    <div><h3>Sobre Este Livro e Bem-Estar</h3><p>Este ensaio trata abertamente de pânico, depressão e sofrimento psíquico intenso vividos por artistas reais. Se a leitura tocar em experiências pessoais difíceis, o Centro de Valorização da Vida (CVV) oferece apoio emocional gratuito e sigiloso pelo telefone 188, a qualquer hora, todos os dias.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- MÍDIA -->
+<div id="panel-midia" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Mídia</p>
+  <p class="sec-sub">Podcasts, vídeos e publicações para aprofundar a leitura do clube</p>
+  <div class="midia-grid">
+    <a class="midia-card" href="https://www.youtube.com/watch?v=ruJaP08jBms" target="_blank" rel="noopener">
+      <span class="midia-ico">🎬</span>
+      <span>
+        <span class="midia-tipo">Vídeo · Entrevista</span>
+        <span class="midia-titulo">Rosa Montero fala sobre "O Perigo de Estar Lúcida" e a farsa do normal</span>
+        <span class="midia-fonte">Roda Viva</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.youtube.com/watch?v=VKPxMEs6DUw" target="_blank" rel="noopener">
+      <span class="midia-ico">📹</span>
+      <span>
+        <span class="midia-tipo">Vídeo · Resenha</span>
+        <span class="midia-titulo">O perigo de estar lúcida, Rosa Montero</span>
+        <span class="midia-fonte">Canal Trama Literária</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.youtube.com/watch?v=kj5P8TnijAY" target="_blank" rel="noopener">
+      <span class="midia-ico">🎙️</span>
+      <span>
+        <span class="midia-tipo">Podcast</span>
+        <span class="midia-titulo">Book Fala #038 — O perigo de estar lúcida</span>
+        <span class="midia-fonte">YouTube</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.youtube.com/watch?v=3UxKjSIzZJI" target="_blank" rel="noopener">
+      <span class="midia-ico">📹</span>
+      <span>
+        <span class="midia-tipo">Vídeo · Resenha</span>
+        <span class="midia-titulo">"Loucura", criatividade e solidão</span>
+        <span class="midia-fonte">YouTube</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://quatrocincoum.com.br/entrevistas/literatura/a-escrita-que-mantem-em-pe/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Entrevista</span>
+        <span class="midia-titulo">A escrita que mantém em pé</span>
+        <span class="midia-fonte">Quatro Cinco Um</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://samybersi.substack.com/p/7-licoes-de-rosa-montero-sobre-escrita" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação</span>
+        <span class="midia-titulo">7 lições valiosas de Rosa Montero sobre a escrita</span>
+        <span class="midia-fonte">Substack</span>
+      </span>
+    </a>
+  </div>
+</div>
+</div>
+
+<!-- AVALIAÇÃO -->
+<div class="av-wrap">
+  <p class="sup" style="text-align:center;margin-bottom:0.4rem;">Clube Socorro</p>
+  <h2>Avaliações &amp; Comentários</h2>
+  <p class="av-sub">O que o clube achou de O Perigo de Estar Lúcida</p>
+  <div class="av-summary">
+    <div>
+      <div class="av-big-num" id="avg-num">—</div>
+      <div class="av-big-stars" id="avg-stars">☆☆☆☆☆</div>
+      <div class="av-big-count" id="avg-count">0 avaliações</div>
+    </div>
+    <div class="bars">
+      <div class="brow"><span class="brow-lbl">5★</span><div class="brow-track"><div class="brow-fill" id="b5"></div></div><span class="brow-n" id="n5">0</span></div>
+      <div class="brow"><span class="brow-lbl">4★</span><div class="brow-track"><div class="brow-fill" id="b4"></div></div><span class="brow-n" id="n4">0</span></div>
+      <div class="brow"><span class="brow-lbl">3★</span><div class="brow-track"><div class="brow-fill" id="b3"></div></div><span class="brow-n" id="n3">0</span></div>
+      <div class="brow"><span class="brow-lbl">2★</span><div class="brow-track"><div class="brow-fill" id="b2"></div></div><span class="brow-n" id="n2">0</span></div>
+      <div class="brow"><span class="brow-lbl">1★</span><div class="brow-track"><div class="brow-fill" id="b1"></div></div><span class="brow-n" id="n1">0</span></div>
+    </div>
+  </div>
+  <div class="av-form">
+    <h3>Deixe sua avaliação</h3>
+    <label class="av-label">Seu nome</label>
+    <input id="f-nome" class="av-input" type="text" placeholder="Como quer ser identificada?">
+    <label class="av-label">Nota</label>
+    <div class="stars-pick" id="star-row">
+      <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+    </div>
+    <label class="av-label">Comentário</label>
+    <textarea id="f-txt" class="av-textarea" placeholder="O que você achou do livro?"></textarea>
+    <button class="av-btn" onclick="submitReview()">Publicar Avaliação</button>
+    <span id="f-msg" class="av-msg"></span>
+  </div>
+  <div id="comments"><p class="loading">Carregando avaliações...</p></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyB03BscdfdfZGW42Btqbmzt72Dpusu45NU",
+  authDomain: "socorro-clube-do-livro.firebaseapp.com",
+  projectId: "socorro-clube-do-livro",
+  storageBucket: "socorro-clube-do-livro.firebasestorage.app",
+  messagingSenderId: "729551936788",
+  appId: "1:729551936788:web:001a6e284a63a51fc37601"
+};
+let db = null;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  db.settings({ experimentalAutoDetectLongPolling: true, useFetchStreams: false });
+} catch (e) { db = null; }
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str == null ? '' : String(str);
+  return div.innerHTML;
+}
+
+const P = {
+  montero:     { nome:'Rosa Montero', papel:'A Investigadora · Autora-Narradora', desc:'Conduz a investigação sobre criatividade e instabilidade mental como uma detetive reunindo pistas — ciência, biografias alheias e a própria experiência pessoal com crises de pânico — diante dos olhos do leitor.', tags:['A Tempestade Perfeita','As Fadas','Doris Lessing'] },
+  tempestade:  { nome:'A Tempestade Perfeita', papel:'Teoria Central', desc:'Teoria de que a explosão criativa exige uma combinação irrepetível de fatores químicos, emocionais e situacionais — não um talento fixo, mas um raro alinhamento de circunstâncias.', tags:['Rosa Montero'] },
+  plath:       { nome:'Sylvia Plath', papel:'Capítulo Dedicado', desc:'Poeta americana a quem Montero dedica um capítulo inteiro, explorando a relação entre sua obra intensa e o sofrimento psíquico que marcou seus últimos anos de vida.', tags:['Rosa Montero','A Tempestade Perfeita'] },
+  woolf:       { nome:'Virginia Woolf', papel:'A Mente em Crise', desc:'Uma das escritoras centrais analisadas por Montero — sua obra e suas crises recorrentes de saúde mental servem de estudo de caso sobre os limites entre genialidade e sofrimento.', tags:['Rosa Montero','As Fadas'] },
+  vangogh:     { nome:'Van Gogh', papel:'A Pintura e o Abismo', desc:'Representante das artes visuais no panorama de Montero — sua obra revolucionária e seu colapso mental final ilustram a tensão entre criação extraordinária e instabilidade.', tags:['Rosa Montero','A Tempestade Perfeita'] },
+  fadas:       { nome:'As Fadas', papel:'O Dom e o Preço · A Metáfora Central', desc:'Imagem central do livro: as "fadas" concedem um dom criativo excepcional, mas cobram por ele um preço — muitas vezes alto demais — que os "normais", sem o dom, não precisam pagar.', tags:['Rosa Montero','Sylvia Plath','Virginia Woolf'] },
+  lessing:     { nome:'Doris Lessing', papel:'A Entrevista Final', desc:'O livro se encerra com uma entrevista rara que a própria Montero fez com a autora britânica para o jornal El País, realizada antes de Lessing receber o Prêmio Nobel de Literatura.', tags:['Rosa Montero'] }
+};
+
+function info(id) {
+  const p = P[id]; if (!p) return;
+  document.getElementById('i-name').textContent = p.nome;
+  document.getElementById('i-role').textContent = p.papel;
+  document.getElementById('i-desc').textContent = p.desc;
+  document.getElementById('i-tags').innerHTML =
+    '<p style="font-family:Cinzel,serif;font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);margin-bottom:0.4rem;">Conexões</p>' +
+    p.tags.map(t => '<span>' + t + '</span>').join('');
+}
+
+function goTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  document.getElementById('panel-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+let picked = 0;
+document.querySelectorAll('#star-row span').forEach(s => {
+  s.addEventListener('mouseover', () => hilite(+s.dataset.v));
+  s.addEventListener('mouseout',  () => hilite(picked));
+  s.addEventListener('click',     () => { picked = +s.dataset.v; hilite(picked); });
+});
+function hilite(n) {
+  document.querySelectorAll('#star-row span').forEach(s => {
+    s.style.color = +s.dataset.v <= n ? '#c1440e' : 'rgba(26,18,8,0.2)';
+  });
+}
+
+const BOOK_SLUG = 'o-perigo-de-estar-lucida';
+const reviewsCol = db ? db.collection('livros').doc(BOOK_SLUG).collection('reviews') : null;
+let reviews = [];
+
+async function submitReview() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const txt  = document.getElementById('f-txt').value.trim();
+  const msg  = document.getElementById('f-msg');
+  if (!nome)   { msg.textContent = 'Coloque seu nome.';      msg.style.color='#c1440e'; return; }
+  if (!picked) { msg.textContent = 'Selecione uma nota.';    msg.style.color='#c1440e'; return; }
+  if (!txt)    { msg.textContent = 'Escreva um comentário.'; msg.style.color='#c1440e'; return; }
+  if (!reviewsCol) { msg.textContent = 'Avaliações indisponíveis no momento.'; msg.style.color='#c1440e'; return; }
+  const btn = document.querySelector('.av-btn');
+  btn.textContent = 'Enviando...'; btn.disabled = true;
+  msg.textContent = '';
+  try {
+    await reviewsCol.add({
+      nome, nota: picked, comentario: txt,
+      data: new Date().toLocaleDateString('pt-BR'),
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('f-nome').value = '';
+    document.getElementById('f-txt').value  = '';
+    picked = 0; hilite(0);
+    msg.textContent = 'Publicado!'; msg.style.color = '#6b8c6e';
+    setTimeout(() => msg.textContent = '', 4000);
+  } catch(e) {
+    msg.textContent = 'Erro ao enviar. Tente novamente.'; msg.style.color = '#c1440e';
+  }
+  btn.textContent = 'Publicar Avaliação'; btn.disabled = false;
+}
+
+function renderReviews() {
+  const total = reviews.length;
+  if (!total) {
+    document.getElementById('avg-num').textContent   = '—';
+    document.getElementById('avg-stars').textContent = '☆☆☆☆☆';
+    document.getElementById('avg-count').textContent = '0 avaliações';
+    [1,2,3,4,5].forEach(n => { document.getElementById('b'+n).style.width='0%'; document.getElementById('n'+n).textContent='0'; });
+    document.getElementById('comments').innerHTML = '<p class="no-reviews">Nenhuma avaliação ainda — seja a primeira!</p>';
+    return;
+  }
+  const avg = reviews.reduce((a,r) => a + Number(r.nota), 0) / total;
+  document.getElementById('avg-num').textContent   = avg.toFixed(1);
+  const full = Math.round(avg);
+  document.getElementById('avg-stars').textContent = '★'.repeat(full) + '☆'.repeat(5-full);
+  document.getElementById('avg-count').textContent = total + (total===1 ? ' avaliação' : ' avaliações');
+  [1,2,3,4,5].forEach(n => {
+    const c = reviews.filter(r => Number(r.nota)===n).length;
+    document.getElementById('b'+n).style.width = (c/total*100).toFixed(0) + '%';
+    document.getElementById('n'+n).textContent = c;
+  });
+  document.getElementById('comments').innerHTML = reviews.map(r => `
+    <div class="comment">
+      <div class="chead">
+        <span class="cname">${escapeHtml(r.nome)}</span>
+        <span class="cstars">${'★'.repeat(Number(r.nota))}${'☆'.repeat(5-Number(r.nota))}</span>
+        <span class="cdate">${escapeHtml(r.data)}</span>
+      </div>
+      <p class="ctext">${escapeHtml(r.comentario)}</p>
+    </div>`).join('');
+}
+
+if (reviewsCol) {
+  reviewsCol.orderBy('criadoEm', 'desc').onSnapshot(function (snap) {
+    reviews = snap.docs.map(d => d.data());
+    renderReviews();
+  }, function () {
+    reviews = [];
+    renderReviews();
+  });
+} else {
+  renderReviews();
+}
+</script>
+</body>
+</html>

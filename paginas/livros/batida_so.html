@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Batida Só — Análise</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1208; --rust:#c1440e; --gold:#d4a017; --sage:#6b8c6e;
+  --cream:#f5f0e8; --paper:#ede8dc; --border:rgba(193,68,14,0.22); --surf:rgba(26,18,8,0.05);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;padding-top:68px;overflow-x:hidden;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:68px;background:rgba(245,240,232,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
+.nav-logo{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--rust);text-decoration:none;}
+.nav-tag{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(26,18,8,0.45);}
+.nav-back{font-family:'Cinzel',serif;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:2px solid rgba(193,68,14,0.4);padding:0.45rem 1.1rem;transition:all 0.2s;}
+.nav-back:hover{color:var(--rust);border-color:var(--rust);}
+.page-header{text-align:center;padding:2.5rem 2rem 0;}
+.capa-wrap{width:150px;margin:0 auto 1.2rem;box-shadow:0 12px 28px rgba(26,18,8,0.28);}
+.capa-wrap img{display:block;width:100%;height:auto;}
+.sup{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-bottom:0.5rem;}
+.page-header h1{font-family:'Cinzel',serif;font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;color:var(--ink);letter-spacing:0.04em;}
+.page-header h1 em{font-style:italic;color:var(--rust);font-family:'Cormorant Garamond',serif;font-size:1.1em;}
+.page-header p{font-style:italic;color:rgba(26,18,8,0.7);font-size:0.95rem;margin-top:0.3rem;}
+.tabs-bar{display:flex;justify-content:center;max-width:960px;margin:2rem auto 0;border-bottom:2px solid var(--border);flex-wrap:wrap;}
+.tab{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.50);background:none;border:none;padding:0.9rem 1.8rem;cursor:pointer;position:relative;transition:color 0.25s;}
+.tab::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;background:var(--rust);transform:scaleX(0);transition:transform 0.25s;}
+.tab:hover{color:var(--ink);}
+.tab.on{color:var(--ink);}
+.tab.on::after{transform:scaleX(1);}
+.panel{display:none;}
+.panel.on{display:block;animation:fadeUp 0.35s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.teia-wrap{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;padding:1.5rem 2rem 3rem;min-height:780px;}
+#net-wrap{height:750px;}
+#net-svg{width:100%;height:100%;}
+.nlab{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:#1a1208;text-anchor:middle;pointer-events:none;}
+.nlab-white{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:white;text-anchor:middle;pointer-events:none;}
+.nrole{font-family:'Cinzel',serif;font-size:12px;font-weight:600;fill:rgba(26,18,8,0.75);text-anchor:middle;pointer-events:none;}
+.node{cursor:pointer;}
+.node circle{transition:filter 0.25s;}
+.node:hover circle{filter:brightness(1.2);}
+.info-panel{border-left:1px solid var(--border);padding:2rem 1.8rem;display:flex;flex-direction:column;overflow-y:auto;max-height:750px;}
+.info-panel h3{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.info-role{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1rem;}
+.info-desc{font-size:0.93rem;line-height:1.78;color:var(--ink);flex:1;}
+.info-tags{margin-top:1.2rem;}
+.info-tags span{display:inline-block;margin:0.2rem 0.2rem 0 0;background:var(--surf);border:1px solid var(--border);padding:0.22rem 0.65rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);}
+.legend{display:flex;gap:0.8rem;margin-top:auto;padding-top:1.5rem;border-top:1px solid var(--border);flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;font-weight:600;color:var(--ink);}
+.leg-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.wrap{max-width:900px;margin:0 auto;padding:3rem 2rem 4rem;}
+.sec-title{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--ink);letter-spacing:0.12em;text-transform:uppercase;margin:2.5rem 0 0.5rem;}
+.sec-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;margin-bottom:1.5rem;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.card{background:var(--surf);border:1px solid var(--border);padding:1.4rem;}
+.card h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--rust);margin-bottom:0.6rem;}
+.card p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.pull{border:1px solid var(--border);border-left:4px solid var(--rust);padding:1.8rem 2rem;margin:2.5rem 0;background:var(--surf);}
+.pull p{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;line-height:1.7;color:var(--ink);}
+.pull cite{display:block;margin-top:0.8rem;font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);}
+.body-text p{font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.2rem;}
+.autor-grid{display:grid;grid-template-columns:240px 1fr;gap:3rem;align-items:start;margin-bottom:3rem;}
+.foto-box{width:240px;overflow:hidden;position:relative;border:2px solid var(--border);}
+.foto-box svg{display:block;width:100%;height:auto;}
+.foto-box img{display:block;width:100%;height:auto;}
+.foto-cap{position:absolute;bottom:0;left:0;right:0;background:rgba(26,18,8,0.65);padding:0.5rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(245,240,232,0.9);text-align:center;font-weight:700;}
+.bio h2{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.bio .dates{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1.2rem;}
+.bio p{font-size:0.97rem;line-height:1.85;color:var(--ink);margin-bottom:1rem;}
+.timeline{position:relative;margin:1.5rem 0;}
+.timeline::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:1px;background:linear-gradient(to bottom,var(--rust),transparent);}
+.tl{display:flex;gap:1.4rem;margin-bottom:1.5rem;}
+.tl-dot{width:15px;height:15px;border-radius:50%;border:2px solid var(--rust);background:var(--paper);flex-shrink:0;margin-top:2px;position:relative;z-index:1;}
+.tl-yr{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.14em;color:var(--rust);min-width:40px;padding-top:1px;}
+.tl-txt{font-size:0.92rem;line-height:1.68;color:var(--ink);}
+.tema{background:var(--surf);border-left:4px solid var(--rust);padding:1.4rem 1.6rem;}
+.tema .ico{font-size:1.6rem;display:block;margin-bottom:0.6rem;}
+.tema h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.7rem;}
+.tema p{font-size:0.92rem;line-height:1.78;color:var(--ink);}
+.licao{background:var(--paper);border-left:4px solid var(--gold);padding:1.3rem 1.5rem;}
+.licao h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);margin-bottom:0.5rem;}
+.licao p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.fotos-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:2.5rem;}
+.foto-espaco{position:relative;overflow:hidden;border:1px solid var(--border);}
+.foto-espaco img{display:block;width:100%;height:280px;object-fit:cover;}
+.foto-leg{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(26,18,8,0.75));padding:1.5rem 0.9rem 0.6rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,240,232,0.92);}
+.lugar{background:var(--surf);border:1px solid var(--border);padding:1.6rem;position:relative;overflow:hidden;}
+.lugar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rust),transparent);}
+.lugar h3{font-family:'Cinzel',serif;font-size:0.75rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.4rem;}
+.lugar-tag{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;color:var(--ink);display:block;margin-bottom:0.5rem;}
+.lugar p{font-size:0.90rem;line-height:1.72;color:var(--ink);}
+.meta-box{background:var(--paper);border:1px solid var(--border);padding:2rem;margin:2.5rem 0;display:grid;grid-template-columns:60px 1fr;gap:1.5rem;align-items:start;}
+.meta-box .ico{font-size:2.6rem;}
+.meta-box h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.5rem;}
+.meta-box p{font-size:0.92rem;line-height:1.75;color:var(--ink);}
+.midia-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.midia-card{display:flex;gap:1rem;background:var(--surf);border:1px solid var(--border);padding:1.2rem 1.3rem;align-items:flex-start;text-decoration:none;transition:border-color 0.2s,transform 0.2s;}
+.midia-card:hover{border-color:var(--rust);transform:translateY(-2px);}
+.midia-ico{font-size:1.5rem;flex-shrink:0;margin-top:0.1rem;}
+.midia-tipo{font-family:'Cinzel',serif;font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.3rem;display:block;}
+.midia-titulo{font-family:'DM Sans',sans-serif;font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;display:block;}
+.midia-fonte{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.85rem;color:rgba(26,18,8,0.65);}
+.av-wrap{max-width:900px;margin:0 auto;padding:4rem 2rem 5rem;border-top:1px solid var(--border);}
+.av-wrap h2{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:0.08em;text-align:center;margin-bottom:0.4rem;}
+.av-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;text-align:center;margin-bottom:2.5rem;}
+.av-summary{background:var(--surf);border:1px solid var(--border);padding:2rem;display:flex;gap:3rem;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;}
+.av-big-num{font-family:'Cinzel',serif;font-size:4rem;font-weight:700;color:var(--rust);line-height:1;text-align:center;}
+.av-big-stars{font-size:1.5rem;text-align:center;margin:0.3rem 0;}
+.av-big-count{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.6);text-align:center;}
+.brow{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;}
+.brow-lbl{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;color:var(--ink);min-width:28px;}
+.brow-track{flex:1;height:8px;background:rgba(26,18,8,0.1);border-radius:4px;overflow:hidden;}
+.brow-fill{height:100%;background:var(--rust);border-radius:4px;transition:width 0.5s;width:0%;}
+.brow-n{font-family:'Cinzel',serif;font-size:0.62rem;font-weight:700;color:rgba(26,18,8,0.6);min-width:16px;text-align:right;}
+.av-form{background:var(--paper);border:1px solid var(--border);padding:2rem;margin-bottom:2.5rem;}
+.av-form h3{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink);margin-bottom:1.5rem;}
+.av-label{font-family:'Cinzel',serif;font-size:0.63rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);display:block;margin-bottom:0.4rem;}
+.av-input{width:100%;padding:0.7rem 1rem;margin-bottom:1.2rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;}
+.av-input:focus{border-color:var(--rust);}
+.av-textarea{width:100%;padding:0.7rem 1rem;margin-bottom:1.5rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;resize:vertical;line-height:1.65;min-height:100px;}
+.av-textarea:focus{border-color:var(--rust);}
+.stars-pick{display:flex;gap:0.3rem;margin-bottom:1.3rem;}
+.stars-pick span{font-size:2.2rem;cursor:pointer;line-height:1;color:rgba(26,18,8,0.2);transition:color 0.15s;user-select:none;}
+.av-btn{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;background:var(--rust);color:white;border:none;padding:0.85rem 2.5rem;cursor:pointer;transition:background 0.2s;}
+.av-btn:hover{background:#a33508;}
+.av-btn:disabled{background:#aaa;cursor:default;}
+.av-msg{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;margin-left:1rem;}
+.comment{border:1px solid var(--border);padding:1.4rem 1.6rem;margin-bottom:1rem;background:var(--cream);}
+.chead{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;flex-wrap:wrap;gap:0.4rem;}
+.cname{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;color:var(--ink);}
+.cstars{color:var(--rust);font-size:1.05rem;}
+.cdate{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:600;color:rgba(26,18,8,0.5);}
+.ctext{font-size:0.95rem;line-height:1.75;color:var(--ink);}
+.no-reviews{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.5);font-size:1rem;text-align:center;padding:2rem 0;}
+.loading{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.12em;color:rgba(26,18,8,0.5);text-align:center;padding:1.5rem 0;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Socorro.</a>
+  <span class="nav-tag">Clube do Livro · Análise</span>
+  <a href="index.html#lidos" class="nav-back">← Voltar à Estante</a>
+</nav>
+
+<div class="page-header">
+  <div class="capa-wrap"><img src="https://covers.openlibrary.org/b/isbn/9786556928203-L.jpg" alt="Capa de Batida Só"></div>
+  <p class="sup">Giovana Madalosso &nbsp;·&nbsp; 2025 &nbsp;·&nbsp; Análise Literária</p>
+  <h1><em>Batida Só</em></h1>
+  <p>Teia de Relações · A Autora · Temas · Espaço Narrativo · Mídia</p>
+</div>
+
+<div class="tabs-bar">
+  <button class="tab on"  onclick="goTab('teia',this)">Teia de Relações</button>
+  <button class="tab"     onclick="goTab('autora',this)">A Autora</button>
+  <button class="tab"     onclick="goTab('temas',this)">Temas &amp; Lições</button>
+  <button class="tab"     onclick="goTab('espaco',this)">O Espaço Narrativo</button>
+  <button class="tab"     onclick="goTab('midia',this)">Mídia</button>
+</div>
+
+<!-- TEIA -->
+<div id="panel-teia" class="panel on">
+<div class="teia-wrap">
+  <div id="net-wrap">
+  <svg id="net-svg" viewBox="0 0 860 750" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+    <line x1="430" y1="390" x2="430" y2="120" stroke="#6b8c6e" stroke-width="3" stroke-opacity="0.6" stroke-dasharray="8,5"/>
+    <line x1="430" y1="390" x2="170" y2="210" stroke="#2a9d8f" stroke-width="3" stroke-opacity="0.7"/>
+    <line x1="430" y1="390" x2="660" y2="210" stroke="#d4a017" stroke-width="2.5" stroke-opacity="0.55" stroke-dasharray="6,4"/>
+    <line x1="430" y1="390" x2="150" y2="520" stroke="#c1440e" stroke-width="3" stroke-opacity="0.65"/>
+    <line x1="430" y1="390" x2="700" y2="520" stroke="#9b5078" stroke-width="3" stroke-opacity="0.7"/>
+    <line x1="430" y1="390" x2="430" y2="660" stroke="#1a1208" stroke-width="2" stroke-opacity="0.3" stroke-dasharray="6,4"/>
+    <line x1="150" y1="520" x2="700" y2="520" stroke="#c1440e" stroke-width="1.5" stroke-opacity="0.3"/>
+    <line x1="170" y1="210" x2="150" y2="520" stroke="#2a9d8f" stroke-width="1.5" stroke-opacity="0.3"/>
+    <g class="node" onclick="info('jornalista')"><circle cx="430" cy="390" r="82" fill="#c1440e" fill-opacity="0.12" stroke="#c1440e" stroke-width="3.5"/><circle cx="430" cy="390" r="62" fill="#c1440e" fill-opacity="0.93"/><text x="430" y="385" class="nlab-white" style="font-size:15px;">A Jornalista</text><text x="430" y="403" class="nlab-white" style="font-size:12px;">coração em colapso</text><text x="430" y="480" class="nrole">a protagonista</text></g>
+    <g class="node" onclick="info('arritmia')"><circle cx="430" cy="120" r="48" fill="#6b8c6e" fill-opacity="0.55" stroke="#6b8c6e" stroke-width="2.5" stroke-dasharray="6,4"/><text x="430" y="113" class="nlab" style="font-size:12px;">A Arritmia</text><text x="430" y="129" class="nlab" style="font-size:11px;">o diagnóstico</text><text x="430" y="180" class="nrole">a ameaça constante</text></g>
+    <g class="node" onclick="info('sara')"><circle cx="170" cy="210" r="52" fill="#2a9d8f" fill-opacity="0.85"/><text x="170" y="207" class="nlab-white" style="font-size:14px;">Sara</text><text x="170" y="270" class="nrole">amiga · fé "flex"</text></g>
+    <g class="node" onclick="info('nico')"><circle cx="660" cy="210" r="50" fill="#d4a017" fill-opacity="0.85"/><text x="660" y="207" class="nlab-white" style="font-size:14px;">Nico</text><text x="660" y="270" class="nrole">o filho doente</text></g>
+    <g class="node" onclick="info('moenda')"><circle cx="150" cy="520" r="50" fill="#c1440e" fill-opacity="0.7"/><text x="150" y="513" class="nlab-white" style="font-size:14px;">Moenda</text><text x="150" y="529" class="nlab-white" style="font-size:11px;">cidade natal</text><text x="150" y="580" class="nrole">o espaço</text></g>
+    <g class="node" onclick="info('casa')"><circle cx="700" cy="520" r="52" fill="#9b5078" fill-opacity="0.82"/><text x="700" y="512" class="nlab-white" style="font-size:13px;">A Casa</text><text x="700" y="528" class="nlab-white" style="font-size:11px;">dos avós</text><text x="700" y="582" class="nrole">o abrigo</text></g>
+    <g class="node" onclick="info('viagem')"><circle cx="430" cy="660" r="44" fill="#1a1208" fill-opacity="0.35" stroke="#9b5078" stroke-width="2" stroke-dasharray="5,4"/><text x="430" y="653" class="nlab" style="font-size:12px;">A Viagem</text><text x="430" y="669" class="nlab" style="font-size:11px;">em busca da cura</text><text x="430" y="714" class="nrole">o desfecho</text></g>
+  </svg>
+  </div>
+  <div class="info-panel">
+    <h3 id="i-name">Clique em um personagem</h3>
+    <p class="info-role" id="i-role">para ver o perfil</p>
+    <p class="info-desc" id="i-desc">Após ser atacada na rua e descobrir uma arritmia cardíaca grave, uma jornalista precisa evitar emoções fortes sob risco de morte. Ela retorna à provinciana Moenda, sua cidade natal, onde reencontra Sara, amiga de infância religiosa, e o filho dela, Nico — e é levada, aos poucos, a repensar tudo o que considerava inegociável na vida.</p>
+    <div class="info-tags" id="i-tags"></div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:#c1440e"></div>A Jornalista &amp; Moenda</div>
+      <div class="leg"><div class="leg-dot" style="background:#2a9d8f"></div>Fé &amp; amizade</div>
+      <div class="leg"><div class="leg-dot" style="background:#d4a017"></div>Doença &amp; cuidado</div>
+      <div class="leg"><div class="leg-dot" style="background:#9b5078"></div>Abrigo &amp; memória</div>
+      <div class="leg"><svg width="24" height="8"><line x1="0" y1="4" x2="24" y2="4" stroke="#1a1208" stroke-width="2" stroke-dasharray="5,3"/></svg>Ameaça constante</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- AUTORA -->
+<div id="panel-autora" class="panel">
+<div class="wrap">
+  <div class="autor-grid">
+    <div class="foto-box">
+      <svg viewBox="0 0 240 300" xmlns="http://www.w3.org/2000/svg">
+        <rect width="240" height="300" fill="#e4ddd0"/>
+        <circle cx="120" cy="108" r="55" fill="#c1b89a"/>
+        <ellipse cx="120" cy="268" rx="84" ry="60" fill="#c1b89a"/>
+        <text x="120" y="218" font-family="Cinzel,serif" font-size="9.5" font-weight="700" fill="rgba(26,18,8,0.42)" text-anchor="middle" letter-spacing="1.5">GIOVANA MADALOSSO</text>
+      </svg>
+      <div class="foto-cap">Curitiba · n. 1975</div>
+    </div>
+    <div class="bio">
+      <h2>Giovana Madalosso</h2>
+      <p class="dates">Curitiba, Paraná, 1975</p>
+      <p>Giovana Madalosso nasceu em Curitiba em 1975, filha de Neuza e Carlos Madalosso, donos do tradicional Restaurante Madalosso. Formada em Jornalismo pela UFPR, trabalhou como redatora publicitária antes de se estabelecer como escritora em São Paulo. Descobriu a vocação de inventar histórias ainda na faculdade, durante um estágio em TV, ao imaginar enredos diferentes para as imagens de uma enchente que editava.</p>
+      <p>Estreou na literatura com o livro de contos <em>A Teta Racional</em> (2016), sobre maternidade e amamentação, finalista do Prêmio Clarice Lispector. Publicou depois <em>Tudo Pode Ser Roubado</em> (2018) e <em>Suíte Tóquio</em> (2020, finalista do Jabuti, recomendado pelo New York Times). É colunista da Folha de S.Paulo desde 2023 e uma das idealizadoras do movimento "Um Grande Dia para as Escritoras", que reuniu mais de 2.300 autoras em fotos por todo o Brasil.</p>
+    </div>
+  </div>
+  <p class="sec-title">Linha do Tempo</p>
+  <div class="timeline">
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1975</div><div class="tl-txt">Nasce em Curitiba, Paraná.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2016</div><div class="tl-txt">Estreia na literatura com <em>A Teta Racional</em>, finalista do Prêmio Clarice Lispector.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2018</div><div class="tl-txt">Publica <em>Tudo Pode Ser Roubado</em>, eleito melhor romance pelo Prêmio Manuel de Boaventura (Portugal).</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2020</div><div class="tl-txt">Publica <em>Suíte Tóquio</em>, finalista do Prêmio Jabuti.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2022</div><div class="tl-txt">Coidealiza o movimento "Um Grande Dia para as Escritoras", reunindo mais de 2.300 autoras em fotos por todo o Brasil.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2023</div><div class="tl-txt">Torna-se colunista da Folha de S.Paulo.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2025</div><div class="tl-txt">Publica <em>Batida Só</em> pela Todavia; <em>Suíte Tóquio</em> é recomendado pelo New York Times nos EUA.</div></div>
+  </div>
+  <p class="sec-title">Seis curiosidades sobre a autora e o livro</p>
+  <p class="sec-sub">Detalhes que revelam a origem real desta história improvável</p>
+  <div class="g2">
+    <div class="card"><h4>A descoberta da vocação numa enchente</h4><p>Durante um estágio em TV na faculdade de Jornalismo, Giovana editava imagens de uma enchente quando percebeu que preferia inventar histórias a apenas narrar fatos como eram — o momento que a levou à ficção.</p></div>
+    <div class="card"><h4>Filha do restaurante mais tradicional de Curitiba</h4><p>Seus pais são donos do centenário Restaurante Madalosso, point gastronômico símbolo da cidade — Giovana se descreve como a "ovelha cinza" de uma família tradicional e católica.</p></div>
+    <div class="card"><h4>Rebelde aos nove anos</h4><p>Quando os primos se preparavam para a Primeira Comunhão, ela anunciou à família: "Eu acho que não acredito em Deus" — episódio que ecoa diretamente no ateísmo da protagonista de Batida Só.</p></div>
+    <div class="card"><h4>Se escondia no banheiro para ler</h4><p>Trabalhando como redatora publicitária antes de se tornar escritora em tempo integral, sentia-se estrangeira no ambiente corporativo — e se trancava no banheiro só para conseguir ler.</p></div>
+    <div class="card"><h4>Reuniu mais de 2.300 escritoras em fotos</h4><p>Inspirada na icônica foto "A Great Day in Harlem", coidealizou o movimento "Um Grande Dia para as Escritoras", que registrou autoras brasileiras em mais de 50 cidades do Brasil e do mundo.</p></div>
+    <div class="card"><h4>Reconhecida duas vezes pelo New York Times</h4><p><em>Suíte Tóquio</em> foi recomendado pelo jornal americano tanto no lançamento em espanhol quanto, mais recentemente, na edição em inglês — reconhecimento raro para uma autora brasileira contemporânea.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- TEMAS -->
+<div id="panel-temas" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Temas Centrais do Livro</p>
+  <p class="sec-sub">O que o romance diz sobre fé, escuta e o peso das promessas</p>
+  <div class="g2" style="margin-top:0;">
+    <div class="tema"><span class="ico">💗</span><h3>O Corpo Como Limite</h3><p>A recomendação médica de evitar emoções fortes transforma a própria vida interior da protagonista em território de risco — sentir intensamente deixa de ser luxo e passa a ser ameaça concreta.</p></div>
+    <div class="tema"><span class="ico">✝️</span><h3>Fé Versus Ceticismo</h3><p>O confronto entre o ateísmo da protagonista e a religiosidade "flex" de Sara — católica e evangélica ao mesmo tempo — não busca vencedor, mas ilumina como cada uma lida com o inegociável da existência.</p></div>
+    <div class="tema"><span class="ico">🏘️</span><h3>Retorno à Cidade Natal</h3><p>Moenda funciona como contraponto à vida acelerada da metrópole — a provação física da protagonista só encontra espaço para ser processada longe do ruído urbano.</p></div>
+    <div class="tema"><span class="ico">🤝</span><h3>Amizades Reencontradas</h3><p>O reencontro com Sara, que ficou na cidade natal enquanto a protagonista partiu, revela como trajetórias tão diferentes ainda podem se religar em momentos de crise.</p></div>
+    <div class="tema"><span class="ico">🧒</span><h3>A Doença Que Não Escolhe Idade</h3><p>A presença de Nico, criança com prognóstico difícil, amplia o livro para além da experiência adulta da protagonista — a fragilidade do corpo atravessa gerações.</p></div>
+    <div class="tema"><span class="ico">🔍</span><h3>O Que É Realmente Inegociável</h3><p>Confrontada com a própria mortalidade, a protagonista é forçada a separar o que de fato importa em sua vida do que sempre tratou como urgente sem realmente ser.</p></div>
+  </div>
+  <div class="pull">
+    <p>Uma trama sobre as emoções, sobre doença e fé, vida e morte — e sobre diferenciar aquilo que verdadeiramente importa daquilo de que, goste-se ou não, não há escapatória.</p>
+    <cite>Sobre Batida Só</cite>
+  </div>
+  <p class="sec-title">Seis lições da narrativa</p>
+  <p class="sec-sub">O que o clube pode levar desta leitura</p>
+  <div class="g2">
+    <div class="licao"><h4>Crises físicas também são crises existenciais</h4><p>O diagnóstico da protagonista não é apenas médico — ele reorganiza inteiramente sua relação com desejo, trabalho e memória.</p></div>
+    <div class="licao"><h4>Fé e ceticismo podem dialogar sem se anular</h4><p>O livro trata a diferença religiosa entre as duas amigas com curiosidade, não com julgamento — um modelo raro de diálogo sobre crença na ficção contemporânea.</p></div>
+    <div class="licao"><h4>Voltar não é retroceder</h4><p>O retorno da protagonista à cidade natal não é apresentado como fracasso, mas como necessidade — às vezes avançar exige, primeiro, voltar.</p></div>
+    <div class="licao"><h4>Amizades de infância carregam outra intimidade</h4><p>O vínculo com Sara sobrevive a décadas de distância e escolhas de vida opostas — sugerindo que certas conexões antigas guardam uma familiaridade que amizades adultas raramente replicam.</p></div>
+    <div class="licao"><h4>Cuidado não exige semelhança</h4><p>Protagonista e Sara pouco têm em comum além do passado — e ainda assim se tornam essenciais uma para a outra no momento de maior vulnerabilidade.</p></div>
+    <div class="licao"><h4>Nem toda jornada de cura tem destino certo</h4><p>O final aberto do livro recusa prometer resolução — o processo de repensar a própria vida, sugere a autora, pode ser válido mesmo sem desfecho definitivo.</p></div>
+  </div>
+  <p class="sec-title">Síntese</p>
+  <div class="body-text">
+    <p>Batida Só marca o retorno de Giovana Madalosso ao romance depois do sucesso de Suíte Tóquio, e faz isso partindo de uma premissa incomum: um corpo que trai a própria dona ao reagir fisicamente demais às emoções da vida contemporânea. Ao forçar a protagonista — jornalista, cética, habituada ao ritmo acelerado da cidade grande — a se afastar de tudo que sente intensamente, Madalosso constrói uma narrativa sobre os limites entre viver plenamente e sobreviver com cautela.</p>
+    <p>O encontro com Sara, amiga de infância que escolheu permanecer em Moenda e abraçar uma fé híbrida entre catolicismo e evangelicalismo, funciona como espelho invertido da protagonista: onde uma busca controle racional sobre o próprio corpo, a outra encontra sentido justamente na entrega. Ao recusar tomar partido entre fé e ceticismo, e ao tecer nessa relação a presença de Nico, o filho doente de Sara, o romance evita respostas fáceis sobre cura, controle e o que realmente vale a pena preservar quando a própria vida está em jogo.</p>
+  </div>
+</div>
+</div>
+
+<!-- ESPAÇO -->
+<div id="panel-espaco" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">O Espaço Narrativo</p>
+  <p class="sec-sub">Da metrópole acelerada à provinciana Moenda</p>
+  <div class="fotos-grid">
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Countryside_-_Municipality_of_Abelardo_Luz_-_State_of_Santa_Catarina_-_Brazil.jpg" alt="Interior do Brasil"><div class="foto-leg">O interior brasileiro — a paisagem que inspira a fictícia Moenda</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Igreja_Crist%C3%A3_Evang%C3%A9lica_(Piren%C3%B3polis,_Brasil).jpg" alt="Igreja em cidade pequena do interior"><div class="foto-leg">Uma igreja de cidade pequena — a fé "flex" de Sara, entre catolicismo e evangelicalismo</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Avenida_Paulista,_S%C3%A3o_Paulo_2016_06.jpg" alt="Avenida Paulista, São Paulo"><div class="foto-leg">A metrópole acelerada — a vida que a protagonista precisa deixar para trás</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Hands_typing_on_a_vintage_typewriter_in_a_cozy_workspace.jpg" alt="Máquina de escrever vintage"><div class="foto-leg">A profissão de jornalista — o ofício que a protagonista precisa reaprender a exercer com calma</div></div>
+  </div>
+  <p style="font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.5rem;">O romance se move entre dois polos geográficos e emocionais: a cidade grande, onde a protagonista construiu carreira e vida adulta, e Moenda, cidade fictícia do interior onde ela passou a infância — e para onde precisa retornar quando o próprio corpo exige uma vida mais lenta.</p>
+  <div class="g2">
+    <div class="lugar"><h3>Moenda</h3><span class="lugar-tag">A Cidade Natal Fictícia</span><p>Provinciana e tranquila, funciona como refúgio físico e emocional — o oposto exato da vida acelerada que a protagonista foi obrigada a abandonar.</p></div>
+    <div class="lugar"><h3>A Casa dos Avós</h3><span class="lugar-tag">O Abrigo</span><p>Desocupada havia anos, torna-se o espaço onde a protagonista se recolhe para se entorpecer de antidepressivos e reaprender a sentir com cautela.</p></div>
+    <div class="lugar"><h3>A Autoescola de Sara</h3><span class="lugar-tag">A Vida que Ficou</span><p>Negócio simples e enraizado na cidade, simboliza a vida que Sara escolheu construir sem nunca sair de Moenda — trajetória oposta à da protagonista.</p></div>
+    <div class="lugar"><h3>A Metrópole (fora de cena)</h3><span class="lugar-tag">O Que Ficou para Trás</span><p>Presente por ausência: o estresse da vida urbana nunca aparece diretamente, mas paira sobre toda a narrativa como origem do colapso físico da protagonista.</p></div>
+  </div>
+  <div class="meta-box">
+    <div class="ico">💓</div>
+    <div><h3>Um Título que é Também um Ritmo</h3><p>"Batida Só" remete tanto às batidas descompassadas do coração da protagonista quanto à sensação de estar imersa numa multidão de possibilidades e afetos — ecoando, segundo a crítica, o refrão da canção "Beat Acelerado", sucesso brasileiro dos anos 1980 sobre uma geração que recusava os modelos afetivos herdados dos pais.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- MÍDIA -->
+<div id="panel-midia" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Mídia</p>
+  <p class="sec-sub">Podcasts, vídeos e publicações para aprofundar a leitura do clube</p>
+  <div class="midia-grid">
+    <a class="midia-card" href="https://www.bemparana.com.br/cultura/uma-deusa-uma-louca-uma-feiticeira-giovana-madalosso-fala-sobre-inquietudes-e-o-novo-livro/" target="_blank" rel="noopener">
+      <span class="midia-ico">🎙️</span>
+      <span>
+        <span class="midia-tipo">Podcast · Entrevista</span>
+        <span class="midia-titulo">"Uma deusa, uma louca, uma feiticeira" — Retrato Gravado</span>
+        <span class="midia-fonte">Bem Paraná</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.youtube.com/watch?v=eUtt5ckuqXY" target="_blank" rel="noopener">
+      <span class="midia-ico">📹</span>
+      <span>
+        <span class="midia-tipo">Vídeo · Entrevista</span>
+        <span class="midia-titulo">Giovana Madalosso — Escritora</span>
+        <span class="midia-fonte">Histórias Diversas Podcast, YouTube</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.publishnews.com.br/materias/2025/08/11/batida-so-emocao-fe-e-corpo" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação</span>
+        <span class="midia-titulo">Batida Só: emoção, fé e corpo</span>
+        <span class="midia-fonte">PublishNews</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://oodisseu.com.br/coracao-ligado-beat-acelerado-critica-de-batida-so-de-giovana-madalosso/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Crítica</span>
+        <span class="midia-titulo">Coração ligado, beat acelerado</span>
+        <span class="midia-fonte">O Odisseu</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://revistaogrito.com/lancamento-de-batida-so-de-giovana-madalosso-aborda-fe-e-relacoes-humanas/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação</span>
+        <span class="midia-titulo">Lançamento de Batida Só aborda fé e relações humanas</span>
+        <span class="midia-fonte">Revista O Grito!</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.agenciariff.com.br/um-grande-momento-na-carreira-literaria-de-giovana-madalosso/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Entrevista</span>
+        <span class="midia-titulo">Um grande momento na carreira literária de Giovana Madalosso</span>
+        <span class="midia-fonte">Agência Riff</span>
+      </span>
+    </a>
+  </div>
+</div>
+</div>
+
+<!-- AVALIAÇÃO -->
+<div class="av-wrap">
+  <p class="sup" style="text-align:center;margin-bottom:0.4rem;">Clube Socorro</p>
+  <h2>Avaliações &amp; Comentários</h2>
+  <p class="av-sub">O que o clube achou de Batida Só</p>
+  <div class="av-summary">
+    <div>
+      <div class="av-big-num" id="avg-num">—</div>
+      <div class="av-big-stars" id="avg-stars">☆☆☆☆☆</div>
+      <div class="av-big-count" id="avg-count">0 avaliações</div>
+    </div>
+    <div class="bars">
+      <div class="brow"><span class="brow-lbl">5★</span><div class="brow-track"><div class="brow-fill" id="b5"></div></div><span class="brow-n" id="n5">0</span></div>
+      <div class="brow"><span class="brow-lbl">4★</span><div class="brow-track"><div class="brow-fill" id="b4"></div></div><span class="brow-n" id="n4">0</span></div>
+      <div class="brow"><span class="brow-lbl">3★</span><div class="brow-track"><div class="brow-fill" id="b3"></div></div><span class="brow-n" id="n3">0</span></div>
+      <div class="brow"><span class="brow-lbl">2★</span><div class="brow-track"><div class="brow-fill" id="b2"></div></div><span class="brow-n" id="n2">0</span></div>
+      <div class="brow"><span class="brow-lbl">1★</span><div class="brow-track"><div class="brow-fill" id="b1"></div></div><span class="brow-n" id="n1">0</span></div>
+    </div>
+  </div>
+  <div class="av-form">
+    <h3>Deixe sua avaliação</h3>
+    <label class="av-label">Seu nome</label>
+    <input id="f-nome" class="av-input" type="text" placeholder="Como quer ser identificada?">
+    <label class="av-label">Nota</label>
+    <div class="stars-pick" id="star-row">
+      <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+    </div>
+    <label class="av-label">Comentário</label>
+    <textarea id="f-txt" class="av-textarea" placeholder="O que você achou do livro?"></textarea>
+    <button class="av-btn" onclick="submitReview()">Publicar Avaliação</button>
+    <span id="f-msg" class="av-msg"></span>
+  </div>
+  <div id="comments"><p class="loading">Carregando avaliações...</p></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyB03BscdfdfZGW42Btqbmzt72Dpusu45NU",
+  authDomain: "socorro-clube-do-livro.firebaseapp.com",
+  projectId: "socorro-clube-do-livro",
+  storageBucket: "socorro-clube-do-livro.firebasestorage.app",
+  messagingSenderId: "729551936788",
+  appId: "1:729551936788:web:001a6e284a63a51fc37601"
+};
+let db = null;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  db.settings({ experimentalAutoDetectLongPolling: true, useFetchStreams: false });
+} catch (e) { db = null; }
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str == null ? '' : String(str);
+  return div.innerHTML;
+}
+
+const P = {
+  jornalista: { nome:'A Jornalista', papel:'Protagonista · Coração em Colapso', desc:'Após ser atacada na rua e sofrer um episódio grave de arritmia, descobre que precisa evitar emoções fortes sob risco de morte. Deixa a vida acelerada da metrópole e retorna à cidade natal em busca de uma existência mais lenta — e de sentido.', tags:['Sara','Nico','Moenda'] },
+  arritmia:   { nome:'A Arritmia', papel:'O Diagnóstico · Ameaça Constante', desc:'Condição cardíaca grave e de tratamento incerto que reorganiza inteiramente a vida da protagonista — cada emoção intensa passa a carregar risco real, transformando sentir em ato perigoso.', tags:['A Jornalista'] },
+  sara:       { nome:'Sara', papel:'Amiga de Infância · Fé "Flex"', desc:'Ficou em Moenda enquanto a protagonista partiu. Dona de uma autoescola, é ao mesmo tempo católica e evangélica, "na modalidade flex" — sua religiosidade confronta o ateísmo da protagonista sem nunca se impor como verdade única.', tags:['A Jornalista','Nico'] },
+  nico:       { nome:'Nico', papel:'O Filho de Sara · Doença Compartilhada', desc:'Garoto que visita a protagonista assim que ela chega a Moenda. Também enfrenta uma doença de prognóstico difícil, ampliando o livro para além da experiência adulta da protagonista.', tags:['Sara','A Jornalista'] },
+  moenda:     { nome:'Moenda', papel:'Espaço · A Cidade Natal Fictícia', desc:'Cidade provinciana onde a protagonista passou a infância e para onde retorna, décadas depois, em busca de uma vida mais lenta — refúgio físico e emocional diante do diagnóstico.', tags:['A Jornalista','Sara'] },
+  casa:       { nome:'A Casa dos Avós', papel:'O Abrigo', desc:'Desocupada havia anos, a casa dos avós da protagonista em Moenda serve de abrigo para esta nova fase da vida, enquanto ela se entorpece de antidepressivos para sentir menos e não estimular o coração.', tags:['A Jornalista','Moenda'] },
+  viagem:     { nome:'A Viagem em Busca da Cura', papel:'O Desfecho', desc:'À medida que os laços entre protagonista, Sara e Nico se estreitam, os três partem numa viagem em busca da cura — seja lá o que isso signifique para cada um deles — rumo a um final que a autora deixa deliberadamente aberto.', tags:['A Jornalista','Sara','Nico'] }
+};
+
+function info(id) {
+  const p = P[id]; if (!p) return;
+  document.getElementById('i-name').textContent = p.nome;
+  document.getElementById('i-role').textContent = p.papel;
+  document.getElementById('i-desc').textContent = p.desc;
+  document.getElementById('i-tags').innerHTML =
+    '<p style="font-family:Cinzel,serif;font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);margin-bottom:0.4rem;">Conexões</p>' +
+    p.tags.map(t => '<span>' + t + '</span>').join('');
+}
+
+function goTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  document.getElementById('panel-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+let picked = 0;
+document.querySelectorAll('#star-row span').forEach(s => {
+  s.addEventListener('mouseover', () => hilite(+s.dataset.v));
+  s.addEventListener('mouseout',  () => hilite(picked));
+  s.addEventListener('click',     () => { picked = +s.dataset.v; hilite(picked); });
+});
+function hilite(n) {
+  document.querySelectorAll('#star-row span').forEach(s => {
+    s.style.color = +s.dataset.v <= n ? '#c1440e' : 'rgba(26,18,8,0.2)';
+  });
+}
+
+const BOOK_SLUG = 'batida-so';
+const reviewsCol = db ? db.collection('livros').doc(BOOK_SLUG).collection('reviews') : null;
+let reviews = [];
+
+async function submitReview() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const txt  = document.getElementById('f-txt').value.trim();
+  const msg  = document.getElementById('f-msg');
+  if (!nome)   { msg.textContent = 'Coloque seu nome.';      msg.style.color='#c1440e'; return; }
+  if (!picked) { msg.textContent = 'Selecione uma nota.';    msg.style.color='#c1440e'; return; }
+  if (!txt)    { msg.textContent = 'Escreva um comentário.'; msg.style.color='#c1440e'; return; }
+  if (!reviewsCol) { msg.textContent = 'Avaliações indisponíveis no momento.'; msg.style.color='#c1440e'; return; }
+  const btn = document.querySelector('.av-btn');
+  btn.textContent = 'Enviando...'; btn.disabled = true;
+  msg.textContent = '';
+  try {
+    await reviewsCol.add({
+      nome, nota: picked, comentario: txt,
+      data: new Date().toLocaleDateString('pt-BR'),
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('f-nome').value = '';
+    document.getElementById('f-txt').value  = '';
+    picked = 0; hilite(0);
+    msg.textContent = 'Publicado!'; msg.style.color = '#6b8c6e';
+    setTimeout(() => msg.textContent = '', 4000);
+  } catch(e) {
+    msg.textContent = 'Erro ao enviar. Tente novamente.'; msg.style.color = '#c1440e';
+  }
+  btn.textContent = 'Publicar Avaliação'; btn.disabled = false;
+}
+
+function renderReviews() {
+  const total = reviews.length;
+  if (!total) {
+    document.getElementById('avg-num').textContent   = '—';
+    document.getElementById('avg-stars').textContent = '☆☆☆☆☆';
+    document.getElementById('avg-count').textContent = '0 avaliações';
+    [1,2,3,4,5].forEach(n => { document.getElementById('b'+n).style.width='0%'; document.getElementById('n'+n).textContent='0'; });
+    document.getElementById('comments').innerHTML = '<p class="no-reviews">Nenhuma avaliação ainda — seja a primeira!</p>';
+    return;
+  }
+  const avg = reviews.reduce((a,r) => a + Number(r.nota), 0) / total;
+  document.getElementById('avg-num').textContent   = avg.toFixed(1);
+  const full = Math.round(avg);
+  document.getElementById('avg-stars').textContent = '★'.repeat(full) + '☆'.repeat(5-full);
+  document.getElementById('avg-count').textContent = total + (total===1 ? ' avaliação' : ' avaliações');
+  [1,2,3,4,5].forEach(n => {
+    const c = reviews.filter(r => Number(r.nota)===n).length;
+    document.getElementById('b'+n).style.width = (c/total*100).toFixed(0) + '%';
+    document.getElementById('n'+n).textContent = c;
+  });
+  document.getElementById('comments').innerHTML = reviews.map(r => `
+    <div class="comment">
+      <div class="chead">
+        <span class="cname">${escapeHtml(r.nome)}</span>
+        <span class="cstars">${'★'.repeat(Number(r.nota))}${'☆'.repeat(5-Number(r.nota))}</span>
+        <span class="cdate">${escapeHtml(r.data)}</span>
+      </div>
+      <p class="ctext">${escapeHtml(r.comentario)}</p>
+    </div>`).join('');
+}
+
+if (reviewsCol) {
+  reviewsCol.orderBy('criadoEm', 'desc').onSnapshot(function (snap) {
+    reviews = snap.docs.map(d => d.data());
+    renderReviews();
+  }, function () {
+    reviews = [];
+    renderReviews();
+  });
+} else {
+  renderReviews();
+}
+</script>
+</body>
+</html>
