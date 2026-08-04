@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alba de Céspedes — Socorro Clube do Livro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8; --paper: #ede8dc; --ink: #1a1208; --ink-mid: #3a2e1a;
+    --ink-light: #6b5e42; --ink-faint: #9e9080; --rust: #c1440e; --gold: #d4a017;
+    --gold-pale: #f5eacc; --sage: #6b8c6e; --border: rgba(26,18,8,0.1);
+    --border-mid: rgba(26,18,8,0.2); --shadow: rgba(26,18,8,0.12);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; font-weight: 300; background: var(--cream); color: var(--ink); font-size: 17px; line-height: 1.75; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.5; }
+  nav { position: sticky; top: 0; z-index: 100; background: var(--cream); border-bottom: 1px solid var(--border); padding: 0 4rem; display: flex; align-items: center; justify-content: space-between; height: 60px; transition: box-shadow 0.3s; }
+  nav.scrolled { box-shadow: 0 4px 30px var(--shadow); }
+  .nav-brand { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--rust); text-decoration: none; letter-spacing: -0.02em; }
+  .nav-brand span { font-size: 0.75rem; font-family: 'DM Sans', sans-serif; font-weight: 300; color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase; margin-left: 0.75rem; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); opacity: 0.6; text-decoration: none; transition: opacity 0.2s; position: relative; }
+  .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 1px; background: var(--rust); transform: scaleX(0); transition: transform 0.25s; }
+  .nav-links a:hover { opacity: 1; }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-back { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--rust); text-decoration: none; opacity: 0.8; transition: opacity 0.2s; }
+  .nav-back:hover { opacity: 1; }
+  .hero { position: relative; min-height: 88vh; display: flex; align-items: center; overflow: hidden; padding: 6rem 4rem 5rem; background: var(--ink); color: var(--cream); }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 80% 40%, rgba(212,160,23,0.12) 0%, transparent 70%), radial-gradient(ellipse 50% 80% at 10% 70%, rgba(193,68,14,0.08) 0%, transparent 60%); }
+  .hero-lines { position: absolute; inset: 0; background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(245,240,232,0.03) 39px, rgba(245,240,232,0.03) 40px); }
+  .hero-inner { position: relative; max-width: 1100px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 300px; gap: 5rem; align-items: center; animation: fadeUp 0.8s ease both; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  .hero-eyebrow { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 12px; opacity: 0.9; }
+  .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
+  .hero-name { font-family: 'DM Serif Display', serif; font-size: clamp(52px, 8vw, 90px); font-weight: 400; line-height: 0.95; color: var(--cream); margin-bottom: 0.6rem; letter-spacing: -0.03em; }
+  .hero-name em { font-style: italic; color: var(--gold); }
+  .hero-dates { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-bottom: 2rem; margin-top: 0.75rem; }
+  .hero-desc { font-size: 1.05rem; line-height: 1.75; color: rgba(245,240,232,0.7); max-width: 520px; margin-bottom: 2.5rem; }
+  .hero-stats { display: flex; gap: 2.5rem; }
+  .hero-stat-num { font-family: 'DM Serif Display', serif; font-size: 2.2rem; color: var(--gold); line-height: 1; }
+  .hero-stat-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-top: 4px; }
+  .hero-portrait { position: relative; }
+  .portrait-frame { width: 100%; aspect-ratio: 3/4; border-radius: 2px; border: 1px solid rgba(245,240,232,0.12); overflow: hidden; position: relative; }
+  .portrait-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .portrait-year-tag { position: absolute; bottom: 20px; right: 20px; background: var(--rust); color: white; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; }
+  .page-content { max-width: 1100px; margin: 0 auto; padding: 0 4rem; }
+  .section { padding: 5rem 0; border-top: 1px solid var(--border); }
+  .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3rem; }
+  .section-num { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rust); flex-shrink: 0; opacity: 0.7; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 400; color: var(--ink); line-height: 1.1; letter-spacing: -0.02em; }
+  .section-title em { font-style: italic; color: var(--rust); }
+  .bio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .bio-text { font-size: 1rem; line-height: 1.85; color: var(--ink-mid); }
+  .bio-text p + p { margin-top: 1.25rem; }
+  .timeline { display: flex; flex-direction: column; }
+  .tl-item { display: grid; grid-template-columns: 56px 1fr; gap: 1.25rem; padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
+  .tl-item:last-child { border-bottom: none; }
+  .tl-year { font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); padding-top: 3px; font-weight: 500; }
+  .tl-title { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--ink); margin-bottom: 2px; }
+  .tl-desc { font-size: 0.85rem; color: var(--ink-light); line-height: 1.6; }
+  .books-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  .book-card { background: var(--paper); border: 1px solid var(--border); padding: 1.5rem; position: relative; transition: box-shadow 0.25s, transform 0.25s; border-top: 3px solid var(--gold); }
+  .book-card:hover { box-shadow: 0 8px 30px var(--shadow); transform: translateY(-3px); }
+  .book-year { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); margin-bottom: 6px; opacity: 0.8; }
+  .book-title { font-family: 'DM Serif Display', serif; font-size: 1rem; font-style: italic; color: var(--ink); margin-bottom: 8px; line-height: 1.3; }
+  .book-note { font-size: 0.85rem; color: var(--ink-light); line-height: 1.6; }
+  .book-badge { display: inline-block; margin-top: 10px; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--gold); color: var(--ink); padding: 3px 9px; font-weight: 500; }
+  .quote-block { border-left: 4px solid var(--rust); padding: 1.5rem 2rem; margin: 2.5rem 0; background: var(--paper); }
+  .quote-text { font-family: 'Playfair Display', Georgia, serif; font-size: 1.2rem; font-style: italic; line-height: 1.65; color: var(--ink); }
+  .quote-attr { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-top: 12px; }
+  .estilo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .estilo-item { display: flex; gap: 1.25rem; align-items: flex-start; }
+  .estilo-num { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--gold); opacity: 0.35; line-height: 1; flex-shrink: 0; width: 40px; }
+  .estilo-text { font-size: 0.95rem; line-height: 1.75; color: var(--ink-mid); }
+  .influencias-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .infl-card { background: var(--paper); border: 1px solid var(--border); padding: 1rem 1.25rem; }
+  .infl-name { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--ink); margin-bottom: 3px; }
+  .infl-note { font-size: 0.78rem; color: var(--ink-faint); }
+  .premios-list { display: flex; flex-direction: column; }
+  .premio-item { display: grid; grid-template-columns: 80px 1fr; gap: 2rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+  .premio-item:last-child { border-bottom: none; }
+  .premio-year { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--gold); line-height: 1; }
+  .premio-title { font-size: 1rem; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+  .premio-sub { font-size: 0.85rem; color: var(--ink-light); }
+  .curio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .curio-item { background: var(--paper); border: 1px solid var(--border); padding: 1.75rem; }
+  .curio-icon { font-size: 1.4rem; display: block; margin-bottom: 1rem; }
+  .curio-title { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--ink); margin-bottom: 0.75rem; }
+  .curio-text { font-size: 0.88rem; color: var(--ink-light); line-height: 1.7; }
+  .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .link-card { background: var(--paper); border: 1px solid var(--border); padding: 1.25rem 1.5rem; display: flex; align-items: center; gap: 1rem; text-decoration: none; transition: box-shadow 0.2s, transform 0.2s; }
+  .link-card:hover { box-shadow: 0 4px 20px var(--shadow); transform: translateY(-2px); }
+  .link-icon-box { font-size: 1.2rem; flex-shrink: 0; }
+  .link-body { flex: 1; }
+  .link-title { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--ink); margin-bottom: 3px; }
+  .link-sub { font-size: 0.78rem; color: var(--ink-faint); line-height: 1.4; }
+  .link-arrow { font-size: 1.1rem; color: var(--rust); opacity: 0.6; }
+  footer { background: var(--ink); color: var(--cream); padding: 4rem; text-align: center; }
+  .footer-name { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--gold); margin-bottom: 1rem; }
+  .footer-divider { width: 60px; height: 1px; background: var(--rust); margin: 0 auto 1.5rem; }
+  .footer-note { font-size: 0.78rem; color: rgba(245,240,232,0.35); letter-spacing: 0.05em; }
+  .footer-back { display: inline-block; margin-top: 2rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rust); text-decoration: none; opacity: 0.7; }
+  .footer-back:hover { opacity: 1; }
+  @media (max-width: 900px) {
+    nav { padding: 0 1.5rem; } .hero { padding: 5rem 1.5rem 4rem; }
+    .hero-inner { grid-template-columns: 1fr; } .hero-portrait { display: none; }
+    .page-content { padding: 0 1.5rem; } .bio-grid { grid-template-columns: 1fr; }
+    .books-grid { grid-template-columns: 1fr 1fr; } .estilo-grid { grid-template-columns: 1fr; }
+    .influencias-grid { grid-template-columns: 1fr 1fr; } .curio-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; } .links-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 580px) {
+    .books-grid { grid-template-columns: 1fr; } .hero-stats { gap: 1.5rem; }
+    .influencias-grid { grid-template-columns: 1fr 1fr; } .premio-item { grid-template-columns: 70px 1fr; }
+  }
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a class="nav-brand" href="index.html">Socorro <span>Clube do Livro</span></a>
+  <ul class="nav-links">
+    <li><a href="#biografia">Biografia</a></li>
+    <li><a href="#obra">Obra</a></li>
+    <li><a href="#estilo">Estilo</a></li>
+    <li><a href="#premios">Prêmios</a></li>
+    <li><a href="#curiosidades">Curiosidades</a></li>
+    <li><a href="#entrevistas">Entrevistas</a></li>
+  </ul>
+  <a class="nav-back" href="index.html#autores">← Autores</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Romance · Literatura Italiana e Cubana</div>
+      <h1 class="hero-name">Alba de<br><em>Céspedes</em></h1>
+      <div class="hero-dates">Roma, 11 de março de 1911 &nbsp;·&nbsp; Paris, 14 de novembro de 1997</div>
+      <p class="hero-desc">Romancista, poetisa, jornalista e resistente antifascista. Uma das vozes mais corajosas da Itália do século XX, que fez da condição feminina o centro irredutível de toda a sua obra.</p>
+      <div class="hero-stats">
+        <div><div class="hero-stat-num">7</div><div class="hero-stat-label">Romances</div></div>
+        <div><div class="hero-stat-num">20+</div><div class="hero-stat-label">Países publicada</div></div>
+        <div><div class="hero-stat-num">1938</div><div class="hero-stat-label">Obra censurada</div></div>
+      </div>
+    </div>
+    <div class="hero-portrait">
+      <div class="portrait-frame">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Alba_de_C%C3%A9spedes.jpg/400px-Alba_de_C%C3%A9spedes.jpg" alt="Foto de Alba de Céspedes">
+        <div class="portrait-year-tag">Roma · 1911</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="page-content">
+
+  <section class="section reveal" id="biografia">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Biografia</h2>
+    </div>
+    <div class="bio-grid">
+      <div class="bio-text">
+        <p>Alba de Céspedes nasceu em Roma em 1911, filha do presidente cubano Carlos Manuel de Céspedes y Quesada e de uma aristocrata italiana. Essa dupla herança — latina e mediterrânea — marcou profundamente sua identidade e sua literatura. Cresceu entre Roma e Havana, e desde jovem demonstrou vocação literária e espírito independente.</p>
+        <p>Em plena ascensão do fascismo italiano, sua vida tomou um rumo de resistência: em 1938, o regime de Mussolini censurou e retirou de circulação seu romance Ninguém Volta Atrás, considerado perigoso por retratar mulheres que ousavam querer mais do que a domesticidade reservada a elas. Presa duas vezes pela OVRA, a polícia secreta fascista, Céspedes não recuou.</p>
+        <p>Durante a Segunda Guerra, colaborou com a Rádio Bari, emissora aliada, e fundou a revista literária Mercurio (1944–1948), um dos mais importantes espaços culturais da Itália no pós-guerra. Nos anos seguintes, dividiu sua vida entre Roma, Paris e Havana, onde apoiou a Revolução Cubana e se aproximou de figuras como Fidel Castro. Viveu seus últimos anos em Paris, onde faleceu em 1997.</p>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">1911</div>
+          <div><div class="tl-title">Nasce em Roma</div><div class="tl-desc">Filha do presidente cubano e de mãe italiana. Dupla identidade cultural desde o berço.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1935</div>
+          <div><div class="tl-title">Estreia literária</div><div class="tl-desc">Publica L'Anima degli altri, sua primeira coletânea de contos. Recebe imediata atenção da crítica.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1938</div>
+          <div><div class="tl-title">Censura fascista</div><div class="tl-desc">Ninguém Volta Atrás é censurado pelo regime de Mussolini. Ela é presa duas vezes pela OVRA.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1944</div>
+          <div><div class="tl-title">Revista Mercurio</div><div class="tl-desc">Funda e dirige a revista literária que se torna espaço central da resistência cultural italiana.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1952</div>
+          <div><div class="tl-title">Quaderno Proibito</div><div class="tl-desc">Publica seu romance mais célebre, traduzido em dezenas de línguas e adaptado para o cinema.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1997</div>
+          <div><div class="tl-title">Falece em Paris</div><div class="tl-desc">Deixa uma obra que começa a ser redescoberta por leitoras do mundo inteiro no século XXI.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="obra">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Obra principal</h2>
+    </div>
+    <div class="books-grid">
+      <div class="book-card">
+        <div class="book-year">1938</div>
+        <div class="book-title">Ninguém Volta Atrás</div>
+        <div class="book-note">Oito jovens estudantes dividem um pensionato em Roma. O desejo de autonomia versus as expectativas da sociedade fascista. Censurado pelo regime de Mussolini logo após o sucesso de vendas.</div>
+        <span class="book-badge">Censurado em 1938</span>
+      </div>
+      <div class="book-card">
+        <div class="book-year">1949</div>
+        <div class="book-title">Dalla parte di lei</div>
+        <div class="book-note">Uma mulher narra sua história a partir do assassinato do marido. Considerado por muitos críticos seu romance mais ambicioso e tecnicamente complexo. Ganhou o Premio Medici francês.</div>
+        <span class="book-badge">Premio Medici</span>
+      </div>
+      <div class="book-card">
+        <div class="book-year">1952</div>
+        <div class="book-title">Quaderno Proibito</div>
+        <div class="book-note">Uma dona de casa burguesa começa a escrever um diário secreto e descobre que tem uma vida interior intensa e reprimida. Adaptado para o cinema em 1963 por Valerio Zurlini, com Eleonora Rossi Drago.</div>
+        <span class="book-badge">Obra mais traduzida</span>
+      </div>
+      <div class="book-card">
+        <div class="book-year">1956</div>
+        <div class="book-title">Il Rimorso</div>
+        <div class="book-note">Explora a culpa e a memória através de uma mulher que revê escolhas passadas. Prosa introspectiva e densa, com forte influência da psicanálise e do existencialismo francês.</div>
+      </div>
+      <div class="book-card">
+        <div class="book-year">1935–1960</div>
+        <div class="book-title">Poesia e contos</div>
+        <div class="book-note">Além dos romances, Céspedes cultivou a poesia e o conto ao longo de toda a carreira. Sua revista Mercurio publicou obras de Moravia, Elsa Morante e outros grandes nomes.</div>
+      </div>
+      <div class="book-card">
+        <div class="book-year">2011–2024</div>
+        <div class="book-title">Redescoberta global</div>
+        <div class="book-note">No centenário de seu nascimento, editoras europeias e americanas começaram a reeditar sua obra. No Brasil, a Todavia publicou Quaderno Proibito em 2022, com grande repercussão.</div>
+        <span class="book-badge">Reedição Todavia · 2022</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="estilo">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Estilo e referências</h2>
+    </div>
+    <div class="estilo-grid" style="margin-bottom:3rem;">
+      <div class="estilo-item">
+        <div class="estilo-num">01</div>
+        <div class="estilo-text"><strong>Voz feminina em primeira pessoa:</strong> Céspedes constrói narradoras que pensam em voz alta, revelando camadas de desejo, culpa e autoconsciência que a literatura masculina da época ignorava sistematicamente.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">02</div>
+        <div class="estilo-text"><strong>O diário como forma literária:</strong> em Quaderno Proibito e outras obras, o diário íntimo não é apenas recurso narrativo — é ato político. Escrever é resistir à invisibilidade imposta às mulheres.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">03</div>
+        <div class="estilo-text"><strong>Realismo psicológico:</strong> seus romances mergulham nos mecanismos internos das personagens — repressão, desejo, conformismo — com uma precisão quase clínica, influenciada por Freud e pelo existencialismo.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">04</div>
+        <div class="estilo-text"><strong>Ambientação burguesa crítica:</strong> os cenários domésticos de Céspedes — a casa, o pensionato, a sala de jantar — são espaços de confinamento e de luta surda, não de conforto.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">05</div>
+        <div class="estilo-text"><strong>Prosa fluida e cinematográfica:</strong> influenciada pelo neorrealismo italiano, sua escrita tem ritmo visual. Não por acaso, dois de seus romances foram adaptados para o cinema.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">06</div>
+        <div class="estilo-text"><strong>Feminismo avant la lettre:</strong> sem usar o vocabulário do movimento feminista (que viria depois), Céspedes já colocava no centro da narrativa a questão do direito das mulheres à autoria de suas próprias vidas.</div>
+      </div>
+    </div>
+    <h3 style="font-family:'DM Serif Display',serif;font-size:1.4rem;font-weight:400;margin-bottom:1.5rem;">Influências declaradas</h3>
+    <div class="influencias-grid">
+      <div class="infl-card"><div class="infl-name">Virginia Woolf</div><div class="infl-note">Literatura inglesa</div></div>
+      <div class="infl-card"><div class="infl-name">Simone de Beauvoir</div><div class="infl-note">Existencialismo francês</div></div>
+      <div class="infl-card"><div class="infl-name">Elsa Morante</div><div class="infl-note">Literatura italiana</div></div>
+      <div class="infl-card"><div class="infl-name">Alberto Moravia</div><div class="infl-note">Neorrealismo italiano</div></div>
+      <div class="infl-card"><div class="infl-name">Sigmund Freud</div><div class="infl-note">Psicanálise</div></div>
+      <div class="infl-card"><div class="infl-name">José Martí</div><div class="infl-note">Literatura cubana</div></div>
+    </div>
+    <div class="quote-block" style="margin-top:2.5rem;">
+      <div class="quote-text">"Escrever é a única forma de resistência que nunca me tiraram — nem o fascismo, nem o exílio, nem o silêncio que tentaram me impor."</div>
+      <div class="quote-attr">— Alba de Céspedes, em entrevista à RAI, 1972</div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="premios">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Prêmios e reconhecimentos</h2>
+    </div>
+    <div class="premios-list">
+      <div class="premio-item">
+        <div class="premio-year">1938</div>
+        <div>
+          <div class="premio-title">Sucesso imediato — e censura</div>
+          <div class="premio-sub">Ninguém Volta Atrás vendeu milhares de exemplares antes de ser censurado pelo regime fascista — paradoxo que consagrou seu nome.</div>
+        </div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">1949</div>
+        <div>
+          <div class="premio-title">Premio Medici (França)</div>
+          <div class="premio-sub">Dalla parte di lei é premiado na França — um dos mais importantes prêmios literários europeus.</div>
+        </div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">1952</div>
+        <div>
+          <div class="premio-title">Consagração com Quaderno Proibito</div>
+          <div class="premio-sub">Traduzido para mais de 20 idiomas. Adaptado ao cinema em 1963. Reconhecido décadas depois como obra precursora do feminismo literário.</div>
+        </div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">2022</div>
+        <div>
+          <div class="premio-title">Redescoberta e reabilitação cultural</div>
+          <div class="premio-sub">Publicações em inglês (Astra House), francês e português (Todavia) relançam sua obra para novas gerações. É comparada a Elena Ferrante e Natalia Ginzburg.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="curiosidades">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Curiosidades</h2>
+    </div>
+    <div class="curio-grid">
+      <div class="curio-item">
+        <span class="curio-icon">🇨🇺</span>
+        <div class="curio-title">Neta de herói nacional cubano</div>
+        <div class="curio-text">Seu avô paterno, Carlos Manuel de Céspedes, é considerado o "pai da pátria" cubana — libertou seus próprios escravos e iniciou a guerra de independência em 1868. Alba cresceu com esse legado político na espinha dorsal.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">📻</span>
+        <div class="curio-title">Voz da resistência no rádio</div>
+        <div class="curio-text">Durante a ocupação nazista de Roma, fugiu para o sul da Itália e colaborou com a Rádio Bari, transmitindo programas de resistência antifascista em italiano. Usava o pseudônimo "Clorinda" para proteger sua identidade.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">📔</span>
+        <div class="curio-title">O caderno que mudou tudo</div>
+        <div class="curio-text">A ideia de Quaderno Proibito surgiu quando Céspedes observou mulheres em um trem — esposas e mães que pareciam ter abdicado completamente de qualquer vida interior. O romance nasceu da pergunta: "O que aconteceria se uma dessas mulheres começasse a escrever?"</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">✊</span>
+        <div class="curio-title">Apoiadora da Revolução Cubana</div>
+        <div class="curio-text">Nos anos 1960, Céspedes visitou Cuba após a revolução de Fidel Castro e expressou simpatia pelo projeto revolucionário, vinculando-o ao legado anticolonial de seu avô. Sua posição política sempre foi de esquerda declarada.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">🎬</span>
+        <div class="curio-title">Cinema e televisão</div>
+        <div class="curio-text">Quaderno Proibito foi adaptado por Valerio Zurlini em 1963, com grande sucesso de crítica. Dalla parte di lei também inspirou uma produção televisiva italiana. Colaborou ela própria como roteirista em alguns projetos.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">📖</span>
+        <div class="curio-title">A revista que abriu portas</div>
+        <div class="curio-text">A revista Mercurio, que fundou e dirigiu entre 1944 e 1948, publicou textos de Alberto Moravia, Elsa Morante, Cesare Pavese e outros grandes escritores italianos. Foi um dos espaços culturais mais importantes do pós-guerra italiano.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="entrevistas">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Para conhecer melhor</h2>
+    </div>
+    <div class="links-grid">
+      <a class="link-card" href="https://www.todavia.com.br/livros/quaderno-proibito/" target="_blank" rel="noopener">
+        <div class="link-icon-box">📚</div>
+        <div class="link-body">
+          <div class="link-title">Quaderno Proibito — Todavia (Brasil)</div>
+          <div class="link-sub">Edição brasileira com prefácio crítico · Todavia, 2022</div>
+        </div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a class="link-card" href="https://www.theguardian.com/books/2023/jan/14/forbidden-notebook-alba-de-cespedes-review" target="_blank" rel="noopener">
+        <div class="link-icon-box">📰</div>
+        <div class="link-body">
+          <div class="link-title">Resenha no The Guardian</div>
+          <div class="link-sub">Forbidden Notebook — redescoberta internacional · 2023</div>
+        </div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a class="link-card" href="https://www.nytimes.com/2023/01/31/books/review/forbidden-notebook-alba-de-cespedes.html" target="_blank" rel="noopener">
+        <div class="link-icon-box">📰</div>
+        <div class="link-body">
+          <div class="link-title">The New York Times Book Review</div>
+          <div class="link-sub">Análise crítica da edição americana · janeiro 2023</div>
+        </div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a class="link-card" href="https://www.enciclopedia.itaucultural.org.br" target="_blank" rel="noopener">
+        <div class="link-icon-box">🌐</div>
+        <div class="link-body">
+          <div class="link-title">Itaú Cultural — contexto literário</div>
+          <div class="link-sub">Literatura italiana do século XX no Brasil</div>
+        </div>
+        <span class="link-arrow">↗</span>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="footer-name">Alba de Céspedes</div>
+  <div class="footer-divider"></div>
+  <div class="footer-note">Fontes: Todavia Editora · The Guardian · The New York Times · Enciclopédia Treccani · RAI Cultura</div>
+  <div class="footer-note" style="margin-top:8px;opacity:0.2;">Apresentação literária · Socorro Clube do Livro · 2025</div>
+  <a class="footer-back" href="index.html#autores">← Voltar para Autores</a>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); });
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 60); observer.unobserve(e.target); } });
+  }, { threshold: 0.06 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>

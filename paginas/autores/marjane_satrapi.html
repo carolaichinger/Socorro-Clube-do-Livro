@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marjane Satrapi — Socorro Clube do Livro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --paper: #ede8dc;
+    --ink: #1a1208;
+    --ink-mid: #3a2e1a;
+    --ink-light: #6b5e42;
+    --ink-faint: #9e9080;
+    --rust: #c1440e;
+    --gold: #d4a017;
+    --gold-pale: #f5eacc;
+    --sage: #6b8c6e;
+    --border: rgba(26,18,8,0.1);
+    --border-mid: rgba(26,18,8,0.2);
+    --shadow: rgba(26,18,8,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 17px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.5;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    padding: 0 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 30px var(--shadow); }
+
+  .nav-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    color: var(--rust);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+  .nav-brand span {
+    font-size: 0.75rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-left: 0.75rem;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: 0.6;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+    height: 1px; background: var(--rust); transform: scaleX(0); transition: transform 0.25s;
+  }
+  .nav-links a:hover { opacity: 1; }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .nav-back {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--rust);
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .nav-back:hover { opacity: 1; }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 6rem 4rem 5rem;
+    background: var(--ink);
+    color: var(--cream);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 80% 40%, rgba(212,160,23,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 80% at 10% 70%, rgba(193,68,14,0.08) 0%, transparent 60%);
+  }
+  .hero-lines {
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent, transparent 39px,
+      rgba(245,240,232,0.03) 39px,
+      rgba(245,240,232,0.03) 40px
+    );
+  }
+  .hero-inner {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 5rem;
+    align-items: center;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0.9;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px; height: 1px;
+    background: var(--gold);
+  }
+  .hero-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(52px, 8vw, 90px);
+    font-weight: 400;
+    line-height: 0.95;
+    color: var(--cream);
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.03em;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-dates {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+    margin-bottom: 2rem;
+    margin-top: 0.75rem;
+  }
+  .hero-desc {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: rgba(245,240,232,0.7);
+    max-width: 520px;
+    margin-bottom: 2.5rem;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 2.5rem;
+  }
+  .hero-stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .hero-stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+    margin-top: 4px;
+  }
+
+  .hero-portrait { position: relative; }
+  .portrait-frame {
+    width: 100%;
+    aspect-ratio: 3/4;
+    border-radius: 2px;
+    background: rgba(245,240,232,0.04);
+    border: 1px solid rgba(245,240,232,0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .portrait-frame::before {
+    content: '';
+    position: absolute; inset: 8px;
+    border: 1px solid rgba(245,240,232,0.07);
+    border-radius: 1px;
+    pointer-events: none;
+  }
+  .portrait-monogram {
+    font-family: 'DM Serif Display', serif;
+    font-size: 80px;
+    font-style: italic;
+    color: var(--gold);
+    opacity: 0.5;
+  }
+  .portrait-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.3);
+    margin-top: 16px;
+  }
+  .portrait-year-tag {
+    position: absolute;
+    bottom: 20px; right: 20px;
+    background: var(--rust);
+    color: white;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+  }
+
+  .page-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 4rem;
+  }
+
+  .section {
+    padding: 5rem 0;
+    border-top: 1px solid var(--border);
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  .section-num {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--rust);
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .section-title em { font-style: italic; color: var(--rust); }
+
+  /* ─── AVALIAÇÃO ─── */
+  .av-summary {
+    background: var(--paper);
+    border: 1px solid rgba(26,18,8,0.1);
+    padding: 2rem;
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .av-big-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3.2rem;
+    color: var(--rust);
+    line-height: 1;
+    text-align: center;
+  }
+  .av-big-stars { font-size: 1.4rem; text-align: center; margin: 0.3rem 0; color: var(--gold); }
+  .av-big-count {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    text-align: center;
+  }
+  .brow { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem; }
+  .brow-lbl { font-size: 0.68rem; font-weight: 600; color: var(--ink); min-width: 26px; }
+  .brow-track { flex: 1; height: 8px; background: rgba(26,18,8,0.08); border-radius: 4px; overflow: hidden; }
+  .brow-fill { height: 100%; background: var(--rust); border-radius: 4px; transition: width 0.5s; width: 0%; }
+  .brow-n { font-size: 0.68rem; color: var(--ink-light); min-width: 16px; text-align: right; }
+  .av-form { background: var(--cream); border: 1px solid rgba(26,18,8,0.1); padding: 2rem; margin-bottom: 2.5rem; }
+  .av-form h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+  .av-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+  .av-input, .av-textarea {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid rgba(26,18,8,0.15);
+    background: var(--paper);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    outline: none;
+    box-sizing: border-box;
+  }
+  .av-textarea { resize: vertical; line-height: 1.65; min-height: 100px; }
+  .av-input:focus, .av-textarea:focus { border-color: var(--rust); }
+  .stars-pick { display: flex; gap: 0.3rem; margin-bottom: 1.3rem; }
+  .stars-pick span { font-size: 2rem; cursor: pointer; line-height: 1; color: rgba(26,18,8,0.2); transition: color 0.15s; user-select: none; }
+  .av-btn {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--rust);
+    color: white;
+    border: none;
+    padding: 0.85rem 2.5rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .av-btn:hover { background: #a33508; }
+  .av-btn:disabled { background: #aaa; cursor: default; }
+  .av-msg { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.06em; margin-left: 1rem; }
+  .comment { border: 1px solid rgba(26,18,8,0.1); padding: 1.4rem 1.6rem; margin-bottom: 1rem; background: var(--paper); }
+  .chead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.4rem; }
+  .cname { font-weight: 600; color: var(--ink); font-size: 0.85rem; }
+  .cstars { color: var(--rust); font-size: 1rem; }
+  .cdate { font-size: 0.62rem; color: var(--ink-faint); }
+  .ctext { font-size: 0.95rem; line-height: 1.75; color: var(--ink); }
+  .no-reviews, .loading {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    color: var(--ink-faint);
+    font-size: 1rem;
+    text-align: center;
+    padding: 2rem 0;
+  }
+
+  /* ─── BIOGRAFIA / TIMELINE ─── */
+  .bio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .bio-text {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: var(--ink-mid);
+  }
+  .bio-text p + p { margin-top: 1.25rem; }
+
+  .timeline { display: flex; flex-direction: column; }
+  .tl-item {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .tl-item:last-child { border-bottom: none; }
+  .tl-year {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding-top: 3px;
+    font-weight: 500;
+  }
+  .tl-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .tl-desc {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    line-height: 1.6;
+  }
+
+  /* ─── BOOKS GRID ─── */
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+  }
+  .book-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    position: relative;
+    transition: box-shadow 0.25s, transform 0.25s;
+    border-top: 3px solid var(--gold);
+  }
+  .book-card:hover {
+    box-shadow: 0 8px 30px var(--shadow);
+    transform: translateY(-3px);
+  }
+  .book-year {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 6px;
+    opacity: 0.8;
+  }
+  .book-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .book-note {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    line-height: 1.6;
+  }
+  .book-badge {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--gold);
+    color: var(--ink);
+    padding: 3px 9px;
+    font-weight: 500;
+  }
+
+  /* ─── QUOTE ─── */
+  .quote-block {
+    border-left: 4px solid var(--rust);
+    padding: 1.5rem 2rem;
+    margin: 2.5rem 0;
+    background: var(--paper);
+  }
+  .quote-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .quote-attr {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 12px;
+  }
+
+  /* ─── ESTILO ─── */
+  .estilo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .estilo-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 1.5rem;
+    background: var(--paper);
+    border-top: 2px solid var(--border);
+    transition: border-color 0.2s;
+  }
+  .estilo-item:hover { border-color: var(--gold); }
+  .estilo-num {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    flex-shrink: 0;
+    padding-top: 2px;
+    font-weight: 500;
+  }
+  .estilo-text { font-size: 0.9rem; line-height: 1.7; color: var(--ink-mid); }
+  .estilo-text strong { color: var(--ink); font-weight: 500; }
+
+  /* ─── INFLUÊNCIAS ─── */
+  .influencias-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  .infl-card {
+    border: 1px solid var(--border);
+    padding: 1.1rem;
+    background: var(--paper);
+    text-align: center;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .infl-card:hover {
+    box-shadow: 0 4px 20px var(--shadow);
+    border-color: var(--gold);
+  }
+  .infl-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .infl-note {
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ─── PRÊMIOS ─── */
+  .premios-list { display: flex; flex-direction: column; }
+  .premio-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1.5rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: baseline;
+  }
+  .premio-item:last-child { border-bottom: none; }
+  .premio-year {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+  }
+  .premio-title { font-size: 0.95rem; color: var(--ink); font-weight: 500; font-family: 'DM Serif Display', serif; }
+  .premio-sub { font-size: 0.82rem; color: var(--ink-light); margin-top: 2px; }
+
+  /* ─── CURIOSIDADES ─── */
+  .curio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+  .curio-item {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    padding: 1.5rem;
+    transition: box-shadow 0.2s;
+  }
+  .curio-item:hover { box-shadow: 0 6px 24px var(--shadow); }
+  .curio-icon { font-size: 1.4rem; margin-bottom: 0.75rem; display: block; }
+  .curio-title { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--ink); margin-bottom: 6px; }
+  .curio-text { font-size: 0.85rem; color: var(--ink-light); line-height: 1.7; }
+
+  /* ─── LINKS ─── */
+  .links-grid { display: flex; flex-direction: column; gap: 10px; }
+  .link-card {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    padding: 1.1rem 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .link-card:hover {
+    box-shadow: 0 4px 20px var(--shadow);
+    border-color: var(--rust);
+    transform: translateX(4px);
+  }
+  .link-icon-box {
+    width: 44px; height: 44px;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .link-body { flex: 1; }
+  .link-title { font-size: 0.9rem; font-weight: 500; color: var(--ink); }
+  .link-sub { font-size: 0.75rem; color: var(--ink-faint); letter-spacing: 0.04em; margin-top: 2px; }
+  .link-arrow { font-size: 1.1rem; color: var(--rust); opacity: 0.7; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 3rem 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 2rem;
+  }
+  .footer-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+  .footer-divider {
+    width: 40px; height: 1px;
+    background: rgba(245,240,232,0.2);
+    margin: 1rem auto;
+  }
+  .footer-note {
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.3);
+  }
+  .footer-back {
+    margin-top: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--rust);
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+  .footer-back:hover { opacity: 1; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 1.5rem; }
+    .hero { padding: 5rem 1.5rem 4rem; }
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-portrait { display: none; }
+    .page-content { padding: 0 1.5rem; }
+    .bio-grid { grid-template-columns: 1fr; }
+    .books-grid { grid-template-columns: 1fr 1fr; }
+    .estilo-grid { grid-template-columns: 1fr; }
+    .influencias-grid { grid-template-columns: 1fr 1fr; }
+    .curio-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 580px) {
+    .books-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 1.5rem; }
+    .influencias-grid { grid-template-columns: 1fr 1fr; }
+    .premio-item { grid-template-columns: 70px 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="nav-brand" href="index.html">Socorro <span>Clube do Livro</span></a>
+  <ul class="nav-links">
+    <li><a href="#biografia">Biografia</a></li>
+    <li><a href="#obra">Obra</a></li>
+    <li><a href="#estilo">Estilo</a></li>
+    <li><a href="#premios">Prêmios</a></li>
+    <li><a href="#curiosidades">Curiosidades</a></li>
+    <li><a href="#avaliacao">Avaliação</a></li>
+  </ul>
+  <a class="nav-back" href="index.html#autores">← Autores</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Literatura Gráfica &amp; Autobiografia</div>
+      <h1 class="hero-name">Marjane<br><em>Satrapi</em></h1>
+      <div class="hero-dates">Rasht, Irã, 1969 &nbsp;·&nbsp; Paris, França, 2026</div>
+      <p class="hero-desc">Escritora, cartunista e cineasta franco-iraniana. Contou a própria infância sob a Revolução Islâmica em Persépolis e se tornou uma das vozes mais influentes do romance gráfico contemporâneo — e uma crítica constante da opressão em seu país natal.</p>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-num">4</div>
+          <div class="hero-stat-label">Volumes de Persépolis</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">30+</div>
+          <div class="hero-stat-label">Idiomas traduzidos</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">2024</div>
+          <div class="hero-stat-label">Prêmio Princesa de Astúrias</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-portrait">
+      <div class="portrait-frame">
+        <div class="portrait-monogram">MS</div>
+        <div class="portrait-label">RASHT · 1969</div>
+        <div class="portrait-year-tag">PARIS · 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="page-content">
+
+  <!-- BIOGRAFIA -->
+  <section class="section reveal" id="biografia">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Biografia</h2>
+    </div>
+    <div class="bio-grid">
+      <div class="bio-text">
+        <p>Marjane Satrapi nasceu em Rasht, no norte do Irã, em 1969, numa família de classe média que se descrevia como bisneta do último imperador da dinastia Qajar. Cresceu em Teerã, criança única, próxima sobretudo da avó — figura que se tornaria a referência moral de toda a sua obra.</p>
+        <p>Tinha dez anos quando a Revolução Islâmica de 1979 depôs o Xá e transformou o Irã moderno e monárquico numa república islâmica conservadora. A infância de Marjane, até então marcada por discos escondidos e discussões políticas em casa, passou a conviver com a guerra Irã-Iraque, a censura e a vigilância religiosa nas ruas.</p>
+        <p>Em 1983, temendo pela segurança da filha, os pais a enviaram sozinha para Viena, onde terminou os estudos secundários no Liceu Francês. Voltou ao Irã anos depois, formou-se em Artes Plásticas em Teerã e, em 1994, mudou-se definitivamente para a França — primeiro para Estrasburgo, depois para Paris.</p>
+        <p>Foi em Paris, integrada ao coletivo de quadrinhistas do Atelier des Vosges, que decidiu transformar sua própria infância em narrativa gráfica. Nascia Persépolis, publicada em quatro volumes entre 2000 e 2003, hoje considerada um marco do romance gráfico contemporâneo.</p>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">1969</div>
+          <div><div class="tl-title">Nasce em Rasht</div><div class="tl-desc">Família de classe média, descendente da dinastia Qajar. Infância em Teerã.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1979</div>
+          <div><div class="tl-title">A Revolução</div><div class="tl-desc">Aos dez anos, vive a queda do Xá e a virada para a república islâmica.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1983</div>
+          <div><div class="tl-title">Exílio em Viena</div><div class="tl-desc">Enviada sozinha pelos pais para escapar da repressão e da guerra.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1994</div>
+          <div><div class="tl-title">Instala-se na França</div><div class="tl-desc">Muda-se definitivamente para Estrasburgo e depois Paris.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2000–03</div>
+          <div><div class="tl-title">Persépolis</div><div class="tl-desc">Publica os quatro volumes de sua autobiografia gráfica pela L'Association.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2007</div>
+          <div><div class="tl-title">Persépolis no cinema</div><div class="tl-desc">Codirige a adaptação animada — Prêmio do Júri em Cannes, indicação ao Oscar.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2024</div>
+          <div><div class="tl-title">Reconhecimento maior</div><div class="tl-desc">Recebe o Prêmio Princesa de Astúrias e é eleita para a Academia de Belas Artes da França.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2026</div>
+          <div><div class="tl-title">Morre em Paris</div><div class="tl-desc">Falece pouco mais de um ano após a morte do marido, Mattias Ripa, deixando uma obra que redefiniu o que o quadrinho podia contar.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OBRA -->
+  <section class="section reveal" id="obra">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Obra <em>Principal</em></h2>
+    </div>
+    <div class="books-grid">
+      <div class="book-card">
+        <div class="book-year">2000–2003</div>
+        <div class="book-title">Persépolis</div>
+        <div class="book-note">Autobiografia gráfica em quatro volumes sobre crescer no Irã durante e após a Revolução Islâmica.</div>
+        <span class="book-badge">Livro do Clube</span>
+      </div>
+      <div class="book-card">
+        <div class="book-year">2003</div>
+        <div class="book-title">Bordados</div>
+        <div class="book-note">Retrato coral das mulheres da família reunidas em torno do chá, entre confidências sobre amor, corpo e casamento.</div>
+      </div>
+      <div class="book-card">
+        <div class="book-year">2004</div>
+        <div class="book-title">Frango com Ameixas</div>
+        <div class="book-note">Baseado em relatos do avô da autora; venceu o prêmio de Melhor Álbum no Festival de Angoulême.</div>
+      </div>
+      <div class="book-card">
+        <div class="book-year">2007</div>
+        <div class="book-title">Persépolis (filme)</div>
+        <div class="book-note">Adaptação animada em preto e branco, codirigida com Vincent Paronnaud.</div>
+      </div>
+      <div class="book-card">
+        <div class="book-year">2020</div>
+        <div class="book-title">Radioactive</div>
+        <div class="book-note">Longa-metragem biográfico sobre Marie Curie, expandindo sua carreira além dos temas iranianos.</div>
+      </div>
+      <div class="book-card">
+        <div class="book-year">2023</div>
+        <div class="book-title">Femme, Vie, Liberté</div>
+        <div class="book-note">Coletânea coletiva de quadrinhos sobre os protestos após a morte de Mahsa Amini, organizada por Satrapi.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESTILO -->
+  <section class="section reveal" id="estilo">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Estilo</h2>
+    </div>
+    <div class="estilo-grid">
+      <div class="estilo-item">
+        <div class="estilo-num">01</div>
+        <div class="estilo-text"><strong>Preto e branco radical.</strong> A ausência de cor e de sombreamento complexo não é limitação técnica, mas escolha deliberada — evoca gravuras persas e obriga o leitor a preencher o resto com atenção.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">02</div>
+        <div class="estilo-text"><strong>Traço simples, carga densa.</strong> Figuras quase infantis carregam temas como tortura, exílio e morte — o contraste entre forma leve e conteúdo pesado é sua marca mais reconhecível.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">03</div>
+        <div class="estilo-text"><strong>Humor como respiro.</strong> A ironia e o autodepreciativo aparecem mesmo nas cenas mais sombrias, funcionando como válvula de escape sem nunca minimizar a dor retratada.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">04</div>
+        <div class="estilo-text"><strong>Autoficção como testemunho.</strong> Satrapi insistia que desenhar sua própria vida era também um ato de registro histórico — dar nome e rosto a quem o regime tentava apagar.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRÊMIOS -->
+  <section class="section reveal" id="premios">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Prêmios &amp; <em>Reconhecimento</em></h2>
+    </div>
+    <div class="premios-list">
+      <div class="premio-item">
+        <div class="premio-year">2004</div>
+        <div><div class="premio-title">Festival de Angoulême</div><div class="premio-sub">Melhor Álbum, por Frango com Ameixas</div></div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">2007</div>
+        <div><div class="premio-title">Festival de Cannes</div><div class="premio-sub">Prêmio do Júri, pelo filme Persépolis</div></div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">2008</div>
+        <div><div class="premio-title">Indicação ao Oscar</div><div class="premio-sub">Melhor Filme de Animação, por Persépolis</div></div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">2024</div>
+        <div><div class="premio-title">Prêmio Princesa de Astúrias</div><div class="premio-sub">Comunicação e Humanidades</div></div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">2024</div>
+        <div><div class="premio-title">Academia de Belas Artes da França</div><div class="premio-sub">Eleita membro da instituição</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CURIOSIDADES -->
+  <section class="section reveal" id="curiosidades">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Curiosidades</h2>
+    </div>
+    <div class="curio-grid">
+      <div class="curio-item">
+        <span class="curio-icon">✍️</span>
+        <div class="curio-title">Desenhar é escrever</div>
+        <div class="curio-text">Satrapi dizia que, tendo talento para as duas coisas, seria desperdício escolher apenas uma — daí sua entrega total ao quadrinho autobiográfico.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">🎨</span>
+        <div class="curio-title">A pintura como refúgio</div>
+        <div class="curio-text">Mesmo já consagrada no cinema e nos quadrinhos, afirmava que pintar era o que a mantinha equilibrada — um retorno constante à origem de tudo que fazia.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">🇫🇷</span>
+        <div class="curio-title">Naturalizada francesa</div>
+        <div class="curio-text">Obteve a nacionalidade francesa em 2006, após mais de uma década vivendo em Paris — sem nunca deixar de se declarar iraniana.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">✊</span>
+        <div class="curio-title">Ativismo até o fim</div>
+        <div class="curio-text">Após a morte de Mahsa Amini em 2022, participou de manifestações em Paris e organizou o livro coletivo Femme, Vie, Liberté em solidariedade às mulheres iranianas.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AVALIAÇÃO -->
+  <section class="section reveal" id="avaliacao">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Avalie <em>Persépolis</em></h2>
+    </div>
+
+    <div class="av-summary">
+      <div>
+        <div class="av-big-num" id="avg-num">—</div>
+        <div class="av-big-stars" id="avg-stars">☆☆☆☆☆</div>
+        <div class="av-big-count" id="avg-count">0 avaliações</div>
+      </div>
+      <div class="bars" style="flex:1;min-width:220px;">
+        <div class="brow"><span class="brow-lbl">5★</span><div class="brow-track"><div class="brow-fill" id="b5"></div></div><span class="brow-n" id="n5">0</span></div>
+        <div class="brow"><span class="brow-lbl">4★</span><div class="brow-track"><div class="brow-fill" id="b4"></div></div><span class="brow-n" id="n4">0</span></div>
+        <div class="brow"><span class="brow-lbl">3★</span><div class="brow-track"><div class="brow-fill" id="b3"></div></div><span class="brow-n" id="n3">0</span></div>
+        <div class="brow"><span class="brow-lbl">2★</span><div class="brow-track"><div class="brow-fill" id="b2"></div></div><span class="brow-n" id="n2">0</span></div>
+        <div class="brow"><span class="brow-lbl">1★</span><div class="brow-track"><div class="brow-fill" id="b1"></div></div><span class="brow-n" id="n1">0</span></div>
+      </div>
+    </div>
+
+    <div class="av-form">
+      <h3>Deixe sua avaliação</h3>
+      <label class="av-label">Seu nome</label>
+      <input id="f-nome" class="av-input" type="text" placeholder="Como quer ser identificada?">
+      <label class="av-label">Nota</label>
+      <div class="stars-pick" id="star-row">
+        <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+      </div>
+      <label class="av-label">Comentário</label>
+      <textarea id="f-txt" class="av-textarea" placeholder="O que você achou do livro?"></textarea>
+      <button class="av-btn" onclick="submitReview()">Publicar Avaliação</button>
+      <span id="f-msg" class="av-msg"></span>
+    </div>
+
+    <div id="comments"><p class="loading">Carregando avaliações…</p></div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Marjane Satrapi</div>
+  <div class="footer-divider"></div>
+  <div class="footer-note">Fontes: Companhia das Letras · Fundação Princesa de Astúrias · Wikipédia · imprensa internacional</div>
+  <div class="footer-note" style="margin-top:8px;opacity:0.2;">Apresentação literária · Socorro Clube do Livro · 2026</div>
+  <a class="footer-back" href="index.html#autores">← Voltar para Autores</a>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyB03BscdfdfZGW42Btqbmzt72Dpusu45NU",
+    authDomain: "socorro-clube-do-livro.firebaseapp.com",
+    projectId: "socorro-clube-do-livro",
+    storageBucket: "socorro-clube-do-livro.firebasestorage.app",
+    messagingSenderId: "729551936788",
+    appId: "1:729551936788:web:001a6e284a63a51fc37601"
+  };
+  let db = null;
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+    db.settings({ experimentalAutoDetectLongPolling: true, useFetchStreams: false });
+  } catch (e) { db = null; }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
+  let picked = 0;
+  document.querySelectorAll('#star-row span').forEach(s => {
+    s.addEventListener('mouseover', () => hilite(+s.dataset.v));
+    s.addEventListener('mouseout',  () => hilite(picked));
+    s.addEventListener('click',     () => { picked = +s.dataset.v; hilite(picked); });
+  });
+  function hilite(n) {
+    document.querySelectorAll('#star-row span').forEach(s => {
+      s.style.color = +s.dataset.v <= n ? '#c1440e' : 'rgba(26,18,8,0.2)';
+    });
+  }
+
+  const BOOK_SLUG = 'persepolis';
+  const reviewsCol = db ? db.collection('livros').doc(BOOK_SLUG).collection('reviews') : null;
+  let reviews = [];
+
+  async function submitReview() {
+    const nome = document.getElementById('f-nome').value.trim();
+    const txt  = document.getElementById('f-txt').value.trim();
+    const msg  = document.getElementById('f-msg');
+    if (!nome)   { msg.textContent = 'Coloque seu nome.';      msg.style.color='#c1440e'; return; }
+    if (!picked) { msg.textContent = 'Selecione uma nota.';    msg.style.color='#c1440e'; return; }
+    if (!txt)    { msg.textContent = 'Escreva um comentário.'; msg.style.color='#c1440e'; return; }
+    if (!reviewsCol) { msg.textContent = 'Avaliações indisponíveis no momento.'; msg.style.color='#c1440e'; return; }
+    const btn = document.querySelector('.av-btn');
+    btn.textContent = 'Enviando...'; btn.disabled = true;
+    msg.textContent = '';
+    try {
+      await reviewsCol.add({
+        nome, nota: picked, comentario: txt,
+        data: new Date().toLocaleDateString('pt-BR'),
+        criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      document.getElementById('f-nome').value = '';
+      document.getElementById('f-txt').value  = '';
+      picked = 0; hilite(0);
+      msg.textContent = 'Publicado!'; msg.style.color = '#6b8c6e';
+      setTimeout(() => msg.textContent = '', 4000);
+    } catch(e) {
+      msg.textContent = 'Erro ao enviar. Tente novamente.'; msg.style.color = '#c1440e';
+    }
+    btn.textContent = 'Publicar Avaliação'; btn.disabled = false;
+  }
+
+  function renderReviews() {
+    const total = reviews.length;
+    if (!total) {
+      document.getElementById('avg-num').textContent   = '—';
+      document.getElementById('avg-stars').textContent = '☆☆☆☆☆';
+      document.getElementById('avg-count').textContent = '0 avaliações';
+      [1,2,3,4,5].forEach(n => { document.getElementById('b'+n).style.width='0%'; document.getElementById('n'+n).textContent='0'; });
+      document.getElementById('comments').innerHTML = '<p class="no-reviews">Nenhuma avaliação ainda — seja a primeira!</p>';
+      return;
+    }
+    const avg = reviews.reduce((a,r) => a + Number(r.nota), 0) / total;
+    document.getElementById('avg-num').textContent   = avg.toFixed(1);
+    const full = Math.round(avg);
+    document.getElementById('avg-stars').textContent = '★'.repeat(full) + '☆'.repeat(5-full);
+    document.getElementById('avg-count').textContent = total + (total===1 ? ' avaliação' : ' avaliações');
+    [1,2,3,4,5].forEach(n => {
+      const c = reviews.filter(r => Number(r.nota)===n).length;
+      document.getElementById('b'+n).style.width = (c/total*100).toFixed(0) + '%';
+      document.getElementById('n'+n).textContent = c;
+    });
+    document.getElementById('comments').innerHTML = reviews.map(r => `
+      <div class="comment">
+        <div class="chead">
+          <span class="cname">${escapeHtml(r.nome)}</span>
+          <span class="cstars">${'★'.repeat(Number(r.nota))}${'☆'.repeat(5-Number(r.nota))}</span>
+          <span class="cdate">${escapeHtml(r.data)}</span>
+        </div>
+        <p class="ctext">${escapeHtml(r.comentario)}</p>
+      </div>`).join('');
+  }
+
+  if (reviewsCol) {
+    reviewsCol.orderBy('criadoEm', 'desc').onSnapshot(function (snap) {
+      reviews = snap.docs.map(d => d.data());
+      renderReviews();
+    }, function () {
+      reviews = [];
+      renderReviews();
+    });
+  } else {
+    renderReviews();
+  }
+</script>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.06 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>

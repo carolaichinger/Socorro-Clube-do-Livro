@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Socorro Acioli — Socorro Clube do Livro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8; --paper: #ede8dc; --ink: #1a1208; --ink-mid: #3a2e1a;
+    --ink-light: #6b5e42; --ink-faint: #9e9080; --rust: #c1440e; --gold: #d4a017;
+    --gold-pale: #f5eacc; --sage: #6b8c6e; --border: rgba(26,18,8,0.1);
+    --border-mid: rgba(26,18,8,0.2); --shadow: rgba(26,18,8,0.12);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; font-weight: 300; background: var(--cream); color: var(--ink); font-size: 17px; line-height: 1.75; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 1000; opacity: 0.5; }
+  nav { position: sticky; top: 0; z-index: 100; background: var(--cream); border-bottom: 1px solid var(--border); padding: 0 4rem; display: flex; align-items: center; justify-content: space-between; height: 60px; transition: box-shadow 0.3s; }
+  nav.scrolled { box-shadow: 0 4px 30px var(--shadow); }
+  .nav-brand { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--rust); text-decoration: none; letter-spacing: -0.02em; }
+  .nav-brand span { font-size: 0.75rem; font-family: 'DM Sans', sans-serif; font-weight: 300; color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase; margin-left: 0.75rem; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); opacity: 0.6; text-decoration: none; transition: opacity 0.2s; position: relative; }
+  .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 1px; background: var(--rust); transform: scaleX(0); transition: transform 0.25s; }
+  .nav-links a:hover { opacity: 1; }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-back { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--rust); text-decoration: none; opacity: 0.8; transition: opacity 0.2s; }
+  .nav-back:hover { opacity: 1; }
+  .hero { position: relative; min-height: 88vh; display: flex; align-items: center; overflow: hidden; padding: 6rem 4rem 5rem; background: var(--ink); color: var(--cream); }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 80% 40%, rgba(212,160,23,0.12) 0%, transparent 70%), radial-gradient(ellipse 50% 80% at 10% 70%, rgba(193,68,14,0.08) 0%, transparent 60%); }
+  .hero-lines { position: absolute; inset: 0; background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(245,240,232,0.03) 39px, rgba(245,240,232,0.03) 40px); }
+  .hero-inner { position: relative; max-width: 1100px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 300px; gap: 5rem; align-items: center; animation: fadeUp 0.8s ease both; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  .hero-eyebrow { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 12px; opacity: 0.9; }
+  .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
+  .hero-name { font-family: 'DM Serif Display', serif; font-size: clamp(52px, 8vw, 90px); font-weight: 400; line-height: 0.95; color: var(--cream); margin-bottom: 0.6rem; letter-spacing: -0.03em; }
+  .hero-name em { font-style: italic; color: var(--gold); }
+  .hero-dates { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-bottom: 2rem; margin-top: 0.75rem; }
+  .hero-desc { font-size: 1.05rem; line-height: 1.75; color: rgba(245,240,232,0.7); max-width: 520px; margin-bottom: 2.5rem; }
+  .hero-stats { display: flex; gap: 2.5rem; }
+  .hero-stat-num { font-family: 'DM Serif Display', serif; font-size: 2.2rem; color: var(--gold); line-height: 1; }
+  .hero-stat-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-top: 4px; }
+  .hero-portrait { position: relative; }
+  .portrait-frame { width: 100%; aspect-ratio: 3/4; border-radius: 2px; border: 1px solid rgba(245,240,232,0.12); overflow: hidden; position: relative; background: rgba(245,240,232,0.04); }
+  .portrait-frame img, .portrait-frame svg { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .portrait-year-tag { position: absolute; bottom: 20px; right: 20px; background: var(--rust); color: white; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; }
+  .page-content { max-width: 1100px; margin: 0 auto; padding: 0 4rem; }
+  .section { padding: 5rem 0; border-top: 1px solid var(--border); }
+  .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3rem; }
+  .section-num { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rust); flex-shrink: 0; opacity: 0.7; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 400; color: var(--ink); line-height: 1.1; letter-spacing: -0.02em; }
+  .section-title em { font-style: italic; color: var(--rust); }
+  .bio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .bio-text { font-size: 1rem; line-height: 1.85; color: var(--ink-mid); }
+  .bio-text p + p { margin-top: 1.25rem; }
+  .timeline { display: flex; flex-direction: column; }
+  .tl-item { display: grid; grid-template-columns: 56px 1fr; gap: 1.25rem; padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
+  .tl-item:last-child { border-bottom: none; }
+  .tl-year { font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); padding-top: 3px; font-weight: 500; }
+  .tl-title { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--ink); margin-bottom: 2px; }
+  .tl-desc { font-size: 0.85rem; color: var(--ink-light); line-height: 1.6; }
+  .books-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  .book-card { background: var(--paper); border: 1px solid var(--border); padding: 1.5rem; position: relative; transition: box-shadow 0.25s, transform 0.25s; border-top: 3px solid var(--gold); }
+  .book-card:hover { box-shadow: 0 8px 30px var(--shadow); transform: translateY(-3px); }
+  .book-year { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); margin-bottom: 6px; opacity: 0.8; }
+  .book-title { font-family: 'DM Serif Display', serif; font-size: 1rem; font-style: italic; color: var(--ink); margin-bottom: 8px; line-height: 1.3; }
+  .book-note { font-size: 0.85rem; color: var(--ink-light); line-height: 1.6; }
+  .book-badge { display: inline-block; margin-top: 10px; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--gold); color: var(--ink); padding: 3px 9px; font-weight: 500; }
+  .quote-block { border-left: 4px solid var(--rust); padding: 1.5rem 2rem; margin: 2.5rem 0; background: var(--paper); }
+  .quote-text { font-family: 'Playfair Display', Georgia, serif; font-size: 1.2rem; font-style: italic; line-height: 1.65; color: var(--ink); }
+  .quote-attr { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-top: 12px; }
+  .estilo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .estilo-item { display: flex; gap: 1.25rem; align-items: flex-start; }
+  .estilo-num { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--gold); opacity: 0.35; line-height: 1; flex-shrink: 0; width: 40px; }
+  .estilo-text { font-size: 0.95rem; line-height: 1.75; color: var(--ink-mid); }
+  .influencias-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .infl-card { background: var(--paper); border: 1px solid var(--border); padding: 1rem 1.25rem; }
+  .infl-name { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--ink); margin-bottom: 3px; }
+  .infl-note { font-size: 0.78rem; color: var(--ink-faint); }
+  .premios-list { display: flex; flex-direction: column; }
+  .premio-item { display: grid; grid-template-columns: 80px 1fr; gap: 2rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+  .premio-item:last-child { border-bottom: none; }
+  .premio-year { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--gold); line-height: 1; }
+  .premio-title { font-size: 1rem; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+  .premio-sub { font-size: 0.85rem; color: var(--ink-light); }
+  .curio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .curio-item { background: var(--paper); border: 1px solid var(--border); padding: 1.75rem; }
+  .curio-icon { font-size: 1.4rem; display: block; margin-bottom: 1rem; }
+  .curio-title { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: var(--ink); margin-bottom: 0.75rem; }
+  .curio-text { font-size: 0.88rem; color: var(--ink-light); line-height: 1.7; }
+  .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .link-card { background: var(--paper); border: 1px solid var(--border); padding: 1.25rem 1.5rem; display: flex; align-items: center; gap: 1rem; text-decoration: none; transition: box-shadow 0.2s, transform 0.2s; }
+  .link-card:hover { box-shadow: 0 4px 20px var(--shadow); transform: translateY(-2px); }
+  .link-icon-box { font-size: 1.2rem; flex-shrink: 0; }
+  .link-body { flex: 1; }
+  .link-title { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--ink); margin-bottom: 3px; }
+  .link-sub { font-size: 0.78rem; color: var(--ink-faint); line-height: 1.4; }
+  .link-arrow { font-size: 1.1rem; color: var(--rust); opacity: 0.6; }
+  footer { background: var(--ink); color: var(--cream); padding: 4rem; text-align: center; }
+  .footer-name { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--gold); margin-bottom: 1rem; }
+  .footer-divider { width: 60px; height: 1px; background: var(--rust); margin: 0 auto 1.5rem; }
+  .footer-note { font-size: 0.78rem; color: rgba(245,240,232,0.35); letter-spacing: 0.05em; }
+  .footer-back { display: inline-block; margin-top: 2rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rust); text-decoration: none; opacity: 0.7; }
+  .footer-back:hover { opacity: 1; }
+  @media (max-width: 900px) {
+    nav { padding: 0 1.5rem; } .hero { padding: 5rem 1.5rem 4rem; }
+    .hero-inner { grid-template-columns: 1fr; } .hero-portrait { display: none; }
+    .page-content { padding: 0 1.5rem; } .bio-grid { grid-template-columns: 1fr; }
+    .books-grid { grid-template-columns: 1fr 1fr; } .estilo-grid { grid-template-columns: 1fr; }
+    .influencias-grid { grid-template-columns: 1fr 1fr; } .curio-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; } .links-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 580px) {
+    .books-grid { grid-template-columns: 1fr; } .hero-stats { gap: 1.5rem; }
+    .influencias-grid { grid-template-columns: 1fr 1fr; } .premio-item { grid-template-columns: 70px 1fr; }
+  }
+</style>
+</head>
+<body>
+<nav id="nav">
+  <a class="nav-brand" href="index.html">Socorro <span>Clube do Livro</span></a>
+  <ul class="nav-links">
+    <li><a href="#biografia">Biografia</a></li>
+    <li><a href="#obra">Obra</a></li>
+    <li><a href="#estilo">Estilo</a></li>
+    <li><a href="#premios">Prêmios</a></li>
+    <li><a href="#curiosidades">Curiosidades</a></li>
+    <li><a href="#entrevistas">Entrevistas</a></li>
+  </ul>
+  <a class="nav-back" href="autores.html">← Autores</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Realismo Mágico · Literatura Cearense</div>
+      <h1 class="hero-name">Socorro<br><em>Acioli</em></h1>
+      <div class="hero-dates">Fortaleza, 24 de fevereiro de 1975</div>
+      <p class="hero-desc">Jornalista e escritora cearense, uma das principais vozes do realismo mágico brasileiro contemporâneo. Sua obra atravessa livros infantojuvenis premiados e romances adultos nascidos de histórias reais do sertão nordestino.</p>
+      <div class="hero-stats">
+        <div><div class="hero-stat-num">18+</div><div class="hero-stat-label">Livros publicados</div></div>
+        <div><div class="hero-stat-num">6+</div><div class="hero-stat-label">Países onde já foi publicada</div></div>
+        <div><div class="hero-stat-num">2006</div><div class="hero-stat-label">Oficina com García Márquez</div></div>
+      </div>
+    </div>
+    <div class="hero-portrait">
+      <div class="portrait-frame">
+        <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="400" fill="#2a2013"/>
+          <circle cx="150" cy="160" r="70" fill="#4a3c26"/>
+          <ellipse cx="150" cy="430" rx="120" ry="100" fill="#4a3c26"/>
+          <text x="150" y="360" font-family="DM Serif Display, serif" font-size="12" fill="rgba(245,240,232,0.35)" text-anchor="middle" letter-spacing="1.5">SOCORRO ACIOLI</text>
+        </svg>
+        <div class="portrait-year-tag">Fortaleza · CE</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="page-content">
+
+  <section class="section reveal" id="biografia">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Biografia</h2>
+    </div>
+    <div class="bio-grid">
+      <div class="bio-text">
+        <p>Socorro Edite Oliveira Acioli Martins nasceu em Fortaleza, no Ceará, e demonstrou vocação literária precocemente: aos oito anos, escreveu e publicou seu primeiro livro, <em>O Pipoqueiro João</em>, pela Nação Cariry Editora. Formou-se em Jornalismo pela Universidade Federal do Ceará, onde também concluiu mestrado em Literatura Brasileira, e doutorou-se em Estudos de Literatura pela Universidade Federal Fluminense.</p>
+        <p>Em 2001, ainda durante a graduação, retornou às letras com a biografia de Frei Tito de Alencar Lima; em 2003, publicou a de Rachel de Queiroz, escrita a partir de pesquisas e entrevistas com a própria escritora cearense. A partir de 2004, dedicou-se sobretudo à literatura infantojuvenil, vencendo o Prêmio Jabuti em 2013 com <em>Ela Tem Olhos de Céu</em>.</p>
+        <p>Em 2006, foi a única brasileira selecionada para a oficina "Como Contar um Conto", ministrada por Gabriel García Márquez em Cuba — experiência que resultou em <em>A Cabeça do Santo</em> (2014), seu romance de estreia para o público adulto, inspirado numa estátua real e decapitada de Santo Antônio na cidade de Caridade, no interior cearense.</p>
+      </div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">1975</div>
+          <div><div class="tl-title">Nasce em Fortaleza, CE</div><div class="tl-desc">Filha de família ligada à leitura e à escrita.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1984</div>
+          <div><div class="tl-title">Publica seu 1º livro aos 8 anos</div><div class="tl-desc">O Pipoqueiro João, pela Nação Cariry Editora.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2001</div>
+          <div><div class="tl-title">Retorno às letras</div><div class="tl-desc">Publica a biografia de Frei Tito de Alencar Lima.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2006</div>
+          <div><div class="tl-title">Oficina com García Márquez</div><div class="tl-desc">Única brasileira selecionada, entre apenas 10 vagas, em Cuba.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2013</div>
+          <div><div class="tl-title">Prêmio Jabuti</div><div class="tl-desc">Categoria infantil, por Ela Tem Olhos de Céu.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2014</div>
+          <div><div class="tl-title">Publica A Cabeça do Santo</div><div class="tl-desc">Seu romance de estreia para o público adulto.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="obra">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Obra principal</h2>
+    </div>
+    <div class="books-grid">
+      <div class="book-card">
+        <div class="book-year">2003</div>
+        <div class="book-title">Rachel de Queiroz</div>
+        <div class="book-note">Biografia da escritora cearense, escrita a partir de pesquisa e entrevistas com a própria autora.</div>
+      </div>
+      <div class="book-card">
+        <div class="book-year">2012</div>
+        <div class="book-title">Ela Tem Olhos de Céu</div>
+        <div class="book-note">Narrativa em cordel sobre seca, fé e poder no sertão. Vencedor do Prêmio Jabuti infantil em 2013.</div>
+        <span class="book-badge">Prêmio Jabuti</span>
+      </div>
+      <div class="book-card">
+        <div class="book-year">2014</div>
+        <div class="book-title">A Cabeça do Santo</div>
+        <div class="book-note">Romance de realismo mágico inspirado em fato real, sobre um jovem que ouve preces dentro de uma estátua.</div>
+        <span class="book-badge">Livro no clube</span>
+      </div>
+      <div class="book-card">
+        <div class="book-year">2016</div>
+        <div class="book-title">A Bailarina Fantasma</div>
+        <div class="book-note">Romance ambientado no Theatro José de Alencar, em Fortaleza, sua cidade natal.</div>
+      </div>
+      <div class="book-card">
+        <div class="book-year">2023</div>
+        <div class="book-title">Oração para Desaparecer</div>
+        <div class="book-note">Romance best-seller entre os mais vendidos da Flip; em processo de adaptação para o cinema.</div>
+        <span class="book-badge">Em adaptação</span>
+      </div>
+      <div class="book-card">
+        <div class="book-year">2027</div>
+        <div class="book-title">Enredo de Carnaval</div>
+        <div class="book-note">A Cabeça do Santo é escolhido pela Unidos da Tijuca como tema do desfile de Carnaval no Rio de Janeiro.</div>
+        <span class="book-badge">Carnaval 2027</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="estilo">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Estilo e referências</h2>
+    </div>
+    <div class="estilo-grid" style="margin-bottom:3rem;">
+      <div class="estilo-item">
+        <div class="estilo-num">01</div>
+        <div class="estilo-text"><strong>Realismo mágico nordestino:</strong> funde o extraordinário ao cotidiano do sertão, sem abrir mão da verossimilhança emocional.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">02</div>
+        <div class="estilo-text"><strong>Base em fatos reais:</strong> parte com frequência de histórias verídicas — de estátuas decapitadas a biografias de escritoras cearenses.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">03</div>
+        <div class="estilo-text"><strong>Oralidade sertaneja:</strong> incorpora o ritmo dos causos populares e da tradição de cordel à prosa.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">04</div>
+        <div class="estilo-text"><strong>Trânsito entre públicos:</strong> escreve com igual fôlego para crianças, jovens e adultos.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">05</div>
+        <div class="estilo-text"><strong>Investigação jornalística:</strong> a formação em jornalismo sustenta a pesquisa histórica por trás de cada narrativa.</div>
+      </div>
+      <div class="estilo-item">
+        <div class="estilo-num">06</div>
+        <div class="estilo-text"><strong>Fé e crítica social juntas:</strong> aborda a religiosidade popular sem ironia, sem deixar de expor suas contradições.</div>
+      </div>
+    </div>
+    <h3 style="font-family:'DM Serif Display',serif;font-size:1.4rem;font-weight:400;margin-bottom:1.5rem;">Influências e referências</h3>
+    <div class="influencias-grid">
+      <div class="infl-card"><div class="infl-name">Gabriel García Márquez</div><div class="infl-note">Realismo mágico latino-americano</div></div>
+      <div class="infl-card"><div class="infl-name">Rachel de Queiroz</div><div class="infl-note">Literatura cearense</div></div>
+      <div class="infl-card"><div class="infl-name">Ariano Suassuna</div><div class="infl-note">Cultura popular nordestina</div></div>
+      <div class="infl-card"><div class="infl-name">Guimarães Rosa</div><div class="infl-note">Sertão e linguagem</div></div>
+    </div>
+    <div class="quote-block" style="margin-top:2.5rem;">
+      <div class="quote-text">"A ficção nasce quase sempre de um detalhe real teimoso — algo que a gente vê e não consegue esquecer."</div>
+      <div class="quote-attr">— síntese do processo criativo de Socorro Acioli</div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="premios">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Prêmios e reconhecimentos</h2>
+    </div>
+    <div class="premios-list">
+      <div class="premio-item">
+        <div class="premio-year">2012</div>
+        <div><div class="premio-title">Prêmio Jabuti — categoria infantil</div><div class="premio-sub">Por Ela Tem Olhos de Céu, narrativa em cordel sobre o sertão.</div></div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">2013</div>
+        <div><div class="premio-title">Selo Altamente Recomendável FNLIJ</div><div class="premio-sub">Concedido pela Fundação Nacional do Livro Infantil e Juvenil.</div></div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">2016</div>
+        <div><div class="premio-title">Melhores Livros para Jovens</div><div class="premio-sub">A edição americana de A Cabeça do Santo é eleita pela Biblioteca Pública de Nova York.</div></div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">2027</div>
+        <div><div class="premio-title">Enredo de Carnaval</div><div class="premio-sub">A escola de samba Unidos da Tijuca leva A Cabeça do Santo à Sapucaí.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="curiosidades">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Curiosidades</h2>
+    </div>
+    <div class="curio-grid">
+      <div class="curio-item">
+        <span class="curio-icon">📗</span>
+        <div class="curio-title">Escritora aos oito anos</div>
+        <div class="curio-text">Publicou seu primeiro livro ainda criança, um sinal precoce da vocação que a acompanharia pela vida inteira.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">🇨🇺</span>
+        <div class="curio-title">A escolhida por García Márquez</div>
+        <div class="curio-text">Foi a única brasileira selecionada, entre apenas dez vagas, para a oficina literária de Gabriel García Márquez em Cuba.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">🗿</span>
+        <div class="curio-title">Uma estátua real e decapitada</div>
+        <div class="curio-text">A Cabeça do Santo se inspira numa estátua verídica de Santo Antônio, ainda hoje separada em duas partes, na cidade cearense de Caridade.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">🤝</span>
+        <div class="curio-title">Elogiada por valter hugo mãe</div>
+        <div class="curio-text">O escritor português valter hugo mãe — também presente neste clube — já elogiou publicamente a escrita de Socorro Acioli.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">🌍</span>
+        <div class="curio-title">Pesquisadora na Alemanha</div>
+        <div class="curio-text">Foi pesquisadora visitante da Biblioteca Internacional da Juventude, em Munique, onde morou por dois meses.</div>
+      </div>
+      <div class="curio-item">
+        <span class="curio-icon">🎤</span>
+        <div class="curio-title">Literatura brasileira pelo mundo</div>
+        <div class="curio-text">Já palestrou sobre literatura brasileira em Cabo Verde, na Bolívia e em Portugal, a convite de centros culturais.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="entrevistas">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Para conhecer melhor</h2>
+    </div>
+    <div class="links-grid">
+      <a class="link-card" href="https://socorroacioli.com.br/" target="_blank" rel="noopener">
+        <div class="link-icon-box">🌐</div>
+        <div class="link-body">
+          <div class="link-title">Site oficial</div>
+          <div class="link-sub">Cursos, textos e novidades da autora</div>
+        </div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a class="link-card" href="https://en.wikipedia.org/wiki/Socorro_Acioli" target="_blank" rel="noopener">
+        <div class="link-icon-box">📚</div>
+        <div class="link-body">
+          <div class="link-title">Verbete biográfico</div>
+          <div class="link-sub">Wikipedia</div>
+        </div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a class="link-card" href="https://enciclopedia.itaucultural.org.br/pessoas/194571-socorro-acioli" target="_blank" rel="noopener">
+        <div class="link-icon-box">🏛️</div>
+        <div class="link-body">
+          <div class="link-title">Itaú Cultural</div>
+          <div class="link-sub">Enciclopédia de literatura brasileira</div>
+        </div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a class="link-card" href="https://www.companhiadasletras.com.br/livro/9788535923698/a-cabeca-do-santo" target="_blank" rel="noopener">
+        <div class="link-icon-box">📖</div>
+        <div class="link-body">
+          <div class="link-title">A Cabeça do Santo — Companhia das Letras</div>
+          <div class="link-sub">Ficha completa da edição brasileira</div>
+        </div>
+        <span class="link-arrow">↗</span>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="footer-name">Socorro Acioli</div>
+  <div class="footer-divider"></div>
+  <div class="footer-note">Fontes: site oficial · Wikipedia · Itaú Cultural · Companhia das Letras</div>
+  <div class="footer-note" style="margin-top:8px;opacity:0.2;">Apresentação literária · Socorro Clube do Livro</div>
+  <a class="footer-back" href="autores.html">← Voltar para Autores</a>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); });
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 60); observer.unobserve(e.target); } });
+  }, { threshold: 0.06 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
