@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Pediatra — Análise</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1208; --rust:#c1440e; --gold:#d4a017; --sage:#6b8c6e;
+  --cream:#f5f0e8; --paper:#ede8dc; --border:rgba(193,68,14,0.22); --surf:rgba(26,18,8,0.05);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;padding-top:68px;overflow-x:hidden;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:68px;background:rgba(245,240,232,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
+.nav-logo{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--rust);text-decoration:none;}
+.nav-tag{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(26,18,8,0.45);}
+.nav-back{font-family:'Cinzel',serif;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:2px solid rgba(193,68,14,0.4);padding:0.45rem 1.1rem;transition:all 0.2s;}
+.nav-back:hover{color:var(--rust);border-color:var(--rust);}
+.page-header{text-align:center;padding:2.5rem 2rem 0;}
+.capa-wrap{width:150px;margin:0 auto 1.2rem;box-shadow:0 12px 28px rgba(26,18,8,0.28);}
+.capa-wrap img{display:block;width:100%;height:auto;}
+.sup{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-bottom:0.5rem;}
+.page-header h1{font-family:'Cinzel',serif;font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;color:var(--ink);letter-spacing:0.04em;}
+.page-header h1 em{font-style:italic;color:var(--rust);font-family:'Cormorant Garamond',serif;font-size:1.1em;}
+.page-header p{font-style:italic;color:rgba(26,18,8,0.7);font-size:0.95rem;margin-top:0.3rem;}
+.tabs-bar{display:flex;justify-content:center;max-width:960px;margin:2rem auto 0;border-bottom:2px solid var(--border);flex-wrap:wrap;}
+.tab{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.50);background:none;border:none;padding:0.9rem 1.8rem;cursor:pointer;position:relative;transition:color 0.25s;}
+.tab::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;background:var(--rust);transform:scaleX(0);transition:transform 0.25s;}
+.tab:hover{color:var(--ink);}
+.tab.on{color:var(--ink);}
+.tab.on::after{transform:scaleX(1);}
+.panel{display:none;}
+.panel.on{display:block;animation:fadeUp 0.35s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.teia-wrap{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;padding:1.5rem 2rem 3rem;min-height:780px;}
+#net-wrap{height:750px;}
+#net-svg{width:100%;height:100%;}
+.nlab{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:#1a1208;text-anchor:middle;pointer-events:none;}
+.nlab-white{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:white;text-anchor:middle;pointer-events:none;}
+.nrole{font-family:'Cinzel',serif;font-size:12px;font-weight:600;fill:rgba(26,18,8,0.75);text-anchor:middle;pointer-events:none;}
+.node{cursor:pointer;}
+.node circle{transition:filter 0.25s;}
+.node:hover circle{filter:brightness(1.2);}
+.info-panel{border-left:1px solid var(--border);padding:2rem 1.8rem;display:flex;flex-direction:column;overflow-y:auto;max-height:750px;}
+.info-panel h3{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.info-role{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1rem;}
+.info-desc{font-size:0.93rem;line-height:1.78;color:var(--ink);flex:1;}
+.info-tags{margin-top:1.2rem;}
+.info-tags span{display:inline-block;margin:0.2rem 0.2rem 0 0;background:var(--surf);border:1px solid var(--border);padding:0.22rem 0.65rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);}
+.legend{display:flex;gap:0.8rem;margin-top:auto;padding-top:1.5rem;border-top:1px solid var(--border);flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;font-weight:600;color:var(--ink);}
+.leg-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.wrap{max-width:900px;margin:0 auto;padding:3rem 2rem 4rem;}
+.sec-title{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--ink);letter-spacing:0.12em;text-transform:uppercase;margin:2.5rem 0 0.5rem;}
+.sec-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;margin-bottom:1.5rem;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.card{background:var(--surf);border:1px solid var(--border);padding:1.4rem;}
+.card h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--rust);margin-bottom:0.6rem;}
+.card p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.pull{border:1px solid var(--border);border-left:4px solid var(--rust);padding:1.8rem 2rem;margin:2.5rem 0;background:var(--surf);}
+.pull p{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;line-height:1.7;color:var(--ink);}
+.pull cite{display:block;margin-top:0.8rem;font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);}
+.body-text p{font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.2rem;}
+.autor-grid{display:grid;grid-template-columns:240px 1fr;gap:3rem;align-items:start;margin-bottom:3rem;}
+.foto-box{width:240px;overflow:hidden;position:relative;border:2px solid var(--border);}
+.foto-box svg{display:block;width:100%;height:auto;}
+.foto-box img{display:block;width:100%;height:auto;}
+.foto-cap{position:absolute;bottom:0;left:0;right:0;background:rgba(26,18,8,0.65);padding:0.5rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(245,240,232,0.9);text-align:center;font-weight:700;}
+.bio h2{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.bio .dates{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1.2rem;}
+.bio p{font-size:0.97rem;line-height:1.85;color:var(--ink);margin-bottom:1rem;}
+.timeline{position:relative;margin:1.5rem 0;}
+.timeline::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:1px;background:linear-gradient(to bottom,var(--rust),transparent);}
+.tl{display:flex;gap:1.4rem;margin-bottom:1.5rem;}
+.tl-dot{width:15px;height:15px;border-radius:50%;border:2px solid var(--rust);background:var(--paper);flex-shrink:0;margin-top:2px;position:relative;z-index:1;}
+.tl-yr{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.14em;color:var(--rust);min-width:40px;padding-top:1px;}
+.tl-txt{font-size:0.92rem;line-height:1.68;color:var(--ink);}
+.tema{background:var(--surf);border-left:4px solid var(--rust);padding:1.4rem 1.6rem;}
+.tema .ico{font-size:1.6rem;display:block;margin-bottom:0.6rem;}
+.tema h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.7rem;}
+.tema p{font-size:0.92rem;line-height:1.78;color:var(--ink);}
+.licao{background:var(--paper);border-left:4px solid var(--gold);padding:1.3rem 1.5rem;}
+.licao h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);margin-bottom:0.5rem;}
+.licao p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.fotos-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:2.5rem;}
+.foto-espaco{position:relative;overflow:hidden;border:1px solid var(--border);}
+.foto-espaco img{display:block;width:100%;height:280px;object-fit:cover;}
+.foto-espaco svg{display:block;width:100%;height:280px;}
+.foto-leg{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(26,18,8,0.75));padding:1.5rem 0.9rem 0.6rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,240,232,0.92);}
+.lugar{background:var(--surf);border:1px solid var(--border);padding:1.6rem;position:relative;overflow:hidden;}
+.lugar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rust),transparent);}
+.lugar h3{font-family:'Cinzel',serif;font-size:0.75rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.4rem;}
+.lugar-tag{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;color:var(--ink);display:block;margin-bottom:0.5rem;}
+.lugar p{font-size:0.90rem;line-height:1.72;color:var(--ink);}
+.meta-box{background:var(--paper);border:1px solid var(--border);padding:2rem;margin:2.5rem 0;display:grid;grid-template-columns:60px 1fr;gap:1.5rem;align-items:start;}
+.meta-box .ico{font-size:2.6rem;}
+.meta-box h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.5rem;}
+.meta-box p{font-size:0.92rem;line-height:1.75;color:var(--ink);}
+.midia-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.midia-card{display:flex;gap:1rem;background:var(--surf);border:1px solid var(--border);padding:1.2rem 1.3rem;align-items:flex-start;text-decoration:none;transition:border-color 0.2s,transform 0.2s;}
+.midia-card:hover{border-color:var(--rust);transform:translateY(-2px);}
+.midia-ico{font-size:1.5rem;flex-shrink:0;margin-top:0.1rem;}
+.midia-tipo{font-family:'Cinzel',serif;font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.3rem;display:block;}
+.midia-titulo{font-family:'DM Sans',sans-serif;font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;display:block;}
+.midia-fonte{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.85rem;color:rgba(26,18,8,0.65);}
+.av-wrap{max-width:900px;margin:0 auto;padding:4rem 2rem 5rem;border-top:1px solid var(--border);}
+.av-wrap h2{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:0.08em;text-align:center;margin-bottom:0.4rem;}
+.av-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;text-align:center;margin-bottom:2.5rem;}
+.av-summary{background:var(--surf);border:1px solid var(--border);padding:2rem;display:flex;gap:3rem;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;}
+.av-big-num{font-family:'Cinzel',serif;font-size:4rem;font-weight:700;color:var(--rust);line-height:1;text-align:center;}
+.av-big-stars{font-size:1.5rem;text-align:center;margin:0.3rem 0;}
+.av-big-count{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.6);text-align:center;}
+.brow{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;}
+.brow-lbl{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;color:var(--ink);min-width:28px;}
+.brow-track{flex:1;height:8px;background:rgba(26,18,8,0.1);border-radius:4px;overflow:hidden;}
+.brow-fill{height:100%;background:var(--rust);border-radius:4px;transition:width 0.5s;width:0%;}
+.brow-n{font-family:'Cinzel',serif;font-size:0.62rem;font-weight:700;color:rgba(26,18,8,0.6);min-width:16px;text-align:right;}
+.av-form{background:var(--paper);border:1px solid var(--border);padding:2rem;margin-bottom:2.5rem;}
+.av-form h3{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink);margin-bottom:1.5rem;}
+.av-label{font-family:'Cinzel',serif;font-size:0.63rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);display:block;margin-bottom:0.4rem;}
+.av-input{width:100%;padding:0.7rem 1rem;margin-bottom:1.2rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;}
+.av-input:focus{border-color:var(--rust);}
+.av-textarea{width:100%;padding:0.7rem 1rem;margin-bottom:1.5rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;resize:vertical;line-height:1.65;min-height:100px;}
+.av-textarea:focus{border-color:var(--rust);}
+.stars-pick{display:flex;gap:0.3rem;margin-bottom:1.3rem;}
+.stars-pick span{font-size:2.2rem;cursor:pointer;line-height:1;color:rgba(26,18,8,0.2);transition:color 0.15s;user-select:none;}
+.av-btn{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;background:var(--rust);color:white;border:none;padding:0.85rem 2.5rem;cursor:pointer;transition:background 0.2s;}
+.av-btn:hover{background:#a33508;}
+.av-btn:disabled{background:#aaa;cursor:default;}
+.av-msg{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;margin-left:1rem;}
+.comment{border:1px solid var(--border);padding:1.4rem 1.6rem;margin-bottom:1rem;background:var(--cream);}
+.chead{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;flex-wrap:wrap;gap:0.4rem;}
+.cname{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;color:var(--ink);}
+.cstars{color:var(--rust);font-size:1.05rem;}
+.cdate{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:600;color:rgba(26,18,8,0.5);}
+.ctext{font-size:0.95rem;line-height:1.75;color:var(--ink);}
+.no-reviews{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.5);font-size:1rem;text-align:center;padding:2rem 0;}
+.loading{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.12em;color:rgba(26,18,8,0.5);text-align:center;padding:1.5rem 0;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Socorro.</a>
+  <span class="nav-tag">Clube do Livro · Análise</span>
+  <a href="index.html#lidos" class="nav-back">← Voltar à Estante</a>
+</nav>
+
+<div class="page-header">
+  <div class="capa-wrap"><img src="https://cdl-static.s3-sa-east-1.amazonaws.com/covers/gg/9786559213481/a-pediatra.jpg" alt="Capa de A Pediatra"></div>
+  <p class="sup">Andréa Del Fuego &nbsp;·&nbsp; 2021 &nbsp;·&nbsp; Análise Literária</p>
+  <h1><em>A Pediatra</em></h1>
+  <p>Teia de Relações · A Autora · Temas · Espaço Narrativo · Mídia</p>
+</div>
+
+<div class="tabs-bar">
+  <button class="tab on"  onclick="goTab('teia',this)">Teia de Relações</button>
+  <button class="tab"     onclick="goTab('autora',this)">A Autora</button>
+  <button class="tab"     onclick="goTab('temas',this)">Temas &amp; Lições</button>
+  <button class="tab"     onclick="goTab('espaco',this)">O Espaço Narrativo</button>
+  <button class="tab"     onclick="goTab('midia',this)">Mídia</button>
+</div>
+
+<!-- TEIA -->
+<div id="panel-teia" class="panel on">
+<div class="teia-wrap">
+  <div id="net-wrap">
+  <svg id="net-svg" viewBox="0 0 860 750" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+    <line x1="430" y1="390" x2="430" y2="110" stroke="#d4a017" stroke-width="2.5" stroke-opacity="0.55" stroke-dasharray="6,4"/>
+    <line x1="430" y1="390" x2="170" y2="200" stroke="#1a1208" stroke-width="2" stroke-opacity="0.35" stroke-dasharray="6,4"/>
+    <line x1="430" y1="390" x2="660" y2="240" stroke="#c1440e" stroke-width="3.5" stroke-opacity="0.75"/>
+    <line x1="430" y1="390" x2="180" y2="490" stroke="#d4a017" stroke-width="3" stroke-opacity="0.7"/>
+    <line x1="430" y1="390" x2="670" y2="520" stroke="#2a9d8f" stroke-width="2.5" stroke-opacity="0.6"/>
+    <line x1="430" y1="390" x2="770" y2="390" stroke="#2a9d8f" stroke-width="2" stroke-opacity="0.45" stroke-dasharray="6,4"/>
+    <line x1="430" y1="390" x2="110" y2="650" stroke="#1a1208" stroke-width="1.5" stroke-opacity="0.35"/>
+    <line x1="660" y1="240" x2="180" y2="490" stroke="#d4a017" stroke-width="1.5" stroke-opacity="0.25" stroke-dasharray="3,5"/>
+    <line x1="670" y1="520" x2="770" y2="390" stroke="#2a9d8f" stroke-width="1.5" stroke-opacity="0.3"/>
+    <g class="node" onclick="info('cecilia')"><circle cx="430" cy="390" r="82" fill="#c1440e" fill-opacity="0.12" stroke="#c1440e" stroke-width="3.5"/><circle cx="430" cy="390" r="62" fill="#c1440e" fill-opacity="0.93"/><text x="430" y="397" class="nlab-white" style="font-size:20px;">Cecília</text><text x="430" y="482" class="nrole">a protagonista</text></g>
+    <g class="node" onclick="info('laerte')"><circle cx="430" cy="110" r="56" fill="#d4a017" fill-opacity="0.55" stroke="#d4a017" stroke-width="2.5" stroke-dasharray="6,4"/><text x="430" y="107" class="nlab" style="font-size:13px;">Dr. Laerte</text><text x="430" y="123" class="nlab" style="font-size:11px;">o pai</text><text x="430" y="176" class="nrole">o espelho distante</text></g>
+    <g class="node" onclick="info('marido')"><circle cx="170" cy="200" r="52" fill="#1a1208" fill-opacity="0.3" stroke="#1a1208" stroke-width="2.5" stroke-dasharray="6,4"/><text x="170" y="204" class="nlab" style="font-size:14px;">Marido</text><text x="170" y="262" class="nrole">a ausência viva</text></g>
+    <g class="node" onclick="info('celso')"><circle cx="660" cy="240" r="52" fill="#c1440e" fill-opacity="0.85"/><text x="660" y="244" class="nlab-white" style="font-size:14px;">Celso</text><text x="660" y="302" class="nrole">o amante</text></g>
+    <g class="node" onclick="info('bruninho')"><circle cx="180" cy="490" r="48" fill="#d4a017" fill-opacity="0.9"/><text x="180" y="494" class="nlab-white" style="font-size:12.5px;">Bruninho</text><text x="180" y="548" class="nrole">a fissura</text></g>
+    <g class="node" onclick="info('humanista')"><circle cx="670" cy="520" r="46" fill="#2a9d8f" fill-opacity="0.85"/><text x="670" y="512" class="nlab-white" style="font-size:12px;">Dr.</text><text x="670" y="528" class="nlab-white" style="font-size:12px;">Humanista</text><text x="670" y="576" class="nrole">o rival</text></g>
+    <g class="node" onclick="info('obstetra')"><circle cx="770" cy="390" r="44" fill="#2a9d8f" fill-opacity="0.35" stroke="#2a9d8f" stroke-width="2.5" stroke-dasharray="6,4"/><text x="770" y="382" class="nlab" style="font-size:12px;">Dra.</text><text x="770" y="398" class="nlab" style="font-size:12px;">Obstetra</text><text x="770" y="444" class="nrole">a aliada em deriva</text></g>
+    <g class="node" onclick="info('deise')"><circle cx="110" cy="650" r="42" fill="#2a9d8f" fill-opacity="0.6"/><text x="110" y="654" class="nlab-white" style="font-size:13px;">Deise</text><text x="110" y="702" class="nrole">o espelho de classe</text></g>
+  </svg>
+  </div>
+  <div class="info-panel">
+    <h3 id="i-name">Clique em um personagem</h3>
+    <p class="info-role" id="i-role">para ver o perfil</p>
+    <p class="info-desc" id="i-desc">Cecília é neonatologista e pediatra de sucesso em São Paulo — competente, admirada profissionalmente, e quase incapaz de sentir o afeto que a sociedade espera de quem cuida de crianças. Ao redor dela, um pai idolatrado à distância, um marido que já é uma ausência, um amante cujo filho ela mesma ajudou a trazer ao mundo — até que esse menino, Bruninho, fissura uma armadura construída a vida inteira.</p>
+    <div class="info-tags" id="i-tags"></div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:#c1440e"></div>Tensão &amp; Desejo</div>
+      <div class="leg"><div class="leg-dot" style="background:#d4a017"></div>Vínculo Simbólico</div>
+      <div class="leg"><div class="leg-dot" style="background:#2a9d8f"></div>Vínculo Profissional</div>
+      <div class="leg"><svg width="24" height="8"><line x1="0" y1="4" x2="24" y2="4" stroke="#1a1208" stroke-width="2" stroke-dasharray="5,3"/></svg>Ausência &amp; Distância</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- AUTORA -->
+<div id="panel-autora" class="panel">
+<div class="wrap">
+  <div class="autor-grid">
+    <div class="foto-box">
+      <img src="https://cdl-static.s3-sa-east-1.amazonaws.com/colaboradores/03439_gg.jpg" alt="Andréa Del Fuego">
+      <div class="foto-cap">São Paulo, SP · n. 1975</div>
+    </div>
+    <div class="bio">
+      <h2>Andréa Del Fuego</h2>
+      <p class="dates">São Paulo, 1975 — vive na cidade até hoje</p>
+      <p><strong>Andréa Fátima dos Santos</strong>, que o mundo literário conhece como <strong>Andréa Del Fuego</strong>, nasceu em São Paulo em 1975. O pseudônimo veio de sugestão da sogra e ficou — como ficam as melhores histórias: por acaso. Graduada em Filosofia pela USP e mestre pela mesma instituição, ela carrega na prosa a clareza analítica de quem aprendeu a distinguir o essencial do supérfluo.</p>
+      <p>Seu estilo é definido por uma precisão quase cirúrgica na escolha das palavras, humor mordaz que não pede licença e uma disposição para habitar personagens desconfortáveis sem tentar salvá-los ou condená-los. Há em seus textos uma influência do realismo fantástico — especialmente evidente em seu romance de estreia — mas que, em <em>A Pediatra</em>, se curva para um realismo mais urbano e psicológico.</p>
+      <p>Contista antes de romancista, Andréa formou seu olhar naquele espaço brevíssimo em que cada palavra pesa demais para ser desperdiçada. É essa contenção que torna <em>A Pediatra</em>, com suas 160 páginas, tão densa quanto um romance de 400.</p>
+    </div>
+  </div>
+  <p class="sec-title">Linha do Tempo</p>
+  <div class="timeline">
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1975</div><div class="tl-txt">Nasce em São Paulo. Cresce na cidade que mais tarde servirá de cenário para sua ficção.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2004</div><div class="tl-txt">Publica <em>Minto Enquanto Posso</em>, primeiro volume da trilogia de minicontos — começa a construir sua voz literária na forma mais radical de brevidade.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2005–07</div><div class="tl-txt">Completa a trilogia com <em>Nego Tudo</em> (2005) e <em>Engano Seu</em> (2007). Três títulos, três declarações de intenção.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2010</div><div class="tl-txt">Lança <em>Os Malaquias</em>, seu primeiro romance — e conquista imediatamente o Prêmio José Saramago, um dos mais prestigiosos da literatura de língua portuguesa.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2013</div><div class="tl-txt">Publica <em>As Miniaturas</em>, seu segundo romance, consolidando a presença no cânone contemporâneo brasileiro.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2021</div><div class="tl-txt">Lança <em>A Pediatra</em> pela Companhia das Letras — seu terceiro romance, 160 páginas, um dos seus trabalhos mais comentados e vendidos.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2022</div><div class="tl-txt"><em>A Pediatra</em> é publicada em Portugal pela Penguin Livros, expandindo o alcance de Cecília para o público europeu.</div></div>
+  </div>
+  <p class="sec-title">Seis curiosidades sobre a autora e o livro</p>
+  <p class="sec-sub">Detalhes que revelam a artista por trás de Cecília</p>
+  <div class="g2">
+    <div class="card"><h4>O pseudônimo que veio da sogra</h4><p>Del Fuego não é um nome de família nem uma escolha arquitetada pela escritora: foi sugestão da sogra. Andréa adotou, e o pseudônimo virou identidade literária completa — quase ninguém a chama de Fátima dos Santos.</p></div>
+    <div class="card"><h4>Antes dos romances, o erótico</h4><p>Antes de qualquer prêmio literário, Andréa escrevia contos eróticos e respondia dúvidas sexuais em uma coluna de revista. A irreverência que marca sua ficção tem raízes bem práticas.</p></div>
+    <div class="card"><h4>O prêmio logo de cara</h4><p>Ganhar o Prêmio José Saramago no romance de estreia é um feito raro — a premiação é dada a escritores de língua portuguesa com até 40 anos, e <em>Os Malaquias</em> chegou lá já na largada.</p></div>
+    <div class="card"><h4>Filosofia como lente literária</h4><p>A formação em Filosofia pela USP é visível na precisão argumentativa de sua prosa. Cecília pensa como uma filósofa pragmática — cada ação tem uma justificativa, mesmo quando essa justificativa é perturbadora.</p></div>
+    <div class="card"><h4>A protagonista tem nome completo</h4><p>Cecília se chama, por extenso, Cecília Tomé Vilela — um detalhe que raramente aparece nas resenhas, mas que a autora cuidou de lhe dar, como se cada sílaba fizesse parte da armadura da personagem.</p></div>
+    <div class="card"><h4>160 páginas que pesam 400</h4><p>A extrema contenção formal de <em>A Pediatra</em> é um projeto consciente. Del Fuego vem dos minicontos: para ela, escrever pouco sobre muito é uma escolha ética, não uma limitação.</p></div>
+  </div>
+  <div class="meta-box">
+    <div class="ico">🩺</div>
+    <div><h3>Como Este Livro Surgiu</h3><p><em>A Pediatra</em> nasce de uma provocação simples e devastadora: e se a pessoa que a sociedade espera que seja mais amorosa — uma médica de crianças — não sentisse quase nada por elas? Del Fuego não explica de onde veio Cecília, mas o resultado é uma personagem que emerge daquilo de mais desconfortável que preferimos não admitir nem nos outros, nem em nós mesmos. Lançado em 2021 pela Companhia das Letras, o romance chegou num momento em que a literatura brasileira contemporânea escrita por mulheres explodia em protagonistas antiéticas, cínicas, deliberadamente não-simpáticas — e Cecília entrou nessa conversa como uma de suas figuras mais radicais.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- TEMAS -->
+<div id="panel-temas" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Temas Centrais do Livro</p>
+  <p class="sec-sub">O que A Pediatra diz sobre vocação, frieza e o custo de não se deixar amar</p>
+  <div class="g2" style="margin-top:0;">
+    <div class="tema"><span class="ico">🔪</span><h3>A Vocação como Mito</h3><p>Cecília não escolheu a medicina: a medicina foi escolhida por ela, pelo peso da herança paterna. O livro questiona com ferocidade o mito de que só deveria exercer uma profissão quem a ama. Ela é tecnicamente competente — e isso basta? A resposta é ambígua, e incomoda exatamente por isso.</p></div>
+    <div class="tema"><span class="ico">🧊</span><h3>A Frieza como Defesa</h3><p>O distanciamento emocional de Cecília não é maldade inata; é uma construção. Uma infância entre babás e um pai admirado à distância: Del Fuego traça com precisão a genealogia de alguém que aprendeu que não se apegar é a única forma de não ser ferida. A frieza é uma armadura — e armaduras pesam.</p></div>
+    <div class="tema"><span class="ico">👶</span><h3>Maternidade sem Romantismo</h3><p>O livro desfaz o véu cor-de-rosa que a sociedade lança sobre a maternidade. Cecília não quer ser mãe, não tem instinto materno, e a narrativa não a pune por isso — sem concluir, tampouco, que o amor excessivo é necessariamente superior à ausência.</p></div>
+    <div class="tema"><span class="ico">⚕️</span><h3>Medicina como Campo de Batalha</h3><p>O embate entre Cecília e o Dr. Humanista é também um debate contemporâneo: parto natural versus cesariana, medicina técnica versus medicina empática. Del Fuego não toma partido abertamente — mas coloca no centro do conflito a pergunta sobre quem tem direito de definir o que é cuidar.</p></div>
+    <div class="tema"><span class="ico">🏛️</span><h3>Classe Social e Poder</h3><p>A relação de Cecília com Deise é um microcosmo da desigualdade brasileira. A forma como Cecília enquadra sua funcionária revela uma mentalidade de classe que a narradora nunca examina em si mesma — é o leitor quem vê o que ela não vê.</p></div>
+    <div class="tema"><span class="ico">🪞</span><h3>O Espelhamento como Estrutura</h3><p>Cecília e Deise têm casos com homens casados. Cecília e o Dr. Humanista são opostos que espelham as mesmas questões. Del Fuego constrói um romance de espelhos em que cada personagem revela algo que a protagonista recusa enxergar em si.</p></div>
+    <div class="tema"><span class="ico">💔</span><h3>O Amor Tardio e Involuntário</h3><p>Bruninho não é uma criança qualquer: é a fissura. O sentimento que desperta em Cecília não chega com ternura fácil — chega perturbador, obsessivo, não-familiar. O amor, quando finalmente atravessa uma armadura como a dela, chega como invasão.</p></div>
+    <div class="tema"><span class="ico">📏</span><h3>Sucesso e Vazio</h3><p>Cecília tem consultório bem-sucedido, apartamento, casamento estável, amante sob controle. E nada disso a satisfaz. O livro não moraliza esse vazio: apenas expõe a arquitetura de uma vida plena por fora e, por dentro, absolutamente silenciosa.</p></div>
+  </div>
+  <div class="pull">
+    <p>Ninguém notava que eu tinha pouca vocação e paciência para ser médica; a boa formação garantia que eu não fosse processada, fazia bem-feito o feijão com arroz.</p>
+    <cite>Cecília, em A Pediatra</cite>
+  </div>
+  <p class="sec-title">Seis lições da narrativa</p>
+  <p class="sec-sub">O que o clube pode levar desta leitura</p>
+  <div class="g2">
+    <div class="licao"><h4>Competência não é vocação</h4><p>Competência técnica não é sinônimo de vocação — e a distinção importa mais do que nossa cultura profissional costuma admitir.</p></div>
+    <div class="licao"><h4>Indiferença tem sempre uma origem</h4><p>A indiferença que exibimos para o mundo quase sempre esconde uma história de afeto negado — e Cecília prova que essa história não precisa ser dramática para ser devastadora.</p></div>
+    <div class="licao"><h4>O julgamento revela quem julga</h4><p>Julgar quem "não se encaixa" — a pediatra que não ama crianças, a mulher que não quer ser mãe — diz mais sobre nossos próprios medos do que sobre a pessoa julgada.</p></div>
+    <div class="licao"><h4>O amor não pede licença</h4><p>O amor não avisa quando vai chegar. E quando chega numa pessoa que construiu a vida inteira para não sentir, não é redenção — é colapso.</p></div>
+    <div class="licao"><h4>Controle é apenas adiamento</h4><p>Manter tudo sob controle — o consultório, o casamento, o amante, a empregada — é uma ilusão: o descontrole só está sendo adiado, não evitado.</p></div>
+    <div class="licao"><h4>Narrar é um convite ético</h4><p>A narrativa em primeira pessoa de uma personagem moralmente ambígua nos força a perguntar o que sentimos por Cecília — e essa pergunta diz algo sobre nós mesmos.</p></div>
+  </div>
+  <p class="sec-title">Síntese</p>
+  <div class="body-text">
+    <p><em>A Pediatra</em> é, no fundo, um romance sobre o custo de não se deixar amar — e sobre como esse custo é sempre cobrado de formas que não esperamos. Andréa Del Fuego não escreve um livro sobre uma vilã nem sobre uma heroína: escreve sobre uma pessoa que aprendeu a sobreviver de um jeito que tornou impossível viver de verdade. E faz isso sem julgá-la, sem salvá-la, sem oferecer o conforto de uma conclusão moral limpa.</p>
+    <p>O que fica, depois das 160 páginas, é a inquietação de quem se reconheceu — mesmo que só um pouco, mesmo que contrariado — em alguém que nunca gostaríamos de ser. Para o clube, a leitura é um convite a discutir vocação, frieza e o preço que cobramos de quem não se encaixa no papel que esperamos que exerça.</p>
+  </div>
+</div>
+</div>
+
+<!-- ESPAÇO -->
+<div id="panel-espaco" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">O Espaço Narrativo</p>
+  <p class="sec-sub">São Paulo dividida em territórios: o consultório, o apartamento, a maternidade e a casa alheia</p>
+  <div class="fotos-grid">
+    <div class="foto-espaco">
+      <svg viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c8e6f0"/><stop offset="100%" stop-color="#e8f4f8"/></linearGradient></defs>
+        <rect width="500" height="220" fill="url(#sky1)"/>
+        <rect x="150" y="40" width="200" height="160" fill="#ddd8cc"/>
+        <rect x="150" y="40" width="200" height="10" fill="#b0a898"/>
+        <rect x="170" y="60" width="35" height="25" fill="#a8c8d8" rx="1"/><rect x="220" y="60" width="35" height="25" fill="#a8c8d8" rx="1"/><rect x="270" y="60" width="35" height="25" fill="#a8c8d8" rx="1"/>
+        <rect x="170" y="100" width="35" height="25" fill="#d4e8f0" rx="1"/><rect x="220" y="100" width="35" height="25" fill="#d4e8f0" rx="1"/><rect x="270" y="100" width="35" height="25" fill="#d4e8f0" rx="1"/>
+        <rect x="170" y="140" width="35" height="25" fill="#c0d8e0" rx="1"/><rect x="220" y="140" width="35" height="25" fill="#c0d8e0" rx="1"/><rect x="270" y="140" width="35" height="25" fill="#c0d8e0" rx="1"/>
+        <rect x="223" y="175" width="54" height="25" fill="#b0a898" rx="1"/>
+        <rect x="60" y="80" width="85" height="120" fill="#c8c4bc"/><rect x="355" y="70" width="90" height="130" fill="#ccc8c0"/>
+        <rect x="0" y="200" width="500" height="20" fill="#d0ccc4"/>
+        <text x="250" y="35" text-anchor="middle" fill="#8a9aaa" font-size="14" font-family="serif">✚</text>
+      </svg>
+      <div class="foto-leg">O consultório — território de poder no mesmo prédio do pai</div>
+    </div>
+    <div class="foto-espaco">
+      <svg viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="interior-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0ebe0"/><stop offset="100%" stop-color="#e8e0d0"/></linearGradient></defs>
+        <rect width="500" height="220" fill="url(#interior-bg)"/>
+        <rect x="0" y="60" width="500" height="160" fill="#e8e2d8"/>
+        <rect x="0" y="205" width="500" height="15" fill="#d8d0c4"/>
+        <rect x="180" y="75" width="140" height="100" fill="#b8ccd8" rx="2"/><rect x="180" y="75" width="140" height="5" fill="#c8b8a0"/>
+        <line x1="250" y1="75" x2="250" y2="175" stroke="#c8b8a0" stroke-width="2"/><line x1="180" y1="125" x2="320" y2="125" stroke="#c8b8a0" stroke-width="2"/>
+        <rect x="182" y="78" width="67" height="95" fill="#c8dce8"/><rect x="251" y="78" width="67" height="95" fill="#b8ccd8"/>
+        <ellipse cx="215" cy="100" rx="22" ry="12" fill="rgba(255,255,255,0.6)"/><ellipse cx="235" cy="95" rx="18" ry="10" fill="rgba(255,255,255,0.5)"/>
+        <rect x="50" y="175" width="150" height="35" fill="#c8b89a" rx="4"/><rect x="50" y="160" width="150" height="20" fill="#b8a888" rx="2"/>
+        <rect x="50" y="160" width="18" height="50" fill="#b8a888" rx="2"/><rect x="182" y="160" width="18" height="50" fill="#b8a888" rx="2"/>
+        <rect x="280" y="195" width="80" height="5" fill="#b8b0a0"/><rect x="300" y="185" width="15" height="15" fill="#d4c8b4" rx="1"/>
+        <rect x="400" y="60" width="100" height="160" fill="rgba(0,0,0,0.08)"/>
+      </svg>
+      <div class="foto-leg">O apartamento — a prisão confortável, o lar sem calor</div>
+    </div>
+    <div class="foto-espaco">
+      <svg viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="hosp-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f0f4"/><stop offset="100%" stop-color="#d8e8f0"/></linearGradient></defs>
+        <rect width="500" height="220" fill="url(#hosp-bg)"/>
+        <rect x="0" y="160" width="500" height="60" fill="#c8d4d8"/>
+        <rect x="100" y="50" width="300" height="130" fill="#e0ecf0"/><rect x="100" y="50" width="300" height="8" fill="#b0c8d0"/>
+        <rect x="235" y="20" width="30" height="8" fill="#b84a1e"/><rect x="245" y="10" width="10" height="28" fill="#b84a1e"/>
+        <rect x="120" y="68" width="40" height="28" fill="#fffde0" rx="1"/><rect x="180" y="68" width="40" height="28" fill="#f0e8b0" rx="1" opacity="0.8"/><rect x="240" y="68" width="40" height="28" fill="#fffde0" rx="1"/><rect x="300" y="68" width="40" height="28" fill="#e8e0a0" rx="1" opacity="0.7"/><rect x="360" y="68" width="20" height="28" fill="#fffde0" rx="1"/>
+        <rect x="120" y="110" width="40" height="28" fill="#e0e8ec" rx="1"/><rect x="180" y="110" width="40" height="28" fill="#f0f8fc" rx="1"/><rect x="240" y="110" width="40" height="28" fill="#fffde8" rx="1"/><rect x="300" y="110" width="40" height="28" fill="#e0e8ec" rx="1"/><rect x="360" y="110" width="20" height="28" fill="#e8f0f4" rx="1"/>
+        <rect x="210" y="148" width="80" height="32" fill="#c0d0d8" rx="1"/>
+        <ellipse cx="250" cy="148" rx="60" ry="15" fill="rgba(255,255,180,0.3)"/>
+        <rect x="0" y="0" width="500" height="50" fill="#c8d8e8"/><ellipse cx="430" cy="25" rx="20" ry="18" fill="rgba(255,255,255,0.7)"/>
+      </svg>
+      <div class="foto-leg">A maternidade — onde ela é mais competente e mais alheia</div>
+    </div>
+    <div class="foto-espaco">
+      <svg viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="tarde" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0c870"/><stop offset="40%" stop-color="#e8a848"/><stop offset="100%" stop-color="#d08838"/></linearGradient><linearGradient id="grama" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8ab870"/><stop offset="100%" stop-color="#6a9850"/></linearGradient></defs>
+        <rect width="500" height="220" fill="url(#tarde)"/>
+        <rect x="0" y="160" width="500" height="60" fill="url(#grama)"/>
+        <rect x="130" y="100" width="240" height="90" fill="#e8e0d0"/>
+        <polygon points="110,100 250,45 390,100" fill="#c8a878"/>
+        <rect x="155" y="115" width="55" height="45" fill="#b8d0e0" rx="1"/><rect x="175" y="115" width="3" height="45" fill="#a8c0d0"/><rect x="155" y="135" width="55" height="2" fill="#a8c0d0"/>
+        <rect x="290" y="115" width="55" height="45" fill="#d4e8f0" rx="1"/><rect x="310" y="115" width="3" height="45" fill="#c4d8e0"/><rect x="290" y="135" width="55" height="2" fill="#c4d8e0"/>
+        <rect x="222" y="148" width="56" height="42" fill="#b09070" rx="1"/><circle cx="268" cy="172" r="3" fill="#c8a060"/>
+        <ellipse cx="120" cy="168" rx="20" ry="12" fill="#78b058"/><ellipse cx="110" cy="162" rx="12" ry="8" fill="#90c870"/>
+        <ellipse cx="380" cy="165" rx="22" ry="14" fill="#80b860"/><ellipse cx="395" cy="158" rx="14" ry="9" fill="#98d078"/>
+        <rect x="60" y="120" width="6" height="60" fill="#8a6840"/><ellipse cx="63" cy="108" rx="28" ry="22" fill="#70a050"/><ellipse cx="50" cy="115" rx="18" ry="14" fill="#80b060"/>
+        <circle cx="440" cy="50" r="35" fill="rgba(255,200,50,0.4)"/><circle cx="440" cy="50" r="25" fill="rgba(255,180,30,0.5)"/>
+      </svg>
+      <div class="foto-leg">O universo de Celso — o lar alheio que Cecília não tem</div>
+    </div>
+  </div>
+  <p style="font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.5rem;">A narrativa se move dentro de uma São Paulo dividida em territórios estanques: o consultório onde Cecília é soberana, o apartamento matrimonial onde não tem controle nenhum, a maternidade onde é ao mesmo tempo mais competente e mais alheia, e a casa da família de Celso — o único lugar onde ela se sente, ao mesmo tempo, intrusa e irresistivelmente atraída.</p>
+  <div class="g2">
+    <div class="lugar"><h3>O Consultório</h3><span class="lugar-tag">Território de Poder</span><p>Situado no mesmo prédio comercial de propriedade do pai, é o único espaço em que Cecília se sente completamente soberana. Quando o Dr. Humanista começa a roubar seus pacientes, o consultório deixa de ser apenas trabalho: torna-se o símbolo de tudo que ela está prestes a perder.</p></div>
+    <div class="lugar"><h3>O Apartamento</h3><span class="lugar-tag">A Prisão Confortável</span><p>O oposto do consultório: ali, Cecília não tem controle nenhum, dominada pelo peso da inércia. O marido depressivo habita os cômodos como uma presença que já é ausência — e o casamento se dissolve com a mesma facilidade com que um sonho some pela manhã.</p></div>
+    <div class="lugar"><h3>A Maternidade</h3><span class="lugar-tag">O Paradoxo em Azulejos</span><p>É onde nasceu Bruninho — no instante em que Cecília era, simultaneamente, médica e amante do pai. A sala de parto é descrita com a eficiência técnica de quem "afere Apgar, aspira se for o caso, devolve limpo" — uma frieza que perturba mais pelo que recusa sentir do que pelo que diz.</p></div>
+    <div class="lugar"><h3>O Universo de Celso</h3><span class="lugar-tag">O Lar Alheio</span><p>Casa, esposa, filhos, vida doméstica em funcionamento: o território mais perigoso que Cecília pisa no romance. Ela o observa de fora como uma intrusa que, ao mesmo tempo, está inexplicavelmente atraída por ele — é ali que a obsessão por Bruninho se desenvolve.</p></div>
+  </div>
+  <div class="meta-box">
+    <div class="ico">🏗️</div>
+    <div><h3>O Prédio com Dois Consultórios</h3><p>O detalhe mais preciso da arquitetura narrativa de <em>A Pediatra</em> é o fato de pai e filha terem seus consultórios no mesmo andar do mesmo prédio comercial — propriedade do pai. Não é conveniência de enredo: é uma metáfora construída em concreto. A carreira de Cecília não é uma extensão de si mesma; é um cômodo alugado na vida que ele construiu, e ela paga esse aluguel em afeto nunca correspondido. O livro inteiro pode ser lido como a história de uma mulher que, finalmente, começa — muito tarde, com muita resistência — a procurar um endereço que seja só dela.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- MÍDIA -->
+<div id="panel-midia" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Mídia</p>
+  <p class="sec-sub">Podcasts, vídeos e publicações para aprofundar a leitura do clube</p>
+  <div class="midia-grid">
+    <a class="midia-card" href="https://www.youtube.com/watch?v=WO0tzxpYjiQ" target="_blank" rel="noopener">
+      <span class="midia-ico">🎬</span>
+      <span>
+        <span class="midia-tipo">Vídeo · Entrevista</span>
+        <span class="midia-titulo">Andréa Del Fuego, autora de A Pediatra</span>
+        <span class="midia-fonte">Entrevista Escritores</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.youtube.com/watch?v=RX0eY3jCbaA" target="_blank" rel="noopener">
+      <span class="midia-ico">📹</span>
+      <span>
+        <span class="midia-tipo">Vídeo · Análise</span>
+        <span class="midia-titulo">A Pediatra: esquiva do afeto, cinismo e senso moral</span>
+        <span class="midia-fonte">YouTube</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://open.spotify.com/episode/0jvfOppfjdyu4oVHBryPpd" target="_blank" rel="noopener">
+      <span class="midia-ico">🎙️</span>
+      <span>
+        <span class="midia-tipo">Podcast</span>
+        <span class="midia-titulo">30:MIN 476 — A Pediatra (Andréa Del Fuego)</span>
+        <span class="midia-fonte">30:MIN Livros e Literatura</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://open.spotify.com/episode/6IKjjx6TmkclQeNhVGfIdR" target="_blank" rel="noopener">
+      <span class="midia-ico">🎙️</span>
+      <span>
+        <span class="midia-tipo">Podcast</span>
+        <span class="midia-titulo">#158 — A Pediatra, com Andréa Del Fuego</span>
+        <span class="midia-fonte">Bom dia, Obvious</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://valkirias.com.br/a-pediatra-de-andrea-del-fuego-e-o-fascinio-pelo-detestavel/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação</span>
+        <span class="midia-titulo">A Pediatra e o fascínio pelo detestável</span>
+        <span class="midia-fonte">Valkirias</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://booksterpp.com.br/2022/05/a-pediatra-de-andrea-del-fuego-resenha/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação</span>
+        <span class="midia-titulo">A Pediatra, de Andréa Del Fuego — resenha</span>
+        <span class="midia-fonte">Bookster</span>
+      </span>
+    </a>
+  </div>
+</div>
+</div>
+
+<!-- AVALIAÇÃO -->
+<div class="av-wrap">
+  <p class="sup" style="text-align:center;margin-bottom:0.4rem;">Clube Socorro</p>
+  <h2>Avaliações &amp; Comentários</h2>
+  <p class="av-sub">O que o clube achou de A Pediatra</p>
+  <div class="av-summary">
+    <div>
+      <div class="av-big-num" id="avg-num">—</div>
+      <div class="av-big-stars" id="avg-stars">☆☆☆☆☆</div>
+      <div class="av-big-count" id="avg-count">0 avaliações</div>
+    </div>
+    <div class="bars">
+      <div class="brow"><span class="brow-lbl">5★</span><div class="brow-track"><div class="brow-fill" id="b5"></div></div><span class="brow-n" id="n5">0</span></div>
+      <div class="brow"><span class="brow-lbl">4★</span><div class="brow-track"><div class="brow-fill" id="b4"></div></div><span class="brow-n" id="n4">0</span></div>
+      <div class="brow"><span class="brow-lbl">3★</span><div class="brow-track"><div class="brow-fill" id="b3"></div></div><span class="brow-n" id="n3">0</span></div>
+      <div class="brow"><span class="brow-lbl">2★</span><div class="brow-track"><div class="brow-fill" id="b2"></div></div><span class="brow-n" id="n2">0</span></div>
+      <div class="brow"><span class="brow-lbl">1★</span><div class="brow-track"><div class="brow-fill" id="b1"></div></div><span class="brow-n" id="n1">0</span></div>
+    </div>
+  </div>
+  <div class="av-form">
+    <h3>Deixe sua avaliação</h3>
+    <label class="av-label">Seu nome</label>
+    <input id="f-nome" class="av-input" type="text" placeholder="Como quer ser identificada?">
+    <label class="av-label">Nota</label>
+    <div class="stars-pick" id="star-row">
+      <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+    </div>
+    <label class="av-label">Comentário</label>
+    <textarea id="f-txt" class="av-textarea" placeholder="O que você achou do livro?"></textarea>
+    <button class="av-btn" onclick="submitReview()">Publicar Avaliação</button>
+    <span id="f-msg" class="av-msg"></span>
+  </div>
+  <div id="comments"><p class="loading">Carregando avaliações...</p></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyB03BscdfdfZGW42Btqbmzt72Dpusu45NU",
+  authDomain: "socorro-clube-do-livro.firebaseapp.com",
+  projectId: "socorro-clube-do-livro",
+  storageBucket: "socorro-clube-do-livro.firebasestorage.app",
+  messagingSenderId: "729551936788",
+  appId: "1:729551936788:web:001a6e284a63a51fc37601"
+};
+let db = null;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  db.settings({ experimentalAutoDetectLongPolling: true, useFetchStreams: false });
+} catch (e) { db = null; }
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str == null ? '' : String(str);
+  return div.innerHTML;
+}
+
+const P = {
+  cecilia:   { nome:'Cecília', papel:'Protagonista · Narradora', desc:"Neonatologista e pediatra de sucesso em São Paulo, Cecília é a voz que conduz toda a narrativa em primeira pessoa — e essa escolha é, em si, um ato político da autora. Ela não gosta de crianças, não nutre instinto materno, não cultiva vínculos afetivos. A frieza não é maldade: é uma armadura construída tijolo a tijolo a partir de uma infância desprovida de afeto, entre babás e um pai admirado à distância. Sua função narrativa é desconstruir o estereótipo da médica-mãe, expondo a contradição de uma profissional competente mas emocionalmente distante. O arco dela é lento e quase imperceptível — até que Bruninho fissura tudo.", tags:['Dr. Laerte (pai)','Marido (cônjuge)','Celso (amante)','Bruninho (catalisador)','Dr. Humanista (rival)','Dra. Obstetra (aliada)','Deise (funcionária)'] },
+  laerte:    { nome:'Dr. Laerte', papel:'O Pai · O Espelho Distante', desc:'Médico respeitado, proprietário do prédio comercial onde Cecília também tem seu consultório — detalhe arquitetônico que traduz a relação em forma espacial. O pai não é mau; é simplesmente ausente de um modo muito particular: estava presente no espaço, mas nunca no afeto. Cecília o idolatra com a devoção exagerada de quem nunca foi correspondida. Foi ele quem guiou a carreira da filha não por vocação, mas por conveniência dinástica.', tags:['Cecília (filha)'] },
+  marido:    { nome:'O Marido', papel:'Cônjuge · Ausência Viva', desc:'Nunca nomeado — e isso não é acidente. Existe no romance como uma presença que já é ausência: depressivo profundo, ocupa o apartamento e a cama matrimonial como um fantasma que Cecília prefere ignorar. O casamento é descrito como "aborrecidamente estável" — uma frase que carrega mais solidão do que qualquer cena dramática. Quando ele sai de cena, sua partida não produz dor, e essa indiferença diz tudo sobre o que foi a relação.', tags:['Cecília (esposa)'] },
+  celso:     { nome:'Celso', papel:'Amante · Porta de Entrada', desc:'Homem casado com quem Cecília mantém um caso que ela acredita absolutamente controlado. O detalhe que o transforma em personagem-pivô é cirúrgico: ela foi a neonatologista que recebeu o filho dele no parto — médica e amante do pai da criança, ao mesmo tempo. Pela relação com Celso, Cecília começa a orbitar o universo familiar que nunca construiu — e é por essa porta que Bruninho entra em sua vida interior.', tags:['Cecília (amante)','Bruninho (filho)'] },
+  bruninho:  { nome:'Bruninho', papel:'Catalisador · A Fissura', desc:'Primogênito da família de Celso, menino cujo nascimento Cecília testemunhou — como médica e como amante do pai. Não é uma criança idealizada, não funciona como símbolo de redenção fácil: é, simplesmente, quem desperta em Cecília sentimentos que ela nunca imaginou ter. A obsessão que se desenvolve a partir dele fratura a armadura de Cecília não por mérito próprio, mas pelo acaso de ter nascido exatamente ali.', tags:['Cecília (médica/obsessão)','Celso (pai)'] },
+  humanista: { nome:'Dr. Humanista', papel:'Rival · Espelho Oposto', desc:'Pediatra empático que trabalha com doulas, parteiras e até partos domiciliares. Cecília o odeia com a intensidade de quem reconhece num inimigo algo que gostaria de ter — ou que lhe foi negado. Ele "rouba" os pacientes dela não com trapaça, mas com presença e disponibilidade. O embate entre os dois é o núcleo do conflito profissional do livro: um debate sobre que medicina se pratica, mas também sobre que tipo de pessoa se é.', tags:['Cecília (rival)','Dra. Obstetra (nova parceira)'] },
+  obstetra:  { nome:'Dra. Obstetra', papel:'Aliada Profissional · Deserção', desc:'Obstetriz cesarista com quem Cecília sempre trabalhou em parceria, compartilhando um universo profissional alinhado: partos limpos, eficientes, sem excessos emocionais. Sua "traição" — ao passar a preferir o Dr. Humanista — é um dos golpes mais dolorosos para Cecília, não por afeto pessoal, mas porque representa o desmonte do território que ela considerava seu.', tags:['Cecília (ex-parceira)','Dr. Humanista (nova aliança)'] },
+  deise:     { nome:'Deise', papel:'Funcionária · Contraste de Classe', desc:'Empregada de Cecília, também envolvida com um homem casado — Robson —, num espelhamento que a autora constrói com elegância. Deise não é subalterna apenas na relação trabalhista; é subalterna no espaço narrativo. Cecília a observa, a julga, a enquadra em categorias, revelando mais sobre os preconceitos de classe da protagonista do que sobre a própria Deise.', tags:['Cecília (patroa)','Robson (amante)'] }
+};
+
+function info(id) {
+  const p = P[id]; if (!p) return;
+  document.getElementById('i-name').textContent = p.nome;
+  document.getElementById('i-role').textContent = p.papel;
+  document.getElementById('i-desc').textContent = p.desc;
+  document.getElementById('i-tags').innerHTML =
+    '<p style="font-family:Cinzel,serif;font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);margin-bottom:0.4rem;">Conexões</p>' +
+    p.tags.map(t => '<span>' + t + '</span>').join('');
+}
+
+function goTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  document.getElementById('panel-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+let picked = 0;
+document.querySelectorAll('#star-row span').forEach(s => {
+  s.addEventListener('mouseover', () => hilite(+s.dataset.v));
+  s.addEventListener('mouseout',  () => hilite(picked));
+  s.addEventListener('click',     () => { picked = +s.dataset.v; hilite(picked); });
+});
+function hilite(n) {
+  document.querySelectorAll('#star-row span').forEach(s => {
+    s.style.color = +s.dataset.v <= n ? '#c1440e' : 'rgba(26,18,8,0.2)';
+  });
+}
+
+const BOOK_SLUG = 'a-pediatra';
+const reviewsCol = db ? db.collection('livros').doc(BOOK_SLUG).collection('reviews') : null;
+let reviews = [];
+
+async function submitReview() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const txt  = document.getElementById('f-txt').value.trim();
+  const msg  = document.getElementById('f-msg');
+  if (!nome)   { msg.textContent = 'Coloque seu nome.';      msg.style.color='#c1440e'; return; }
+  if (!picked) { msg.textContent = 'Selecione uma nota.';    msg.style.color='#c1440e'; return; }
+  if (!txt)    { msg.textContent = 'Escreva um comentário.'; msg.style.color='#c1440e'; return; }
+  if (!reviewsCol) { msg.textContent = 'Avaliações indisponíveis no momento.'; msg.style.color='#c1440e'; return; }
+  const btn = document.querySelector('.av-btn');
+  btn.textContent = 'Enviando...'; btn.disabled = true;
+  msg.textContent = '';
+  try {
+    await reviewsCol.add({
+      nome, nota: picked, comentario: txt,
+      data: new Date().toLocaleDateString('pt-BR'),
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('f-nome').value = '';
+    document.getElementById('f-txt').value  = '';
+    picked = 0; hilite(0);
+    msg.textContent = 'Publicado!'; msg.style.color = '#6b8c6e';
+    setTimeout(() => msg.textContent = '', 4000);
+  } catch(e) {
+    msg.textContent = 'Erro ao enviar. Tente novamente.'; msg.style.color = '#c1440e';
+  }
+  btn.textContent = 'Publicar Avaliação'; btn.disabled = false;
+}
+
+function renderReviews() {
+  const total = reviews.length;
+  if (!total) {
+    document.getElementById('avg-num').textContent   = '—';
+    document.getElementById('avg-stars').textContent = '☆☆☆☆☆';
+    document.getElementById('avg-count').textContent = '0 avaliações';
+    [1,2,3,4,5].forEach(n => { document.getElementById('b'+n).style.width='0%'; document.getElementById('n'+n).textContent='0'; });
+    document.getElementById('comments').innerHTML = '<p class="no-reviews">Nenhuma avaliação ainda — seja a primeira!</p>';
+    return;
+  }
+  const avg = reviews.reduce((a,r) => a + Number(r.nota), 0) / total;
+  document.getElementById('avg-num').textContent   = avg.toFixed(1);
+  const full = Math.round(avg);
+  document.getElementById('avg-stars').textContent = '★'.repeat(full) + '☆'.repeat(5-full);
+  document.getElementById('avg-count').textContent = total + (total===1 ? ' avaliação' : ' avaliações');
+  [1,2,3,4,5].forEach(n => {
+    const c = reviews.filter(r => Number(r.nota)===n).length;
+    document.getElementById('b'+n).style.width = (c/total*100).toFixed(0) + '%';
+    document.getElementById('n'+n).textContent = c;
+  });
+  document.getElementById('comments').innerHTML = reviews.map(r => `
+    <div class="comment">
+      <div class="chead">
+        <span class="cname">${escapeHtml(r.nome)}</span>
+        <span class="cstars">${'★'.repeat(Number(r.nota))}${'☆'.repeat(5-Number(r.nota))}</span>
+        <span class="cdate">${escapeHtml(r.data)}</span>
+      </div>
+      <p class="ctext">${escapeHtml(r.comentario)}</p>
+    </div>`).join('');
+}
+
+if (reviewsCol) {
+  reviewsCol.orderBy('criadoEm', 'desc').onSnapshot(function (snap) {
+    reviews = snap.docs.map(d => d.data());
+    renderReviews();
+  }, function () {
+    reviews = [];
+    renderReviews();
+  });
+} else {
+  renderReviews();
+}
+</script>
+</body>
+</html>

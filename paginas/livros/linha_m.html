@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linha M — Análise</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1208; --rust:#c1440e; --gold:#d4a017; --sage:#6b8c6e;
+  --cream:#f5f0e8; --paper:#ede8dc; --border:rgba(193,68,14,0.22); --surf:rgba(26,18,8,0.05);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;padding-top:68px;overflow-x:hidden;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:68px;background:rgba(245,240,232,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
+.nav-logo{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--rust);text-decoration:none;}
+.nav-tag{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(26,18,8,0.45);}
+.nav-back{font-family:'Cinzel',serif;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:2px solid rgba(193,68,14,0.4);padding:0.45rem 1.1rem;transition:all 0.2s;}
+.nav-back:hover{color:var(--rust);border-color:var(--rust);}
+.page-header{text-align:center;padding:2.5rem 2rem 0;}
+.capa-wrap{width:150px;margin:0 auto 1.2rem;box-shadow:0 12px 28px rgba(26,18,8,0.28);}
+.capa-wrap img{display:block;width:100%;height:auto;}
+.sup{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-bottom:0.5rem;}
+.page-header h1{font-family:'Cinzel',serif;font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;color:var(--ink);letter-spacing:0.04em;}
+.page-header h1 em{font-style:italic;color:var(--rust);font-family:'Cormorant Garamond',serif;font-size:1.1em;}
+.page-header p{font-style:italic;color:rgba(26,18,8,0.7);font-size:0.95rem;margin-top:0.3rem;}
+.tabs-bar{display:flex;justify-content:center;max-width:960px;margin:2rem auto 0;border-bottom:2px solid var(--border);flex-wrap:wrap;}
+.tab{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.50);background:none;border:none;padding:0.9rem 1.8rem;cursor:pointer;position:relative;transition:color 0.25s;}
+.tab::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;background:var(--rust);transform:scaleX(0);transition:transform 0.25s;}
+.tab:hover{color:var(--ink);}
+.tab.on{color:var(--ink);}
+.tab.on::after{transform:scaleX(1);}
+.panel{display:none;}
+.panel.on{display:block;animation:fadeUp 0.35s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.teia-wrap{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;padding:1.5rem 2rem 3rem;min-height:780px;}
+#net-wrap{height:750px;}
+#net-svg{width:100%;height:100%;}
+.nlab{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:#1a1208;text-anchor:middle;pointer-events:none;}
+.nlab-white{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:white;text-anchor:middle;pointer-events:none;}
+.nrole{font-family:'Cinzel',serif;font-size:12px;font-weight:600;fill:rgba(26,18,8,0.75);text-anchor:middle;pointer-events:none;}
+.node{cursor:pointer;}
+.node circle{transition:filter 0.25s;}
+.node:hover circle{filter:brightness(1.2);}
+.info-panel{border-left:1px solid var(--border);padding:2rem 1.8rem;display:flex;flex-direction:column;overflow-y:auto;max-height:750px;}
+.info-panel h3{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.info-role{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1rem;}
+.info-desc{font-size:0.93rem;line-height:1.78;color:var(--ink);flex:1;}
+.info-tags{margin-top:1.2rem;}
+.info-tags span{display:inline-block;margin:0.2rem 0.2rem 0 0;background:var(--surf);border:1px solid var(--border);padding:0.22rem 0.65rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);}
+.legend{display:flex;gap:0.8rem;margin-top:auto;padding-top:1.5rem;border-top:1px solid var(--border);flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;font-weight:600;color:var(--ink);}
+.leg-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.wrap{max-width:900px;margin:0 auto;padding:3rem 2rem 4rem;}
+.sec-title{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--ink);letter-spacing:0.12em;text-transform:uppercase;margin:2.5rem 0 0.5rem;}
+.sec-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;margin-bottom:1.5rem;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.card{background:var(--surf);border:1px solid var(--border);padding:1.4rem;}
+.card h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--rust);margin-bottom:0.6rem;}
+.card p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.pull{border:1px solid var(--border);border-left:4px solid var(--rust);padding:1.8rem 2rem;margin:2.5rem 0;background:var(--surf);}
+.pull p{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;line-height:1.7;color:var(--ink);}
+.pull cite{display:block;margin-top:0.8rem;font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);}
+.body-text p{font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.2rem;}
+.autor-grid{display:grid;grid-template-columns:240px 1fr;gap:3rem;align-items:start;margin-bottom:3rem;}
+.foto-box{width:240px;overflow:hidden;position:relative;border:2px solid var(--border);}
+.foto-box img{display:block;width:100%;height:auto;}
+.foto-cap{position:absolute;bottom:0;left:0;right:0;background:rgba(26,18,8,0.65);padding:0.5rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(245,240,232,0.9);text-align:center;font-weight:700;}
+.bio h2{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.bio .dates{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1.2rem;}
+.bio p{font-size:0.97rem;line-height:1.85;color:var(--ink);margin-bottom:1rem;}
+.timeline{position:relative;margin:1.5rem 0;}
+.timeline::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:1px;background:linear-gradient(to bottom,var(--rust),transparent);}
+.tl{display:flex;gap:1.4rem;margin-bottom:1.5rem;}
+.tl-dot{width:15px;height:15px;border-radius:50%;border:2px solid var(--rust);background:var(--paper);flex-shrink:0;margin-top:2px;position:relative;z-index:1;}
+.tl-yr{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.14em;color:var(--rust);min-width:46px;padding-top:1px;}
+.tl-txt{font-size:0.92rem;line-height:1.68;color:var(--ink);}
+.tema{background:var(--surf);border-left:4px solid var(--rust);padding:1.4rem 1.6rem;}
+.tema .ico{font-size:1.6rem;display:block;margin-bottom:0.6rem;}
+.tema h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.7rem;}
+.tema p{font-size:0.92rem;line-height:1.78;color:var(--ink);}
+.licao{background:var(--paper);border-left:4px solid var(--gold);padding:1.3rem 1.5rem;}
+.licao h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);margin-bottom:0.5rem;}
+.licao p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.fotos-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:2.5rem;}
+.foto-espaco{position:relative;overflow:hidden;border:1px solid var(--border);}
+.foto-espaco img{display:block;width:100%;height:280px;object-fit:cover;}
+.foto-leg{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(26,18,8,0.75));padding:1.5rem 0.9rem 0.6rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,240,232,0.92);}
+.lugar{background:var(--surf);border:1px solid var(--border);padding:1.6rem;position:relative;overflow:hidden;}
+.lugar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rust),transparent);}
+.lugar h3{font-family:'Cinzel',serif;font-size:0.75rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.4rem;}
+.lugar-tag{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;color:var(--ink);display:block;margin-bottom:0.5rem;}
+.lugar p{font-size:0.90rem;line-height:1.72;color:var(--ink);}
+.meta-box{background:var(--paper);border:1px solid var(--border);padding:2rem;margin:2.5rem 0;display:grid;grid-template-columns:60px 1fr;gap:1.5rem;align-items:start;}
+.meta-box .ico{font-size:2.6rem;}
+.meta-box h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.5rem;}
+.meta-box p{font-size:0.92rem;line-height:1.75;color:var(--ink);}
+.midia-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.midia-card{display:flex;gap:1rem;background:var(--surf);border:1px solid var(--border);padding:1.2rem 1.3rem;align-items:flex-start;text-decoration:none;transition:border-color 0.2s,transform 0.2s;}
+.midia-card:hover{border-color:var(--rust);transform:translateY(-2px);}
+.midia-ico{font-size:1.5rem;flex-shrink:0;margin-top:0.1rem;}
+.midia-tipo{font-family:'Cinzel',serif;font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.3rem;display:block;}
+.midia-titulo{font-family:'DM Sans',sans-serif;font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;display:block;}
+.midia-fonte{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.85rem;color:rgba(26,18,8,0.65);}
+.av-wrap{max-width:900px;margin:0 auto;padding:4rem 2rem 5rem;border-top:1px solid var(--border);}
+.av-wrap h2{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:0.08em;text-align:center;margin-bottom:0.4rem;}
+.av-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;text-align:center;margin-bottom:2.5rem;}
+.av-summary{background:var(--surf);border:1px solid var(--border);padding:2rem;display:flex;gap:3rem;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;}
+.av-big-num{font-family:'Cinzel',serif;font-size:4rem;font-weight:700;color:var(--rust);line-height:1;text-align:center;}
+.av-big-stars{font-size:1.5rem;text-align:center;margin:0.3rem 0;}
+.av-big-count{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.6);text-align:center;}
+.brow{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;}
+.brow-lbl{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;color:var(--ink);min-width:28px;}
+.brow-track{flex:1;height:8px;background:rgba(26,18,8,0.1);border-radius:4px;overflow:hidden;}
+.brow-fill{height:100%;background:var(--rust);border-radius:4px;transition:width 0.5s;width:0%;}
+.brow-n{font-family:'Cinzel',serif;font-size:0.62rem;font-weight:700;color:rgba(26,18,8,0.6);min-width:16px;text-align:right;}
+.av-form{background:var(--paper);border:1px solid var(--border);padding:2rem;margin-bottom:2.5rem;}
+.av-form h3{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink);margin-bottom:1.5rem;}
+.av-label{font-family:'Cinzel',serif;font-size:0.63rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);display:block;margin-bottom:0.4rem;}
+.av-input{width:100%;padding:0.7rem 1rem;margin-bottom:1.2rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;}
+.av-input:focus{border-color:var(--rust);}
+.av-textarea{width:100%;padding:0.7rem 1rem;margin-bottom:1.5rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;resize:vertical;line-height:1.65;min-height:100px;}
+.av-textarea:focus{border-color:var(--rust);}
+.stars-pick{display:flex;gap:0.3rem;margin-bottom:1.3rem;}
+.stars-pick span{font-size:2.2rem;cursor:pointer;line-height:1;color:rgba(26,18,8,0.2);transition:color 0.15s;user-select:none;}
+.av-btn{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;background:var(--rust);color:white;border:none;padding:0.85rem 2.5rem;cursor:pointer;transition:background 0.2s;}
+.av-btn:hover{background:#a33508;}
+.av-btn:disabled{background:#aaa;cursor:default;}
+.av-msg{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;margin-left:1rem;}
+.comment{border:1px solid var(--border);padding:1.4rem 1.6rem;margin-bottom:1rem;background:var(--cream);}
+.chead{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;flex-wrap:wrap;gap:0.4rem;}
+.cname{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;color:var(--ink);}
+.cstars{color:var(--rust);font-size:1.05rem;}
+.cdate{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:600;color:rgba(26,18,8,0.5);}
+.ctext{font-size:0.95rem;line-height:1.75;color:var(--ink);}
+.no-reviews{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.5);font-size:1rem;text-align:center;padding:2rem 0;}
+.loading{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.12em;color:rgba(26,18,8,0.5);text-align:center;padding:1.5rem 0;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Socorro.</a>
+  <span class="nav-tag">Clube do Livro · Análise</span>
+  <a href="index.html#lidos" class="nav-back">← Voltar à Estante</a>
+</nav>
+
+<div class="page-header">
+  <div class="capa-wrap"><img src="https://cdl-static.s3-sa-east-1.amazonaws.com/covers/gg/9788535926934/linha-m.jpg" alt="Capa de Linha M"></div>
+  <p class="sup">Patti Smith &nbsp;·&nbsp; 2015 &nbsp;·&nbsp; Análise Literária</p>
+  <h1><em>Linha M</em></h1>
+  <p>Teia da Memória · A Autora · Temas · Espaço Narrativo · Mídia</p>
+</div>
+
+<div class="tabs-bar">
+  <button class="tab on"  onclick="goTab('teia',this)">Teia da Memória</button>
+  <button class="tab"     onclick="goTab('autora',this)">A Autora</button>
+  <button class="tab"     onclick="goTab('temas',this)">Temas &amp; Lições</button>
+  <button class="tab"     onclick="goTab('espaco',this)">O Espaço Narrativo</button>
+  <button class="tab"     onclick="goTab('midia',this)">Mídia</button>
+</div>
+
+<!-- TEIA -->
+<div id="panel-teia" class="panel on">
+<div class="teia-wrap">
+  <div id="net-wrap">
+  <svg id="net-svg" viewBox="0 0 860 750" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+    <line x1="430" y1="390" x2="430" y2="110" stroke="#c1440e" stroke-width="3" stroke-opacity="0.7"/>
+    <line x1="430" y1="390" x2="170" y2="200" stroke="#1a1208" stroke-width="2.5" stroke-opacity="0.4" stroke-dasharray="6,4"/>
+    <line x1="430" y1="390" x2="660" y2="240" stroke="#1a1208" stroke-width="2.5" stroke-opacity="0.45" stroke-dasharray="6,4"/>
+    <line x1="430" y1="390" x2="180" y2="490" stroke="#d4a017" stroke-width="3" stroke-opacity="0.65"/>
+    <line x1="430" y1="390" x2="670" y2="520" stroke="#2a9d8f" stroke-width="2.5" stroke-opacity="0.6"/>
+    <line x1="430" y1="390" x2="770" y2="390" stroke="#2a9d8f" stroke-width="2" stroke-opacity="0.5"/>
+    <line x1="430" y1="390" x2="110" y2="650" stroke="#d4a017" stroke-width="2.5" stroke-opacity="0.55"/>
+    <line x1="170" y1="200" x2="660" y2="240" stroke="#1a1208" stroke-width="1.5" stroke-opacity="0.25" stroke-dasharray="3,5"/>
+    <line x1="670" y1="520" x2="180" y2="490" stroke="#d4a017" stroke-width="1.5" stroke-opacity="0.3" stroke-dasharray="3,5"/>
+    <g class="node" onclick="info('trem')"><circle cx="430" cy="390" r="82" fill="#c1440e" fill-opacity="0.12" stroke="#c1440e" stroke-width="3.5"/><circle cx="430" cy="390" r="62" fill="#c1440e" fill-opacity="0.93"/><text x="430" y="391" class="nlab-white" style="font-size:16px;">O Trem-M</text><text x="430" y="408" class="nlab-white" style="font-size:12px;">(M Train)</text><text x="430" y="482" class="nrole">o tema central</text></g>
+    <g class="node" onclick="info('cafeino')"><circle cx="430" cy="110" r="56" fill="#c1440e" fill-opacity="0.85"/><text x="430" y="106" class="nlab-white" style="font-size:13px;">Café</text><text x="430" y="121" class="nlab-white" style="font-size:13px;">'Ino</text><text x="430" y="176" class="nrole">o ritual diário</text></g>
+    <g class="node" onclick="info('fred')"><circle cx="170" cy="200" r="52" fill="#1a1208" fill-opacity="0.32" stroke="#1a1208" stroke-width="2.5" stroke-dasharray="6,4"/><text x="170" y="196" class="nlab" style="font-size:12px;">Fred</text><text x="170" y="211" class="nlab" style="font-size:12px;">Sonic Smith</text><text x="170" y="262" class="nrole">o marido</text></g>
+    <g class="node" onclick="info('todd')"><circle cx="660" cy="240" r="52" fill="#1a1208" fill-opacity="0.32" stroke="#1a1208" stroke-width="2.5" stroke-dasharray="6,4"/><text x="660" y="244" class="nlab" style="font-size:13px;">Todd</text><text x="660" y="302" class="nrole">o irmão</text></g>
+    <g class="node" onclick="info('rockaway')"><circle cx="180" cy="490" r="48" fill="#d4a017" fill-opacity="0.9"/><text x="180" y="486" class="nlab-white" style="font-size:12px;">Rockaway</text><text x="180" y="501" class="nlab-white" style="font-size:12px;">Beach</text><text x="180" y="548" class="nrole">a casa quase perdida</text></g>
+    <g class="node" onclick="info('fischer')"><circle cx="670" cy="520" r="46" fill="#2a9d8f" fill-opacity="0.75"/><text x="670" y="516" class="nlab-white" style="font-size:11.5px;">Bobby</text><text x="670" y="530" class="nlab-white" style="font-size:11.5px;">Fischer</text><text x="670" y="576" class="nrole">o xadrez em Reykjavik</text></g>
+    <g class="node" onclick="info('peregrinacoes')"><circle cx="770" cy="390" r="44" fill="#2a9d8f" fill-opacity="0.75"/><text x="770" y="386" class="nlab-white" style="font-size:11px;">Peregri-</text><text x="770" y="399" class="nlab-white" style="font-size:11px;">nações</text><text x="770" y="444" class="nrole">os túmulos visitados</text></g>
+    <g class="node" onclick="info('fotografias')"><circle cx="110" cy="650" r="42" fill="#d4a017" fill-opacity="0.75"/><text x="110" y="646" class="nlab-white" style="font-size:11px;">As Foto-</text><text x="110" y="659" class="nlab-white" style="font-size:11px;">grafias</text><text x="110" y="702" class="nrole">a detetive</text></g>
+  </svg>
+  </div>
+  <div class="info-panel">
+    <h3 id="i-name">Clique em um nó</h3>
+    <p class="info-role" id="i-role">para explorar a teia</p>
+    <p class="info-desc" id="i-desc">Linha M é a segunda memória de Patti Smith, publicada em 2015 — uma continuação mais interior e mais só de Só Garotos. O "M" do título é o trem da mente: um veículo que "vai a qualquer estação que queira", associando cafés, sonhos, viagens e lutos sem obedecer a uma cronologia linear. É um livro sobre o que resta depois da perda, e sobre os pequenos rituais que a mantêm de pé.</p>
+    <div class="info-tags" id="i-tags"></div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:#c1440e"></div>Rituais &amp; Presente</div>
+      <div class="leg"><div class="leg-dot" style="background:#1a1208"></div>Luto</div>
+      <div class="leg"><div class="leg-dot" style="background:#d4a017"></div>Casa &amp; Perda</div>
+      <div class="leg"><div class="leg-dot" style="background:#2a9d8f"></div>Peregrinação &amp; Ofício</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- AUTORA -->
+<div id="panel-autora" class="panel">
+<div class="wrap">
+  <div class="autor-grid">
+    <div class="foto-box">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Patti%20Smith%202%202011%20Shankbone.jpg" alt="Patti Smith">
+      <div class="foto-cap">Chicago, EUA · n. 1946</div>
+    </div>
+    <div class="bio">
+      <h2>Patti Smith</h2>
+      <p class="dates">Chicago, Illinois, 1946</p>
+      <p>Patricia Lee Smith nasceu em 30 de dezembro de 1946, em Chicago, e cresceu numa família operária no sul de Nova Jersey. Mudou-se para Nova York em 1967, onde conheceu o fotógrafo Robert Mapplethorpe — parceiro de vida e de arte por duas décadas, e tema de seu primeiro livro de memórias, <em>Só Garotos</em> (2010). Antes de gravar um único disco, Smith já circulava como poeta entre os artistas do Chelsea Hotel e da cena underground novaiorquina.</p>
+      <p>Em 1975 lançou <em>Horses</em>, álbum seminal que lhe rendeu o título informal de "madrinha do punk" — uma fusão de poesia beat, rock garageiro e profecia bíblica que abriria caminho para gerações de artistas. Em 1980 casou-se com o guitarrista Fred "Sonic" Smith, do MC5, mudou-se para Detroit e se afastou quase completamente da vida pública por quase quinze anos para criar os dois filhos do casal.</p>
+      <p>A morte de Fred, em 1994, seguida um mês depois pela morte de seu irmão Todd, marcou o fim abrupto desse período de reclusão doméstica e o começo de uma nova fase criativa. Smith voltou a se apresentar e gravar, e em 2010 publicou <em>Só Garotos</em>, vencedor do National Book Award de não ficção. <em>Linha M</em>, de 2015, é sua continuação mais intimista — um livro sobre os anos seguintes, vividos entre cafés, viagens e a ausência dos mortos que ama.</p>
+    </div>
+  </div>
+  <p class="sec-title">Linha do Tempo</p>
+  <div class="timeline">
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1946</div><div class="tl-txt">Nasce em Chicago, Illinois; cresce no sul de Nova Jersey.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1967</div><div class="tl-txt">Muda-se para Nova York e conhece Robert Mapplethorpe.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1975</div><div class="tl-txt">Lança o álbum <em>Horses</em>, marco do punk rock.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1980</div><div class="tl-txt">Casa-se com Fred "Sonic" Smith e muda-se para Detroit, afastando-se da vida pública.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1989</div><div class="tl-txt">Robert Mapplethorpe morre de complicações da AIDS.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1994</div><div class="tl-txt">Fred Sonic Smith morre em novembro; o irmão Todd morre um mês depois.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1996</div><div class="tl-txt">Retoma apresentações e gravações após anos de reclusão.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2010</div><div class="tl-txt">Publica <em>Só Garotos</em>, vencedor do National Book Award.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2015</div><div class="tl-txt">Publica <em>Linha M</em> (M Train), pela Companhia das Letras no Brasil.</div></div>
+  </div>
+  <p class="sec-title">Seis curiosidades sobre a autora e o livro</p>
+  <p class="sec-sub">Detalhes que revelam a viajante por trás do trem da mente</p>
+  <div class="g2">
+    <div class="card"><h4>Poeta antes de estrela do punk</h4><p>Smith circulava como poeta e artista visual entre os frequentadores do Chelsea Hotel anos antes de gravar seu primeiro disco — a palavra escrita sempre foi seu primeiro instrumento.</p></div>
+    <div class="card"><h4>National Book Award antes deste livro</h4><p><em>Só Garotos</em>, sua primeira memória, venceu o National Book Award de não ficção em 2010 — um raro reconhecimento literário para uma musicista.</p></div>
+    <div class="card"><h4>Fotógrafa do próprio livro</h4><p><em>Linha M</em> é o primeiro livro de Smith a incorporar substancialmente sua própria fotografia: cerca de cinquenta imagens em preto e branco ancoram o texto como documentos de memória.</p></div>
+    <div class="card"><h4>Uma noite cantando com Bobby Fischer</h4><p>Em Reykjavik, um chamado de madrugada a levou a um encontro inusitado com o enxadrista Bobby Fischer — os dois não jogaram xadrez, apenas cantaram juntos até tarde.</p></div>
+    <div class="card"><h4>A casa que sobreviveu ao furacão Sandy</h4><p>Pouco depois de comprar um bangalô decadente em Rockaway Beach, Smith viu o furacão Sandy (2012) devastar a vizinhança — a casa, avariada, resistiu.</p></div>
+    <div class="card"><h4>Membro do Continental Drift Club</h4><p>Smith integra esse clube informal e um tanto excêntrico, dedicado a viagens e observações sobre deriva continental — mais uma prova de sua vocação para o vagar sem destino fixo.</p></div>
+  </div>
+  <div class="meta-box">
+    <div class="ico">🚂</div>
+    <div><h3>Como Este Livro Surgiu</h3><p><em>Linha M</em> nasceu como uma continuação natural — porém mais solitária — de <em>Só Garotos</em>. Sem o fio condutor de uma grande história de amor e arte compartilhada, Smith optou por um método associativo, quase onírico: capítulos organizados não por cronologia, mas pelo movimento livre da mente, "o trem que vai a qualquer estação que queira". O resultado, publicado em 2015 pela Alfred A. Knopf nos Estados Unidos e pela Companhia das Letras no Brasil (tradução de Claudio Carina), é seu primeiro livro a incorporar fotografias tiradas pela própria autora — cerca de cinquenta imagens em preto e branco que documentam cafés, túmulos, quartos de hotel e a casa de Rockaway Beach.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- TEMAS -->
+<div id="panel-temas" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Temas Centrais do Livro</p>
+  <p class="sec-sub">O que Linha M diz sobre luto, memória e o hábito de seguir em frente</p>
+  <div class="g2" style="margin-top:0;">
+    <div class="tema"><span class="ico">☕</span><h3>O Café como Ritual Diário</h3><p>Por anos, Smith ocupou a mesma mesa de canto no Café 'Ino, em frente a seu apartamento — sua "igreja pessoal diária", administrada pelo cozinheiro Zak. Quando o café fecha, o ritual se rompe, e o livro precisa encontrar novos altares.</p></div>
+    <div class="tema"><span class="ico">🖤</span><h3>O Luto como Paisagem Permanente</h3><p>As mortes de Fred e de Todd, em 1994, não aparecem como um capítulo isolado de dor, mas como uma paisagem de fundo que colore cada café, cada viagem e cada fotografia do livro inteiro.</p></div>
+    <div class="tema"><span class="ico">⚰️</span><h3>Peregrinações aos Mortos</h3><p>Smith viaja à Guiana Francesa para recolher pedras do túmulo de Jean Genet na Ilha do Diabo, visita a Casa Azul de Frida Kahlo no México e lava lápides de escritores no Japão — o luto como itinerário físico.</p></div>
+    <div class="tema"><span class="ico">🔍</span><h3>A Escrita como Trabalho de Detetive</h3><p>Viciada em seriados policiais como CSI: Miami e The Killing, Smith se descreve quase como uma detetive de si mesma — decifrando pistas da própria memória com a mesma atenção de quem investiga um crime.</p></div>
+    <div class="tema"><span class="ico">📷</span><h3>A Fotografia como Memória Fixada</h3><p>As cerca de cinquenta fotografias em preto e branco de sua autoria — cadeiras vazias, túmulos, a própria máquina de escrever de Bolaño — funcionam como âncoras materiais para uma narrativa deliberadamente fluida.</p></div>
+    <div class="tema"><span class="ico">🏚️</span><h3>A Casa Quase Perdida</h3><p>O bangalô comprado em Rockaway Beach por impulso, e quase destruído pelo furacão Sandy poucos meses depois, condensa o tema de tudo aquilo que se ama e que pode, a qualquer momento, ser arrancado.</p></div>
+    <div class="tema"><span class="ico">🚂</span><h3>O Trem da Mente</h3><p>O título do livro nomeia seu método: uma linha de metrô imaginária, sem destino fixo, que a autora segue livremente entre lembrança, sonho e observação presente — recusando a linearidade da memória convencional.</p></div>
+    <div class="tema"><span class="ico">♟️</span><h3>Um Encontro Improvável com Bobby Fischer</h3><p>Em Reykjavik, um convite de madrugada leva Smith ao apartamento do enxadrista Bobby Fischer — não para uma partida de xadrez, mas para uma noite inteira cantando juntos, num dos episódios mais estranhos e ternos do livro.</p></div>
+  </div>
+  <div class="pull">
+    <p>Não é fácil escrever sobre a própria morte iminente do marido. Mas o mundo ficou desprovido de encanto quando ele se foi.</p>
+    <cite>Patti Smith, sobre a morte de Fred "Sonic" Smith, em Linha M</cite>
+  </div>
+  <p class="sec-title">Seis lições da narrativa</p>
+  <p class="sec-sub">O que o clube pode levar desta leitura</p>
+  <div class="g2">
+    <div class="licao"><h4>Os pequenos rituais sustentam o luto</h4><p>Uma mesa fixa num café, um café preto sem açúcar: são esses gestos repetidos, não grandes epifanias, que ajudam a atravessar a perda.</p></div>
+    <div class="licao"><h4>A memória não é linear, e a escrita pode não ser também</h4><p>Smith mostra que um livro de memórias pode seguir a lógica associativa do pensamento, e não a cronologia dos fatos, sem perder coerência emocional.</p></div>
+    <div class="licao"><h4>Viajar para os mortos é uma forma de conversar com eles</h4><p>As peregrinações a túmulos de escritores admirados não são turismo literário, mas um modo físico de manter diálogo com quem já se foi.</p></div>
+    <div class="licao"><h4>Perder uma casa não precisa significar perder tudo</h4><p>O bangalô avariado por um furacão, mas ainda de pé, é metáfora de como certas coisas amadas sobrevivem, machucadas, à catástrofe.</p></div>
+    <div class="licao"><h4>A atenção cotidiana também é matéria literária</h4><p>Observar seriados policiais, tomar café, escrever num caderno: o livro sugere que a vida contemplativa comum pode virar literatura, sem precisar de eventos extraordinários.</p></div>
+    <div class="licao"><h4>Around toda perda cabe também um encontro estranho e gentil</h4><p>A noite cantando com Bobby Fischer lembra que mesmo em meio à tristeza, a vida reserva episódios de humor e ternura inesperados.</p></div>
+  </div>
+  <p class="sec-title">Síntese</p>
+  <div class="body-text">
+    <p><em>Linha M</em> é o retrato de uma mulher que aprendeu a viver ao redor de ausências — a de Robert Mapplethorpe, companheiro de juventude; a de Fred Sonic Smith, marido e pai de seus filhos; a do irmão Todd, morto poucas semanas depois. Sem a narrativa arco-de-formação de <em>Só Garotos</em>, o livro se organiza como o próprio título sugere: um trem da mente que passa por cafés, aeroportos, cemitérios e quartos de hotel sem obedecer cronologia alguma, unido apenas pela voz que observa tudo com a mesma curiosidade paciente de uma detetive.</p>
+    <p>Para o clube, a leitura convida a pensar no luto não como evento pontual, mas como companhia de longo prazo — algo que se aprende a habitar através de rituais pequenos e viagens estranhas, e não a superar de uma vez. É também um livro sobre envelhecer como artista sem deixar de ser, ao mesmo tempo, peregrina e detetive da própria vida.</p>
+  </div>
+</div>
+</div>
+
+<!-- ESPAÇO -->
+<div id="panel-espaco" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">O Espaço Narrativo</p>
+  <p class="sec-sub">De um café no Greenwich Village a uma ilha-presídio na Guiana Francesa</p>
+  <div class="fotos-grid">
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/West%2010th%20Street%2C%20Greenwich%20Village%2C%20New%20York%20City%20(25954525882).jpg" alt="Rua no Greenwich Village, Nova York"><div class="foto-leg">Greenwich Village — o bairro do Café 'Ino</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Rockaway%20Beach%20Boulevard.JPG" alt="Rockaway Beach, Nova York"><div class="foto-leg">Rockaway Beach — a casa quase levada pelo furacão Sandy</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/20191126%20French%20Guiana%200056%20Royal%20Island%20sRGB%20(49295803952).jpg" alt="Ilhas da Salvação, Guiana Francesa"><div class="foto-leg">Ilhas da Salvação, Guiana Francesa — a peregrinação ao túmulo de Jean Genet</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Hofdi%20House%20Reykjavik%20(cropped).jpg" alt="Reykjavik, Islândia"><div class="foto-leg">Reykjavik — a noite cantando com Bobby Fischer</div></div>
+  </div>
+  <p style="font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.5rem;">O livro não tem um cenário fixo: é um itinerário de lugares reais atravessados pela memória. Nova York — em especial o Café 'Ino, no Greenwich Village, e depois o bangalô de Rockaway Beach — funciona como base; dali, a narrativa parte em peregrinações que incluem a Ilha do Diabo, na Guiana Francesa, o México de Frida Kahlo, o Japão dos templos e da caligrafia, e a Islândia de um encontro noturno com um gênio do xadrez em decadência.</p>
+  <div class="g2">
+    <div class="lugar"><h3>Café 'Ino</h3><span class="lugar-tag">O Santuário Diário</span><p>Restaurante minúsculo no Greenwich Village onde Smith ocupou a mesma mesa de canto por anos, tomando café preto e escrevendo — "minha igreja pessoal diária", até o cozinheiro Zak se mudar para Rockaway Beach.</p></div>
+    <div class="lugar"><h3>Rockaway Beach</h3><span class="lugar-tag">A Casa Impulsiva</span><p>Depois de visitar o novo café de Zak, Smith se apaixonou por um bangalô decadente à beira-mar, fechou negócio com um aperto de mãos e trabalhou o verão inteiro para juntar o dinheiro — meses antes do furacão Sandy quase destruir tudo.</p></div>
+    <div class="lugar"><h3>Ilha do Diabo, Guiana Francesa</h3><span class="lugar-tag">A Peregrinação</span><p>Smith viaja até a antiga colônia penal para recolher pedras destinadas ao túmulo do escritor Jean Genet — um gesto de devoção literária que atravessa o Atlântico.</p></div>
+    <div class="lugar"><h3>Reykjavik, Islândia</h3><span class="lugar-tag">O Encontro Noturno</span><p>Um chamado de madrugada leva Smith ao apartamento onde vivia, decadente e recluso, o ex-campeão mundial de xadrez Bobby Fischer — os dois não jogam uma partida sequer, apenas cantam juntos até tarde.</p></div>
+  </div>
+  <div class="meta-box">
+    <div class="ico">📸</div>
+    <div><h3>O Livro Como Álbum de Viagem</h3><p>O detalhe mais revelador da forma de <em>Linha M</em> é que ele nasce, em parte, como um álbum fotográfico: as cerca de cinquenta imagens em preto e branco tiradas pela própria Smith — cadeiras vazias, túmulos, a máquina de escrever de Roberto Bolaño, o próprio bangalô de Rockaway — não ilustram o texto, mas funcionam como estações desse trem sem itinerário fixo, documentos de uma memória que se recusa a ser organizada cronologicamente.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- MÍDIA -->
+<div id="panel-midia" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Mídia</p>
+  <p class="sec-sub">Entrevistas e resenhas para aprofundar a leitura do clube</p>
+  <div class="midia-grid">
+    <a class="midia-card" href="https://www.youtube.com/watch?v=TseiQePbDpo" target="_blank" rel="noopener">
+      <span class="midia-ico">🎙️</span>
+      <span>
+        <span class="midia-tipo">Entrevista</span>
+        <span class="midia-titulo">Patti Smith sobre M Train e Just Kids</span>
+        <span class="midia-fonte">Democracy Now!, via YouTube</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.youtube.com/watch?v=WFHTWuLRLzY" target="_blank" rel="noopener">
+      <span class="midia-ico">🎙️</span>
+      <span>
+        <span class="midia-tipo">Entrevista</span>
+        <span class="midia-titulo">"M Train é o mapa da minha vida"</span>
+        <span class="midia-fonte">Entrevista em vídeo, via YouTube</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://en.wikipedia.org/wiki/M_Train_(book)" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Referência</span>
+        <span class="midia-titulo">M Train (book) — verbete detalhado</span>
+        <span class="midia-fonte">Wikipedia</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.popmatters.com/m-train-by-patti-smith-2495485639.html" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Resenha</span>
+        <span class="midia-titulo">M Train by Patti Smith — resenha crítica</span>
+        <span class="midia-fonte">PopMatters</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://chicagoreader.com/blogs/patti-smith-writes-wanders-and-mourns-her-husband-in-m-train/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Resenha</span>
+        <span class="midia-titulo">Patti Smith escreve, vagueia e lamenta seu marido</span>
+        <span class="midia-fonte">Chicago Reader</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://sydneyreviewofbooks.com/reviews/measured-out-in-coffee-spoons-m-train-by-patti-smith" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Ensaio Crítico</span>
+        <span class="midia-titulo">Measured Out in Coffee Spoons</span>
+        <span class="midia-fonte">Sydney Review of Books</span>
+      </span>
+    </a>
+  </div>
+</div>
+</div>
+
+<!-- AVALIAÇÃO -->
+<div class="av-wrap">
+  <p class="sup" style="text-align:center;margin-bottom:0.4rem;">Clube Socorro</p>
+  <h2>Avaliações &amp; Comentários</h2>
+  <p class="av-sub">O que o clube achou de Linha M</p>
+  <div class="av-summary">
+    <div>
+      <div class="av-big-num" id="avg-num">—</div>
+      <div class="av-big-stars" id="avg-stars">☆☆☆☆☆</div>
+      <div class="av-big-count" id="avg-count">0 avaliações</div>
+    </div>
+    <div class="bars">
+      <div class="brow"><span class="brow-lbl">5★</span><div class="brow-track"><div class="brow-fill" id="b5"></div></div><span class="brow-n" id="n5">0</span></div>
+      <div class="brow"><span class="brow-lbl">4★</span><div class="brow-track"><div class="brow-fill" id="b4"></div></div><span class="brow-n" id="n4">0</span></div>
+      <div class="brow"><span class="brow-lbl">3★</span><div class="brow-track"><div class="brow-fill" id="b3"></div></div><span class="brow-n" id="n3">0</span></div>
+      <div class="brow"><span class="brow-lbl">2★</span><div class="brow-track"><div class="brow-fill" id="b2"></div></div><span class="brow-n" id="n2">0</span></div>
+      <div class="brow"><span class="brow-lbl">1★</span><div class="brow-track"><div class="brow-fill" id="b1"></div></div><span class="brow-n" id="n1">0</span></div>
+    </div>
+  </div>
+  <div class="av-form">
+    <h3>Deixe sua avaliação</h3>
+    <label class="av-label">Seu nome</label>
+    <input id="f-nome" class="av-input" type="text" placeholder="Como quer ser identificada?">
+    <label class="av-label">Nota</label>
+    <div class="stars-pick" id="star-row">
+      <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+    </div>
+    <label class="av-label">Comentário</label>
+    <textarea id="f-txt" class="av-textarea" placeholder="O que você achou do livro?"></textarea>
+    <button class="av-btn" onclick="submitReview()">Publicar Avaliação</button>
+    <span id="f-msg" class="av-msg"></span>
+  </div>
+  <div id="comments"><p class="loading">Carregando avaliações...</p></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyB03BscdfdfZGW42Btqbmzt72Dpusu45NU",
+  authDomain: "socorro-clube-do-livro.firebaseapp.com",
+  projectId: "socorro-clube-do-livro",
+  storageBucket: "socorro-clube-do-livro.firebasestorage.app",
+  messagingSenderId: "729551936788",
+  appId: "1:729551936788:web:001a6e284a63a51fc37601"
+};
+let db = null;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  db.settings({ experimentalAutoDetectLongPolling: true, useFetchStreams: false });
+} catch (e) { db = null; }
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str == null ? '' : String(str);
+  return div.innerHTML;
+}
+
+const P = {
+  trem:           { nome:'O Trem-M', papel:'O Tema Central · Memória em Movimento, 2015', desc:'Linha M nomeia a si mesma através de um trem imaginário da mente — "um trem que vai a qualquer estação que queira". Em vez da cronologia linear de sua primeira memória, Só Garotos, Patti Smith organiza este segundo livro por associação livre: cafés, sonhos, viagens e lutos se sucedem sem obedecer datas, unidos apenas pela voz que observa tudo com curiosidade paciente.', tags:['Café \'Ino','Fred Sonic Smith','Todd','Rockaway Beach','Bobby Fischer','Peregrinações','As Fotografias'] },
+  cafeino:        { nome:'Café \'Ino', papel:'O Ritual · A Igreja Pessoal Diária', desc:'Restaurante minúsculo do Greenwich Village, administrado pelo cozinheiro mexicano Zak, onde Smith ocupou a mesma mesa de canto por anos, tomando café preto sem açúcar e escrevendo em seu caderno. Ela o descreve como sua "igreja pessoal diária" — um ritual que se rompe quando Zak decide se mudar para Rockaway Beach, forçando a autora a encontrar novos altares cotidianos.', tags:['O Trem-M','Rockaway Beach'] },
+  fred:           { nome:'Fred "Sonic" Smith', papel:'O Marido · A Ausência Central', desc:'Guitarrista do lendário grupo de proto-punk MC5, Fred Smith casou-se com Patti em 1980, levando-a a se retirar da vida pública por quase quinze anos em Detroit para criar os dois filhos do casal. Sua morte, em novembro de 1994, é a ausência que atravessa silenciosamente todo o livro — não como capítulo isolado de luto, mas como coloração permanente de cada memória.', tags:['O Trem-M','Todd'] },
+  todd:           { nome:'Todd', papel:'O Irmão · A Segunda Perda', desc:'Irmão de Patti Smith, Todd morreu apenas um mês depois de Fred Sonic Smith, em dezembro de 1994 — uma sequência de perdas tão próximas que o livro as trata quase como um único evento de luto duplo, cuja sombra nunca desaparece completamente das páginas seguintes.', tags:['Fred Sonic Smith','O Trem-M'] },
+  rockaway:       { nome:'Rockaway Beach', papel:'A Casa · Comprada por Impulso', desc:'Depois de visitar o novo café de Zak à beira-mar, Smith se apaixonou por um bangalô decadente em Rockaway Beach, fechou negócio com um simples aperto de mãos e passou o verão trabalhando para juntar o dinheiro da compra. Meses depois, o furacão Sandy (2012) devastou a vizinhança — a casa, avariada, sobreviveu, tornando-se símbolo do que se ama e quase se perde.', tags:['O Trem-M','Café \'Ino'] },
+  fischer:        { nome:'Bobby Fischer', papel:'O Encontro Noturno · Reykjavik', desc:'Ex-campeão mundial de xadrez, recluso e decadente em seus últimos anos na Islândia, Fischer chama Smith de madrugada para um encontro inesperado. Os dois não disputam uma única partida: passam a noite inteira cantando juntos, num dos episódios mais estranhos e ternos do livro — um lampejo de humanidade em meio à excentricidade de um gênio isolado.', tags:['O Trem-M'] },
+  peregrinacoes:  { nome:'As Peregrinações', papel:'Os Túmulos Visitados', desc:'Smith viaja à Ilha do Diabo, na Guiana Francesa, para recolher pedras destinadas ao túmulo do escritor Jean Genet; visita a Casa Azul de Frida Kahlo no México; e lava lápides de escritores japoneses no Japão. Essas viagens não são turismo literário, mas gestos físicos de devoção — uma forma de conversar com os mortos que admira através da distância percorrida.', tags:['O Trem-M','As Fotografias'] },
+  fotografias:    { nome:'As Fotografias', papel:'O Ofício · A Detetive de Si Mesma', desc:'Linha M é o primeiro livro de Smith a incorporar substancialmente sua própria fotografia — cerca de cinquenta imagens em preto e branco que documentam cadeiras vazias, túmulos e objetos de escritores admirados. Viciada em seriados policiais como CSI: Miami e The Killing, ela se compara a uma detetive investigando as próprias lembranças, e essas fotos funcionam como provas materiais dessa investigação silenciosa.', tags:['O Trem-M','Peregrinações'] }
+};
+
+function info(id) {
+  const p = P[id]; if (!p) return;
+  document.getElementById('i-name').textContent = p.nome;
+  document.getElementById('i-role').textContent = p.papel;
+  document.getElementById('i-desc').textContent = p.desc;
+  document.getElementById('i-tags').innerHTML =
+    '<p style="font-family:Cinzel,serif;font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);margin-bottom:0.4rem;">Conexões</p>' +
+    p.tags.map(t => '<span>' + t + '</span>').join('');
+}
+
+function goTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  document.getElementById('panel-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+let picked = 0;
+document.querySelectorAll('#star-row span').forEach(s => {
+  s.addEventListener('mouseover', () => hilite(+s.dataset.v));
+  s.addEventListener('mouseout',  () => hilite(picked));
+  s.addEventListener('click',     () => { picked = +s.dataset.v; hilite(picked); });
+});
+function hilite(n) {
+  document.querySelectorAll('#star-row span').forEach(s => {
+    s.style.color = +s.dataset.v <= n ? '#c1440e' : 'rgba(26,18,8,0.2)';
+  });
+}
+
+const BOOK_SLUG = 'linha-m';
+const reviewsCol = db ? db.collection('livros').doc(BOOK_SLUG).collection('reviews') : null;
+let reviews = [];
+
+async function submitReview() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const txt  = document.getElementById('f-txt').value.trim();
+  const msg  = document.getElementById('f-msg');
+  if (!nome)   { msg.textContent = 'Coloque seu nome.';      msg.style.color='#c1440e'; return; }
+  if (!picked) { msg.textContent = 'Selecione uma nota.';    msg.style.color='#c1440e'; return; }
+  if (!txt)    { msg.textContent = 'Escreva um comentário.'; msg.style.color='#c1440e'; return; }
+  if (!reviewsCol) { msg.textContent = 'Avaliações indisponíveis no momento.'; msg.style.color='#c1440e'; return; }
+  const btn = document.querySelector('.av-btn');
+  btn.textContent = 'Enviando...'; btn.disabled = true;
+  msg.textContent = '';
+  try {
+    await reviewsCol.add({
+      nome, nota: picked, comentario: txt,
+      data: new Date().toLocaleDateString('pt-BR'),
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('f-nome').value = '';
+    document.getElementById('f-txt').value  = '';
+    picked = 0; hilite(0);
+    msg.textContent = 'Publicado!'; msg.style.color = '#6b8c6e';
+    setTimeout(() => msg.textContent = '', 4000);
+  } catch(e) {
+    msg.textContent = 'Erro ao enviar. Tente novamente.'; msg.style.color = '#c1440e';
+  }
+  btn.textContent = 'Publicar Avaliação'; btn.disabled = false;
+}
+
+function renderReviews() {
+  const total = reviews.length;
+  if (!total) {
+    document.getElementById('avg-num').textContent   = '—';
+    document.getElementById('avg-stars').textContent = '☆☆☆☆☆';
+    document.getElementById('avg-count').textContent = '0 avaliações';
+    [1,2,3,4,5].forEach(n => { document.getElementById('b'+n).style.width='0%'; document.getElementById('n'+n).textContent='0'; });
+    document.getElementById('comments').innerHTML = '<p class="no-reviews">Nenhuma avaliação ainda — seja a primeira!</p>';
+    return;
+  }
+  const avg = reviews.reduce((a,r) => a + Number(r.nota), 0) / total;
+  document.getElementById('avg-num').textContent   = avg.toFixed(1);
+  const full = Math.round(avg);
+  document.getElementById('avg-stars').textContent = '★'.repeat(full) + '☆'.repeat(5-full);
+  document.getElementById('avg-count').textContent = total + (total===1 ? ' avaliação' : ' avaliações');
+  [1,2,3,4,5].forEach(n => {
+    const c = reviews.filter(r => Number(r.nota)===n).length;
+    document.getElementById('b'+n).style.width = (c/total*100).toFixed(0) + '%';
+    document.getElementById('n'+n).textContent = c;
+  });
+  document.getElementById('comments').innerHTML = reviews.map(r => `
+    <div class="comment">
+      <div class="chead">
+        <span class="cname">${escapeHtml(r.nome)}</span>
+        <span class="cstars">${'★'.repeat(Number(r.nota))}${'☆'.repeat(5-Number(r.nota))}</span>
+        <span class="cdate">${escapeHtml(r.data)}</span>
+      </div>
+      <p class="ctext">${escapeHtml(r.comentario)}</p>
+    </div>`).join('');
+}
+
+if (reviewsCol) {
+  reviewsCol.orderBy('criadoEm', 'desc').onSnapshot(function (snap) {
+    reviews = snap.docs.map(d => d.data());
+    renderReviews();
+  }, function () {
+    reviews = [];
+    renderReviews();
+  });
+} else {
+  renderReviews();
+}
+</script>
+</body>
+</html>

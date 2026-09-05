@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A Morte e a Morte de Quincas Berro D'Água - Análise</title>
+<title>A Morte e a Morte de Quincas Berro D'Água — Análise</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -18,6 +18,8 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
 .nav-back{font-family:'Cinzel',serif;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:2px solid rgba(193,68,14,0.4);padding:0.45rem 1.1rem;transition:all 0.2s;}
 .nav-back:hover{color:var(--rust);border-color:var(--rust);}
 .page-header{text-align:center;padding:2.5rem 2rem 0;}
+.capa-wrap{width:150px;margin:0 auto 1.2rem;box-shadow:0 12px 28px rgba(26,18,8,0.28);}
+.capa-wrap img{display:block;width:100%;height:auto;}
 .sup{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-bottom:0.5rem;}
 .page-header h1{font-family:'Cinzel',serif;font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;color:var(--ink);letter-spacing:0.04em;}
 .page-header h1 em{font-style:italic;color:var(--rust);font-family:'Cormorant Garamond',serif;font-size:1.1em;}
@@ -62,7 +64,7 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
 .body-text p{font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.2rem;}
 .autor-grid{display:grid;grid-template-columns:240px 1fr;gap:3rem;align-items:start;margin-bottom:3rem;}
 .foto-box{width:240px;overflow:hidden;position:relative;border:2px solid var(--border);}
-.foto-box svg{display:block;width:100%;height:auto;}
+.foto-box img{display:block;width:100%;height:auto;}
 .foto-cap{position:absolute;bottom:0;left:0;right:0;background:rgba(26,18,8,0.65);padding:0.5rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(245,240,232,0.9);text-align:center;font-weight:700;}
 .bio h2{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
 .bio .dates{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1.2rem;}
@@ -71,7 +73,7 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
 .timeline::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:1px;background:linear-gradient(to bottom,var(--rust),transparent);}
 .tl{display:flex;gap:1.4rem;margin-bottom:1.5rem;}
 .tl-dot{width:15px;height:15px;border-radius:50%;border:2px solid var(--rust);background:var(--paper);flex-shrink:0;margin-top:2px;position:relative;z-index:1;}
-.tl-yr{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.14em;color:var(--rust);min-width:40px;padding-top:1px;}
+.tl-yr{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.14em;color:var(--rust);min-width:46px;padding-top:1px;}
 .tl-txt{font-size:0.92rem;line-height:1.68;color:var(--ink);}
 .tema{background:var(--surf);border-left:4px solid var(--rust);padding:1.4rem 1.6rem;}
 .tema .ico{font-size:1.6rem;display:block;margin-bottom:0.6rem;}
@@ -82,7 +84,7 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
 .licao p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
 .fotos-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:2.5rem;}
 .foto-espaco{position:relative;overflow:hidden;border:1px solid var(--border);}
-.foto-espaco svg{display:block;width:100%;height:auto;}
+.foto-espaco img{display:block;width:100%;height:280px;object-fit:cover;}
 .foto-leg{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(26,18,8,0.75));padding:1.5rem 0.9rem 0.6rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,240,232,0.92);}
 .lugar{background:var(--surf);border:1px solid var(--border);padding:1.6rem;position:relative;overflow:hidden;}
 .lugar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rust),transparent);}
@@ -93,6 +95,13 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
 .meta-box .ico{font-size:2.6rem;}
 .meta-box h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.5rem;}
 .meta-box p{font-size:0.92rem;line-height:1.75;color:var(--ink);}
+.midia-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.midia-card{display:flex;gap:1rem;background:var(--surf);border:1px solid var(--border);padding:1.2rem 1.3rem;align-items:flex-start;text-decoration:none;transition:border-color 0.2s,transform 0.2s;}
+.midia-card:hover{border-color:var(--rust);transform:translateY(-2px);}
+.midia-ico{font-size:1.5rem;flex-shrink:0;margin-top:0.1rem;}
+.midia-tipo{font-family:'Cinzel',serif;font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.3rem;display:block;}
+.midia-titulo{font-family:'DM Sans',sans-serif;font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;display:block;}
+.midia-fonte{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.85rem;color:rgba(26,18,8,0.65);}
 .av-wrap{max-width:900px;margin:0 auto;padding:4rem 2rem 5rem;border-top:1px solid var(--border);}
 .av-wrap h2{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:0.08em;text-align:center;margin-bottom:0.4rem;}
 .av-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;text-align:center;margin-bottom:2.5rem;}
@@ -137,16 +146,18 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
 </nav>
 
 <div class="page-header">
+  <div class="capa-wrap"><img src="https://cdl-static.s3-sa-east-1.amazonaws.com/covers/gg/9788535911831/a-morte-e-a-morte-de-quincas-berro-dagua-com-posfacio-de-affonso-romano-de-santanna.jpg" alt="Capa de A Morte e a Morte de Quincas Berro D'Água"></div>
   <p class="sup">Jorge Amado &nbsp;·&nbsp; 1959 &nbsp;·&nbsp; Análise Literária</p>
   <h1><em>A Morte e a Morte de Quincas Berro D'Água</em></h1>
-  <p>Personagens · O Autor · Temas · Espaço Narrativo</p>
+  <p>Teia do Cais · O Autor · Temas · Espaço Narrativo · Mídia</p>
 </div>
 
 <div class="tabs-bar">
-  <button class="tab on"  onclick="goTab('teia',this)">Teia de Relações</button>
-  <button class="tab"     onclick="goTab('autora',this)">O Autor</button>
+  <button class="tab on"  onclick="goTab('teia',this)">Teia do Cais</button>
+  <button class="tab"     onclick="goTab('autor',this)">O Autor</button>
   <button class="tab"     onclick="goTab('temas',this)">Temas &amp; Lições</button>
   <button class="tab"     onclick="goTab('espaco',this)">O Espaço Narrativo</button>
+  <button class="tab"     onclick="goTab('midia',this)">Mídia</button>
 </div>
 
 <!-- TEIA -->
@@ -154,81 +165,82 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
 <div class="teia-wrap">
   <div id="net-wrap">
   <svg id="net-svg" viewBox="0 0 860 750" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-    <line x1="430" y1="390" x2="430" y2="110" stroke="#6b8c6e" stroke-width="3" stroke-opacity="0.6" stroke-dasharray="8,5"/>
-    <line x1="430" y1="390" x2="170" y2="200" stroke="#c1440e" stroke-width="3" stroke-opacity="0.7"/>
-    <line x1="430" y1="390" x2="660" y2="220" stroke="#d4a017" stroke-width="3.5" stroke-opacity="0.75"/>
-    <line x1="430" y1="390" x2="150" y2="500" stroke="#d4a017" stroke-width="3" stroke-opacity="0.65"/>
-    <line x1="430" y1="390" x2="700" y2="510" stroke="#d4a017" stroke-width="3" stroke-opacity="0.65"/>
-    <line x1="430" y1="390" x2="330" y2="660" stroke="#c1440e" stroke-width="2.5" stroke-opacity="0.55"/>
-    <line x1="430" y1="390" x2="560" y2="660" stroke="#d4a017" stroke-width="2.5" stroke-opacity="0.5" stroke-dasharray="6,4"/>
-    <line x1="660" y1="220" x2="700" y2="510" stroke="#d4a017" stroke-width="1.5" stroke-opacity="0.35"/>
-    <line x1="150" y1="500" x2="330" y2="660" stroke="#d4a017" stroke-width="1.5" stroke-opacity="0.35"/>
-    <g class="node" onclick="info('quincas')"><circle cx="430" cy="390" r="82" fill="#c1440e" fill-opacity="0.12" stroke="#c1440e" stroke-width="3.5"/><circle cx="430" cy="390" r="62" fill="#c1440e" fill-opacity="0.93"/><text x="430" y="385" class="nlab-white" style="font-size:16px;">Quincas</text><text x="430" y="403" class="nlab-white" style="font-size:16px;">Berro D'Água</text><text x="430" y="480" class="nrole">o duplo</text></g>
-    <g class="node" onclick="info('joaquim')"><circle cx="430" cy="110" r="52" fill="#6b8c6e" fill-opacity="0.55" stroke="#6b8c6e" stroke-width="2.5" stroke-dasharray="6,4"/><text x="430" y="107" class="nlab" style="font-size:14px;">Joaquim</text><text x="430" y="123" class="nlab" style="font-size:11px;">Soares da Cunha</text><text x="430" y="172" class="nrole">quem ele foi</text></g>
-    <g class="node" onclick="info('otacilia')"><circle cx="170" cy="200" r="48" fill="#c1440e" fill-opacity="0.8"/><text x="170" y="197" class="nlab-white">Otacília</text><text x="170" y="256" class="nrole">esposa . decoro</text></g>
-    <g class="node" onclick="info('amigos')"><circle cx="660" cy="220" r="56" fill="#d4a017" fill-opacity="0.9"/><text x="660" y="212" class="nlab-white" style="font-size:12px;">Curió, Pastinha,</text><text x="660" y="228" class="nlab-white" style="font-size:12px;">Martim, Pé-de-Vento</text><text x="660" y="286" class="nrole">os quatro companheiros</text></g>
-    <g class="node" onclick="info('quiteria')"><circle cx="150" cy="500" r="46" fill="#d4a017" fill-opacity="0.82"/><text x="150" y="493" class="nlab-white" style="font-size:12px;">Quitéria do</text><text x="150" y="509" class="nlab-white" style="font-size:12px;">Olho Arregalado</text><text x="150" y="556" class="nrole">amante</text></g>
-    <g class="node" onclick="info('vanda')"><circle cx="700" cy="510" r="46" fill="#c1440e" fill-opacity="0.75"/><text x="700" y="507" class="nlab-white">Vanda</text><text x="700" y="566" class="nrole">filha . vergonha</text></g>
-    <g class="node" onclick="info('leonardo')"><circle cx="330" cy="660" r="42" fill="#c1440e" fill-opacity="0.6"/><text x="330" y="657" class="nlab-white" style="font-size:12px;">Genro</text><text x="330" y="710" class="nrole">respeitabilidade</text></g>
-    <g class="node" onclick="info('bahia')"><circle cx="560" cy="660" r="44" fill="#1a1208" fill-opacity="0.3" stroke="#1a1208" stroke-width="2.5" stroke-dasharray="6,4"/><text x="560" y="657" class="nlab" style="font-size:13px;">A Bahia</text><text x="560" y="710" class="nrole">coro popular</text></g>
+    <line x1="430" y1="390" x2="430" y2="110" stroke="#1a1208" stroke-width="2.5" stroke-opacity="0.45" stroke-dasharray="6,4"/>
+    <line x1="430" y1="390" x2="170" y2="200" stroke="#1a1208" stroke-width="2" stroke-opacity="0.35" stroke-dasharray="6,4"/>
+    <line x1="430" y1="390" x2="660" y2="240" stroke="#d4a017" stroke-width="3" stroke-opacity="0.65"/>
+    <line x1="430" y1="390" x2="180" y2="490" stroke="#c1440e" stroke-width="2.5" stroke-opacity="0.6"/>
+    <line x1="430" y1="390" x2="670" y2="520" stroke="#c1440e" stroke-width="2.5" stroke-opacity="0.6"/>
+    <line x1="430" y1="390" x2="770" y2="390" stroke="#c1440e" stroke-width="2.5" stroke-opacity="0.6"/>
+    <line x1="430" y1="390" x2="110" y2="650" stroke="#c1440e" stroke-width="2.5" stroke-opacity="0.55"/>
+    <line x1="180" y1="490" x2="670" y2="520" stroke="#c1440e" stroke-width="1.5" stroke-opacity="0.3" stroke-dasharray="3,5"/>
+    <line x1="670" y1="520" x2="770" y2="390" stroke="#c1440e" stroke-width="1.5" stroke-opacity="0.3" stroke-dasharray="3,5"/>
+    <line x1="770" y1="390" x2="110" y2="650" stroke="#c1440e" stroke-width="1.5" stroke-opacity="0.3" stroke-dasharray="3,5"/>
+    <line x1="430" y1="110" x2="170" y2="200" stroke="#1a1208" stroke-width="1.5" stroke-opacity="0.2" stroke-dasharray="3,5"/>
+    <g class="node" onclick="info('quincas')"><circle cx="430" cy="390" r="82" fill="#c1440e" fill-opacity="0.12" stroke="#c1440e" stroke-width="3.5"/><circle cx="430" cy="390" r="62" fill="#c1440e" fill-opacity="0.93"/><text x="430" y="391" class="nlab-white" style="font-size:15px;">Quincas</text><text x="430" y="408" class="nlab-white" style="font-size:13px;">Berro D'Água</text><text x="430" y="482" class="nrole">o morto duas vezes</text></g>
+    <g class="node" onclick="info('vanda')"><circle cx="430" cy="110" r="56" fill="#1a1208" fill-opacity="0.32" stroke="#1a1208" stroke-width="2.5" stroke-dasharray="6,4"/><text x="430" y="114" class="nlab" style="font-size:14px;">Vanda</text><text x="430" y="176" class="nrole">a filha</text></g>
+    <g class="node" onclick="info('leonardo')"><circle cx="170" cy="200" r="52" fill="#1a1208" fill-opacity="0.32" stroke="#1a1208" stroke-width="2.5" stroke-dasharray="6,4"/><text x="170" y="204" class="nlab" style="font-size:13px;">Leonardo</text><text x="170" y="262" class="nrole">o genro</text></g>
+    <g class="node" onclick="info('quiteria')"><circle cx="660" cy="240" r="52" fill="#d4a017" fill-opacity="0.9"/><text x="660" y="232" class="nlab-white" style="font-size:11px;">Quitéria do</text><text x="660" y="247" class="nlab-white" style="font-size:11px;">Olho Arregalado</text><text x="660" y="302" class="nrole">a companheira</text></g>
+    <g class="node" onclick="info('martim')"><circle cx="180" cy="490" r="48" fill="#c1440e" fill-opacity="0.85"/><text x="180" y="486" class="nlab-white" style="font-size:12px;">Cabo</text><text x="180" y="501" class="nlab-white" style="font-size:12px;">Martim</text><text x="180" y="548" class="nrole">o amigo de copo</text></g>
+    <g class="node" onclick="info('curio')"><circle cx="670" cy="520" r="46" fill="#c1440e" fill-opacity="0.75"/><text x="670" y="526" class="nlab-white" style="font-size:13px;">Curió</text><text x="670" y="576" class="nrole">o amigo de copo</text></g>
+    <g class="node" onclick="info('pedevento')"><circle cx="770" cy="390" r="44" fill="#c1440e" fill-opacity="0.75"/><text x="770" y="386" class="nlab-white" style="font-size:11px;">Pé-de-</text><text x="770" y="399" class="nlab-white" style="font-size:11px;">Vento</text><text x="770" y="444" class="nrole">o amigo de copo</text></g>
+    <g class="node" onclick="info('pastinha')"><circle cx="110" cy="650" r="42" fill="#c1440e" fill-opacity="0.7"/><text x="110" y="646" class="nlab-white" style="font-size:11px;">Negro</text><text x="110" y="659" class="nlab-white" style="font-size:11px;">Pastinha</text><text x="110" y="702" class="nrole">a presença no velório</text></g>
   </svg>
   </div>
   <div class="info-panel">
-    <h3 id="i-name">Clique em um personagem</h3>
-    <p class="info-role" id="i-role">para ver o perfil</p>
-    <p class="info-desc" id="i-desc">Joaquim Soares da Cunha abandona a família aos cinquenta anos para viver como Quincas Berro D'Água, boêmio da Bahia — e morre (ou morre de novo) sem nunca deixar de intrigar quem o conheceu dos dois lados.</p>
+    <h3 id="i-name">Clique em um nó</h3>
+    <p class="info-role" id="i-role">para explorar a teia</p>
+    <p class="info-desc" id="i-desc">A Morte e a Morte de Quincas Berro D'Água narra a dupla morte de Joaquim Soares da Cunha, funcionário público respeitável que aos cinquenta anos abandona família e emprego para viver como o maior bêbado e vagabundo da Bahia. Quando morre em seu quarto miserável, a família tenta lhe impor um velório digno — mas os amigos de copo, ao encontrarem seu sorriso no caixão, decidem levá-lo para uma última farra que terminará no mar, entre uma tempestade e uma segunda morte ambígua.</p>
     <div class="info-tags" id="i-tags"></div>
     <div class="legend">
-      <div class="leg"><div class="leg-dot" style="background:#c1440e"></div>Família</div>
-      <div class="leg"><div class="leg-dot" style="background:#d4a017"></div>Boemia</div>
-      <div class="leg"><div class="leg-dot" style="background:#6b8c6e"></div>Passado</div>
-      <div class="leg"><svg width="24" height="8"><line x1="0" y1="4" x2="24" y2="4" stroke="#1a1208" stroke-width="2" stroke-dasharray="5,3"/></svg>Coletivo</div>
+      <div class="leg"><div class="leg-dot" style="background:#1a1208"></div>A Família Respeitável</div>
+      <div class="leg"><div class="leg-dot" style="background:#d4a017"></div>A Companheira</div>
+      <div class="leg"><div class="leg-dot" style="background:#c1440e"></div>Os Amigos da Farra</div>
     </div>
   </div>
 </div>
 </div>
 
 <!-- AUTOR -->
-<div id="panel-autora" class="panel">
+<div id="panel-autor" class="panel">
 <div class="wrap">
   <div class="autor-grid">
     <div class="foto-box">
-      <svg viewBox="0 0 240 300" xmlns="http://www.w3.org/2000/svg">
-        <rect width="240" height="300" fill="#e4ddd0"/>
-        <circle cx="120" cy="108" r="55" fill="#c1b89a"/>
-        <ellipse cx="120" cy="268" rx="84" ry="60" fill="#c1b89a"/>
-        <text x="120" y="218" font-family="Cinzel,serif" font-size="11" font-weight="700" fill="rgba(26,18,8,0.42)" text-anchor="middle" letter-spacing="2">JORGE AMADO</text>
-      </svg>
-      <div class="foto-cap">Itabuna, Bahia · 1912–2001</div>
+      <img src="https://cdl-static.s3-sa-east-1.amazonaws.com/colaboradores/02516_gg.jpg" alt="Jorge Amado">
+      <div class="foto-cap">Ferradas, Bahia · 1912–2001</div>
     </div>
     <div class="bio">
       <h2>Jorge Amado</h2>
-      <p class="dates">Itabuna, Bahia, 1912 — Salvador, Bahia, 2001</p>
-      <p>Jorge Amado nasceu numa fazenda de cacau no sul da Bahia e passou a infância em Ilhéus, terra que marcaria toda a sua obra. Mudou-se para Salvador na adolescência, onde conviveu com boêmios, capoeiristas e trabalhadores populares — a matéria-prima de seus romances.</p>
-      <p>Politicamente engajado desde jovem, foi membro do Partido Comunista, preso duas vezes e exilado em vários países entre 1941 e 1952. Sua obra une o romance regionalista baiano à denúncia social, sempre com humor e sensualidade.</p>
-      <p>Eleito para a Academia Brasileira de Letras em 1961, tornou-se um dos autores brasileiros mais traduzidos e lidos no mundo, com romances como Gabriela Cravo e Canela e Dona Flor e Seus Dois Maridos.</p>
+      <p class="dates">Ferradas, Bahia, 1912 — Salvador, Bahia, 2001</p>
+      <p>Jorge Amado nasceu em 10 de agosto de 1912 em Ferradas, distrito da região cacaueira do sul da Bahia, filho de um fazendeiro de cacau. Ainda jovem mudou-se para Salvador, onde se envolveu com os círculos boêmios e literários do Pelourinho — cenário que marcaria boa parte de sua ficção. Estreou na literatura em 1931 e, já nos anos 1930, publicou romances de forte engajamento social como <em>O País do Carnaval</em>, <em>Cacau</em> e <em>Suor</em>.</p>
+      <p>Filiado ao Partido Comunista Brasileiro, foi eleito deputado constituinte em 1945 e, no exercício do mandato, apresentou o projeto de lei que garantiu a liberdade de culto religioso no Brasil. A perseguição política que se seguiu levou-o a viver anos no exílio, entre a França e a antiga Tchecoslováquia. É autor de romances que se tornaram símbolos da cultura baiana e brasileira no exterior, como <em>Jubiabá</em>, <em>Capitães da Areia</em>, <em>Gabriela, Cravo e Canela</em>, <em>Dona Flor e Seus Dois Maridos</em> e <em>Tenda dos Milagres</em>.</p>
+      <p>Eleito para a Academia Brasileira de Letras em 1961, tornou-se um dos escritores brasileiros mais traduzidos e lidos no mundo, retratando com humor, sensualidade e engajamento social o povo simples da Bahia — pescadores, prostitutas, malandros e trabalhadores do cacau. Morreu em Salvador em 6 de agosto de 2001, poucos dias antes de completar 89 anos.</p>
     </div>
   </div>
   <p class="sec-title">Linha do Tempo</p>
   <div class="timeline">
-    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1912</div><div class="tl-txt">Nasce em Ferradas, distrito de Itabuna, Bahia. Passa a infância em Ilhéus.</div></div>
-    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1931</div><div class="tl-txt">Publica seu primeiro romance, <em>O País do Carnaval</em>, ainda estudante.</div></div>
-    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1937</div><div class="tl-txt">Publica <em>Capitães da Areia</em>; o livro é apreendido e queimado pela censura do Estado Novo.</div></div>
-    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1945</div><div class="tl-txt">Casa-se com a escritora Zélia Gattai, com quem tem dois filhos.</div></div>
-    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1959</div><div class="tl-txt">Publica <em>A Morte e a Morte de Quincas Berro D'Água</em> na revista Senhor.</div></div>
-    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1961</div><div class="tl-txt">Eleito para a Academia Brasileira de Letras, cadeira 23.</div></div>
-    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1994</div><div class="tl-txt">Recebe o Prêmio Camões, maior honraria da literatura em língua portuguesa.</div></div>
-    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2001</div><div class="tl-txt">Morre em Salvador, aos 89 anos, deixando cerca de 45 obras publicadas.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1912</div><div class="tl-txt">Nasce em Ferradas, região cacaueira do sul da Bahia.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1931</div><div class="tl-txt">Estreia na literatura com <em>O País do Carnaval</em>.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1933-38</div><div class="tl-txt">Publica <em>Cacau</em>, <em>Suor</em> e <em>Jubiabá</em>, consolidando o romance social baiano.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1945</div><div class="tl-txt">Eleito deputado constituinte pelo Partido Comunista Brasileiro; propõe a lei da liberdade de culto religioso.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1948-52</div><div class="tl-txt">Vive no exílio na França e na Tchecoslováquia após a cassação do PCB.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1958</div><div class="tl-txt">Publica <em>Gabriela, Cravo e Canela</em>, sucesso internacional.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1959</div><div class="tl-txt">Publica <em>A Morte e a Morte de Quincas Berro D'Água</em>.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1961</div><div class="tl-txt">Eleito para a Academia Brasileira de Letras.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2001</div><div class="tl-txt">Morre em Salvador, poucos dias antes de completar 89 anos.</div></div>
   </div>
-  <p class="sec-title">Curiosidades</p>
-  <p class="sec-sub">Detalhes que revelam o escritor por trás do livro</p>
+  <p class="sec-title">Seis curiosidades sobre o autor e o livro</p>
+  <p class="sec-sub">Detalhes que revelam o cronista da Bahia por trás da farra final</p>
   <div class="g2">
-    <div class="card"><h4>Publicado numa revista</h4><p>A novela saiu primeiro em capítulos na revista Senhor, em 1959, com ilustrações de Glauco Rodrigues — só depois ganhou vida própria como livro.</p></div>
-    <div class="card"><h4>O maior elogio</h4><p>Vinicius de Moraes chamou a novela de "a melhor novela da literatura brasileira" quando ela foi lançada.</p></div>
-    <div class="card"><h4>Segunda mais vendida</h4><p>Entre todos os livros de Jorge Amado, esta novela ocupa o segundo lugar em vendas, com mais de 3,2 milhões de exemplares.</p></div>
-    <div class="card"><h4>Obá do Candomblé</h4><p>Jorge Amado se orgulhava do título de Obá, posto civil honorário que ocupava no terreiro Ilê Axé Opô Afonjá, em Salvador.</p></div>
-    <div class="card"><h4>Vida vivida, não inventada</h4><p>Amado dizia ser incapaz de escrever sobre o que não havia vivido — a Bahia popular de seus livros é também autobiográfica.</p></div>
-    <div class="card"><h4>Perseguição política</h4><p>Foi preso em 1936 e 1937 e viveu exilado na Argentina, França e Tchecoslováquia por sua militância comunista, retornando ao Brasil definitivamente em 1952.</p></div>
+    <div class="card"><h4>Deputado que legislou pela liberdade religiosa</h4><p>Como deputado constituinte em 1945, Amado apresentou o projeto que garantiu, na Constituição de 1946, a liberdade de culto religioso no Brasil — um gesto raro de um romancista com atuação parlamentar concreta.</p></div>
+    <div class="card"><h4>Anos de exílio na Europa</h4><p>Perseguido por sua filiação comunista, viveu exilado na França e na então Tchecoslováquia entre o fim dos anos 1940 e início dos 1950, período em que continuou escrevendo sobre a Bahia à distância.</p></div>
+    <div class="card"><h4>Uma novela escrita em poucos dias</h4><p>Diferente de seus grandes romances-rio, <em>Quincas Berro D'Água</em> é uma novela curta, escrita com a agilidade e o humor de quem narra uma anedota de bar — um contraponto deliberado à sua prosa mais épica.</p></div>
+    <div class="card"><h4>O malandro como herói</h4><p>Amado inverte a moral burguesa ao transformar um vagabundo alcoólatra no herói mais livre e mais vivo de sua narrativa — o respeitável funcionário público é quem, na verdade, estava morto em vida.</p></div>
+    <div class="card"><h4>Adaptado para cinema e televisão</h4><p>A novela ganhou adaptações para o cinema e a televisão brasileira, consolidando Quincas como um dos personagens mais populares da galeria de tipos baianos criados por Amado.</p></div>
+    <div class="card"><h4>Membro da Academia Brasileira de Letras</h4><p>Eleito em 1961, ocupou a cadeira de número 23, consolidando o reconhecimento institucional de uma obra que sempre flertou também com a cultura popular e o folclore.</p></div>
+  </div>
+  <div class="meta-box">
+    <div class="ico">🥃</div>
+    <div><h3>Como Este Livro Surgiu</h3><p><em>A Morte e a Morte de Quincas Berro D'Água</em> nasceu do fascínio de Jorge Amado pelos tipos populares do Pelourinho e do cais de Salvador — malandros, pescadores, boêmios que ele conhecia dos próprios círculos de convívio na cidade baixa. Publicada em 1959, entre romances mais extensos como <em>Gabriela, Cravo e Canela</em>, a novela é escrita com a economia e o timbre anedótico de uma história contada de bar em bar: curta, engraçada e desconcertante o bastante para questionar, em poucas páginas, o que realmente significa estar vivo ou morto.</p></div>
   </div>
 </div>
 </div>
@@ -236,33 +248,36 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
 <!-- TEMAS -->
 <div id="panel-temas" class="panel">
 <div class="wrap">
-  <p class="sec-title" style="margin-top:0;">Temas &amp; Mensagens</p>
-  <p class="sec-sub">O que a novela diz sobre liberdade, aparência e o preço de viver dentro das convenções</p>
+  <p class="sec-title" style="margin-top:0;">Temas Centrais do Livro</p>
+  <p class="sec-sub">O que Quincas Berro D'Água diz sobre liberdade, respeitabilidade e a Bahia do cais</p>
   <div class="g2" style="margin-top:0;">
-    <div class="tema"><span class="ico">🎭</span><h3>O Duplo e a Máscara Social</h3><p>Joaquim e Quincas são a mesma pessoa cindida em dois papéis — o funcionário respeitável e o boêmio livre. O livro pergunta qual dos dois era, afinal, o disfarce.</p></div>
-    <div class="tema"><span class="ico">🍺</span><h3>Boemia como Liberdade</h3><p>Abandonar o emprego, a família e o "bom nome" não é queda moral no livro — é a única forma que Quincas encontra de viver sem performar para os outros.</p></div>
-    <div class="tema"><span class="ico">👔</span><h3>Sátira à Hipocrisia Burguesa</h3><p>A família de Quincas só se envergonha dele depois de morto — Amado usa o humor para expor como a "respeitabilidade" é, muitas vezes, só aparência bem vestida.</p></div>
-    <div class="tema"><span class="ico">🎉</span><h3>Amizade Verdadeira vs. Conveniência</h3><p>Os amigos de copo, não a família, são quem genuinamente lamenta e celebra Quincas — o livro contrasta afeto real com obrigação social.</p></div>
-    <div class="tema"><span class="ico">🌊</span><h3>Morte como Festa</h3><p>Ao transformar um velório em farra e a morte numa travessia marítima quase mítica, Amado recusa o luto solene em favor de uma celebração da vida vivida com prazer.</p></div>
-    <div class="tema"><span class="ico">🎶</span><h3>Bahia Popular como Protagonista</h3><p>Capoeira, cachaça, terreiros e ladeiras não são cenário — são o verdadeiro território moral do livro, onde a alegria popular vale mais que o verniz burguês.</p></div>
+    <div class="tema"><span class="ico">🍾</span><h3>A Malandragem Como Liberdade</h3><p>Ao abandonar aos cinquenta anos uma vida de funcionário público respeitável para viver como o maior bêbado da cidade, Quincas não decai — ele se liberta de uma existência que o próprio livro trata como a verdadeira morte em vida.</p></div>
+    <div class="tema"><span class="ico">👔</span><h3>A Hipocrisia da Respeitabilidade</h3><p>A família de Quincas, envergonhada de sua vida de bar em vida, tenta lhe impor na morte o funeral solene que ele recusou em vida — o livro satiriza a obsessão burguesa com as aparências mesmo diante do cadáver.</p></div>
+    <div class="tema"><span class="ico">⚰️</span><h3>A Morte Ambígua e Dupla</h3><p>O título anuncia o paradoxo central: Quincas morre duas vezes — uma vez, sozinho, em seu quarto miserável; outra, em pleno mar, durante uma tempestade, na companhia dos amigos que recusam aceitar sua primeira morte.</p></div>
+    <div class="tema"><span class="ico">🤝</span><h3>A Fraternidade dos Excluídos</h3><p>Cabo Martim, Curió, Pé-de-Vento e Negro Pastinha oferecem a Quincas uma lealdade que sua própria família jamais demonstrou — a novela sugere que a verdadeira comunidade se encontra à margem, não no seio da respeitabilidade.</p></div>
+    <div class="tema"><span class="ico">🌊</span><h3>O Mar Como Destino Final</h3><p>A segunda morte de Quincas ocorre em alto-mar, durante uma farra transformada em tempestade — o oceano que cerca Salvador se torna palco de uma libertação final, ambígua entre acidente e vontade própria.</p></div>
+    <div class="tema"><span class="ico">😄</span><h3>Humor Como Instrumento de Crítica Social</h3><p>Amado usa o riso e o exagero anedótico para questionar, sem jamais soar panfletário, os valores da classe média baiana e sua obsessão com o que os outros vão pensar.</p></div>
+    <div class="tema"><span class="ico">🎭</span><h3>A Realidade Ambígua Entre Vida e Morte</h3><p>O sorriso "cínico e zombeteiro" no rosto do cadáver de Quincas é interpretado por seus amigos como sinal de vida — o livro brinca deliberadamente com a fronteira entre realismo e lenda popular.</p></div>
+    <div class="tema"><span class="ico">🏙️</span><h3>Salvador Como Personagem</h3><p>O Pelourinho, os bares, os becos e o cais da Bahia não são apenas cenário: são a força que molda o destino de Quincas tanto quanto qualquer decisão pessoal que ele tenha tomado.</p></div>
   </div>
   <div class="pull">
-    <p>Quincas responde ao próprio velório em versos: quer ser enterrado do seu jeito, na hora que ele escolher — ninguém mais decide isso por ele.</p>
-    <cite>Sobre A Morte e a Morte de Quincas Berro D'Água</cite>
+    <p>Quincas Berro D'Água não morreu: ele apenas resolveu, finalmente, ser dono do próprio destino — e o mar foi o único lugar disposto a recebê-lo por inteiro.</p>
+    <cite>Leitura crítica recorrente sobre o desfecho da novela, na tradição de comentaristas de Jorge Amado</cite>
   </div>
-  <p class="sec-title">O que o livro nos ensina</p>
-  <p class="sec-sub">As grandes lições que a novela carrega</p>
+  <p class="sec-title">Seis lições da narrativa</p>
+  <p class="sec-sub">O que o clube pode levar desta leitura</p>
   <div class="g2">
-    <div class="licao"><h4>Nunca é tarde para escolher a própria vida</h4><p>Aos cinquenta anos, Joaquim vira Quincas — o livro defende que reinventar-se não tem prazo de validade.</p></div>
-    <div class="licao"><h4>Respeitabilidade nem sempre é integridade</h4><p>A família "exemplar" de Joaquim revela mais desonestidade emocional do que os boêmios que o cercam na nova vida.</p></div>
-    <div class="licao"><h4>Rir da morte é uma forma de honrá-la</h4><p>O velório-farra dos amigos não é desrespeito — é a celebração mais sincera que Quincas poderia receber.</p></div>
-    <div class="licao"><h4>Pertencer de verdade vale mais que pertencer bem</h4><p>Quincas era "ninguém" para a sociedade formal, mas era tudo para quem bebia ao seu lado — o livro valoriza esse tipo de pertencimento.</p></div>
-    <div class="licao"><h4>A alegria popular é uma forma de resistência</h4><p>Diante da rigidez burguesa, a farra, a música e a informalidade da Bahia se afirmam como um jeito legítimo — não menor — de estar no mundo.</p></div>
-    <div class="licao"><h4>Ninguém é só uma versão de si mesmo</h4><p>O livro resiste a reduzir Joaquim/Quincas a um só rótulo — ele é, ao mesmo tempo, os dois homens que foi.</p></div>
+    <div class="licao"><h4>A liberdade tem um preço social alto</h4><p>Quincas paga com o desprezo da família e da sociedade respeitável o preço de viver exatamente como quer — o livro não esconde esse custo, mas também não o lamenta.</p></div>
+    <div class="licao"><h4>A amizade genuína não pede aparências</h4><p>Os amigos de copo de Quincas o aceitam e o celebram exatamente como ele é — um contraste deliberado com a vergonha silenciosa da família biológica.</p></div>
+    <div class="licao"><h4>Quem define a "boa morte" nem sempre é quem morre</h4><p>A tentativa da família de organizar um funeral digno, contra a vontade implícita do morto, questiona quem realmente tem o direito de decidir como uma vida (e uma morte) deve ser lembrada.</p></div>
+    <div class="licao"><h4>O humor pode carregar crítica social tão afiada quanto o drama</h4><p>Amado prova que uma novela curta e engraçada pode questionar hipocrisias sociais com a mesma eficácia de romances longos e solenes.</p></div>
+    <div class="licao"><h4>Os lugares moldam os destinos</h4><p>O cais, os bares e o mar de Salvador não são pano de fundo decorativo — são forças ativas que participam da história tanto quanto os próprios personagens.</p></div>
+    <div class="licao"><h4>Às vezes, a lenda importa mais que o fato</h4><p>Ao deixar ambígua a segunda morte de Quincas, o livro sugere que certas histórias merecem ser contadas como lenda, não como relatório policial exato.</p></div>
   </div>
-  <div class="body-text" style="margin-top:2rem;">
-    <p>Escrita com humor e ironia, a novela é também uma crítica afiada aos valores da classe média brasileira dos anos 1950 — sua obsessão com aparências, sua incapacidade de tolerar quem escolhe viver fora do script.</p>
-    <p>Ao dar a Quincas não uma, mas várias mortes — moral, física e quase mítica — Amado transforma o fim de um homem numa celebração de tudo que ele se recusou a deixar de ser.</p>
+  <p class="sec-title">Síntese</p>
+  <div class="body-text">
+    <p><em>A Morte e a Morte de Quincas Berro D'Água</em> é uma pequena obra-prima do humor e da crítica social de Jorge Amado: a história de Joaquim Soares da Cunha, funcionário público que aos cinquenta anos abandona família e respeitabilidade para viver — e morrer — como o mais célebre bêbado do Pelourinho. Ao encontrar seu corpo com um sorriso "cínico e zombeteiro", os amigos de copo se recusam a aceitar sua morte solene e o levam para uma última farra que terminará, em meio a uma tempestade, com uma segunda morte deliberadamente ambígua entre acidente e escolha.</p>
+    <p>Para o clube, a leitura convida a rir — e a se perguntar, atrás do riso, quem realmente decide o que é uma vida bem vivida e uma morte digna. Publicada em 1959 entre romances mais extensos de Amado, a novela prova que a economia narrativa pode ser tão poderosa quanto a epopeia para retratar a Bahia que o autor amava.</p>
   </div>
 </div>
 </div>
@@ -271,55 +286,81 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
 <div id="panel-espaco" class="panel">
 <div class="wrap">
   <p class="sec-title" style="margin-top:0;">O Espaço Narrativo</p>
-  <p class="sec-sub">A Bahia de becos, ladeiras e botecos — cenário e personagem ao mesmo tempo</p>
+  <p class="sec-sub">Do Pelourinho ao mar aberto da Baía de Todos os Santos</p>
   <div class="fotos-grid">
-    <div class="foto-espaco"><svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
-      <defs><linearGradient id="skyq1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8a860"/><stop offset="100%" stop-color="#f0d8a0"/></linearGradient></defs>
-      <rect width="480" height="280" fill="url(#skyq1)"/>
-      <rect x="0" y="180" width="480" height="100" fill="#c8945a"/>
-      <rect x="30" y="90" width="60" height="95" fill="#e0c898"/>
-      <rect x="95" y="70" width="55" height="115" fill="#d8b878"/>
-      <rect x="155" y="100" width="60" height="85" fill="#e8d0a0"/>
-      <rect x="220" y="60" width="55" height="125" fill="#d0a868"/>
-      <rect x="280" y="85" width="60" height="100" fill="#e0c898"/>
-      <rect x="345" y="65" width="55" height="120" fill="#d8b878"/>
-      <rect x="405" y="95" width="55" height="90" fill="#e8d0a0"/>
-    </svg><div class="foto-leg">Salvador — casario colorido do Pelourinho</div></div>
-    <div class="foto-espaco"><svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
-      <rect width="480" height="280" fill="#3a2e1a"/>
-      <rect x="40" y="60" width="400" height="150" fill="#2a2010"/>
-      <rect x="80" y="90" width="60" height="80" fill="#5a4020" opacity="0.6"/>
-      <rect x="200" y="90" width="60" height="80" fill="#5a4020" opacity="0.6"/>
-      <rect x="320" y="90" width="60" height="80" fill="#5a4020" opacity="0.6"/>
-      <circle cx="110" cy="130" r="15" fill="#d4a017" fill-opacity="0.6"/>
-      <circle cx="230" cy="130" r="15" fill="#c1440e" fill-opacity="0.6"/>
-      <circle cx="350" cy="130" r="15" fill="#d4a017" fill-opacity="0.6"/>
-    </svg><div class="foto-leg">O boteco — território de Quincas e seus companheiros</div></div>
-    <div class="foto-espaco"><svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
-      <defs><linearGradient id="skyq3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a1208"/><stop offset="100%" stop-color="#3a2e1a"/></linearGradient></defs>
-      <rect width="480" height="280" fill="url(#skyq3)"/>
-      <circle cx="380" cy="60" r="26" fill="#f0e8d0" fill-opacity="0.9"/>
-      <path d="M0,220 Q120,200 240,215 Q360,230 480,205 L480,280 L0,280 Z" fill="#1a3a4a" opacity="0.7"/>
-      <path d="M100,190 L140,170 L120,150" stroke="#6a5030" stroke-width="4" fill="none"/>
-    </svg><div class="foto-leg">O mar — a travessia final, na tempestade</div></div>
-    <div class="foto-espaco"><svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
-      <rect width="480" height="280" fill="#ede8dc"/>
-      <rect x="150" y="60" width="180" height="160" fill="#e8dcc8" stroke="#1a1208" stroke-width="2"/>
-      <rect x="180" y="100" width="30" height="50" fill="#3a2e1a" opacity="0.5"/>
-      <rect x="270" y="100" width="30" height="50" fill="#3a2e1a" opacity="0.5"/>
-      <rect x="225" y="160" width="30" height="60" fill="#6a4a20"/>
-    </svg><div class="foto-leg">O quarto de pensão — onde Quincas é encontrado sem vida</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Pelourinho%20Salvador%20Bahia%202019-0882.jpg" alt="Pelourinho, Salvador, Bahia"><div class="foto-leg">O Pelourinho — o bairro boêmio de Quincas e seus amigos</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Mercado%20Modelo%20Salvador%20Bahia%202021-5923.jpg" alt="Mercado Modelo, Salvador, Bahia"><div class="foto-leg">O Mercado Modelo — o comércio e a vida popular do cais</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Ba%C3%ADa%20de%20Todos%20os%20Santos.jpg" alt="Baía de Todos os Santos"><div class="foto-leg">A Baía de Todos os Santos — palco da segunda morte de Quincas</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Saveiro%20%C3%89%20da%20Vida%20-%20Ba%C3%ADa%20de%20Todos%20os%20Santos.jpg" alt="Saveiro na Baía de Todos os Santos"><div class="foto-leg">Um saveiro baiano — a embarcação da farra final</div></div>
   </div>
-  <p style="font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.5rem;">A narrativa se move entre dois mundos que dividem a mesma cidade: os salões e repartições da Salvador respeitável, e os becos, bares e ladeiras da Salvador popular — sendo esta última onde Quincas, finalmente, se sente em casa.</p>
+  <p style="font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.5rem;">A novela se move entre dois polos geográficos de Salvador: a cidade alta e seus bares populares, onde Quincas construiu sua nova vida entre amigos de copo, e o mar da Baía de Todos os Santos, para onde essa vida é finalmente levada em sua última noite. Entre um polo e outro está o quarto miserável onde ocorre sua primeira morte — um espaço de transição entre a terra firme da respeitabilidade abandonada e a água que o reivindicará por completo.</p>
   <div class="g2">
-    <div class="lugar"><h3>O Quarto na Ladeira</h3><span class="lugar-tag">Pensão Simples</span><p>É ali, num cômodo modesto e desarrumado, que o corpo de Quincas é encontrado — o mesmo espaço que a família tenta higienizar antes do velório.</p></div>
-    <div class="lugar"><h3>Os Bares do Pelourinho</h3><span class="lugar-tag">Território de Quincas</span><p>Onde Quincas reina como "cachaceiro-mor" da cidade, cercado por Curió, Pastinha, Martim e Pé-de-Vento — sua verdadeira corte.</p></div>
-    <div class="lugar"><h3>A Casa da Família</h3><span class="lugar-tag">Bairro Respeitável</span><p>Espaço de aparências e decoro, onde Otacília e Vanda tentam, em vão, restaurar a compostura do corpo antes do velório.</p></div>
-    <div class="lugar"><h3>O Mar, na Tempestade Final</h3><span class="lugar-tag">Travessia Noturna</span><p>No desfecho quase mítico, os amigos levam o corpo de Quincas num passeio de barco que termina com ele sendo engolido pelo mar — sua "morte" mais poética.</p></div>
+    <div class="lugar"><h3>O Pelourinho</h3><span class="lugar-tag">O Bairro Boêmio</span><p>Centro histórico e boêmio de Salvador, onde Quincas encontrou os bares, os amigos e a vida despojada de aparências que preferiu à respeitabilidade de sua existência anterior como funcionário público.</p></div>
+    <div class="lugar"><h3>O Quarto do Ladeira</h3><span class="lugar-tag">A Primeira Morte</span><p>É num quarto humilde de cortiço que Quincas é encontrado morto pela primeira vez — o cenário íntimo e pobre que contrasta com a pompa que a família tentará impor ao seu funeral.</p></div>
+    <div class="lugar"><h3>O Cais e o Mercado Modelo</h3><span class="lugar-tag">A Vida Popular</span><p>O comércio popular do cais de Salvador, com pescadores, feirantes e boêmios, fornece o pano de fundo social de onde vêm os amigos de Quincas — um mundo de trabalho manual e prazer imediato bem distante da vida burocrática que ele abandonou.</p></div>
+    <div class="lugar"><h3>A Baía de Todos os Santos</h3><span class="lugar-tag">A Segunda Morte</span><p>Em alto-mar, a bordo de um saveiro, durante uma tempestade súbita, ocorre a segunda e ambígua morte de Quincas — arrastado ou lançado pelas águas, num final que a novela recusa deliberadamente esclarecer.</p></div>
   </div>
   <div class="meta-box">
-    <div class="ico">⚓</div>
-    <div><h3>A Bahia como Personagem</h3><p>Jorge Amado não usa a Bahia como pano de fundo pitoresco — a cidade, com seus ritos, sua fé e sua informalidade, é a força que absorve Quincas de volta quando ele se recusa a viver como Joaquim.</p></div>
+    <div class="ico">⛵</div>
+    <div><h3>Entre a Terra da Respeitabilidade e a Água da Liberdade</h3><p>O detalhe mais revelador da geografia da novela é seu movimento simbólico da terra para o mar: Quincas nasce socialmente na terra firme e burocrática da cidade respeitável, mas encontra sua verdadeira identidade — e seu destino final — na água aberta da Baía de Todos os Santos. Essa travessia, da rigidez terrestre para a fluidez marítima, condensa em geografia o próprio argumento moral do livro: a vida mais livre é também a mais líquida, a mais difícil de conter em um caixão ou em um enterro decente.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- MÍDIA -->
+<div id="panel-midia" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Mídia</p>
+  <p class="sec-sub">Resumos, resenhas e referências para aprofundar a leitura do clube</p>
+  <div class="midia-grid">
+    <a class="midia-card" href="https://pt.wikipedia.org/wiki/A_Morte_e_a_Morte_de_Quincas_Berro_d%27%C3%81gua" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Referência</span>
+        <span class="midia-titulo">A Morte e a Morte de Quincas Berro d'Água — verbete</span>
+        <span class="midia-fonte">Wikipédia</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://jorgeamado.org.br/livros/a-morte-e-a-morte-de-quincas-berro-dagua" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Acervo</span>
+        <span class="midia-titulo">A Morte e a Morte de Quincas Berro D'água</span>
+        <span class="midia-fonte">Fundação Casa de Jorge Amado</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.coladaweb.com/resumos/a-morte-e-a-morte-de-quincas-berro-dagua-jorge-amado" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Resumo</span>
+        <span class="midia-titulo">Resumo e personagens da novela</span>
+        <span class="midia-fonte">Cola da Web</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.infoescola.com/livros/a-morte-e-a-morte-de-quincas-berro-dagua/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Resumo</span>
+        <span class="midia-titulo">A Morte e a Morte de Quincas Berro D'Água — resumo</span>
+        <span class="midia-fonte">InfoEscola</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://bibliotecamunicipaldebrumado.blogspot.com/p/a-morte-e-morte-de-quincas-berro-dagua.html" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Resenha Crítica</span>
+        <span class="midia-titulo">Resenha Crítica: A Morte de Quincas Berro D'água</span>
+        <span class="midia-fonte">Biblioteca Municipal de Brumado</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://canaldoensino.com.br/blog/a-morte-e-a-morte-de-quincas-berro-dagua-de-jorge-amado" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Análise</span>
+        <span class="midia-titulo">A Morte e a Morte de Quincas Berro D'Água, de Jorge Amado</span>
+        <span class="midia-fonte">Canal do Ensino</span>
+      </span>
+    </a>
   </div>
 </div>
 </div>
@@ -384,14 +425,14 @@ function escapeHtml(str) {
 }
 
 const P = {
-  quincas:   { nome:"Quincas Berro D'Água", papel:'Protagonista · O Duplo Libertado', desc:"O boêmio em que Joaquim se transforma aos cinquenta anos, após abandonar família e emprego. Vive de farra, cachaça e liberdade nas ruas da Bahia, e morre (talvez mais de uma vez) sem nunca deixar de ser, à sua maneira, feliz.", tags:['Joaquim (seu antigo eu)','Curió, Pastinha, Martim, Pé-de-Vento','Quitéria','A Bahia'] },
-  joaquim:   { nome:'Joaquim Soares da Cunha', papel:'Quem Ele Foi · Funcionário Exemplar', desc:'Antes de se tornar Quincas, era um respeitável funcionário público, marido e pai dedicado — até decidir, sem aviso, abandonar tudo o que essa vida representava.', tags:['Otacília','Vanda','Quincas (seu novo eu)'] },
-  otacilia:  { nome:'Otacília', papel:'Esposa · Guardiã do Decoro', desc:"Esposa de Joaquim, representa os valores da família tradicional burguesa. Sofre publicamente com a 'queda' do marido e tenta, após sua morte, restaurar sua imagem respeitável.", tags:['Joaquim','Vanda'] },
-  amigos:    { nome:'Curió, Pastinha, Martim e Pé-de-Vento', papel:'Os Quatro Companheiros de Farra', desc:'Amigos boêmios de Quincas, presentes em seu velório e em sua última noite de farra pela cidade. Representam a amizade genuína que a família formal não oferece.', tags:['Quincas','Quitéria'] },
-  quiteria:  { nome:'Quitéria do Olho Arregalado', papel:'Amante · Afeto sem Máscara', desc:'Companheira de Quincas na vida boêmia, lamenta sua morte com uma sinceridade que contrasta com o desconforto protocolar da família oficial.', tags:['Quincas'] },
-  vanda:     { nome:'Vanda', papel:'Filha · Vergonha Herdada', desc:'Filha de Joaquim e Otacília, envergonha-se do pai boêmio e participa da tentativa da família de devolver a Quincas uma aparência respeitável para o velório.', tags:['Otacília','Joaquim'] },
-  leonardo:  { nome:'O Genro', papel:'Família por Casamento · Voz da Hipocrisia', desc:'Representa a nova geração de respeitabilidade burguesa que mais se incomoda com o escândalo de ter um "vagabundo" na família.', tags:['Vanda','Otacília'] },
-  bahia:     { nome:'A Bahia', papel:'Coro Popular · Presença Coletiva', desc:'Mais que cenário, a cidade — seus bares, ladeiras, capoeiristas e devotos — funciona como uma espécie de coro que acompanha e comenta o destino de Quincas.', tags:['Quincas','Amigos'] }
+  quincas:   { nome:'Quincas Berro D\'Água', papel:'O Protagonista · O Morto Duas Vezes', desc:'Joaquim Soares da Cunha era um respeitável funcionário público quando, aos cinquenta anos, abandonou família e emprego para viver como o maior bêbado e vagabundo do Pelourinho — ganhando o apelido de "Berro D\'Água" ao gritar a palavra num bar. Sua primeira morte ocorre, solitária, num quarto miserável; a segunda, ambígua entre acidente e vontade própria, acontece em alto-mar durante uma tempestade, na companhia dos amigos que se recusaram a aceitar seu funeral solene.', tags:['Vanda','Leonardo','Quitéria do Olho Arregalado','Cabo Martim','Curió','Pé-de-Vento','Negro Pastinha'] },
+  vanda:     { nome:'Vanda', papel:'A Filha · A Guardiã da Respeitabilidade', desc:'Filha de Quincas, Vanda é quem organiza o velório solene que tenta restaurar, na morte do pai, a dignidade burguesa que ele abandonara em vida. Sua insistência em vesti-lo e velá-lo "como gente direita" choca-se de frente com a recusa dos amigos de copo em aceitar essa versão higienizada da vida — e da morte — de Quincas.', tags:['Quincas Berro D\'Água','Leonardo'] },
+  leonardo:  { nome:'Leonardo', papel:'O Genro · A Voz da Família', desc:'Marido de Vanda e genro de Quincas, Leonardo representa a mesma preocupação com aparências e respeitabilidade que definiu a antiga vida do sogro como funcionário público — um contraponto direto à liberdade desregrada que Quincas escolheu para si nos últimos anos.', tags:['Vanda','Quincas Berro D\'Água'] },
+  quiteria:  { nome:'Quitéria do Olho Arregalado', papel:'A Companheira', desc:'Amante e companheira de Quincas em sua nova vida de bares e liberdade, Quitéria do Olho Arregalado representa o oposto da respeitabilidade familiar que ele deixou para trás — uma parceria despida de formalidades, mas plena da lealdade que a família biológica lhe negou.', tags:['Quincas Berro D\'Água'] },
+  martim:    { nome:'Cabo Martim', papel:'O Amigo de Copo', desc:'Um dos companheiros mais próximos de Quincas em sua vida de farra e bebida, Cabo Martim é quem melhor incorpora a fraternidade dos excluídos que o livro contrapõe à frieza da família respeitável — presente tanto na farra quanto na última viagem de barco.', tags:['Quincas Berro D\'Água','Curió','Pé-de-Vento'] },
+  curio:     { nome:'Curió', papel:'O Amigo de Copo', desc:'Parte do quarteto de amigos inseparáveis de Quincas, Curió é uma das vozes que se recusa a aceitar a morte solene imposta pela família — para ele e os demais, o sorriso "cínico e zombeteiro" no rosto do cadáver é sinal inequívoco de que Quincas ainda tinha uma última farra pela frente.', tags:['Quincas Berro D\'Água','Cabo Martim'] },
+  pedevento: { nome:'Pé-de-Vento', papel:'O Amigo de Copo', desc:'Companheiro fiel de Quincas nas rodas de bebida do Pelourinho, Pé-de-Vento integra o grupo que resgata o corpo do velório imposto pela família para uma última noite de farra — um gesto de lealdade que a novela trata como mais genuíno que qualquer luto convencional.', tags:['Quincas Berro D\'Água','Negro Pastinha'] },
+  pastinha:  { nome:'Negro Pastinha', papel:'A Presença no Velório', desc:'Presente no velório de Quincas, Negro Pastinha é uma das vozes que reconhece no sorriso do cadáver um sinal de vida — sua reação, compartilhada pelos outros amigos de copo, desencadeia a decisão coletiva de tirar Quincas do caixão para uma última farra que terminaria no mar.', tags:['Quincas Berro D\'Água','Pé-de-Vento'] }
 };
 
 function info(id) {

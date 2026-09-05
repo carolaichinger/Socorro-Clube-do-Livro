@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cinco Esquinas — Análise</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1208; --rust:#c1440e; --gold:#d4a017; --sage:#6b8c6e;
+  --cream:#f5f0e8; --paper:#ede8dc; --border:rgba(193,68,14,0.22); --surf:rgba(26,18,8,0.05);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;padding-top:68px;overflow-x:hidden;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:68px;background:rgba(245,240,232,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
+.nav-logo{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--rust);text-decoration:none;}
+.nav-tag{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(26,18,8,0.45);}
+.nav-back{font-family:'Cinzel',serif;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:2px solid rgba(193,68,14,0.4);padding:0.45rem 1.1rem;transition:all 0.2s;}
+.nav-back:hover{color:var(--rust);border-color:var(--rust);}
+.page-header{text-align:center;padding:2.5rem 2rem 0;}
+.capa-wrap{width:150px;margin:0 auto 1.2rem;box-shadow:0 12px 28px rgba(26,18,8,0.28);}
+.capa-wrap img{display:block;width:100%;height:auto;}
+.sup{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-bottom:0.5rem;}
+.page-header h1{font-family:'Cinzel',serif;font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;color:var(--ink);letter-spacing:0.04em;}
+.page-header h1 em{font-style:italic;color:var(--rust);font-family:'Cormorant Garamond',serif;font-size:1.1em;}
+.page-header p{font-style:italic;color:rgba(26,18,8,0.7);font-size:0.95rem;margin-top:0.3rem;}
+.tabs-bar{display:flex;justify-content:center;max-width:960px;margin:2rem auto 0;border-bottom:2px solid var(--border);flex-wrap:wrap;}
+.tab{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.50);background:none;border:none;padding:0.9rem 1.8rem;cursor:pointer;position:relative;transition:color 0.25s;}
+.tab::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;background:var(--rust);transform:scaleX(0);transition:transform 0.25s;}
+.tab:hover{color:var(--ink);}
+.tab.on{color:var(--ink);}
+.tab.on::after{transform:scaleX(1);}
+.panel{display:none;}
+.panel.on{display:block;animation:fadeUp 0.35s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.teia-wrap{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;padding:1.5rem 2rem 3rem;min-height:780px;}
+#net-wrap{height:750px;}
+#net-svg{width:100%;height:100%;}
+.nlab{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:#1a1208;text-anchor:middle;pointer-events:none;}
+.nlab-white{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:white;text-anchor:middle;pointer-events:none;}
+.nrole{font-family:'Cinzel',serif;font-size:12px;font-weight:600;fill:rgba(26,18,8,0.75);text-anchor:middle;pointer-events:none;}
+.node{cursor:pointer;}
+.node circle{transition:filter 0.25s;}
+.node:hover circle{filter:brightness(1.2);}
+.info-panel{border-left:1px solid var(--border);padding:2rem 1.8rem;display:flex;flex-direction:column;overflow-y:auto;max-height:750px;}
+.info-panel h3{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.info-role{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1rem;}
+.info-desc{font-size:0.93rem;line-height:1.78;color:var(--ink);flex:1;}
+.info-tags{margin-top:1.2rem;}
+.info-tags span{display:inline-block;margin:0.2rem 0.2rem 0 0;background:var(--surf);border:1px solid var(--border);padding:0.22rem 0.65rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);}
+.legend{display:flex;gap:0.8rem;margin-top:auto;padding-top:1.5rem;border-top:1px solid var(--border);flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;font-weight:600;color:var(--ink);}
+.leg-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.wrap{max-width:900px;margin:0 auto;padding:3rem 2rem 4rem;}
+.sec-title{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--ink);letter-spacing:0.12em;text-transform:uppercase;margin:2.5rem 0 0.5rem;}
+.sec-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;margin-bottom:1.5rem;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.card{background:var(--surf);border:1px solid var(--border);padding:1.4rem;}
+.card h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--rust);margin-bottom:0.6rem;}
+.card p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.pull{border:1px solid var(--border);border-left:4px solid var(--rust);padding:1.8rem 2rem;margin:2.5rem 0;background:var(--surf);}
+.pull p{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;line-height:1.7;color:var(--ink);}
+.pull cite{display:block;margin-top:0.8rem;font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);}
+.body-text p{font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.2rem;}
+.autor-grid{display:grid;grid-template-columns:240px 1fr;gap:3rem;align-items:start;margin-bottom:3rem;}
+.foto-box{width:240px;overflow:hidden;position:relative;border:2px solid var(--border);}
+.foto-box img{display:block;width:100%;height:auto;}
+.foto-cap{position:absolute;bottom:0;left:0;right:0;background:rgba(26,18,8,0.65);padding:0.5rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(245,240,232,0.9);text-align:center;font-weight:700;}
+.bio h2{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.bio .dates{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1.2rem;}
+.bio p{font-size:0.97rem;line-height:1.85;color:var(--ink);margin-bottom:1rem;}
+.timeline{position:relative;margin:1.5rem 0;}
+.timeline::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:1px;background:linear-gradient(to bottom,var(--rust),transparent);}
+.tl{display:flex;gap:1.4rem;margin-bottom:1.5rem;}
+.tl-dot{width:15px;height:15px;border-radius:50%;border:2px solid var(--rust);background:var(--paper);flex-shrink:0;margin-top:2px;position:relative;z-index:1;}
+.tl-yr{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.14em;color:var(--rust);min-width:46px;padding-top:1px;}
+.tl-txt{font-size:0.92rem;line-height:1.68;color:var(--ink);}
+.tema{background:var(--surf);border-left:4px solid var(--rust);padding:1.4rem 1.6rem;}
+.tema .ico{font-size:1.6rem;display:block;margin-bottom:0.6rem;}
+.tema h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.7rem;}
+.tema p{font-size:0.92rem;line-height:1.78;color:var(--ink);}
+.licao{background:var(--paper);border-left:4px solid var(--gold);padding:1.3rem 1.5rem;}
+.licao h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);margin-bottom:0.5rem;}
+.licao p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.fotos-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:2.5rem;}
+.foto-espaco{position:relative;overflow:hidden;border:1px solid var(--border);}
+.foto-espaco img{display:block;width:100%;height:280px;object-fit:cover;}
+.foto-leg{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(26,18,8,0.75));padding:1.5rem 0.9rem 0.6rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,240,232,0.92);}
+.lugar{background:var(--surf);border:1px solid var(--border);padding:1.6rem;position:relative;overflow:hidden;}
+.lugar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rust),transparent);}
+.lugar h3{font-family:'Cinzel',serif;font-size:0.75rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.4rem;}
+.lugar-tag{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;color:var(--ink);display:block;margin-bottom:0.5rem;}
+.lugar p{font-size:0.90rem;line-height:1.72;color:var(--ink);}
+.meta-box{background:var(--paper);border:1px solid var(--border);padding:2rem;margin:2.5rem 0;display:grid;grid-template-columns:60px 1fr;gap:1.5rem;align-items:start;}
+.meta-box .ico{font-size:2.6rem;}
+.meta-box h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.5rem;}
+.meta-box p{font-size:0.92rem;line-height:1.75;color:var(--ink);}
+.midia-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.midia-card{display:flex;gap:1rem;background:var(--surf);border:1px solid var(--border);padding:1.2rem 1.3rem;align-items:flex-start;text-decoration:none;transition:border-color 0.2s,transform 0.2s;}
+.midia-card:hover{border-color:var(--rust);transform:translateY(-2px);}
+.midia-ico{font-size:1.5rem;flex-shrink:0;margin-top:0.1rem;}
+.midia-tipo{font-family:'Cinzel',serif;font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.3rem;display:block;}
+.midia-titulo{font-family:'DM Sans',sans-serif;font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;display:block;}
+.midia-fonte{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.85rem;color:rgba(26,18,8,0.65);}
+.av-wrap{max-width:900px;margin:0 auto;padding:4rem 2rem 5rem;border-top:1px solid var(--border);}
+.av-wrap h2{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:0.08em;text-align:center;margin-bottom:0.4rem;}
+.av-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;text-align:center;margin-bottom:2.5rem;}
+.av-summary{background:var(--surf);border:1px solid var(--border);padding:2rem;display:flex;gap:3rem;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;}
+.av-big-num{font-family:'Cinzel',serif;font-size:4rem;font-weight:700;color:var(--rust);line-height:1;text-align:center;}
+.av-big-stars{font-size:1.5rem;text-align:center;margin:0.3rem 0;}
+.av-big-count{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.6);text-align:center;}
+.brow{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;}
+.brow-lbl{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;color:var(--ink);min-width:28px;}
+.brow-track{flex:1;height:8px;background:rgba(26,18,8,0.1);border-radius:4px;overflow:hidden;}
+.brow-fill{height:100%;background:var(--rust);border-radius:4px;transition:width 0.5s;width:0%;}
+.brow-n{font-family:'Cinzel',serif;font-size:0.62rem;font-weight:700;color:rgba(26,18,8,0.6);min-width:16px;text-align:right;}
+.av-form{background:var(--paper);border:1px solid var(--border);padding:2rem;margin-bottom:2.5rem;}
+.av-form h3{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink);margin-bottom:1.5rem;}
+.av-label{font-family:'Cinzel',serif;font-size:0.63rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);display:block;margin-bottom:0.4rem;}
+.av-input{width:100%;padding:0.7rem 1rem;margin-bottom:1.2rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;}
+.av-input:focus{border-color:var(--rust);}
+.av-textarea{width:100%;padding:0.7rem 1rem;margin-bottom:1.5rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;resize:vertical;line-height:1.65;min-height:100px;}
+.av-textarea:focus{border-color:var(--rust);}
+.stars-pick{display:flex;gap:0.3rem;margin-bottom:1.3rem;}
+.stars-pick span{font-size:2.2rem;cursor:pointer;line-height:1;color:rgba(26,18,8,0.2);transition:color 0.15s;user-select:none;}
+.av-btn{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;background:var(--rust);color:white;border:none;padding:0.85rem 2.5rem;cursor:pointer;transition:background 0.2s;}
+.av-btn:hover{background:#a33508;}
+.av-btn:disabled{background:#aaa;cursor:default;}
+.av-msg{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;margin-left:1rem;}
+.comment{border:1px solid var(--border);padding:1.4rem 1.6rem;margin-bottom:1rem;background:var(--cream);}
+.chead{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;flex-wrap:wrap;gap:0.4rem;}
+.cname{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;color:var(--ink);}
+.cstars{color:var(--rust);font-size:1.05rem;}
+.cdate{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:600;color:rgba(26,18,8,0.5);}
+.ctext{font-size:0.95rem;line-height:1.75;color:var(--ink);}
+.no-reviews{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.5);font-size:1rem;text-align:center;padding:2rem 0;}
+.loading{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.12em;color:rgba(26,18,8,0.5);text-align:center;padding:1.5rem 0;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Socorro.</a>
+  <span class="nav-tag">Clube do Livro · Análise</span>
+  <a href="index.html#lidos" class="nav-back">← Voltar à Estante</a>
+</nav>
+
+<div class="page-header">
+  <div class="capa-wrap"><img src="https://cdl-static.s3-sa-east-1.amazonaws.com/covers/gg/9788556520227/cinco-esquinas.jpg" alt="Capa de Cinco Esquinas"></div>
+  <p class="sup">Mario Vargas Llosa &nbsp;·&nbsp; 2016 &nbsp;·&nbsp; Análise Literária</p>
+  <h1><em>Cinco Esquinas</em></h1>
+  <p>Teia de Relações · O Autor · Temas · Espaço Narrativo · Mídia</p>
+</div>
+
+<div class="tabs-bar">
+  <button class="tab on"  onclick="goTab('teia',this)">Teia de Relações</button>
+  <button class="tab"     onclick="goTab('autora',this)">O Autor</button>
+  <button class="tab"     onclick="goTab('temas',this)">Temas &amp; Lições</button>
+  <button class="tab"     onclick="goTab('espaco',this)">O Espaço Narrativo</button>
+  <button class="tab"     onclick="goTab('midia',this)">Mídia</button>
+</div>
+
+<!-- TEIA -->
+<div id="panel-teia" class="panel on">
+<div class="teia-wrap">
+  <div id="net-wrap">
+  <svg id="net-svg" viewBox="0 0 860 750" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+    <line x1="430" y1="390" x2="430" y2="110" stroke="#2a9d8f" stroke-width="3" stroke-opacity="0.65"/>
+    <line x1="430" y1="390" x2="170" y2="200" stroke="#c1440e" stroke-width="3.5" stroke-opacity="0.75"/>
+    <line x1="430" y1="390" x2="660" y2="240" stroke="#d4a017" stroke-width="2.5" stroke-opacity="0.55" stroke-dasharray="6,4"/>
+    <line x1="430" y1="390" x2="180" y2="490" stroke="#1a1208" stroke-width="2" stroke-opacity="0.35" stroke-dasharray="6,4"/>
+    <line x1="430" y1="390" x2="670" y2="520" stroke="#d4a017" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="5,5"/>
+    <line x1="430" y1="390" x2="770" y2="390" stroke="#2a9d8f" stroke-width="2" stroke-opacity="0.4" stroke-dasharray="6,4"/>
+    <line x1="430" y1="390" x2="110" y2="650" stroke="#1a1208" stroke-width="3" stroke-opacity="0.55"/>
+    <line x1="660" y1="240" x2="670" y2="520" stroke="#d4a017" stroke-width="1.5" stroke-opacity="0.3" stroke-dasharray="3,5"/>
+    <line x1="430" y1="110" x2="180" y2="490" stroke="#2a9d8f" stroke-width="1.5" stroke-opacity="0.25" stroke-dasharray="3,5"/>
+    <g class="node" onclick="info('garro')"><circle cx="430" cy="390" r="82" fill="#c1440e" fill-opacity="0.12" stroke="#c1440e" stroke-width="3.5"/><circle cx="430" cy="390" r="62" fill="#c1440e" fill-opacity="0.93"/><text x="430" y="385" class="nlab-white" style="font-size:15px;">Rolando</text><text x="430" y="402" class="nlab-white" style="font-size:15px;">Garro</text><text x="430" y="482" class="nrole">a vítima central</text></g>
+    <g class="node" onclick="info('retaquita')"><circle cx="430" cy="110" r="56" fill="#2a9d8f" fill-opacity="0.85"/><text x="430" y="107" class="nlab-white" style="font-size:12px;">La</text><text x="430" y="122" class="nlab-white" style="font-size:12px;">Retaquita</text><text x="430" y="176" class="nrole">a repórter leal</text></g>
+    <g class="node" onclick="info('quique')"><circle cx="170" cy="200" r="52" fill="#c1440e" fill-opacity="0.85"/><text x="170" y="204" class="nlab-white" style="font-size:14px;">Quique</text><text x="170" y="262" class="nrole">o extorquido</text></g>
+    <g class="node" onclick="info('marisa')"><circle cx="660" cy="240" r="52" fill="#d4a017" fill-opacity="0.9"/><text x="660" y="244" class="nlab-white" style="font-size:14px;">Marisa</text><text x="660" y="302" class="nrole">o desejo oculto</text></g>
+    <g class="node" onclick="info('peineta')"><circle cx="180" cy="490" r="48" fill="#1a1208" fill-opacity="0.32" stroke="#1a1208" stroke-width="2.5" stroke-dasharray="6,4"/><text x="180" y="486" class="nlab" style="font-size:12px;">Juan</text><text x="180" y="501" class="nlab" style="font-size:12px;">Peineta</text><text x="180" y="548" class="nrole">o vingador</text></g>
+    <g class="node" onclick="info('chabela')"><circle cx="670" cy="520" r="46" fill="#d4a017" fill-opacity="0.75"/><text x="670" y="524" class="nlab-white" style="font-size:13px;">Chabela</text><text x="670" y="576" class="nrole">a cúmplice</text></g>
+    <g class="node" onclick="info('luciano')"><circle cx="770" cy="390" r="44" fill="#2a9d8f" fill-opacity="0.4" stroke="#2a9d8f" stroke-width="2.5" stroke-dasharray="6,4"/><text x="770" y="394" class="nlab" style="font-size:13px;">Luciano</text><text x="770" y="444" class="nrole">o conselho</text></g>
+    <g class="node" onclick="info('doutor')"><circle cx="110" cy="650" r="42" fill="#1a1208" fill-opacity="0.55" stroke="#1a1208" stroke-width="1.5"/><text x="110" y="646" class="nlab-white" style="font-size:11px;">O</text><text x="110" y="660" class="nlab-white" style="font-size:11px;">Doutor</text><text x="110" y="702" class="nrole">o poder nas sombras</text></g>
+  </svg>
+  </div>
+  <div class="info-panel">
+    <h3 id="i-name">Clique em um personagem</h3>
+    <p class="info-role" id="i-role">para ver o perfil</p>
+    <p class="info-desc" id="i-desc">Cinco Esquinas tece, ao redor do assassinato do diretor de um tabloide de fofocas em Lima, um romance coral sobre chantagem, desejo reprimido e a cumplicidade da elite limenha com os últimos anos da ditadura de Fujimori e Montesinos. Ninguém, nesta trama, está inteiramente livre de culpa — nem mesmo quem se acredita apenas espectador.</p>
+    <div class="info-tags" id="i-tags"></div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:#c1440e"></div>Chantagem &amp; Violência</div>
+      <div class="leg"><div class="leg-dot" style="background:#d4a017"></div>Desejo Oculto</div>
+      <div class="leg"><div class="leg-dot" style="background:#2a9d8f"></div>Lealdade Profissional</div>
+      <div class="leg"><svg width="24" height="8"><line x1="0" y1="4" x2="24" y2="4" stroke="#1a1208" stroke-width="2" stroke-dasharray="5,3"/></svg>Poder nas Sombras</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- AUTOR -->
+<div id="panel-autora" class="panel">
+<div class="wrap">
+  <div class="autor-grid">
+    <div class="foto-box">
+      <img src="https://cdl-static.s3-sa-east-1.amazonaws.com/colaboradores/00291_gg.jpg" alt="Mario Vargas Llosa">
+      <div class="foto-cap">Arequipa, Peru · 1936–2025</div>
+    </div>
+    <div class="bio">
+      <h2>Mario Vargas Llosa</h2>
+      <p class="dates">Arequipa, Peru, 1936 — Lima, Peru, 2025</p>
+      <p>Jorge Mario Pedro Vargas Llosa nasceu em Arequipa em 1936, filho único de um casamento que se desfez cinco meses depois. Passou a infância em Cochabamba, na Bolívia, e depois em Piura, antes de se mudar para Lima aos dez anos, quando reencontrou o pai. Aos catorze, foi matriculado no Colégio Militar Leôncio Prado — experiência que, anos depois, se tornaria a matéria-prima de seu romance de estreia.</p>
+      <p>Formado em Letras e Direito pela Universidade Nacional Maior de San Marcos, mudou-se para a Espanha em 1958 com uma bolsa de estudos e viveu depois na França, onde amadureceu como escritor ao lado de outros nomes do Boom latino-americano. Romances como <em>A Cidade e os Cachorros</em> (1963), <em>A Casa Verde</em> (1966) e <em>Conversa na Catedral</em> (1969) o consagraram como um dos grandes cronistas ficcionais do poder e da corrupção na América Latina — um tema ao qual voltaria, décadas depois, em <em>Cinco Esquinas</em>.</p>
+      <p>Em 1990, candidatou-se à presidência do Peru pela coalizão de centro-direita FREDEMO, venceu o primeiro turno e perdeu o segundo para Alberto Fujimori — o mesmo regime que, anos mais tarde, retrataria como moralmente falido nas páginas deste romance. Vencedor do Prêmio Nobel de Literatura em 2010, foi eleito para a Academia Francesa em 2021 e morreu em Lima em abril de 2025, aos 89 anos.</p>
+    </div>
+  </div>
+  <p class="sec-title">Linha do Tempo</p>
+  <div class="timeline">
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1936</div><div class="tl-txt">Nasce em Arequipa, Peru, em 28 de março.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1958</div><div class="tl-txt">Recebe a bolsa "Javier Prado" e muda-se para a Espanha; depois vive vários anos na França.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1963</div><div class="tl-txt">Publica <em>A Cidade e os Cachorros</em>, baseado em sua experiência no colégio militar — vence o Prêmio Biblioteca Breve.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1976</div><div class="tl-txt">Rompe publicamente com Gabriel García Márquez após um soco desferido no rosto do colega, num episódio que os dois levariam ao túmulo sem explicar.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1990</div><div class="tl-txt">Candidata-se à presidência do Peru, vence o primeiro turno e perde o segundo para Alberto Fujimori.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1993</div><div class="tl-txt">Obtém a cidadania espanhola e se estabelece definitivamente na Europa.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2010</div><div class="tl-txt">Recebe o Prêmio Nobel de Literatura "por sua cartografia das estruturas de poder e suas imagens contundentes de resistência, rebelião e derrota individual".</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2016</div><div class="tl-txt">Publica <em>Cinco Esquinas</em>, seu décimo oitavo romance, ambientado nos últimos anos da ditadura de Fujimori.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2021</div><div class="tl-txt">É eleito para a Academia Francesa, tomando posse em 2023.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2025</div><div class="tl-txt">Morre em Lima em 13 de abril, aos 89 anos.</div></div>
+  </div>
+  <p class="sec-title">Seis curiosidades sobre o autor e o livro</p>
+  <p class="sec-sub">Detalhes que atravessam a vida do autor e as páginas de Cinco Esquinas</p>
+  <div class="g2">
+    <div class="card"><h4>Perdeu para o próprio vilão do livro</h4><p>Em 1990, Vargas Llosa concorreu à presidência do Peru e perdeu para Alberto Fujimori. Duas décadas depois, escreveu um romance que expõe sem piedade a máquina de chantagem e vigilância do regime que o derrotou nas urnas.</p></div>
+    <div class="card"><h4>O soco que nenhum dos dois explicou</h4><p>Em 1976, na Cidade do México, Vargas Llosa desferiu um soco no rosto de Gabriel García Márquez, encerrando décadas de amizade. Nenhum dos dois jamais revelou publicamente o motivo — e ambos levaram o segredo consigo.</p></div>
+    <div class="card"><h4>O lugar existe de verdade</h4><p>Cinco Esquinas é um cruzamento real no bairro de Barrios Altos, no centro histórico de Lima — reconhecido como patrimônio cultural do Peru e berço, no século XIX, da boemia limenha e do compositor de valsas Felipe Pinglo.</p></div>
+    <div class="card"><h4>Marquês por decreto real</h4><p>Em 2011, o rei Juan Carlos I da Espanha concedeu a Vargas Llosa o título hereditário de Marquês de Vargas Llosa — um escritor de esquerda na juventude que terminou nobre por decreto.</p></div>
+    <div class="card"><h4>Imortal da Academia Francesa</h4><p>Eleito para a Academia Francesa em 2021 e empossado em 2023, tornou-se um dos poucos escritores de língua espanhola a integrar a instituição — vestindo, aos 87 anos, a tradicional casaca verde dos "imortais".</p></div>
+    <div class="card"><h4>Seu décimo oitavo romance</h4><p><em>Cinco Esquinas</em> é o décimo oitavo romance de Vargas Llosa, publicado aos 79 anos — prova de que a obsessão do autor pelas engrenagens do poder não arrefeceu com a idade.</p></div>
+  </div>
+  <div class="meta-box">
+    <div class="ico">🗞️</div>
+    <div><h3>Como Este Livro Surgiu</h3><p><em>Cinco Esquinas</em> nasce do cruzamento entre um lugar real — o bairro de Barrios Altos, em Lima — e uma década que Vargas Llosa viveu por dentro, como candidato derrotado, e por fora, como exilado voluntário na Europa. O romance retoma o gênero que o consagrou décadas antes, o da ficção-denúncia sobre estruturas de poder, mas o faz através da imprensa marrom: um tabloide de fofocas manipulado pelos serviços de inteligência para destruir reputações e silenciar opositores. Publicado em 2016, poucos anos depois de o próprio Fujimori ser condenado por crimes contra os direitos humanos, o livro chega como um ajuste de contas literário com uma década que o autor conheceu de perto — e da qual escapou por poucos votos.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- TEMAS -->
+<div id="panel-temas" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Temas Centrais do Livro</p>
+  <p class="sec-sub">O que Cinco Esquinas diz sobre poder, chantagem e cumplicidade</p>
+  <div class="g2" style="margin-top:0;">
+    <div class="tema"><span class="ico">🗞️</span><h3>Imprensa Amarela como Arma de Poder</h3><p>Destapes não é um tabloide independente: é um instrumento do regime, usado para destruir opositores sob a fachada do escândalo. Vargas Llosa mostra como a fofoca, quando instrumentalizada pelo Estado, deixa de ser entretenimento e vira censura disfarçada de curiosidade pública.</p></div>
+    <div class="tema"><span class="ico">🕵️</span><h3>Vigilância e Chantagem como Controle</h3><p>O Doutor comanda, nos bastidores, uma rede de fotos roubadas, dossiês e informantes que transforma a vida privada de qualquer cidadão em arma potencial contra ele. O medo não vem da polícia visível, mas da certeza de que alguém, sempre, está observando.</p></div>
+    <div class="tema"><span class="ico">💋</span><h3>Desejo Feminino Silenciado</h3><p>O affair entre Marisa e Chabela nasce de uma noite de medo e toque de recolher — e sobrevive em segredo, dentro de casamentos que ambas não abandonam. O romance trata esse desejo sem julgamento fácil nem celebração ingênua: apenas como algo real, finalmente nomeado.</p></div>
+    <div class="tema"><span class="ico">⚖️</span><h3>Justiça Tardia e Vingança Pessoal</h3><p>Juan Peineta perdeu tudo por uma matéria de Garro anos antes — e sua busca por justiça pessoal, numa sociedade onde a justiça institucional está capturada pelo regime, é o retrato de como a vingança privada floresce onde o Estado falha.</p></div>
+    <div class="tema"><span class="ico">🏛️</span><h3>Cumplicidade da Elite com a Ditadura</h3><p>Quique e Luciano representam uma classe alta que prefere não perguntar demais sobre como o país é governado, desde que os negócios prosperem — até que a máquina que ajudaram a tolerar se volta contra eles mesmos.</p></div>
+    <div class="tema"><span class="ico">🖋️</span><h3>Lealdade e Ambição na Imprensa</h3><p>La Retaquita é o contraponto moral de Garro: leal ao ofício do jornalismo mesmo trabalhando para quem o corrompe. Sua investigação do assassinato do chefe é o único fio de integridade profissional em meio ao cinismo generalizado do romance.</p></div>
+    <div class="tema"><span class="ico">🎭</span><h3>A Cidade como Teatro de Máscaras</h3><p>A Lima do romance é dividida entre a fachada respeitável da elite e os porões onde se negociam chantagens, afetos proibidos e vinganças. Ninguém no livro é exatamente quem aparenta ser diante dos outros.</p></div>
+    <div class="tema"><span class="ico">🔒</span><h3>Corrupção Institucionalizada</h3><p>O Serviço de Inteligência Nacional não age à margem da lei: ele é o verdadeiro centro de poder do Estado peruano nesses anos, com a presidência e a imprensa operando como suas extensões visíveis.</p></div>
+  </div>
+  <div class="pull">
+    <p>La prensa amarilla ha servido para acallar, castigar la libertad y matar y asesinar a los críticos en mi país.</p>
+    <cite>Mario Vargas Llosa, em entrevista à La Tercera, sobre Cinco Esquinas</cite>
+  </div>
+  <p class="sec-title">Seis lições da narrativa</p>
+  <p class="sec-sub">O que o clube pode levar desta leitura</p>
+  <div class="g2">
+    <div class="licao"><h4>A imprensa pode virar arma</h4><p>Quando a informação é capturada pelo poder, o jornalismo deixa de proteger a verdade e passa a proteger quem manda — e o público raramente percebe a diferença a tempo.</p></div>
+    <div class="licao"><h4>O silêncio também é cumplicidade</h4><p>Quique e Luciano nunca apoiaram abertamente a ditadura — mas sua indiferença calculada é o combustível que permite que regimes como esse sobrevivam.</p></div>
+    <div class="licao"><h4>O desejo não pede licença</h4><p>Marisa e Chabela descobrem, tarde e em circunstâncias extremas, uma parte de si que a sociedade nunca as deixaria examinar em condições normais.</p></div>
+    <div class="licao"><h4>A vingança cobra um preço</h4><p>Juan Peineta busca reparação numa sociedade sem justiça funcional — e o romance não promete que essa busca traga paz, apenas que ela é humanamente compreensível.</p></div>
+    <div class="licao"><h4>Todo poder oculto precisa de rostos visíveis</h4><p>O Doutor nunca aparece sozinho: precisa de Garro, de Destapes, de informantes — o poder nas sombras sempre depende de intermediários dispostos a sujar as próprias mãos.</p></div>
+    <div class="licao"><h4>Ninguém sai limpo de uma ditadura</h4><p>Vítimas, cúmplices e algozes se confundem ao longo do romance — e essa confusão deliberada é o que torna Cinco Esquinas mais inquietante do que um simples romance de denúncia.</p></div>
+  </div>
+  <p class="sec-title">Síntese</p>
+  <div class="body-text">
+    <p><em>Cinco Esquinas</em> retoma, décadas depois de romances como <em>Conversa na Catedral</em>, a pergunta que atravessa toda a obra de Vargas Llosa: como o poder corrompe as instituições e as pessoas comuns que dependem delas. Ao escolher um tabloide de fofocas — e não o palácio presidencial — como epicentro da trama, o autor mostra que a ditadura não precisa de tanques nas ruas quando pode contar com fotos roubadas, colunas maldosas e o medo comum de ser exposto.</p>
+    <p>É também um romance sobre cumplicidades pequenas: a de quem financia o jornal que chantageia, a de quem prefere não perguntar, a de quem observa o toque de recolher como pano de fundo para descobrir um desejo há muito reprimido. Para o clube, a leitura é um convite a discutir onde termina a vítima e começa o cúmplice — e o quanto disso ainda ressoa fora das páginas do livro.</p>
+  </div>
+</div>
+</div>
+
+<!-- ESPAÇO -->
+<div id="panel-espaco" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">O Espaço Narrativo</p>
+  <p class="sec-sub">Da Lima colonial de Barrios Altos aos bastidores do poder — geografia real e política do romance</p>
+  <div class="fotos-grid">
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Casona_en_Jir%C3%B3n_Huanta_840%2C_Barrios_Altos_07.jpg" alt="Casona colonial em Barrios Altos, Lima"><div class="foto-leg">Uma casona de Barrios Altos — o bairro que dá nome ao romance</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Plaza_Mayor_del_Centro_Hist%C3%B3rico_de_Lima_19.jpg" alt="Plaza Mayor do centro histórico de Lima"><div class="foto-leg">A Lima histórica que emoldura os anos finais do fujimorismo</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Militar_Vladimiro_Montesinos.jpg" alt="Vladimiro Montesinos"><div class="foto-leg">Vladimiro Montesinos — o "Doutor" real por trás do enredo</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Miami_skyline_20080328.jpg" alt="Skyline de Miami"><div class="foto-leg">Miami — a fuga de Marisa e Chabela</div></div>
+  </div>
+  <p style="font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.5rem;">O romance se move entre territórios que raramente se encontram: o cruzamento real de Cinco Esquinas, em Barrios Altos, que empresta seu nome ao livro; a redação do tabloide Destapes, onde se fabricam escândalos; os escritórios discretos do Serviço de Inteligência Nacional, onde o verdadeiro poder é exercido sem placa na porta; e Miami, destino de fuga temporária para quem pode pagar por ela.</p>
+  <div class="g2">
+    <div class="lugar"><h3>Cinco Esquinas</h3><span class="lugar-tag">Barrios Altos, Lima</span><p>Cruzamento real no centro histórico de Lima, reconhecido como patrimônio cultural do Peru. Foi berço da boemia limenha no século XIX e cenário do compositor de valsas Felipe Pinglo — antes de se tornar, ao longo do século XX, símbolo de decadência urbana e, no romance, metáfora de uma cidade dividida.</p></div>
+    <div class="lugar"><h3>A Redação de Destapes</h3><span class="lugar-tag">O Tabloide</span><p>É dali que Rolando Garro comanda sua máquina de chantagem disfarçada de jornalismo popular — fotos roubadas, colunas maldosas, reputações destruídas em nome de uma audiência que nunca questiona a origem do material publicado.</p></div>
+    <div class="lugar"><h3>O Serviço de Inteligência</h3><span class="lugar-tag">O Poder Sem Placa</span><p>Comandado pelo Doutor, o SIN opera como o verdadeiro centro de decisão do regime — mais poderoso que qualquer ministério, mais discreto que qualquer tabloide, e responsável por decidir quem será exposto e quem será protegido.</p></div>
+    <div class="lugar"><h3>Miami</h3><span class="lugar-tag">A Fuga Possível</span><p>Destino de uma viagem de Marisa e Chabela, Miami funciona no romance como território neutro — um lugar onde os dois casamentos ficam momentaneamente em suspenso, e o segredo das duas pode respirar longe dos olhares de Lima.</p></div>
+  </div>
+  <div class="meta-box">
+    <div class="ico">🗺️</div>
+    <div><h3>O Bairro Que Existe de Verdade</h3><p>Cinco Esquinas não é uma invenção geográfica: é um cruzamento real do bairro de Barrios Altos, no centro histórico de Lima, reconhecido oficialmente como patrimônio cultural do Peru. O mesmo bairro foi palco, em 1991, de um dos episódios mais sombrios da era Fujimori-Montesinos — o massacre de Barrios Altos, cometido por um esquadrão paramilitar ligado ao Estado, que décadas depois ajudaria a condenar o próprio Fujimori por crimes contra os direitos humanos. Ao dar esse nome ao romance, Vargas Llosa ancora sua ficção sobre chantagem e poder num lugar que já carregava, na vida real, o peso da violência de Estado.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- MÍDIA -->
+<div id="panel-midia" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Mídia</p>
+  <p class="sec-sub">Podcasts, vídeos e publicações para aprofundar a leitura do clube</p>
+  <div class="midia-grid">
+    <a class="midia-card" href="https://www.youtube.com/watch?v=u8mfIaiXR8o" target="_blank" rel="noopener">
+      <span class="midia-ico">🎬</span>
+      <span>
+        <span class="midia-tipo">Vídeo · Lançamento</span>
+        <span class="midia-titulo">Apresentação do livro Cinco Esquinas, com Mario Vargas Llosa</span>
+        <span class="midia-fonte">YouTube</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.youtube.com/watch?v=jMz6gS469wU" target="_blank" rel="noopener">
+      <span class="midia-ico">📹</span>
+      <span>
+        <span class="midia-tipo">Vídeo · O lugar real</span>
+        <span class="midia-titulo">Conheça Cinco Esquinas, o cenário que inspirou o romance</span>
+        <span class="midia-fonte">YouTube</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.youtube.com/watch?v=7CNPqVKtDUA" target="_blank" rel="noopener">
+      <span class="midia-ico">📹</span>
+      <span>
+        <span class="midia-tipo">Vídeo · Resenha</span>
+        <span class="midia-titulo">Resenha: Cinco Esquinas, de Mario Vargas Llosa</span>
+        <span class="midia-fonte">YouTube</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.latercera.com/noticia/mario-vargas-llosa-la-prensa-amarilla-sirvio-para-castigar-la-libertad-en-mi-pais/" target="_blank" rel="noopener">
+      <span class="midia-ico">🎙️</span>
+      <span>
+        <span class="midia-tipo">Entrevista</span>
+        <span class="midia-titulo">"La prensa amarilla sirvió para castigar la libertad en mi país"</span>
+        <span class="midia-fonte">La Tercera</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://letralia.com/lecturas/2016/04/02/cinco-esquinas-novela-numero-dieciocho-de-vargas-llosa/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação</span>
+        <span class="midia-titulo">Cinco esquinas, novela número dieciocho de Vargas Llosa</span>
+        <span class="midia-fonte">Letralia</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.achadoselidos.com.br/2017/01/18/resenha-cinco-esquinasmariovargasllosa/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação</span>
+        <span class="midia-titulo">Resenha: Cinco Esquinas</span>
+        <span class="midia-fonte">Achados &amp; Lidos</span>
+      </span>
+    </a>
+  </div>
+</div>
+</div>
+
+<!-- AVALIAÇÃO -->
+<div class="av-wrap">
+  <p class="sup" style="text-align:center;margin-bottom:0.4rem;">Clube Socorro</p>
+  <h2>Avaliações &amp; Comentários</h2>
+  <p class="av-sub">O que o clube achou de Cinco Esquinas</p>
+  <div class="av-summary">
+    <div>
+      <div class="av-big-num" id="avg-num">—</div>
+      <div class="av-big-stars" id="avg-stars">☆☆☆☆☆</div>
+      <div class="av-big-count" id="avg-count">0 avaliações</div>
+    </div>
+    <div class="bars">
+      <div class="brow"><span class="brow-lbl">5★</span><div class="brow-track"><div class="brow-fill" id="b5"></div></div><span class="brow-n" id="n5">0</span></div>
+      <div class="brow"><span class="brow-lbl">4★</span><div class="brow-track"><div class="brow-fill" id="b4"></div></div><span class="brow-n" id="n4">0</span></div>
+      <div class="brow"><span class="brow-lbl">3★</span><div class="brow-track"><div class="brow-fill" id="b3"></div></div><span class="brow-n" id="n3">0</span></div>
+      <div class="brow"><span class="brow-lbl">2★</span><div class="brow-track"><div class="brow-fill" id="b2"></div></div><span class="brow-n" id="n2">0</span></div>
+      <div class="brow"><span class="brow-lbl">1★</span><div class="brow-track"><div class="brow-fill" id="b1"></div></div><span class="brow-n" id="n1">0</span></div>
+    </div>
+  </div>
+  <div class="av-form">
+    <h3>Deixe sua avaliação</h3>
+    <label class="av-label">Seu nome</label>
+    <input id="f-nome" class="av-input" type="text" placeholder="Como quer ser identificada?">
+    <label class="av-label">Nota</label>
+    <div class="stars-pick" id="star-row">
+      <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+    </div>
+    <label class="av-label">Comentário</label>
+    <textarea id="f-txt" class="av-textarea" placeholder="O que você achou do livro?"></textarea>
+    <button class="av-btn" onclick="submitReview()">Publicar Avaliação</button>
+    <span id="f-msg" class="av-msg"></span>
+  </div>
+  <div id="comments"><p class="loading">Carregando avaliações...</p></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyB03BscdfdfZGW42Btqbmzt72Dpusu45NU",
+  authDomain: "socorro-clube-do-livro.firebaseapp.com",
+  projectId: "socorro-clube-do-livro",
+  storageBucket: "socorro-clube-do-livro.firebasestorage.app",
+  messagingSenderId: "729551936788",
+  appId: "1:729551936788:web:001a6e284a63a51fc37601"
+};
+let db = null;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  db.settings({ experimentalAutoDetectLongPolling: true, useFetchStreams: false });
+} catch (e) { db = null; }
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str == null ? '' : String(str);
+  return div.innerHTML;
+}
+
+const P = {
+  garro:      { nome:'Rolando Garro', papel:'Diretor de Destapes · A Vítima Central', desc:"Rolando Garro dirige Destapes, o tabloide sensacionalista que vive da desgraça alheia — fotos roubadas, chantagens disfarçadas de jornalismo, vidas arruinadas em nome da audiência. Foi torturado e humilhado anos antes por agentes do próprio regime que agora manipula em seu favor, e essa ferida antiga explica a crueldade com que trata suas vítimas. Seu assassinato, brutal e aparentemente sem motivo único, é a engrenagem que põe em movimento todas as outras histórias do romance — e a pergunta que ninguém consegue responder sem revelar a própria cumplicidade.", tags:['La Retaquita (repórter)','Quique (vítima da chantagem)','Juan Peineta (inimigo)','O Doutor (patrão oculto)'] },
+  retaquita:  { nome:'Julieta Leguizamón · "La Retaquita"', papel:'Repórter · A Lealdade Investigativa', desc:'Repórter de Destapes, é o oposto moral do próprio chefe: leal, corajosa e movida por um afeto não correspondido por Garro que ela jamais admite abertamente. É ela quem assume a investigação do assassinato depois que a polícia oficial se mostra mais interessada em proteger o regime do que em encontrar a verdade — tornando-se a figura mais próxima de uma consciência moral funcional em todo o romance.', tags:['Rolando Garro (chefe)','a investigação do crime'] },
+  quique:     { nome:'Enrique "Quique" Cárdenas', papel:'Engenheiro · O Extorquido', desc:'Engenheiro bem-sucedido, ingênuo o bastante para ser fotografado num momento de vulnerabilidade com um empresário iugoslavo — e vaidoso o bastante para acreditar que o problema desapareceria sozinho. Quando se recusa a pagar a chantagem de Garro, as fotos são publicadas, e sua reputação e seu casamento entram em colapso simultâneo. Quique é o retrato de uma elite limenha que se acredita acima das regras que ela mesma ajuda a sustentar.', tags:['Marisa (esposa)','Rolando Garro (chantagista)','Luciano (advogado)'] },
+  marisa:     { nome:'Marisa', papel:'Esposa de Quique · O Desejo Oculto', desc:'Esposa de Quique, Marisa vive presa entre a lealdade ao marido humilhado publicamente e um desejo que nunca havia nomeado antes de uma noite de toque de recolher ao lado de Chabela. O affair que nasce naquela noite não é tratado como escândalo nem como libertação plena — é tratado com a ambiguidade de quem descobre, tarde, uma parte de si que a sociedade nunca lhe permitiu examinar.', tags:['Quique (marido)','Chabela (amante)'] },
+  chabela:    { nome:'Chabela (Isabel)', papel:'Amiga de Marisa · A Cúmplice do Desejo', desc:'Amiga de infância de Marisa, casada com o advogado Luciano, é ela quem inicia o encontro que muda as duas para sempre durante uma noite de insegurança e toque de recolher. Segue casada, seguindo aparentando devoção ao marido, enquanto mantém em segredo — inclusive numa viagem a Miami — a relação com Marisa. Sua cumplicidade espelha, em outra chave, a cumplicidade moral que todos os personagens do romance precisam negociar.', tags:['Luciano (marido)','Marisa (amante)'] },
+  luciano:    { nome:'Luciano', papel:'Advogado · O Conselho Cauteloso', desc:'Advogado de prestígio, marido de Chabela, é quem aconselha Quique sobre como reagir à chantagem de Garro — com a frieza calculada de quem está acostumado a proteger interesses, não pessoas. Sua cautela profissional é também uma forma de cegueira voluntária: ele prefere não perguntar demais sobre o que a própria esposa faz longe de casa.', tags:['Chabela (esposa)','Quique (cliente)'] },
+  peineta:    { nome:'Juan Peineta', papel:'Ex-Declamador · O Vingador Solitário', desc:'Ex-declamador de poesia e apresentador de televisão, teve a carreira destruída por uma matéria de Garro anos antes dos eventos do livro — e desde então vive isolado, sustentado apenas pela companhia do gato Serafín depois da morte da esposa. Aos setenta e nove anos, é o personagem mais solitário e talvez o único genuinamente digno de compaixão em todo o romance — e o principal suspeito quando Garro aparece morto.', tags:['Rolando Garro (algoz)','Serafín (seu gato)'] },
+  doutor:     { nome:'O Doutor', papel:'Chefe de Inteligência · O Poder nas Sombras', desc:'Nunca chamado por outro nome além de "o Doutor", é a versão ficcionalizada de Vladimiro Montesinos, o todo-poderoso chefe do Serviço de Inteligência Nacional do governo Fujimori. Comanda nos bastidores a rede de chantagem, vigilância e imprensa marrom que sustenta o regime — e é dele que emana o poder que torna Garro, ao mesmo tempo, algoz e marionete. Sua presença quase sem rosto no romance reproduz o modo como o poder real, na ditadura peruana, preferia operar na sombra.', tags:['Rolando Garro (instrumento)','o regime Fujimori-Montesinos'] }
+};
+
+function info(id) {
+  const p = P[id]; if (!p) return;
+  document.getElementById('i-name').textContent = p.nome;
+  document.getElementById('i-role').textContent = p.papel;
+  document.getElementById('i-desc').textContent = p.desc;
+  document.getElementById('i-tags').innerHTML =
+    '<p style="font-family:Cinzel,serif;font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);margin-bottom:0.4rem;">Conexões</p>' +
+    p.tags.map(t => '<span>' + t + '</span>').join('');
+}
+
+function goTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  document.getElementById('panel-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+let picked = 0;
+document.querySelectorAll('#star-row span').forEach(s => {
+  s.addEventListener('mouseover', () => hilite(+s.dataset.v));
+  s.addEventListener('mouseout',  () => hilite(picked));
+  s.addEventListener('click',     () => { picked = +s.dataset.v; hilite(picked); });
+});
+function hilite(n) {
+  document.querySelectorAll('#star-row span').forEach(s => {
+    s.style.color = +s.dataset.v <= n ? '#c1440e' : 'rgba(26,18,8,0.2)';
+  });
+}
+
+const BOOK_SLUG = 'cinco-esquinas';
+const reviewsCol = db ? db.collection('livros').doc(BOOK_SLUG).collection('reviews') : null;
+let reviews = [];
+
+async function submitReview() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const txt  = document.getElementById('f-txt').value.trim();
+  const msg  = document.getElementById('f-msg');
+  if (!nome)   { msg.textContent = 'Coloque seu nome.';      msg.style.color='#c1440e'; return; }
+  if (!picked) { msg.textContent = 'Selecione uma nota.';    msg.style.color='#c1440e'; return; }
+  if (!txt)    { msg.textContent = 'Escreva um comentário.'; msg.style.color='#c1440e'; return; }
+  if (!reviewsCol) { msg.textContent = 'Avaliações indisponíveis no momento.'; msg.style.color='#c1440e'; return; }
+  const btn = document.querySelector('.av-btn');
+  btn.textContent = 'Enviando...'; btn.disabled = true;
+  msg.textContent = '';
+  try {
+    await reviewsCol.add({
+      nome, nota: picked, comentario: txt,
+      data: new Date().toLocaleDateString('pt-BR'),
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('f-nome').value = '';
+    document.getElementById('f-txt').value  = '';
+    picked = 0; hilite(0);
+    msg.textContent = 'Publicado!'; msg.style.color = '#6b8c6e';
+    setTimeout(() => msg.textContent = '', 4000);
+  } catch(e) {
+    msg.textContent = 'Erro ao enviar. Tente novamente.'; msg.style.color = '#c1440e';
+  }
+  btn.textContent = 'Publicar Avaliação'; btn.disabled = false;
+}
+
+function renderReviews() {
+  const total = reviews.length;
+  if (!total) {
+    document.getElementById('avg-num').textContent   = '—';
+    document.getElementById('avg-stars').textContent = '☆☆☆☆☆';
+    document.getElementById('avg-count').textContent = '0 avaliações';
+    [1,2,3,4,5].forEach(n => { document.getElementById('b'+n).style.width='0%'; document.getElementById('n'+n).textContent='0'; });
+    document.getElementById('comments').innerHTML = '<p class="no-reviews">Nenhuma avaliação ainda — seja a primeira!</p>';
+    return;
+  }
+  const avg = reviews.reduce((a,r) => a + Number(r.nota), 0) / total;
+  document.getElementById('avg-num').textContent   = avg.toFixed(1);
+  const full = Math.round(avg);
+  document.getElementById('avg-stars').textContent = '★'.repeat(full) + '☆'.repeat(5-full);
+  document.getElementById('avg-count').textContent = total + (total===1 ? ' avaliação' : ' avaliações');
+  [1,2,3,4,5].forEach(n => {
+    const c = reviews.filter(r => Number(r.nota)===n).length;
+    document.getElementById('b'+n).style.width = (c/total*100).toFixed(0) + '%';
+    document.getElementById('n'+n).textContent = c;
+  });
+  document.getElementById('comments').innerHTML = reviews.map(r => `
+    <div class="comment">
+      <div class="chead">
+        <span class="cname">${escapeHtml(r.nome)}</span>
+        <span class="cstars">${'★'.repeat(Number(r.nota))}${'☆'.repeat(5-Number(r.nota))}</span>
+        <span class="cdate">${escapeHtml(r.data)}</span>
+      </div>
+      <p class="ctext">${escapeHtml(r.comentario)}</p>
+    </div>`).join('');
+}
+
+if (reviewsCol) {
+  reviewsCol.orderBy('criadoEm', 'desc').onSnapshot(function (snap) {
+    reviews = snap.docs.map(d => d.data());
+    renderReviews();
+  }, function () {
+    reviews = [];
+    renderReviews();
+  });
+} else {
+  renderReviews();
+}
+</script>
+</body>
+</html>

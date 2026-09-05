@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Adversário — Análise</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1208; --rust:#c1440e; --gold:#d4a017; --sage:#6b8c6e;
+  --cream:#f5f0e8; --paper:#ede8dc; --border:rgba(193,68,14,0.22); --surf:rgba(26,18,8,0.05);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;padding-top:68px;overflow-x:hidden;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:68px;background:rgba(245,240,232,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
+.nav-logo{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--rust);text-decoration:none;}
+.nav-tag{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(26,18,8,0.45);}
+.nav-back{font-family:'Cinzel',serif;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:2px solid rgba(193,68,14,0.4);padding:0.45rem 1.1rem;transition:all 0.2s;}
+.nav-back:hover{color:var(--rust);border-color:var(--rust);}
+.page-header{text-align:center;padding:2.5rem 2rem 0;}
+.capa-wrap{width:150px;margin:0 auto 1.2rem;box-shadow:0 12px 28px rgba(26,18,8,0.28);}
+.capa-wrap img{display:block;width:100%;height:auto;}
+.sup{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-bottom:0.5rem;}
+.page-header h1{font-family:'Cinzel',serif;font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;color:var(--ink);letter-spacing:0.04em;}
+.page-header h1 em{font-style:italic;color:var(--rust);font-family:'Cormorant Garamond',serif;font-size:1.1em;}
+.page-header p{font-style:italic;color:rgba(26,18,8,0.7);font-size:0.95rem;margin-top:0.3rem;}
+.tabs-bar{display:flex;justify-content:center;max-width:960px;margin:2rem auto 0;border-bottom:2px solid var(--border);flex-wrap:wrap;}
+.tab{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.50);background:none;border:none;padding:0.9rem 1.8rem;cursor:pointer;position:relative;transition:color 0.25s;}
+.tab::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;background:var(--rust);transform:scaleX(0);transition:transform 0.25s;}
+.tab:hover{color:var(--ink);}
+.tab.on{color:var(--ink);}
+.tab.on::after{transform:scaleX(1);}
+.panel{display:none;}
+.panel.on{display:block;animation:fadeUp 0.35s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.teia-wrap{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;padding:1.5rem 2rem 3rem;min-height:780px;}
+#net-wrap{height:750px;}
+#net-svg{width:100%;height:100%;}
+.nlab{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:#1a1208;text-anchor:middle;pointer-events:none;}
+.nlab-white{font-family:'Cinzel',serif;font-size:16px;font-weight:700;fill:white;text-anchor:middle;pointer-events:none;}
+.nrole{font-family:'Cinzel',serif;font-size:12px;font-weight:600;fill:rgba(26,18,8,0.75);text-anchor:middle;pointer-events:none;}
+.node{cursor:pointer;}
+.node circle{transition:filter 0.25s;}
+.node:hover circle{filter:brightness(1.2);}
+.info-panel{border-left:1px solid var(--border);padding:2rem 1.8rem;display:flex;flex-direction:column;overflow-y:auto;max-height:750px;}
+.info-panel h3{font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.info-role{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1rem;}
+.info-desc{font-size:0.93rem;line-height:1.78;color:var(--ink);flex:1;}
+.info-tags{margin-top:1.2rem;}
+.info-tags span{display:inline-block;margin:0.2rem 0.2rem 0 0;background:var(--surf);border:1px solid var(--border);padding:0.22rem 0.65rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);}
+.legend{display:flex;gap:0.8rem;margin-top:auto;padding-top:1.5rem;border-top:1px solid var(--border);flex-wrap:wrap;}
+.leg{display:flex;align-items:center;gap:0.4rem;font-size:0.75rem;font-weight:600;color:var(--ink);}
+.leg-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.wrap{max-width:900px;margin:0 auto;padding:3rem 2rem 4rem;}
+.sec-title{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--ink);letter-spacing:0.12em;text-transform:uppercase;margin:2.5rem 0 0.5rem;}
+.sec-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;margin-bottom:1.5rem;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.card{background:var(--surf);border:1px solid var(--border);padding:1.4rem;}
+.card h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--rust);margin-bottom:0.6rem;}
+.card p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.pull{border:1px solid var(--border);border-left:4px solid var(--rust);padding:1.8rem 2rem;margin:2.5rem 0;background:var(--surf);}
+.pull p{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;line-height:1.7;color:var(--ink);}
+.pull cite{display:block;margin-top:0.8rem;font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);}
+.body-text p{font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.2rem;}
+.autor-grid{display:grid;grid-template-columns:240px 1fr;gap:3rem;align-items:start;margin-bottom:3rem;}
+.foto-box{width:240px;overflow:hidden;position:relative;border:2px solid var(--border);}
+.foto-box img{display:block;width:100%;height:auto;}
+.foto-cap{position:absolute;bottom:0;left:0;right:0;background:rgba(26,18,8,0.65);padding:0.5rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(245,240,232,0.9);text-align:center;font-weight:700;}
+.bio h2{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
+.bio .dates{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1.2rem;}
+.bio p{font-size:0.97rem;line-height:1.85;color:var(--ink);margin-bottom:1rem;}
+.timeline{position:relative;margin:1.5rem 0;}
+.timeline::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:1px;background:linear-gradient(to bottom,var(--rust),transparent);}
+.tl{display:flex;gap:1.4rem;margin-bottom:1.5rem;}
+.tl-dot{width:15px;height:15px;border-radius:50%;border:2px solid var(--rust);background:var(--paper);flex-shrink:0;margin-top:2px;position:relative;z-index:1;}
+.tl-yr{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.14em;color:var(--rust);min-width:46px;padding-top:1px;}
+.tl-txt{font-size:0.92rem;line-height:1.68;color:var(--ink);}
+.tema{background:var(--surf);border-left:4px solid var(--rust);padding:1.4rem 1.6rem;}
+.tema .ico{font-size:1.6rem;display:block;margin-bottom:0.6rem;}
+.tema h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.7rem;}
+.tema p{font-size:0.92rem;line-height:1.78;color:var(--ink);}
+.licao{background:var(--paper);border-left:4px solid var(--gold);padding:1.3rem 1.5rem;}
+.licao h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);margin-bottom:0.5rem;}
+.licao p{font-size:0.88rem;line-height:1.72;color:var(--ink);}
+.fotos-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:2.5rem;}
+.foto-espaco{position:relative;overflow:hidden;border:1px solid var(--border);}
+.foto-espaco img{display:block;width:100%;height:280px;object-fit:cover;}
+.foto-leg{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(26,18,8,0.75));padding:1.5rem 0.9rem 0.6rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,240,232,0.92);}
+.lugar{background:var(--surf);border:1px solid var(--border);padding:1.6rem;position:relative;overflow:hidden;}
+.lugar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rust),transparent);}
+.lugar h3{font-family:'Cinzel',serif;font-size:0.75rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.4rem;}
+.lugar-tag{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;color:var(--ink);display:block;margin-bottom:0.5rem;}
+.lugar p{font-size:0.90rem;line-height:1.72;color:var(--ink);}
+.meta-box{background:var(--paper);border:1px solid var(--border);padding:2rem;margin:2.5rem 0;display:grid;grid-template-columns:60px 1fr;gap:1.5rem;align-items:start;}
+.meta-box .ico{font-size:2.6rem;}
+.meta-box h3{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.5rem;}
+.meta-box p{font-size:0.92rem;line-height:1.75;color:var(--ink);}
+.midia-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.midia-card{display:flex;gap:1rem;background:var(--surf);border:1px solid var(--border);padding:1.2rem 1.3rem;align-items:flex-start;text-decoration:none;transition:border-color 0.2s,transform 0.2s;}
+.midia-card:hover{border-color:var(--rust);transform:translateY(-2px);}
+.midia-ico{font-size:1.5rem;flex-shrink:0;margin-top:0.1rem;}
+.midia-tipo{font-family:'Cinzel',serif;font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.3rem;display:block;}
+.midia-titulo{font-family:'DM Sans',sans-serif;font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;display:block;}
+.midia-fonte{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.85rem;color:rgba(26,18,8,0.65);}
+.av-wrap{max-width:900px;margin:0 auto;padding:4rem 2rem 5rem;border-top:1px solid var(--border);}
+.av-wrap h2{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:700;color:var(--ink);letter-spacing:0.08em;text-align:center;margin-bottom:0.4rem;}
+.av-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;text-align:center;margin-bottom:2.5rem;}
+.av-summary{background:var(--surf);border:1px solid var(--border);padding:2rem;display:flex;gap:3rem;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap;}
+.av-big-num{font-family:'Cinzel',serif;font-size:4rem;font-weight:700;color:var(--rust);line-height:1;text-align:center;}
+.av-big-stars{font-size:1.5rem;text-align:center;margin:0.3rem 0;}
+.av-big-count{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,18,8,0.6);text-align:center;}
+.brow{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;}
+.brow-lbl{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;color:var(--ink);min-width:28px;}
+.brow-track{flex:1;height:8px;background:rgba(26,18,8,0.1);border-radius:4px;overflow:hidden;}
+.brow-fill{height:100%;background:var(--rust);border-radius:4px;transition:width 0.5s;width:0%;}
+.brow-n{font-family:'Cinzel',serif;font-size:0.62rem;font-weight:700;color:rgba(26,18,8,0.6);min-width:16px;text-align:right;}
+.av-form{background:var(--paper);border:1px solid var(--border);padding:2rem;margin-bottom:2.5rem;}
+.av-form h3{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink);margin-bottom:1.5rem;}
+.av-label{font-family:'Cinzel',serif;font-size:0.63rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);display:block;margin-bottom:0.4rem;}
+.av-input{width:100%;padding:0.7rem 1rem;margin-bottom:1.2rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;}
+.av-input:focus{border-color:var(--rust);}
+.av-textarea{width:100%;padding:0.7rem 1rem;margin-bottom:1.5rem;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);outline:none;resize:vertical;line-height:1.65;min-height:100px;}
+.av-textarea:focus{border-color:var(--rust);}
+.stars-pick{display:flex;gap:0.3rem;margin-bottom:1.3rem;}
+.stars-pick span{font-size:2.2rem;cursor:pointer;line-height:1;color:rgba(26,18,8,0.2);transition:color 0.15s;user-select:none;}
+.av-btn{font-family:'Cinzel',serif;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;background:var(--rust);color:white;border:none;padding:0.85rem 2.5rem;cursor:pointer;transition:background 0.2s;}
+.av-btn:hover{background:#a33508;}
+.av-btn:disabled{background:#aaa;cursor:default;}
+.av-msg{font-family:'Cinzel',serif;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;margin-left:1rem;}
+.comment{border:1px solid var(--border);padding:1.4rem 1.6rem;margin-bottom:1rem;background:var(--cream);}
+.chead{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;flex-wrap:wrap;gap:0.4rem;}
+.cname{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:700;color:var(--ink);}
+.cstars{color:var(--rust);font-size:1.05rem;}
+.cdate{font-family:'Cinzel',serif;font-size:0.6rem;font-weight:600;color:rgba(26,18,8,0.5);}
+.ctext{font-size:0.95rem;line-height:1.75;color:var(--ink);}
+.no-reviews{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.5);font-size:1rem;text-align:center;padding:2rem 0;}
+.loading{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.12em;color:rgba(26,18,8,0.5);text-align:center;padding:1.5rem 0;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Socorro.</a>
+  <span class="nav-tag">Clube do Livro · Análise</span>
+  <a href="index.html#lidos" class="nav-back">← Voltar à Estante</a>
+</nav>
+
+<div class="page-header">
+  <div class="capa-wrap"><img src="https://cdl-static.s3-sa-east-1.amazonaws.com/covers/gg/9788556523013/o-adversario.jpg" alt="Capa de O Adversário"></div>
+  <p class="sup">Emmanuel Carrère &nbsp;·&nbsp; 2000 &nbsp;·&nbsp; Análise Literária</p>
+  <h1><em>O Adversário</em></h1>
+  <p>Teia do Caso · O Autor · Temas · Espaço Narrativo · Mídia</p>
+</div>
+
+<div class="tabs-bar">
+  <button class="tab on"  onclick="goTab('teia',this)">Teia do Caso</button>
+  <button class="tab"     onclick="goTab('autor',this)">O Autor</button>
+  <button class="tab"     onclick="goTab('temas',this)">Temas &amp; Lições</button>
+  <button class="tab"     onclick="goTab('espaco',this)">O Espaço Narrativo</button>
+  <button class="tab"     onclick="goTab('midia',this)">Mídia</button>
+</div>
+
+<!-- TEIA -->
+<div id="panel-teia" class="panel on">
+<div class="teia-wrap">
+  <div id="net-wrap">
+  <svg id="net-svg" viewBox="0 0 860 750" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+    <line x1="430" y1="390" x2="430" y2="110" stroke="#c1440e" stroke-width="3" stroke-opacity="0.7"/>
+    <line x1="430" y1="390" x2="170" y2="200" stroke="#c1440e" stroke-width="2.5" stroke-opacity="0.55"/>
+    <line x1="430" y1="390" x2="660" y2="240" stroke="#1a1208" stroke-width="2.5" stroke-opacity="0.4" stroke-dasharray="6,4"/>
+    <line x1="430" y1="390" x2="180" y2="490" stroke="#1a1208" stroke-width="2.5" stroke-opacity="0.4" stroke-dasharray="6,4"/>
+    <line x1="430" y1="390" x2="670" y2="520" stroke="#d4a017" stroke-width="2.5" stroke-opacity="0.6"/>
+    <line x1="430" y1="390" x2="770" y2="390" stroke="#1a1208" stroke-width="2" stroke-opacity="0.35" stroke-dasharray="6,4"/>
+    <line x1="430" y1="390" x2="110" y2="650" stroke="#2a9d8f" stroke-width="2.5" stroke-opacity="0.6"/>
+    <line x1="170" y1="200" x2="660" y2="240" stroke="#1a1208" stroke-width="1.5" stroke-opacity="0.25" stroke-dasharray="3,5"/>
+    <line x1="180" y1="490" x2="770" y2="390" stroke="#1a1208" stroke-width="1.5" stroke-opacity="0.2" stroke-dasharray="3,5"/>
+    <g class="node" onclick="info('romand')"><circle cx="430" cy="390" r="82" fill="#c1440e" fill-opacity="0.12" stroke="#c1440e" stroke-width="3.5"/><circle cx="430" cy="390" r="62" fill="#c1440e" fill-opacity="0.93"/><text x="430" y="391" class="nlab-white" style="font-size:15px;">Jean-Claude</text><text x="430" y="408" class="nlab-white" style="font-size:15px;">Romand</text><text x="430" y="482" class="nrole">o impostor</text></g>
+    <g class="node" onclick="info('florence')"><circle cx="430" cy="110" r="56" fill="#c1440e" fill-opacity="0.85"/><text x="430" y="114" class="nlab-white" style="font-size:14px;">Florence</text><text x="430" y="176" class="nrole">a esposa</text></g>
+    <g class="node" onclick="info('filhos')"><circle cx="170" cy="200" r="52" fill="#c1440e" fill-opacity="0.7"/><text x="170" y="196" class="nlab-white" style="font-size:12px;">Os</text><text x="170" y="211" class="nlab-white" style="font-size:12px;">Filhos</text><text x="170" y="262" class="nrole">Antoine e Caroline</text></g>
+    <g class="node" onclick="info('pais')"><circle cx="660" cy="240" r="52" fill="#1a1208" fill-opacity="0.32" stroke="#1a1208" stroke-width="2.5" stroke-dasharray="6,4"/><text x="660" y="236" class="nlab" style="font-size:12px;">Os Pais</text><text x="660" y="251" class="nlab" style="font-size:12px;">de Romand</text><text x="660" y="302" class="nrole">a segunda casa</text></g>
+    <g class="node" onclick="info('luc')"><circle cx="180" cy="490" r="48" fill="#1a1208" fill-opacity="0.32" stroke="#1a1208" stroke-width="2.5" stroke-dasharray="6,4"/><text x="180" y="486" class="nlab" style="font-size:12px;">Luc</text><text x="180" y="501" class="nlab" style="font-size:12px;">Ladmiral</text><text x="180" y="548" class="nrole">o amigo que descobre</text></g>
+    <g class="node" onclick="info('corinne')"><circle cx="670" cy="520" r="46" fill="#d4a017" fill-opacity="0.9"/><text x="670" y="516" class="nlab-white" style="font-size:12px;">A</text><text x="670" y="530" class="nlab-white" style="font-size:12px;">Amante</text><text x="670" y="576" class="nrole">a que sobrevive</text></g>
+    <g class="node" onclick="info('oms')"><circle cx="770" cy="390" r="44" fill="#1a1208" fill-opacity="0.32" stroke="#1a1208" stroke-width="2.5" stroke-dasharray="6,4"/><text x="770" y="386" class="nlab" style="font-size:11px;">A Mentira</text><text x="770" y="399" class="nlab" style="font-size:11px;">da OMS</text><text x="770" y="444" class="nrole">os dezoito anos</text></g>
+    <g class="node" onclick="info('carrere')"><circle cx="110" cy="650" r="42" fill="#2a9d8f" fill-opacity="0.8"/><text x="110" y="646" class="nlab-white" style="font-size:11px;">Emmanuel</text><text x="110" y="659" class="nlab-white" style="font-size:11px;">Carrère</text><text x="110" y="702" class="nrole">o narrador-investigador</text></g>
+  </svg>
+  </div>
+  <div class="info-panel">
+    <h3 id="i-name">Clique em um nó</h3>
+    <p class="info-role" id="i-role">para explorar a teia</p>
+    <p class="info-desc" id="i-desc">O Adversário reconstrói o caso real de Jean-Claude Romand, que viveu dezoito anos fingindo ser médico da Organização Mundial da Saúde, sustentando essa mentira com o dinheiro que extorquia de familiares — até que, em janeiro de 1993, prestes a ser desmascarado, matou a esposa, os dois filhos e os próprios pais. Carrère reconstrói o caso a partir de correspondência direta com o próprio Romand, incluindo-se deliberadamente na narrativa como investigador e narrador.</p>
+    <div class="info-tags" id="i-tags"></div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:#c1440e"></div>A Família Íntima</div>
+      <div class="leg"><div class="leg-dot" style="background:#d4a017"></div>Sobreviventes &amp; Testemunhas</div>
+      <div class="leg"><div class="leg-dot" style="background:#2a9d8f"></div>O Narrador</div>
+      <div class="leg"><svg width="24" height="8"><line x1="0" y1="4" x2="24" y2="4" stroke="#1a1208" stroke-width="2" stroke-dasharray="5,3"/></svg>A Mentira Encobridora</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- AUTOR -->
+<div id="panel-autor" class="panel">
+<div class="wrap">
+  <div class="autor-grid">
+    <div class="foto-box">
+      <img src="https://cdl-static.s3-sa-east-1.amazonaws.com/colaboradores/04740_gg.jpg" alt="Emmanuel Carrère">
+      <div class="foto-cap">Paris, França · n. 1957</div>
+    </div>
+    <div class="bio">
+      <h2>Emmanuel Carrère</h2>
+      <p class="dates">Paris, França, 1957</p>
+      <p>Emmanuel Carrère nasceu em dezembro de 1957 em Paris, numa família de intelectuais — sua mãe, Hélène Carrère d'Encausse, é historiadora e secretária perpétua da Academia Francesa. Formou-se no Instituto de Estudos Políticos de Paris e iniciou a carreira como crítico de cinema, roteirista e diretor, antes de se firmar como um dos prosadores mais originais e desconcertantes da literatura francesa contemporânea.</p>
+      <p>Sua obra atravessa biografia, ficção, reportagem e autoficção sem nunca se fixar confortavelmente em nenhum desses rótulos — o próprio autor rejeita o termo "autoficção" para descrever seus livros. <em>O Adversário</em> (2000), sobre o caso Jean-Claude Romand, foi o livro que consolidou o estilo que o tornaria famoso: uma investigação pessoal e moralmente incômoda, na qual o autor se inclui como personagem tão exposto quanto seu objeto de estudo.</p>
+      <p>Carrère seguiria explorando esse território em obras como <em>Vidas que Não a Minha</em> e <em>Limonov</em>, vencedor do Prêmio Renaudot em 2011. Recebeu ainda o Prêmio Femina e, em 2021, o prestigioso Prêmio Princesa das Astúrias de Literatura — reconhecimento de uma carreira que transformou o limite entre reportagem e literatura em seu principal instrumento narrativo.</p>
+    </div>
+  </div>
+  <p class="sec-title">Linha do Tempo</p>
+  <div class="timeline">
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1957</div><div class="tl-txt">Nasce em Paris, em dezembro, numa família de intelectuais franceses.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1980s</div><div class="tl-txt">Inicia carreira como crítico de cinema, roteirista e diretor.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1993</div><div class="tl-txt">Escreve pela primeira vez a Jean-Claude Romand, pouco depois dos assassinatos, propondo escrever sobre o caso.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1996</div><div class="tl-txt">Romand finalmente responde à carta de Carrère; os dois iniciam correspondência regular.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">1996</div><div class="tl-txt">Carrère acompanha o julgamento de Romand com credencial de imprensa do Nouvel Observateur.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2000</div><div class="tl-txt">Publica <em>O Adversário</em>, consolidando o estilo autoral que o tornaria célebre.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2009</div><div class="tl-txt">Publica <em>Outras Vidas que Não a Minha</em>.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2011</div><div class="tl-txt">Vence o Prêmio Renaudot com <em>Limonov</em>.</div></div>
+    <div class="tl"><div class="tl-dot"></div><div class="tl-yr">2021</div><div class="tl-txt">Recebe o Prêmio Princesa das Astúrias de Literatura.</div></div>
+  </div>
+  <p class="sec-title">Seis curiosidades sobre o autor e o livro</p>
+  <p class="sec-sub">Detalhes que revelam o método incômodo de Carrère</p>
+  <div class="g2">
+    <div class="card"><h4>Uma carta sem resposta por três anos</h4><p>Carrère escreveu a Romand pedindo autorização para escrever sobre o caso já em 1993 — mas só recebeu resposta em 1996, quando o advogado de Romand finalmente permitiu o contato.</p></div>
+    <div class="card"><h4>Uma reação direta a Truman Capote</h4><p>O próprio Carrère descreveu sua opção por se incluir como personagem no livro como reação direta ao método de Truman Capote em <em>A Sangue Frio</em>, que apaga o narrador da narrativa.</p></div>
+    <div class="card"><h4>Filho de acadêmica de peso</h4><p>Sua mãe, Hélène Carrère d'Encausse, é historiadora especializada em história russa e soviética e ocupa a cadeira de secretária perpétua da Academia Francesa — a mais alta posição da instituição.</p></div>
+    <div class="card"><h4>Quase oito anos escrevendo o livro</h4><p>Entre a primeira carta a Romand e a publicação de <em>O Adversário</em>, passaram-se sete anos — um período de hesitação ética que o próprio autor descreve como parte do projeto.</p></div>
+    <div class="card"><h4>Rejeita o rótulo de "autoficção"</h4><p>Apesar de ser constantemente associado ao termo, Carrère o rejeita publicamente, preferindo descrever seu método como uma forma pessoal de não ficção investigativa.</p></div>
+    <div class="card"><h4>Também é cineasta</h4><p>Antes e depois de se firmar como escritor, Carrère trabalhou como roteirista e diretor — uma sensibilidade visual e narrativa que atravessa a construção quase cinematográfica de seus livros de não ficção.</p></div>
+  </div>
+  <div class="meta-box">
+    <div class="ico">✉️</div>
+    <div><h3>Como Este Livro Surgiu</h3><p>Fascinado pelo caso desde que soube dele em janeiro de 1993, Carrère escreveu a Jean-Claude Romand ainda antes do julgamento, propondo documentar a história. A resposta só veio em 1996, depois que o advogado de Romand liberou o contato — os dois então trocaram correspondência direta enquanto Carrère acompanhava o julgamento com credencial de imprensa do <em>Nouvel Observateur</em>. O livro, publicado em 2000, nasce dessa correspondência incomum entre um escritor e o homem que estuda: Carrère se inclui deliberadamente na narrativa, refletindo sobre a própria fascinação incômoda pelo caso — um gesto que o próprio autor descreveu como reação direta ao apagamento do narrador em <em>A Sangue Frio</em>, de Truman Capote.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- TEMAS -->
+<div id="panel-temas" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Temas Centrais do Livro</p>
+  <p class="sec-sub">O que O Adversário diz sobre mentira, identidade e o abismo entre aparência e realidade</p>
+  <div class="g2" style="margin-top:0;">
+    <div class="tema"><span class="ico">🎭</span><h3>A Mentira Como Modo de Vida</h3><p>Durante dezoito anos, Romand fez sua família e amigos acreditarem que era médico-pesquisador da OMS em Genebra — uma ficção sustentada não por um único golpe, mas por décadas de rotina cuidadosamente encenada.</p></div>
+    <div class="tema"><span class="ico">🕳️</span><h3>O Vazio no Lugar de uma Vida</h3><p>Romand nunca concluiu a faculdade de medicina nem trabalhou um único dia — passava as manhãs dirigindo sem destino por estradas próximas a Genebra, simulando um percurso profissional que não existia.</p></div>
+    <div class="tema"><span class="ico">💰</span><h3>O Dinheiro Como Sustentáculo da Ficção</h3><p>Para financiar a farsa, Romand extorquiu economias de pais, sogros e amantes, prometendo investimentos em contas suíças fictícias — a mentira precisava de combustível financeiro constante para não desmoronar.</p></div>
+    <div class="tema"><span class="ico">⚖️</span><h3>A Ética de Escrever Sobre um Assassino</h3><p>Carrère expõe as próprias hesitações morais ao correspondê-se com Romand e ao decidir contar sua história — o livro pergunta, sem resolver, o que significa dar voz literária a quem cometeu tal violência.</p></div>
+    <div class="tema"><span class="ico">🔥</span><h3>A Violência Como Colapso Final</h3><p>Prestes a ser descoberto, Romand matou a esposa, os dois filhos e os próprios pais, tentou matar a amante e ateou fogo à própria casa numa tentativa de suicídio — o colapso final de uma vida inteiramente construída sobre o nada.</p></div>
+    <div class="tema"><span class="ico">📝</span><h3>Reportagem Como Literatura</h3><p>Ao se incluir como narrador-investigador, Carrère rompe com a tradição de apagamento autoral do jornalismo literário clássico, tornando a própria fascinação e o próprio desconforto parte central da narrativa.</p></div>
+    <div class="tema"><span class="ico">👨‌👩‌👧‌👦</span><h3>A Família Como Cúmplice Involuntária</h3><p>Pais, esposa e sogros confiaram cegamente em Romand por quase duas décadas — o livro examina como o amor familiar pode se tornar terreno fértil para o engano mais duradouro.</p></div>
+    <div class="tema"><span class="ico">🌫️</span><h3>A Fronteira Entre Compreender e Justificar</h3><p>Sem jamais absolver Romand, Carrère insiste em tentar compreender a lógica interna de sua mentira — um exercício desconfortável que o livro nunca resolve completamente para o leitor.</p></div>
+  </div>
+  <div class="pull">
+    <p>Eu me perguntava havia muito tempo por que um homem mataria a própria mulher, os próprios filhos, os próprios pais — e por que, tendo feito isso, continuaria vivo.</p>
+    <cite>Emmanuel Carrère, refletindo sobre a origem de seu interesse pelo caso Romand</cite>
+  </div>
+  <p class="sec-title">Seis lições da narrativa</p>
+  <p class="sec-sub">O que o clube pode levar desta leitura</p>
+  <div class="g2">
+    <div class="licao"><h4>A mentira mais perigosa é a mais banal</h4><p>Romand não inventou uma vida extraordinária — inventou uma vida comum, de classe média, exatamente a rotina que ninguém pensaria em questionar.</p></div>
+    <div class="licao"><h4>Escrever sobre o mal exige desconforto, não distanciamento</h4><p>Carrère mostra que compreender um crime não significa justificá-lo — mas fingir neutralidade total também seria uma forma de mentira.</p></div>
+    <div class="licao"><h4>A confiança familiar pode ser cegueira coletiva</h4><p>Nenhum dos parentes de Romand jamais checou seu suposto emprego na OMS — o livro lembra como o amor pode suspender até a curiosidade mais básica.</p></div>
+    <div class="licao"><h4>Toda ficção sustentada precisa de manutenção constante</h4><p>Dezoito anos de mentira exigiram rotina, disciplina e um fluxo contínuo de dinheiro roubado — mentir bem, o livro sugere, é um trabalho em tempo integral.</p></div>
+    <div class="licao"><h4>O narrador nunca é neutro</h4><p>Ao se incluir na história, Carrère lembra ao leitor que toda reportagem carrega um ponto de vista — e que fingir invisibilidade autoral é, também, uma forma de ficção.</p></div>
+    <div class="licao"><h4>Algumas perguntas não têm resposta satisfatória</h4><p>O livro se recusa a explicar completamente por que Romand matou, em vez de simplesmente desaparecer — e essa recusa é, em si, parte da verdade que o livro defende.</p></div>
+  </div>
+  <p class="sec-title">Síntese</p>
+  <div class="body-text">
+    <p><em>O Adversário</em> reconstrói, com precisão quase clínica, o caso de Jean-Claude Romand: um homem que viveu dezoito anos fingindo ser médico-pesquisador da Organização Mundial da Saúde em Genebra, sustentando a farsa com dinheiro extorquido de familiares — até que, prestes a ser desmascarado em janeiro de 1993, matou a esposa, os dois filhos e os próprios pais. Carrère correspondeu-se diretamente com Romand a partir de 1996 e acompanhou seu julgamento, incluindo-se deliberadamente na narrativa como um narrador que investiga, hesita e se questiona — uma escolha que o próprio autor descreveu como reação direta ao apagamento do narrador em <em>A Sangue Frio</em>, de Truman Capote.</p>
+    <p>Para o clube, a leitura é um convite a discutir os limites entre compreensão e justificativa, entre reportagem e literatura, e entre a mentira cotidiana e o colapso que ela pode produzir quando não há mais como sustentá-la. É também uma reflexão sobre o próprio ofício de escrever sobre o sofrimento alheio — Carrère nunca finge que essa tarefa é confortável ou moralmente simples.</p>
+  </div>
+</div>
+</div>
+
+<!-- ESPAÇO -->
+<div id="panel-espaco" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">O Espaço Narrativo</p>
+  <p class="sec-sub">Da fronteira franco-suíça à sala de um tribunal</p>
+  <div class="fotos-grid">
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Lake%20Geneva.JPG" alt="Lago Léman, fronteira franco-suíça"><div class="foto-leg">Lago Léman — a fronteira que Romand cruzava todas as manhãs</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Palais%20de%20Justice%20Geneve.jpg" alt="Palácio da Justiça, Genebra"><div class="foto-leg">Genebra — sede fictícia do emprego inexistente na OMS</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Ferney-Voltaire%203790.JPG" alt="Ferney-Voltaire, região de Gex, França"><div class="foto-leg">Região de Gex, França — onde Romand vivia com a família</div></div>
+    <div class="foto-espaco"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Pr%C3%A9vessin-Mo%C3%ABns%20(01)%20-%20Mairie.JPG" alt="Prévessin-Moëns, França"><div class="foto-leg">Prévessin-Moëns — o município onde o crime ocorreu</div></div>
+  </div>
+  <p style="font-size:1.03rem;line-height:1.88;color:var(--ink);margin-bottom:1.5rem;">A geografia do livro é estreita e reveladora: a farsa de Romand se sustenta inteiramente na fronteira entre a França rural, onde vivia com a família, e a Suíça de Genebra, onde fingia trabalhar. Essa distância curta — poucos minutos de carro através de uma fronteira que ele cruzava e recruzava sem propósito real — condensa toda a lógica do romance: uma vida dupla que não precisa de grandes distâncias para se manter oculta, apenas de rotina e da confiança alheia.</p>
+  <div class="g2">
+    <div class="lugar"><h3>Genebra, Suíça</h3><span class="lugar-tag">O Emprego Inexistente</span><p>Romand dizia trabalhar como pesquisador médico na sede da Organização Mundial da Saúde em Genebra — um cargo que jamais existiu, mas que sustentou dezoito anos de aparência profissional respeitável.</p></div>
+    <div class="lugar"><h3>Região de Gex, França</h3><span class="lugar-tag">A Vida Doméstica</span><p>Do outro lado da fronteira, na região francesa de Gex, Romand vivia com a esposa Florence e os dois filhos numa casa de aparência absolutamente comum — o cenário doméstico que escondia a farsa.</p></div>
+    <div class="lugar"><h3>As Estradas da Fronteira</h3><span class="lugar-tag">O Não-Lugar Diário</span><p>Toda manhã, Romand saía de casa como se fosse ao trabalho e passava horas dirigindo sem destino por estradas florestais próximas à fronteira — o verdadeiro "escritório" de sua vida dupla.</p></div>
+    <div class="lugar"><h3>O Tribunal</h3><span class="lugar-tag">O Espaço do Julgamento</span><p>É no tribunal, em 1996, que Carrère acompanha Romand pessoalmente pela primeira vez, com credencial de imprensa do Nouvel Observateur — o espaço onde a ficção construída por Romand é publicamente desmontada.</p></div>
+  </div>
+  <div class="meta-box">
+    <div class="ico">🌉</div>
+    <div><h3>Uma Fronteira Que Não Precisa Ser Grande</h3><p>O detalhe mais revelador da geografia de <em>O Adversário</em> é sua escala minúscula: Romand não precisou fugir para um continente distante ou inventar uma identidade elaborada — bastou-lhe cruzar diariamente uma fronteira nacional de poucos minutos de carro, entre uma casa de família comum na França e uma cidade suíça onde ninguém jamais checou se ele de fato trabalhava ali. A intimidade geográfica entre a mentira e a verdade é, talvez, o que torna o caso tão perturbador: o impostor não precisou ir longe para desaparecer.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- MÍDIA -->
+<div id="panel-midia" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Mídia</p>
+  <p class="sec-sub">Reportagens, resenhas e vídeos para aprofundar a leitura do clube</p>
+  <div class="midia-grid">
+    <a class="midia-card" href="https://quatrocincoum.com.br/trechos/trechos/emmanuel-carrere-e-o-crime-que-chocou-a-franca-em-1993/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Trecho</span>
+        <span class="midia-titulo">Emmanuel Carrère e o crime que chocou a França em 1993</span>
+        <span class="midia-fonte">Revista Quatro Cinco Um</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://escotilha.com.br/literatura/livro-o-adversario-emmanuel-carrere-resenha-critica/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Resenha</span>
+        <span class="midia-titulo">A história real de um homem que matou para sustentar uma mentira</span>
+        <span class="midia-fonte">Escotilha</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://fernandoeichenberg.com/emmanuel-carrere-autor-frances-repassa-sua-obra-o-ato-da-escrita-e-rejeita-o-rotulo-de-autoficcao/" target="_blank" rel="noopener">
+      <span class="midia-ico">🎙️</span>
+      <span>
+        <span class="midia-tipo">Entrevista</span>
+        <span class="midia-titulo">Carrère repassa sua obra e rejeita o rótulo de autoficção</span>
+        <span class="midia-fonte">Fernando Eichenberg</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://en.wikipedia.org/wiki/The_Adversary_(Carr%C3%A8re_book)" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Referência</span>
+        <span class="midia-titulo">The Adversary — verbete detalhado sobre o caso e o livro</span>
+        <span class="midia-fonte">Wikipedia</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.youtube.com/watch?v=ZQjtZY-JpLg" target="_blank" rel="noopener">
+      <span class="midia-ico">🎥</span>
+      <span>
+        <span class="midia-tipo">Vídeo · Análise</span>
+        <span class="midia-titulo">O mal mais profundo do ser humano</span>
+        <span class="midia-fonte">YouTube</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://www.youtube.com/watch?v=UyXibWsa4RQ" target="_blank" rel="noopener">
+      <span class="midia-ico">🎥</span>
+      <span>
+        <span class="midia-tipo">Vídeo · Análise</span>
+        <span class="midia-titulo">O crime real que chocou a França</span>
+        <span class="midia-fonte">YouTube</span>
+      </span>
+    </a>
+  </div>
+</div>
+</div>
+
+<!-- AVALIAÇÃO -->
+<div class="av-wrap">
+  <p class="sup" style="text-align:center;margin-bottom:0.4rem;">Clube Socorro</p>
+  <h2>Avaliações &amp; Comentários</h2>
+  <p class="av-sub">O que o clube achou de O Adversário</p>
+  <div class="av-summary">
+    <div>
+      <div class="av-big-num" id="avg-num">—</div>
+      <div class="av-big-stars" id="avg-stars">☆☆☆☆☆</div>
+      <div class="av-big-count" id="avg-count">0 avaliações</div>
+    </div>
+    <div class="bars">
+      <div class="brow"><span class="brow-lbl">5★</span><div class="brow-track"><div class="brow-fill" id="b5"></div></div><span class="brow-n" id="n5">0</span></div>
+      <div class="brow"><span class="brow-lbl">4★</span><div class="brow-track"><div class="brow-fill" id="b4"></div></div><span class="brow-n" id="n4">0</span></div>
+      <div class="brow"><span class="brow-lbl">3★</span><div class="brow-track"><div class="brow-fill" id="b3"></div></div><span class="brow-n" id="n3">0</span></div>
+      <div class="brow"><span class="brow-lbl">2★</span><div class="brow-track"><div class="brow-fill" id="b2"></div></div><span class="brow-n" id="n2">0</span></div>
+      <div class="brow"><span class="brow-lbl">1★</span><div class="brow-track"><div class="brow-fill" id="b1"></div></div><span class="brow-n" id="n1">0</span></div>
+    </div>
+  </div>
+  <div class="av-form">
+    <h3>Deixe sua avaliação</h3>
+    <label class="av-label">Seu nome</label>
+    <input id="f-nome" class="av-input" type="text" placeholder="Como quer ser identificada?">
+    <label class="av-label">Nota</label>
+    <div class="stars-pick" id="star-row">
+      <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+    </div>
+    <label class="av-label">Comentário</label>
+    <textarea id="f-txt" class="av-textarea" placeholder="O que você achou do livro?"></textarea>
+    <button class="av-btn" onclick="submitReview()">Publicar Avaliação</button>
+    <span id="f-msg" class="av-msg"></span>
+  </div>
+  <div id="comments"><p class="loading">Carregando avaliações...</p></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyB03BscdfdfZGW42Btqbmzt72Dpusu45NU",
+  authDomain: "socorro-clube-do-livro.firebaseapp.com",
+  projectId: "socorro-clube-do-livro",
+  storageBucket: "socorro-clube-do-livro.firebasestorage.app",
+  messagingSenderId: "729551936788",
+  appId: "1:729551936788:web:001a6e284a63a51fc37601"
+};
+let db = null;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  db.settings({ experimentalAutoDetectLongPolling: true, useFetchStreams: false });
+} catch (e) { db = null; }
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str == null ? '' : String(str);
+  return div.innerHTML;
+}
+
+const P = {
+  romand:    { nome:'Jean-Claude Romand', papel:'O Impostor · Dezoito Anos de Mentira', desc:'Personagem real: durante dezoito anos, Romand fez família e amigos acreditarem que era médico-pesquisador da Organização Mundial da Saúde em Genebra — um cargo que jamais existiu. Sustentava a farsa extorquindo economias de parentes e passando as manhãs dirigindo sem destino por estradas da fronteira franco-suíça. Prestes a ser desmascarado em janeiro de 1993, matou a esposa, os dois filhos e os próprios pais antes de tentar tirar a própria vida.', tags:['Florence','Os Filhos','Os Pais de Romand','A Mentira da OMS','Emmanuel Carrère'] },
+  florence:  { nome:'Florence', papel:'A Esposa · Dezoito Anos ao Lado da Mentira', desc:'Esposa de Jean-Claude Romand, Florence viveu quase duas décadas de casamento sem jamais suspeitar da farsa do marido — acreditando, como todos ao redor, que ele era um respeitado médico-pesquisador. Foi uma das vítimas fatais de janeiro de 1993, morta pelo próprio marido pouco antes de a fraude ser descoberta.', tags:['Jean-Claude Romand','Os Filhos'] },
+  filhos:    { nome:'Os Filhos', papel:'Antoine e a Irmã · As Vítimas Mais Jovens', desc:'Os dois filhos do casal Romand, ainda crianças, foram mortos pelo próprio pai na mesma noite de janeiro de 1993 em que ele matou Florence — o ato final e mais devastador do colapso de uma vida inteiramente construída sobre uma mentira profissional.', tags:['Jean-Claude Romand','Florence'] },
+  pais:      { nome:'Os Pais de Romand', papel:'A Segunda Casa Visitada Naquela Noite', desc:'Pais de Jean-Claude Romand, também vítimas dos assassinatos de janeiro de 1993 — mortos horas depois de um jantar em família, sem qualquer suspeita do que o filho já havia feito em sua própria casa poucas horas antes.', tags:['Jean-Claude Romand'] },
+  luc:       { nome:'Luc Ladmiral', papel:'O Amigo · Quem Descobre o Incêndio', desc:'Amigo próximo de longa data de Jean-Claude Romand, foi Luc Ladmiral quem descobriu, na manhã seguinte, que a casa da família havia sido consumida por um incêndio — o primeiro elo de uma cadeia de descobertas que revelaria, em poucos dias, a mentira de quase vinte anos sustentada por Romand.', tags:['Jean-Claude Romand'] },
+  corinne:   { nome:'A Amante', papel:'A Que Sobrevive ao Ataque', desc:'Na mesma manhã em que tentou matar a família, Romand atacou também a mulher com quem mantinha um caso havia meses, na floresta próxima à fronteira — ela conseguiu escapar com vida, tornando-se a testemunha que rompe definitivamente a fachada da vida dupla de Romand.', tags:['Jean-Claude Romand'] },
+  oms:       { nome:'A Mentira da OMS', papel:'O Cargo Inexistente · Dezoito Anos', desc:'O núcleo da farsa de Romand: um suposto emprego como médico-pesquisador na Organização Mundial da Saúde em Genebra, jamais checado por nenhum familiar em quase duas décadas. Romand nunca sequer concluiu a faculdade de medicina — passava as manhãs dirigindo sem destino por estradas da região, simulando um percurso profissional inteiramente fictício.', tags:['Jean-Claude Romand','Os Pais de Romand'] },
+  carrere:   { nome:'Emmanuel Carrère', papel:'O Narrador-Investigador', desc:'O próprio autor se inclui deliberadamente na narrativa, correspondendo-se diretamente com Romand a partir de 1996 e acompanhando seu julgamento com credencial de imprensa. Ao expor as próprias hesitações éticas em escrever sobre um assassino, Carrère rompe com a tradição de apagamento autoral do jornalismo literário clássico, tornando o próprio desconforto de investigar parte central do livro.', tags:['Jean-Claude Romand'] }
+};
+
+function info(id) {
+  const p = P[id]; if (!p) return;
+  document.getElementById('i-name').textContent = p.nome;
+  document.getElementById('i-role').textContent = p.papel;
+  document.getElementById('i-desc').textContent = p.desc;
+  document.getElementById('i-tags').innerHTML =
+    '<p style="font-family:Cinzel,serif;font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(26,18,8,0.6);margin-bottom:0.4rem;">Conexões</p>' +
+    p.tags.map(t => '<span>' + t + '</span>').join('');
+}
+
+function goTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  document.getElementById('panel-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+let picked = 0;
+document.querySelectorAll('#star-row span').forEach(s => {
+  s.addEventListener('mouseover', () => hilite(+s.dataset.v));
+  s.addEventListener('mouseout',  () => hilite(picked));
+  s.addEventListener('click',     () => { picked = +s.dataset.v; hilite(picked); });
+});
+function hilite(n) {
+  document.querySelectorAll('#star-row span').forEach(s => {
+    s.style.color = +s.dataset.v <= n ? '#c1440e' : 'rgba(26,18,8,0.2)';
+  });
+}
+
+const BOOK_SLUG = 'o-adversario';
+const reviewsCol = db ? db.collection('livros').doc(BOOK_SLUG).collection('reviews') : null;
+let reviews = [];
+
+async function submitReview() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const txt  = document.getElementById('f-txt').value.trim();
+  const msg  = document.getElementById('f-msg');
+  if (!nome)   { msg.textContent = 'Coloque seu nome.';      msg.style.color='#c1440e'; return; }
+  if (!picked) { msg.textContent = 'Selecione uma nota.';    msg.style.color='#c1440e'; return; }
+  if (!txt)    { msg.textContent = 'Escreva um comentário.'; msg.style.color='#c1440e'; return; }
+  if (!reviewsCol) { msg.textContent = 'Avaliações indisponíveis no momento.'; msg.style.color='#c1440e'; return; }
+  const btn = document.querySelector('.av-btn');
+  btn.textContent = 'Enviando...'; btn.disabled = true;
+  msg.textContent = '';
+  try {
+    await reviewsCol.add({
+      nome, nota: picked, comentario: txt,
+      data: new Date().toLocaleDateString('pt-BR'),
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('f-nome').value = '';
+    document.getElementById('f-txt').value  = '';
+    picked = 0; hilite(0);
+    msg.textContent = 'Publicado!'; msg.style.color = '#6b8c6e';
+    setTimeout(() => msg.textContent = '', 4000);
+  } catch(e) {
+    msg.textContent = 'Erro ao enviar. Tente novamente.'; msg.style.color = '#c1440e';
+  }
+  btn.textContent = 'Publicar Avaliação'; btn.disabled = false;
+}
+
+function renderReviews() {
+  const total = reviews.length;
+  if (!total) {
+    document.getElementById('avg-num').textContent   = '—';
+    document.getElementById('avg-stars').textContent = '☆☆☆☆☆';
+    document.getElementById('avg-count').textContent = '0 avaliações';
+    [1,2,3,4,5].forEach(n => { document.getElementById('b'+n).style.width='0%'; document.getElementById('n'+n).textContent='0'; });
+    document.getElementById('comments').innerHTML = '<p class="no-reviews">Nenhuma avaliação ainda — seja a primeira!</p>';
+    return;
+  }
+  const avg = reviews.reduce((a,r) => a + Number(r.nota), 0) / total;
+  document.getElementById('avg-num').textContent   = avg.toFixed(1);
+  const full = Math.round(avg);
+  document.getElementById('avg-stars').textContent = '★'.repeat(full) + '☆'.repeat(5-full);
+  document.getElementById('avg-count').textContent = total + (total===1 ? ' avaliação' : ' avaliações');
+  [1,2,3,4,5].forEach(n => {
+    const c = reviews.filter(r => Number(r.nota)===n).length;
+    document.getElementById('b'+n).style.width = (c/total*100).toFixed(0) + '%';
+    document.getElementById('n'+n).textContent = c;
+  });
+  document.getElementById('comments').innerHTML = reviews.map(r => `
+    <div class="comment">
+      <div class="chead">
+        <span class="cname">${escapeHtml(r.nome)}</span>
+        <span class="cstars">${'★'.repeat(Number(r.nota))}${'☆'.repeat(5-Number(r.nota))}</span>
+        <span class="cdate">${escapeHtml(r.data)}</span>
+      </div>
+      <p class="ctext">${escapeHtml(r.comentario)}</p>
+    </div>`).join('');
+}
+
+if (reviewsCol) {
+  reviewsCol.orderBy('criadoEm', 'desc').onSnapshot(function (snap) {
+    reviews = snap.docs.map(d => d.data());
+    renderReviews();
+  }, function () {
+    reviews = [];
+    renderReviews();
+  });
+} else {
+  renderReviews();
+}
+</script>
+</body>
+</html>
