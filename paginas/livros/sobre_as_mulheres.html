@@ -18,6 +18,8 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
 .nav-back{font-family:'Cinzel',serif;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:2px solid rgba(193,68,14,0.4);padding:0.45rem 1.1rem;transition:all 0.2s;}
 .nav-back:hover{color:var(--rust);border-color:var(--rust);}
 .page-header{text-align:center;padding:2.5rem 2rem 0;}
+.capa-wrap{width:132px;margin:0 auto 1.2rem;border:1px solid var(--border);box-shadow:0 10px 28px rgba(26,18,8,0.28);}
+.capa-wrap img{display:block;width:100%;height:auto;}
 .sup{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-bottom:0.5rem;}
 .page-header h1{font-family:'Cinzel',serif;font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;color:var(--ink);letter-spacing:0.04em;}
 .page-header h1 em{font-style:italic;color:var(--rust);font-family:'Cormorant Garamond',serif;font-size:1.1em;}
@@ -52,6 +54,13 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
 .wrap{max-width:900px;margin:0 auto;padding:3rem 2rem 4rem;}
 .sec-title{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;color:var(--ink);letter-spacing:0.12em;text-transform:uppercase;margin:2.5rem 0 0.5rem;}
 .sec-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(26,18,8,0.6);font-size:1rem;margin-bottom:1.5rem;}
+.midia-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
+.midia-card{display:flex;gap:1rem;background:var(--surf);border:1px solid var(--border);padding:1.2rem 1.3rem;align-items:flex-start;text-decoration:none;transition:border-color 0.2s,transform 0.2s;}
+.midia-card:hover{border-color:var(--rust);transform:translateY(-2px);}
+.midia-ico{font-size:1.5rem;flex-shrink:0;margin-top:0.1rem;}
+.midia-tipo{font-family:'Cinzel',serif;font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.3rem;display:block;}
+.midia-titulo{font-family:'DM Sans',sans-serif;font-size:0.92rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;display:block;}
+.midia-fonte{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.85rem;color:rgba(26,18,8,0.65);}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1rem;}
 .card{background:var(--surf);border:1px solid var(--border);padding:1.4rem;}
 .card h4{font-family:'Cinzel',serif;font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--rust);margin-bottom:0.6rem;}
@@ -63,6 +72,7 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
 .autor-grid{display:grid;grid-template-columns:240px 1fr;gap:3rem;align-items:start;margin-bottom:3rem;}
 .foto-box{width:240px;overflow:hidden;position:relative;border:2px solid var(--border);}
 .foto-box svg{display:block;width:100%;height:auto;}
+.foto-box img{display:block;width:100%;height:auto;}
 .foto-cap{position:absolute;bottom:0;left:0;right:0;background:rgba(26,18,8,0.65);padding:0.5rem;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(245,240,232,0.9);text-align:center;font-weight:700;}
 .bio h2{font-family:'Cinzel',serif;font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:0.3rem;}
 .bio .dates{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rust);font-size:1rem;margin-bottom:1.2rem;}
@@ -83,6 +93,7 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
 .fotos-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:2.5rem;}
 .foto-espaco{position:relative;overflow:hidden;border:1px solid var(--border);}
 .foto-espaco svg{display:block;width:100%;height:auto;}
+.foto-espaco img{display:block;width:100%;height:280px;object-fit:cover;}
 .foto-leg{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(26,18,8,0.75));padding:1.5rem 0.9rem 0.6rem;font-family:'Cinzel',serif;font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,240,232,0.92);}
 .lugar{background:var(--surf);border:1px solid var(--border);padding:1.6rem;position:relative;overflow:hidden;}
 .lugar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rust),transparent);}
@@ -131,15 +142,16 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
 <body>
 
 <nav class="nav">
-  <a href="index.html" class="nav-logo">Socorro.</a>
+  <a href="../../index.html" class="nav-logo">Socorro.</a>
   <span class="nav-tag">Clube do Livro · Análise</span>
-  <a href="index.html#lidos" class="nav-back">← Voltar à Estante</a>
+  <a href="../../index.html#lidos" class="nav-back">← Voltar à Estante</a>
 </nav>
 
 <div class="page-header">
+  <div class="capa-wrap"><img src="https://cdl-static.s3-sa-east-1.amazonaws.com/covers/p/9788535943375/sobre-as-mulheres.jpg" alt="Capa de Sobre as Mulheres"></div>
   <p class="sup">Susan Sontag &nbsp;·&nbsp; 2023 &nbsp;·&nbsp; Análise Literária</p>
   <h1><em>Sobre as Mulheres</em></h1>
-  <p>Mapa dos Ensaios · A Autora · Temas · O Contexto</p>
+  <p>Mapa dos Ensaios · A Autora · Temas · O Contexto · Mídia</p>
 </div>
 
 <div class="tabs-bar">
@@ -147,6 +159,7 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
   <button class="tab"     onclick="goTab('autora',this)">A Autora</button>
   <button class="tab"     onclick="goTab('temas',this)">Temas &amp; Lições</button>
   <button class="tab"     onclick="goTab('espaco',this)">O Contexto</button>
+  <button class="tab"     onclick="goTab('midia',this)">Mídia</button>
 </div>
 
 <!-- MAPA DOS ENSAIOS -->
@@ -191,12 +204,7 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
 <div class="wrap">
   <div class="autor-grid">
     <div class="foto-box">
-      <svg viewBox="0 0 240 300" xmlns="http://www.w3.org/2000/svg">
-        <rect width="240" height="300" fill="#e4ddd0"/>
-        <circle cx="120" cy="108" r="55" fill="#c1b89a"/>
-        <ellipse cx="120" cy="268" rx="84" ry="60" fill="#c1b89a"/>
-        <text x="120" y="218" font-family="Cinzel,serif" font-size="10" font-weight="700" fill="rgba(26,18,8,0.42)" text-anchor="middle" letter-spacing="2">SUSAN SONTAG</text>
-      </svg>
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Susan_Sontag_1979_%C2%A9Lynn_Gilbert.jpg" alt="Susan Sontag">
       <div class="foto-cap">Nova York, 1933–2004</div>
     </div>
     <div class="bio">
@@ -310,6 +318,48 @@ body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;p
   <div class="meta-box">
     <div class="ico">🖋️</div>
     <div><h3>O Ensaio como Arena</h3><p>Para Sontag, o ensaio não é um veículo neutro de ideias prontas — é o próprio lugar onde o pensamento acontece, com suas hesitações, contradições e mudanças de rumo à vista do leitor.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- MÍDIA -->
+<div id="panel-midia" class="panel">
+<div class="wrap">
+  <p class="sec-title" style="margin-top:0;">Mídia</p>
+  <p class="sec-sub">Áudio, vídeo e crítica para aprofundar a leitura do clube</p>
+  <div class="midia-grid">
+    <a class="midia-card" href="https://www.youtube.com/watch?v=z2V9sb2hzu4" target="_blank" rel="noopener">
+      <span class="midia-ico">🎧</span>
+      <span>
+        <span class="midia-tipo">Áudio · Prévia</span>
+        <span class="midia-titulo">On Women — prévia do audiolivro</span>
+        <span class="midia-fonte">Macmillan Audio, edição original em inglês</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://soundcloud.com/macaudio-2/feminism-and-fascism-from-susan-sontags-audiobook-anthology-on-women" target="_blank" rel="noopener">
+      <span class="midia-ico">🎙️</span>
+      <span>
+        <span class="midia-tipo">Áudio · Trecho</span>
+        <span class="midia-titulo">"Feminism and Fascism" — troca entre Adrienne Rich e Susan Sontag</span>
+        <span class="midia-fonte">Trecho do audiolivro On Women, narrado por Laurel Lefkow</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://therumpus.net/2023/07/25/susan-sontag-on-women/" target="_blank" rel="noopener">
+      <span class="midia-ico">📰</span>
+      <span>
+        <span class="midia-tipo">Publicação · Resenha</span>
+        <span class="midia-titulo">In Ardent Defense of Intellect: Susan Sontag's On Women</span>
+        <span class="midia-fonte">Damara Atrigol Pratt, The Rumpus</span>
+      </span>
+    </a>
+    <a class="midia-card" href="https://en.wikipedia.org/wiki/On_Women" target="_blank" rel="noopener">
+      <span class="midia-ico">📖</span>
+      <span>
+        <span class="midia-tipo">Publicação · Verbete</span>
+        <span class="midia-titulo">On Women (2023) — ficha da obra</span>
+        <span class="midia-fonte">Wikipédia, edição original em inglês, org. David Rieff</span>
+      </span>
+    </a>
   </div>
 </div>
 </div>
