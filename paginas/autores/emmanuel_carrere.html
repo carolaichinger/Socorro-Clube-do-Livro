@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>João Anzanello Carrascoza — Socorro Clube do Livro</title>
+<title>Emmanuel Carrère — Socorro Clube do Livro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
@@ -38,7 +38,7 @@
   .reveal.visible { opacity: 1; transform: none; }
   .hero-eyebrow { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 12px; opacity: 0.9; }
   .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
-  .hero-name { font-family: 'DM Serif Display', serif; font-size: clamp(44px, 7vw, 80px); font-weight: 400; line-height: 1; color: var(--cream); margin-bottom: 0.6rem; letter-spacing: -0.03em; }
+  .hero-name { font-family: 'DM Serif Display', serif; font-size: clamp(52px, 8vw, 90px); font-weight: 400; line-height: 0.95; color: var(--cream); margin-bottom: 0.6rem; letter-spacing: -0.03em; }
   .hero-name em { font-style: italic; color: var(--gold); }
   .hero-dates { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-bottom: 2rem; margin-top: 0.75rem; }
   .hero-desc { font-size: 1.05rem; line-height: 1.75; color: rgba(245,240,232,0.7); max-width: 520px; margin-bottom: 2.5rem; }
@@ -46,8 +46,8 @@
   .hero-stat-num { font-family: 'DM Serif Display', serif; font-size: 2.2rem; color: var(--gold); line-height: 1; }
   .hero-stat-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-top: 4px; }
   .hero-portrait { position: relative; }
-  .portrait-frame { width: 100%; aspect-ratio: 3/4; border-radius: 2px; border: 1px solid rgba(245,240,232,0.12); overflow: hidden; position: relative; background: rgba(245,240,232,0.04); }
-  .portrait-frame img, .portrait-frame svg { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .portrait-frame { width: 100%; aspect-ratio: 3/4; border-radius: 2px; border: 1px solid rgba(245,240,232,0.12); overflow: hidden; position: relative; }
+  .portrait-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
   .portrait-year-tag { position: absolute; bottom: 20px; right: 20px; background: var(--rust); color: white; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; }
   .page-content { max-width: 1100px; margin: 0 auto; padding: 0 4rem; }
   .section { padding: 5rem 0; border-top: 1px solid var(--border); }
@@ -140,20 +140,20 @@
   <div class="hero-lines"></div>
   <div class="hero-inner">
     <div class="hero-text">
-      <div class="hero-eyebrow">Contos e Crônicas · Literatura Brasileira</div>
-      <h1 class="hero-name">João Anzanello<br><em>Carrascoza</em></h1>
-      <div class="hero-dates">Cravinhos, SP, 1962</div>
-      <p class="hero-desc">Contista, romancista, redator publicitário e professor universitário. Uma das vozes mais delicadas da prosa curta brasileira contemporânea, com uma escrita que transforma o cotidiano em pequenas epifanias.</p>
+      <div class="hero-eyebrow">Não Ficção, Investigação e Autoficção</div>
+      <h1 class="hero-name">Emmanuel<br><em>Carrère</em></h1>
+      <div class="hero-dates">Paris, 9 de dezembro de 1957</div>
+      <p class="hero-desc">Escritor, roteirista e diretor francês, um dos prosadores mais originais e desconcertantes da literatura contemporânea. Transita entre biografia, reportagem e ficção sem nunca se fixar num único rótulo, incluindo-se como personagem tão exposto quanto seus objetos de investigação.</p>
       <div class="hero-stats">
-        <div><div class="hero-stat-num">30+</div><div class="hero-stat-label">Livros publicados</div></div>
-        <div><div class="hero-stat-num">6+</div><div class="hero-stat-label">Idiomas traduzido</div></div>
-        <div><div class="hero-stat-num">1991</div><div class="hero-stat-label">Estreia literária</div></div>
+        <div><div class="hero-stat-num">15+</div><div class="hero-stat-label">Livros publicados</div></div>
+        <div><div class="hero-stat-num">2011</div><div class="hero-stat-label">Prêmio Renaudot</div></div>
+        <div><div class="hero-stat-num">2021</div><div class="hero-stat-label">Princesa das Astúrias</div></div>
       </div>
     </div>
     <div class="hero-portrait">
       <div class="portrait-frame">
-        <img src="../../images/autores/joao-anzanello-carrascoza.png" alt="Foto de João Anzanello Carrascoza" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;">
-        <div class="portrait-year-tag">Cravinhos · SP</div>
+        <img src="https://cdl-static.s3-sa-east-1.amazonaws.com/colaboradores/04740_gg.jpg" alt="Foto de Emmanuel Carrère">
+        <div class="portrait-year-tag">Paris · França</div>
       </div>
     </div>
   </div>
@@ -168,34 +168,46 @@
     </div>
     <div class="bio-grid">
       <div class="bio-text">
-        <p>João Luís Anzanello Carrascoza nasceu em Cravinhos, no interior de São Paulo, numa família ligada aos livros: a mãe, professora, sempre tinha um livro na mão; o pai, comerciante de cereais, contava histórias aos filhos antes de dormir. Aos dezessete anos, mudou-se para São Paulo, onde ingressou no curso de Publicidade e Propaganda da Escola de Comunicações e Artes da USP.</p>
-        <p>Trabalhou como redator publicitário enquanto começava a publicar contos em jornais de São Paulo e Minas Gerais, ainda nos anos 1980, frequentando a oficina literária do escritor João Silvério Trevisan. Estreou em livro em 1991, com a obra infantojuvenil "As Flores do Lado de Baixo".</p>
-        <p>Fez mestrado e doutorado em Ciências da Comunicação pela USP, onde leciona Redação Publicitária desde 1990, e realizou pós-doutorado na UFRJ sobre a interface entre publicidade e literatura. Sua obra de contos e romances — que inclui a "Trilogia do Adeus" — já recebeu os prêmios Jabuti, APCA, FNLIJ, Fundação Biblioteca Nacional e o internacional Guimarães Rosa, da Rádio France Internationale.</p>
+        <p>Emmanuel Carrère nasceu em dezembro de 1957 no 16º arrondissement de Paris, numa família de intelectuais — sua mãe, Hélène Carrère d'Encausse, é historiadora e secretária perpétua da Academia Francesa. Estudou no Lycée Janson-de-Sailly e formou-se no Instituto de Estudos Políticos de Paris (Sciences Po). Em vez do serviço militar, lecionou francês em Surabaya, na Indonésia, antes de iniciar a carreira como crítico de cinema nas revistas Télérama e Positif, e mais tarde como roteirista e diretor.</p>
+        <p>Sua obra atravessa biografia, ficção, reportagem e autoficção sem nunca se fixar confortavelmente em nenhum desses rótulos — o próprio autor rejeita o termo "autoficção" para descrever seus livros. <em>O Adversário</em> (2000), sobre o caso Jean-Claude Romand, foi o livro que consolidou o estilo que o tornaria famoso: uma investigação pessoal e moralmente incômoda, na qual o autor se inclui como personagem tão exposto quanto seu objeto de estudo.</p>
+        <p>Carrère seguiria explorando esse território em obras como <em>Vidas que Não a Minha</em> e <em>Limonov</em>, vencedor do Prêmio Renaudot em 2011. Recebeu ainda o Prêmio Femina, em 2021 o prestigioso Prêmio Princesa das Astúrias de Literatura e, em 2025, o Prêmio Médicis por <em>Kolkhoze</em> — reconhecimento de uma carreira que transformou o limite entre reportagem e literatura em seu principal instrumento narrativo.</p>
       </div>
       <div class="timeline">
         <div class="tl-item">
-          <div class="tl-year">1962</div>
-          <div><div class="tl-title">Nasce em Cravinhos, SP</div><div class="tl-desc">Numa família de professores e contadores de histórias.</div></div>
+          <div class="tl-year">1957</div>
+          <div><div class="tl-title">Nasce em Paris</div><div class="tl-desc">Numa família de intelectuais franceses; formou-se em Sciences Po.</div></div>
         </div>
         <div class="tl-item">
-          <div class="tl-year">1979</div>
-          <div><div class="tl-title">Muda-se para São Paulo</div><div class="tl-desc">Ingressa na ECA/USP para estudar Publicidade e Propaganda.</div></div>
+          <div class="tl-year">1980s</div>
+          <div><div class="tl-title">Crítico de cinema e cineasta</div><div class="tl-desc">Escreve para Télérama e Positif antes de atuar como roteirista e diretor.</div></div>
         </div>
         <div class="tl-item">
-          <div class="tl-year">1991</div>
-          <div><div class="tl-title">Estreia em livro</div><div class="tl-desc">As Flores do Lado de Baixo, literatura infantojuvenil.</div></div>
+          <div class="tl-year">1995</div>
+          <div><div class="tl-title">Prêmio Femina</div><div class="tl-desc">Por La Classe de Neige, thriller psicológico sobre a infância.</div></div>
         </div>
         <div class="tl-item">
-          <div class="tl-year">1994</div>
-          <div><div class="tl-title">Publica Hotel Solidão</div><div class="tl-desc">Seu primeiro livro de contos para o público adulto.</div></div>
+          <div class="tl-year">2000</div>
+          <div><div class="tl-title">Publica O Adversário</div><div class="tl-desc">Consolida o estilo autoral que o tornaria célebre.</div></div>
         </div>
         <div class="tl-item">
-          <div class="tl-year">2016</div>
-          <div><div class="tl-title">Conclui a Trilogia do Adeus</div><div class="tl-desc">Caderno de um Ausente, Menina Escrevendo com o Pai e A Pele da Terra.</div></div>
+          <div class="tl-year">2011</div>
+          <div><div class="tl-title">Vence o Prêmio Renaudot</div><div class="tl-desc">Com Limonov, biografia romanceada do agitador russo Eduard Limonov.</div></div>
         </div>
         <div class="tl-item">
-          <div class="tl-year">2016</div>
-          <div><div class="tl-title">Publica Diário das Coincidências</div><div class="tl-desc">Crônicas do acaso e histórias reais — seu livro no clube.</div></div>
+          <div class="tl-year">2020</div>
+          <div><div class="tl-title">Publica Yoga</div><div class="tl-desc">Memórias sobre depressão bipolar e um retiro de meditação que dá errado.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2021</div>
+          <div><div class="tl-title">Prêmio Princesa das Astúrias</div><div class="tl-desc">Maior honraria de língua espanhola concedida a um autor francês.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2022</div>
+          <div><div class="tl-title">V13 e o Prêmio Aujourd'hui</div><div class="tl-desc">Crônica do julgamento dos atentados de Paris de 2015.</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2025</div>
+          <div><div class="tl-title">Prêmio Médicis</div><div class="tl-desc">Por Kolkhoze, épico familiar e histórico sobre a Rússia soviética.</div></div>
         </div>
       </div>
     </div>
@@ -208,36 +220,37 @@
     </div>
     <div class="books-grid">
       <div class="book-card">
-        <div class="book-year">1994</div>
-        <div class="book-title">Hotel Solidão</div>
-        <div class="book-note">Estreia em contos para o público adulto, já com a economia de linguagem que marcaria toda a sua obra.</div>
-      </div>
-      <div class="book-card">
-        <div class="book-year">1998</div>
-        <div class="book-title">O Vaso Azul</div>
-        <div class="book-note">Com prefácio de Alfredo Bosi, consolidou sua prosa poética voltada ao cotidiano familiar.</div>
-      </div>
-      <div class="book-card">
-        <div class="book-year">2011</div>
-        <div class="book-title">Amores Mínimos</div>
-        <div class="book-note">Contos sobre pequenos gestos afetivos entre pais, filhos e irmãos.</div>
-      </div>
-      <div class="book-card">
-        <div class="book-year">2016</div>
-        <div class="book-title">Trilogia do Adeus</div>
-        <div class="book-note">Três romances sobre luto e memória familiar: Caderno de um Ausente, Menina Escrevendo com o Pai e A Pele da Terra.</div>
-        <span class="book-badge">Trilogia</span>
-      </div>
-      <div class="book-card">
-        <div class="book-year">2016</div>
-        <div class="book-title">Diário das Coincidências</div>
-        <div class="book-note">Crônicas do acaso e histórias reais, tecidas a partir de pequenos encontros cotidianos.</div>
+        <div class="book-year">2000</div>
+        <div class="book-title">O Adversário</div>
+        <div class="book-note">Reconstrói o caso de Jean-Claude Romand, que viveu dezoito anos fingindo ser médico da OMS antes de matar a própria família.</div>
         <span class="book-badge">Livro no clube</span>
       </div>
       <div class="book-card">
-        <div class="book-year">2019</div>
-        <div class="book-title">Elegia do Irmão</div>
-        <div class="book-note">Narrativa sobre perda e fraternidade, um dos livros mais pessoais do autor.</div>
+        <div class="book-year">2009</div>
+        <div class="book-title">Vidas que Não a Minha</div>
+        <div class="book-note">Narrativa sobre luto, doença e sobrevivência, entrelaçando um tsunami e a morte da cunhada do autor.</div>
+      </div>
+      <div class="book-card">
+        <div class="book-year">2011</div>
+        <div class="book-title">Limonov</div>
+        <div class="book-note">Biografia romanceada do escritor e agitador político russo Eduard Limonov.</div>
+        <span class="book-badge">Prêmio Renaudot</span>
+      </div>
+      <div class="book-card">
+        <div class="book-year">2014</div>
+        <div class="book-title">O Reino</div>
+        <div class="book-note">Investigação pessoal sobre as origens do cristianismo, entre fé antiga e ceticismo do autor.</div>
+      </div>
+      <div class="book-card">
+        <div class="book-year">2020</div>
+        <div class="book-title">Yoga</div>
+        <div class="book-note">Memórias sobre um retiro de meditação interrompido por uma crise de depressão bipolar.</div>
+      </div>
+      <div class="book-card">
+        <div class="book-year">2022</div>
+        <div class="book-title">V13</div>
+        <div class="book-note">Crônica do julgamento dos atentados de 13 de novembro de 2015 em Paris, acompanhado dia a dia pelo autor.</div>
+        <span class="book-badge">Prêmio Aujourd'hui</span>
       </div>
     </div>
   </section>
@@ -250,39 +263,39 @@
     <div class="estilo-grid" style="margin-bottom:3rem;">
       <div class="estilo-item">
         <div class="estilo-num">01</div>
-        <div class="estilo-text"><strong>Epifania do cotidiano:</strong> parte de gestos mínimos — um olhar, um bilhete, uma coincidência — para revelar camadas emocionais profundas.</div>
+        <div class="estilo-text"><strong>O autor como personagem:</strong> inclui-se deliberadamente na narrativa, expondo a própria fascinação e o próprio desconforto diante do que investiga.</div>
       </div>
       <div class="estilo-item">
         <div class="estilo-num">02</div>
-        <div class="estilo-text"><strong>Prosa concisa e lírica:</strong> frases econômicas que se aproximam do poema sem abandonar a narrativa.</div>
+        <div class="estilo-text"><strong>Recusa o rótulo de "autoficção":</strong> prefere descrever seu método como uma forma pessoal de não ficção investigativa.</div>
       </div>
       <div class="estilo-item">
         <div class="estilo-num">03</div>
-        <div class="estilo-text"><strong>Relações familiares no centro:</strong> pais e filhos, irmãos, avós e netos atravessam quase toda a sua obra.</div>
+        <div class="estilo-text"><strong>Do cinema à prosa:</strong> a formação como crítico, roteirista e diretor molda uma construção quase cinematográfica de suas cenas.</div>
       </div>
       <div class="estilo-item">
         <div class="estilo-num">04</div>
-        <div class="estilo-text"><strong>Memória de infância:</strong> o interior paulista de sua juventude reaparece como paisagem afetiva recorrente.</div>
+        <div class="estilo-text"><strong>Ética como tema central:</strong> expõe as próprias hesitações morais ao escrever sobre pessoas reais, de um assassino a um agitador político.</div>
       </div>
       <div class="estilo-item">
         <div class="estilo-num">05</div>
-        <div class="estilo-text"><strong>Formação publicitária a serviço da literatura:</strong> a precisão da redação publicitária empresta ritmo e clareza à sua prosa.</div>
+        <div class="estilo-text"><strong>Reportagem como literatura:</strong> décadas de investigação jornalística sustentam livros que se leem com a tensão de um romance.</div>
       </div>
       <div class="estilo-item">
         <div class="estilo-num">06</div>
-        <div class="estilo-text"><strong>Trânsito entre públicos:</strong> escreve com a mesma delicadeza para crianças, jovens e adultos.</div>
+        <div class="estilo-text"><strong>Vulnerabilidade sem filtro:</strong> relata a própria bipolaridade e crises pessoais com o mesmo rigor investigativo que aplica a seus temas.</div>
       </div>
     </div>
     <h3 style="font-family:'DM Serif Display',serif;font-size:1.4rem;font-weight:400;margin-bottom:1.5rem;">Influências e referências</h3>
     <div class="influencias-grid">
-      <div class="infl-card"><div class="infl-name">Carlos Drummond de Andrade</div><div class="infl-note">Poesia do cotidiano</div></div>
-      <div class="infl-card"><div class="infl-name">Raduan Nassar</div><div class="infl-note">Prosa concisa brasileira</div></div>
-      <div class="infl-card"><div class="infl-name">Alfredo Bosi</div><div class="infl-note">Crítica literária</div></div>
-      <div class="infl-card"><div class="infl-name">Guimarães Rosa</div><div class="infl-note">Linguagem e sertão</div></div>
+      <div class="infl-card"><div class="infl-name">Truman Capote</div><div class="infl-note">Reação a A Sangue Frio</div></div>
+      <div class="infl-card"><div class="infl-name">Philip K. Dick</div><div class="infl-note">Biografado por Carrère</div></div>
+      <div class="infl-card"><div class="infl-name">Fiódor Dostoiévski</div><div class="infl-note">Literatura russa</div></div>
+      <div class="infl-card"><div class="infl-name">Hélène Carrère d'Encausse</div><div class="infl-note">Mãe, historiadora</div></div>
     </div>
     <div class="quote-block" style="margin-top:2.5rem;">
-      <div class="quote-text">"A vida cotidiana guarda reservas colossais de poesia — só é preciso saber onde escutar."</div>
-      <div class="quote-attr">— síntese da poética de Carrascoza, a partir de Drummond</div>
+      <div class="quote-text">"Escrevo sobre os outros para entender aquilo que, em mim mesmo, me é mais estranho e mais incômodo."</div>
+      <div class="quote-attr">— síntese do projeto literário de Emmanuel Carrère</div>
     </div>
   </section>
 
@@ -293,20 +306,28 @@
     </div>
     <div class="premios-list">
       <div class="premio-item">
-        <div class="premio-year">2015</div>
-        <div><div class="premio-title">Prêmio Guimarães Rosa (Rádio France Internationale)</div><div class="premio-sub">Um dos três vencedores da edição, prêmio internacional dedicado ao conto em língua portuguesa.</div></div>
+        <div class="premio-year">1995</div>
+        <div><div class="premio-title">Prêmio Femina</div><div class="premio-sub">Por La Classe de Neige (A Classe de Neve).</div></div>
       </div>
       <div class="premio-item">
-        <div class="premio-year">Carreira</div>
-        <div><div class="premio-title">Prêmio Jabuti</div><div class="premio-sub">Recebido em diferentes edições, por obras de literatura infantojuvenil e ficção adulta.</div></div>
+        <div class="premio-year">2010</div>
+        <div><div class="premio-title">Grande Prêmio Henri-Gal</div><div class="premio-sub">Concedido pela Academia Francesa ao conjunto da obra.</div></div>
       </div>
       <div class="premio-item">
-        <div class="premio-year">Carreira</div>
-        <div><div class="premio-title">APCA — Associação Paulista dos Críticos de Arte</div><div class="premio-sub">Reconhecimento por obras de contos e romances ao longo da carreira.</div></div>
+        <div class="premio-year">2011</div>
+        <div><div class="premio-title">Prêmio Renaudot</div><div class="premio-sub">Por Limonov.</div></div>
       </div>
       <div class="premio-item">
-        <div class="premio-year">Carreira</div>
-        <div><div class="premio-title">FNLIJ e Fundação Biblioteca Nacional</div><div class="premio-sub">Prêmios concedidos a diferentes títulos de sua obra infantojuvenil e adulta.</div></div>
+        <div class="premio-year">2021</div>
+        <div><div class="premio-title">Prêmio Princesa das Astúrias de Literatura</div><div class="premio-sub">Uma das maiores honrarias literárias de língua espanhola.</div></div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">2022</div>
+        <div><div class="premio-title">Prêmio Aujourd'hui</div><div class="premio-sub">Por V13, crônica do julgamento dos atentados de Paris de 2015.</div></div>
+      </div>
+      <div class="premio-item">
+        <div class="premio-year">2025</div>
+        <div><div class="premio-title">Prêmio Médicis</div><div class="premio-sub">Por Kolkhoze, épico familiar e histórico sobre a Rússia soviética.</div></div>
       </div>
     </div>
   </section>
@@ -318,34 +339,34 @@
     </div>
     <div class="curio-grid">
       <div class="curio-item">
-        <span class="curio-icon">📢</span>
-        <div class="curio-title">Da publicidade para a literatura</div>
-        <div class="curio-text">Antes de se dedicar à ficção, atuava como redator publicitário — ofício que ajudou a afiar sua economia de linguagem.</div>
+        <span class="curio-icon">✉️</span>
+        <div class="curio-title">Uma carta sem resposta por três anos</div>
+        <div class="curio-text">Carrère escreveu a Jean-Claude Romand pedindo autorização para escrever sobre o caso já em 1993 — mas só recebeu resposta em 1996.</div>
       </div>
       <div class="curio-item">
-        <span class="curio-icon">✍️</span>
-        <div class="curio-title">Aluno de João Silvério Trevisan</div>
-        <div class="curio-text">Frequentou, nos anos 1980, a oficina literária do escritor João Silvério Trevisan, período formativo de sua escrita.</div>
+        <span class="curio-icon">🎬</span>
+        <div class="curio-title">Uma reação direta a Truman Capote</div>
+        <div class="curio-text">O próprio Carrère descreveu sua opção por se incluir como personagem no livro como reação direta ao método de Capote em A Sangue Frio.</div>
       </div>
       <div class="curio-item">
         <span class="curio-icon">🎓</span>
-        <div class="curio-title">Professor há mais de três décadas</div>
-        <div class="curio-text">Leciona Redação Publicitária na ECA/USP desde 1990, unindo docência e produção literária.</div>
+        <div class="curio-title">Filho de acadêmica de peso</div>
+        <div class="curio-text">Sua mãe, Hélène Carrère d'Encausse, é historiadora especializada em história russa e ocupou a cadeira de secretária perpétua da Academia Francesa.</div>
       </div>
       <div class="curio-item">
-        <span class="curio-icon">🌎</span>
-        <div class="curio-title">Pós-doutorado sobre publicidade e literatura</div>
-        <div class="curio-text">Realizou pós-doutorado na UFRJ investigando justamente a interface entre esses dois universos de sua própria trajetória.</div>
+        <span class="curio-icon">⏳</span>
+        <div class="curio-title">Quase oito anos escrevendo um livro</div>
+        <div class="curio-text">Entre a primeira carta a Romand e a publicação de O Adversário, passaram-se sete anos de hesitação ética que o próprio autor descreve como parte do projeto.</div>
       </div>
       <div class="curio-item">
-        <span class="curio-icon">🏡</span>
-        <div class="curio-title">Residências literárias internacionais</div>
-        <div class="curio-text">Participou de programas como a Ledig House, nos Estados Unidos, e o Château Lavigny, na Suíça.</div>
+        <span class="curio-icon">🚫</span>
+        <div class="curio-title">Rejeita o rótulo de "autoficção"</div>
+        <div class="curio-text">Apesar de ser constantemente associado ao termo, Carrère o rejeita publicamente, preferindo descrever seu método como não ficção investigativa pessoal.</div>
       </div>
       <div class="curio-item">
-        <span class="curio-icon">🕯️</span>
-        <div class="curio-title">Uma trilogia sobre luto</div>
-        <div class="curio-text">A "Trilogia do Adeus" reúne três romances distintos sobre perda e memória, unidos por um mesmo fio emocional.</div>
+        <span class="curio-icon">🎥</span>
+        <div class="curio-title">Também é cineasta</div>
+        <div class="curio-text">Antes e depois de se firmar como escritor, trabalhou como roteirista e diretor — sensibilidade visual que atravessa seus livros de não ficção.</div>
       </div>
     </div>
   </section>
@@ -356,35 +377,35 @@
       <h2 class="section-title">Para conhecer melhor</h2>
     </div>
     <div class="links-grid">
-      <a class="link-card" href="https://www.agenciariff.com.br/autores/joao-anzanello-carrascoza/" target="_blank" rel="noopener">
+      <a class="link-card" href="https://www.companhiadasletras.com.br/colaborador/04740/emmanuel-carrere" target="_blank" rel="noopener">
         <div class="link-icon-box">🌐</div>
         <div class="link-body">
-          <div class="link-title">Perfil na Agência Riff</div>
-          <div class="link-sub">Biografia e depoimentos de críticos</div>
+          <div class="link-title">Perfil na editora</div>
+          <div class="link-sub">Companhia das Letras</div>
         </div>
         <span class="link-arrow">↗</span>
       </a>
-      <a class="link-card" href="https://enciclopedia.itaucultural.org.br/pessoa405419/joao-anzanello-carrascoza" target="_blank" rel="noopener">
-        <div class="link-icon-box">🏛️</div>
-        <div class="link-body">
-          <div class="link-title">Itaú Cultural</div>
-          <div class="link-sub">Enciclopédia de literatura brasileira</div>
-        </div>
-        <span class="link-arrow">↗</span>
-      </a>
-      <a class="link-card" href="https://www.companhiadasletras.com.br/colaborador/05150/joao-anzanello-carrascoza" target="_blank" rel="noopener">
+      <a class="link-card" href="https://en.wikipedia.org/wiki/Emmanuel_Carr%C3%A8re" target="_blank" rel="noopener">
         <div class="link-icon-box">📚</div>
         <div class="link-body">
-          <div class="link-title">Companhia das Letras</div>
-          <div class="link-sub">Perfil de autor e lista de obras</div>
+          <div class="link-title">Verbete biográfico</div>
+          <div class="link-sub">Wikipedia</div>
         </div>
         <span class="link-arrow">↗</span>
       </a>
-      <a class="link-card" href="https://www.bpp.pr.gov.br/Candido/Pagina/Um-Escritor-na-Biblioteca-Joao-Anzanello-Carrascoza" target="_blank" rel="noopener">
-        <div class="link-icon-box">📖</div>
+      <a class="link-card" href="https://www.publico.pt/2021/06/09/culturaipsilon/noticia/emmanuel-carrere-distinguido-premio-princesa-asturias-letras-1965864" target="_blank" rel="noopener">
+        <div class="link-icon-box">📰</div>
         <div class="link-body">
-          <div class="link-title">Biblioteca Pública do Paraná</div>
-          <div class="link-sub">Entrevista "Um Escritor na Biblioteca"</div>
+          <div class="link-title">Distinguido com o Prêmio Princesa das Astúrias</div>
+          <div class="link-sub">Público</div>
+        </div>
+        <span class="link-arrow">↗</span>
+      </a>
+      <a class="link-card" href="https://www.sortiraparis.com/en/news/in-paris/articles/336443-prix-medicis-2025-literary-award-emmanuel-carrere-kolkhoze" target="_blank" rel="noopener">
+        <div class="link-icon-box">🏆</div>
+        <div class="link-body">
+          <div class="link-title">Prêmio Médicis 2025, por Kolkhoze</div>
+          <div class="link-sub">Sortiraparis</div>
         </div>
         <span class="link-arrow">↗</span>
       </a>
@@ -394,9 +415,9 @@
 </div>
 
 <footer>
-  <div class="footer-name">João Anzanello Carrascoza</div>
+  <div class="footer-name">Emmanuel Carrère</div>
   <div class="footer-divider"></div>
-  <div class="footer-note">Fontes: Agência Riff · Itaú Cultural · Companhia das Letras · Biblioteca Pública do Paraná</div>
+  <div class="footer-note">Fontes: Companhia das Letras · Wikipedia · Público · Sortiraparis</div>
   <div class="footer-note" style="margin-top:8px;opacity:0.2;">Apresentação literária · Socorro Clube do Livro</div>
   <a class="footer-back" href="../../index.html#autores">← Voltar para Autores</a>
 </footer>
